@@ -1,0 +1,20 @@
+#diagram {
+    background: lightcyan;
+    min-height: 600px;
+    /* height: 100vh; */
+}
+
+.node .title {
+    font-family: 'Roboto';
+    font: 14px sans-serif;
+    font-weight: 600;
+    fill: #ffffff;
+}
+
+.node text {
+    cursor: default;
+}
+
+
+
+

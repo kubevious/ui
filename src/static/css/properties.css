@@ -1,0 +1,81 @@
+.properties .target {
+    font-family: 'Roboto';
+    font: 14px sans-serif;
+}
+.properties .target .kind {
+    font: 14px sans-serif;
+    font-weight: 400;
+}
+.properties .target .separator {
+    font: 14px sans-serif;
+    font-weight: 400;
+}
+.properties .target .name {
+    font: 14px sans-serif;
+    font-weight: 800;
+}
+
+.properties .property-group .title {
+    font-family: 'Roboto';
+    font: 12px sans-serif;
+    font-weight: 800;
+}
+
+/******* ENVIRONMENT VARIABLES *********/
+
+.environment-variable {
+    font-family: 'Roboto';
+    font: 12px sans-serif;
+    padding-top: 5px;
+}
+
+.environment-variable .name{
+    font-weight: 600;
+}
+
+.environment-variable .value {
+    margin-left: 30px;
+}
+
+/***************************************/
+
+/****** EXPANDER BEGIN **********/
+.expander {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    text-align: left;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+  }
+  
+  .active, .expander:hover {
+    background-color: #ccc;
+  }
+  
+  .expander-contents {
+    padding: 0 18px;
+    background-color: white;
+    display: none;
+    overflow: hidden;
+  }
+
+  .expander-open {
+    display: block;
+  }
+
+  .expander:after {
+    content: '\02795'; /* Unicode character for "plus" sign (+) */
+    font-size: 13px;
+    color: #777;
+    float: right;
+    margin-left: 5px;
+  }
+  
+  .active:after {
+    content: "\2796"; /* Unicode character for "minus" sign (-) */
+  }
+/****** EXPANDER END **********/

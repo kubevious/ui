@@ -102,3 +102,15 @@ dist
 
 # TernJS port file
 .tern-port
+
+
+# NodeJs
+node_modules/
+
+# berlioz
+logs_berlioz
+
+.vscode
+.history
+
+.idea/

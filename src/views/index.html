@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/diagram.css" />
+    <link rel="stylesheet" href="css/properties.css" />
+
+    <title>Berlioz AppView</title>
+</head>
+
+<body>
+
+    <div class="container-fluid main-screen">
+        <div class="row h-100">
+            <div class="col-md-9">
+                <div id="diagram" class="diagram">
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div id="properties" class="properties">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex flex-column justify-content-between">
+        <div id="logs" class="logs">
+            <table class="table table-striped table-dark">
+                <thead>
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th>Level</th>
+                        <th>Message</th>
+                        <th>Args</th>
+                    </tr>
+                </thead>
+                <tbody id="logTableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="temporary">
+
+    </div>
+</body>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+
+
+<script src="https://unpkg.com/js-logger/src/logger.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
+<script type="text/javascript" src="vendor/d3/d3.min.js"></script>
+<script type="text/javascript" src="vendor/js-yaml/js-yaml.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script src="vendor/css-element-queries-1.2.1/ResizeSensor.js"></script>
+<script src="vendor/css-element-queries-1.2.1/ElementQueries.js"></script>
+
+<script src="js/logging.js"></script>
+<script src="js/visual-node.js"></script>
+<script src="js/visual-view.js"></script>
+
+<%if (process.env.MOCK_BACKEND) {%>
+    <script src="js/data-mock.js"></script>
+<%} else {%>
+    <script src="js/client.js"></script>
+    <script src="js/data.js"></script>
+<%}%>
+
+
+
+<script src="js/property-pane.js"></script>
+<script src="js/diagram.js"></script>
+<script src="js/ui.js"></script>
+
+<%- watchScript %>
+
+</html>
