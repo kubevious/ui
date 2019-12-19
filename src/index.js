@@ -7,8 +7,6 @@ const path = require('path');
 const app = express();
 const PromiseRouter = require('express-promise-router');
 
-const port = 3000;
-
 // view engine setup
 app.engine('html', ejs.renderFile);
 app.set('views', path.join(__dirname, 'views'));
@@ -45,6 +43,7 @@ loadRouter('api');
 if (process.env.NODE_ENV === "development") {
 }
 
+const port = 3000;
 app.listen(port, () => {
     logger.info("listening on port %s", port);
 });
