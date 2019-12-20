@@ -14,6 +14,8 @@ class VisualNode {
         this._height = 0;
 
         this._padding = this._resolveValue("padding");
+        this._paddingLeft = this._resolveValue("paddingLeft");
+
         this._headerHeight = 34; //50;
         this._isExpanded = this._resolveValue("expanded");
         this._isSelected = false;
@@ -165,7 +167,7 @@ class VisualNode {
 
     _arrangeChildrenHorizontally()
     {
-        var i = this._padding;
+        var i = this._paddingLeft;
         for(var child of this.visibleChildren) {
             child._x = i;
             child._y = this._headerHeight + this._padding;
@@ -177,7 +179,7 @@ class VisualNode {
     {
         var i = this._headerHeight + this._padding;
         for(var child of this.visibleChildren) {
-            child._x = this._padding;
+            child._x = this._paddingLeft;
             child._y = i;
             i += child.height + this._padding;
         }
@@ -190,7 +192,7 @@ class VisualNode {
         }
 
         for(var child of this.visibleChildren) {
-           child._width = this._width - 2 * this._padding;
+           child._width = this._width - this._paddingLeft - this._padding;
            child._fitChildrenWidthToParent();
         }
     }
@@ -233,6 +235,7 @@ const NODE_RENDER_METADATA = {
     default: {
         arrangeVertically: false,
         padding: 5,
+        paddingLeft: 30,
         expanded: false
     },
     per_kind: {
