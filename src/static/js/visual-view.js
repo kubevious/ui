@@ -160,7 +160,7 @@ class VisualView {
         this._renderItems(this._rootElem, this._flatVisualNodes, isUpdate);
     }
 
-    _renderItems(parentNode, items, isUpdate)
+    _renderItems(parentNode, items)
     {
         var self = this;
         var node =
@@ -219,7 +219,7 @@ class VisualView {
         node
             .append("circle")
             .attr("class", "logo-bg")
-            .attr("transform", "translate(17, 17)") 
+            .attr("transform", nodeHeaderTransform('logo', 'center')) 
             .attr("r", 12)
             .style("fill", "white")
             .on("click", nodePerformSelect)
@@ -232,8 +232,8 @@ class VisualView {
             .attr("xlink:href", function(d) {
                 return "img/entities/" + d.data.kind + ".svg";
             })
-            .attr("x", 5)
-            .attr("y", 5)
+            .attr("x", nodeHeaderX('logo'))
+            .attr("y", nodeHeaderY('logo'))
             .attr("width", 24)
             .attr("height", 24)
             .on("click", nodePerformSelect)
@@ -241,25 +241,49 @@ class VisualView {
             ;
 
         node.append("text")
-            .attr("class", "title")
-            .text(function(d) { 
-                return d.data.name; 
-            })
-            .attr("transform", nodeTitleTransform)  
+            .attr("class", "title text-light")
+            .text(nodeHeaderText('title'))
+            .attr("transform", nodeHeaderTransform('title', 'text'))  
             .on("click", nodePerformSelect)
             .on("dblclick", nodePerformExpandCollapse)
             ;
 
         node
             .filter(function(d) {
-                return d.hasChildren;
+                return d.hasHeader('severity');
+            })
+            .append("rect")
+            .attr("class", "severity")
+            .attr("x", nodeHeaderX('severity')) 
+            .attr("y", nodeHeaderY('severity'))
+            .attr("width", nodeHeaderWidth('severity'))
+            .attr("height", nodeHeaderHeight('severity'))
+            // .attr("height", 12)
+            .attr("rx", 6)
+            .style("fill", "red")
+            // .on("click", nodePerformExpandCollapse)
+            ;
+
+        node.append("text")
+            .filter(function(d) {
+                return d.hasHeader('severity');
+            })
+            .attr("class", "severity-text text-light")
+            .text(nodeHeaderText('severity'))
+            // .styles(nodeHeaderStyles('severity'))
+            .attr("transform", nodeHeaderTransform('severity', 'text'))  
+            ;
+
+        node
+            .filter(function(d) {
+                return d.hasHeader('expander');
             })
             .append("image")
             .attr("class", "expandr")
             .attr("xlink:href", nodeExpanderImage)
-            .attr("x", nodeExpanderX)
-            .attr("y", nodeExpanderY)
-            .attr("width", 12)
+            .attr("x", nodeHeaderX('expander') ) 
+            .attr("y", nodeHeaderY('expander'))
+            .attr("width", nodeHeaderWidth('expander'))
             .attr("height", 12)
             .on("click", nodePerformExpandCollapse)
             ;
@@ -277,14 +301,6 @@ class VisualView {
 
         d3
             .select(visualNode.node)
-            .select(".header")
-            .transition()
-            .duration(duration)
-            .attr("width", function (d) { return d.width })
-            .style("fill", nodeHeaderFillColor)
-
-        d3
-            .select(visualNode.node)
             .select(".bg")
             .transition()
             .duration(duration)
@@ -293,11 +309,33 @@ class VisualView {
 
         d3
             .select(visualNode.node)
+            .select(".header")
+            .transition()
+            .duration(duration)
+            .attr("width", function (d) { return d.width })
+            .style("fill", nodeHeaderFillColor)
+
+        d3
+            .select(visualNode.node)
             .select(".expandr")
             .transition()
             .duration(duration)
-            .attr("x", nodeExpanderX)
+            .attr("x", nodeHeaderX('expander'))
             .attr("xlink:href", nodeExpanderImage)
+
+        d3
+            .select(visualNode.node)
+            .select(".severity")
+            .transition()
+            .duration(duration)
+            .attr("x", nodeHeaderX('severity'))
+
+        d3
+            .select(visualNode.node)
+            .select(".severity-text")
+            .transition()
+            .duration(duration)
+            .attr("transform", nodeHeaderTransform('severity', 'text'))  
     }
 
     _updateNodeR(visualNode)
@@ -356,14 +394,11 @@ class VisualView {
     }
 }
 
-
-
 function nodePerformExpandCollapse(d)
 {
     d.isExpanded = !d.isExpanded;
     d.view._update();
 }
-
 
 function nodePerformSelect(d)
 {
@@ -388,18 +423,6 @@ function nodeGroupTransform(d) {
     return "translate(" + d.absX + "," + d.absY + ")"; 
 }
 
-function nodeTitleTransform(d) {
-    return "translate(" + 34 + "," + 22 + ")"; 
-}
-
-function nodeExpanderX(d) { 
-    return (d.width - 20); 
-}
-
-function nodeExpanderY(d) { 
-    return 10; 
-}
-
 function nodeExpanderImage(d) {
     if (d.isExpanded) {
         return "img/collapse.svg";
@@ -407,6 +430,57 @@ function nodeExpanderImage(d) {
         return "img/expand.svg";
     }
 }
+
+function nodeHeaderTransform(headerName, flavor) { 
+    return (d) => {
+        return "translate(" + d.getHeaderX(headerName, flavor) + "," + d.getHeaderY(headerName, flavor) + ")"; 
+    }
+}
+
+function nodeHeaderX(headerName, flavor) { 
+    return (d) => {
+        return d.getHeaderX(headerName, flavor);
+    }
+}
+
+function nodeHeaderY(headerName, flavor) { 
+    return (d) => {
+        return d.getHeaderY(headerName, flavor);
+    }
+}
+
+function nodeHeaderWidth(headerName) { 
+    return (d) => {
+        var header = d.getHeader(headerName);
+        return header.width;
+    }
+}
+
+function nodeHeaderHeight(headerName) { 
+    return (d) => {
+        var header = d.getHeader(headerName);
+        return header.height;
+    }
+}
+
+function nodeHeaderText(headerName) { 
+    return (d) => {
+        var header = d.getHeader(headerName);
+        return header.text;
+    }
+}
+
+// function nodeHeaderStyles(headerName) { 
+//     return (d) => {
+//         var header = d.getHeader(headerName);
+//         return {
+//             "font-family": 'Roboto',
+//             "font": "14px sans-serif",
+//             "font-weight": 600
+//         }
+//     }
+// }
+
 
 
 const pSBC=(p,c0,c1,l)=>{
