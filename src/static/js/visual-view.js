@@ -82,17 +82,19 @@ class VisualView {
 
     _renderControl()
     {
-        this._controlInfo.groupElem = this._svgElem.append("g")
+        this._controlInfo.previewGroupElem = this._svgElem.append("g")
             .attr("class", "preview");
 
-        this._controlInfo.fullRectElem = this._controlInfo.groupElem
+        this._controlInfo.previewFullRectElem = this._controlInfo.previewGroupElem
             .append("rect")
             .attr("class", "preview-full-rect");
 
-        this._controlInfo.smallDiagRootElem = this._controlInfo.groupElem
-            .append("g");
+        this._controlInfo.previewItemsGroupElem = this._controlInfo.previewGroupElem
+            .append("g")
+            .attr("class", "preview-items-group")
+            ;
 
-        this._controlInfo.visibleRectElem = this._controlInfo.groupElem
+        this._controlInfo.previewVisibleRectElem = this._controlInfo.previewGroupElem
             .append("rect")
             .attr("class", "preview-visible-rect");
     }
@@ -135,9 +137,9 @@ class VisualView {
         this._controlInfo.x = this._width - this._controlInfo.boxWidth - 20;
         this._controlInfo.y = this._height - this._controlInfo.boxHeight - 20;
 
-        if (this._controlInfo.groupElem)
+        if (this._controlInfo.previewGroupElem)
         {
-            this._controlInfo.groupElem.attr("transform", (d) => { 
+            this._controlInfo.previewGroupElem.attr("transform", (d) => { 
                 var scale = 1 / this._controlInfo.scale;
                 return  "translate(" + this._controlInfo.x + "," + this._controlInfo.y+ ")" 
                     + " " 
@@ -146,15 +148,15 @@ class VisualView {
             })
         }
 
-        if (this._controlInfo.fullRectElem)
+        if (this._controlInfo.previewFullRectElem)
         {
-            this._controlInfo.fullRectElem
+            this._controlInfo.previewFullRectElem
                 .attr("width", this._visualRoot.width)
                 .attr("height", this._visualRoot.height);
         }
 
-        if (this._controlInfo.visibleRectElem) {
-            this._controlInfo.visibleRectElem
+        if (this._controlInfo.previewVisibleRectElem) {
+            this._controlInfo.previewVisibleRectElem
                 .attr("x", this._viewX)
                 .attr("y", this._viewY)
                 .attr("width", this._width)
@@ -244,7 +246,7 @@ class VisualView {
 
     _renderSmallItems()
     {
-        this._renderItemsSmall(this._controlInfo.smallDiagRootElem, this._flatVisualNodes);
+        this._renderItemsSmall(this._controlInfo.previewItemsGroupElem, this._flatVisualNodes);
     }
 
     _renderItems(parentNode, items)
