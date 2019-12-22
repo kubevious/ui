@@ -15,6 +15,21 @@
     cursor: default;
 }
 
+.preview {
+    fill-opacity: 0.5;
+}
+
+.preview-full-rect {
+    fill: white;
+    stroke: black;
+    stroke-width: 1px;
+}
+
+.preview-visible-rect {
+    fill: white;
+    stroke: black;
+    stroke-width: 4px;
+}
 
 
 

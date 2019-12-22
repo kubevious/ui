@@ -51,6 +51,10 @@ class VisualNode {
         return this._height;
     }
 
+    get headerHeight() {
+        return this._headerHeight;
+    }
+
     get depth() {
         if (this._parent) {
             return this._parent.depth + 1;

@@ -83,19 +83,18 @@ class VisualView {
     _renderControl()
     {
         this._controlInfo.groupElem = this._svgElem.append("g")
-            .attr("class", "control")
-            .attr("fill-opacity", "0.5")
+            .attr("class", "preview");
 
         this._controlInfo.fullRectElem = this._controlInfo.groupElem
             .append("rect")
-            .style("fill", "green");
+            .attr("class", "preview-full-rect");
 
         this._controlInfo.smallDiagRootElem = this._controlInfo.groupElem
             .append("g");
 
         this._controlInfo.visibleRectElem = this._controlInfo.groupElem
             .append("rect")
-            .style("fill", "blue");
+            .attr("class", "preview-visible-rect");
     }
 
     setupDimentions()
@@ -120,43 +119,49 @@ class VisualView {
             return;
         }
 
-        this._controlInfo.isReady = true;
-        
         var boxScale = 5
-        this._controlInfo.width = this._width / boxScale;
-        this._controlInfo.height = this._height / boxScale;
+        this._controlInfo.boxWidth = Math.max(100, this._width / boxScale);
+        this._controlInfo.boxHeight = Math.max(100, this._height / boxScale);
 
         this._controlInfo.scale = Math.max(
-            this._visualRoot.width / this._controlInfo.width,
-            this._visualRoot.height / this._controlInfo.height) * 2;
-//        this._controlInfo.scale = 5;
+            this._visualRoot.width / this._controlInfo.boxWidth,
+            this._visualRoot.height / this._controlInfo.boxHeight);
 
-        this._controlInfo.x = this._width - this._controlInfo.width - 20;
-        this._controlInfo.y = this._height - this._controlInfo.height - 20;
+        this._controlInfo.boxWidth = 
+            Math.max(100, this._visualRoot.width / this._controlInfo.scale);
+        this._controlInfo.boxHeight = 
+            Math.max(100, this._visualRoot.height / this._controlInfo.scale);
+
+        this._controlInfo.x = this._width - this._controlInfo.boxWidth - 20;
+        this._controlInfo.y = this._height - this._controlInfo.boxHeight - 20;
 
         if (this._controlInfo.groupElem)
         {
             this._controlInfo.groupElem.attr("transform", (d) => { 
-                return "translate(" + this._controlInfo.x + "," + this._controlInfo.y+ ")"; 
+                var scale = 1 / this._controlInfo.scale;
+                return  "translate(" + this._controlInfo.x + "," + this._controlInfo.y+ ")" 
+                    + " " 
+                    + "scale(" + scale + ", " + scale + ")"
+                    ; 
             })
         }
 
         if (this._controlInfo.fullRectElem)
         {
             this._controlInfo.fullRectElem
-                .attr("width", this._controlInfo.width)
-                .attr("height", this._controlInfo.height);
+                .attr("width", this._visualRoot.width)
+                .attr("height", this._visualRoot.height);
         }
 
         if (this._controlInfo.visibleRectElem) {
             this._controlInfo.visibleRectElem
-                .attr("x", - this._viewX / this._controlInfo.scale)
-                .attr("y", - this._viewY / this._controlInfo.scale)
-                .attr("width", this._width / this._controlInfo.scale)
-                .attr("height", this._height / this._controlInfo.scale);
+                .attr("x", this._viewX)
+                .attr("y", this._viewY)
+                .attr("width", this._width)
+                .attr("height", this._height);
         }
 
-        this._renderSmallItems();
+        // this._renderSmallItems();
     }
 
     _setupPanning()
@@ -166,8 +171,8 @@ class VisualView {
                 //d3.select(this).raise().attr("stroke", "black");
             })
             .on("drag", (d) => {
-                this._viewX += d3.event.dx;
-                this._viewY += d3.event.dy;
+                this._viewX -= d3.event.dx;
+                this._viewY -= d3.event.dy;
         
                 this._applyPanTransform();
             })
@@ -181,8 +186,15 @@ class VisualView {
 
     _applyPanTransform()
     {
+        if (this._visualRoot) {
+            this._viewX = Math.min(this._visualRoot.width - this._width, this._viewX);
+            this._viewY = Math.min(this._visualRoot.height - this._height, this._viewY);
+        }
+        this._viewX = Math.max(0, this._viewX);
+        this._viewY = Math.max(0, this._viewY);
+
         this._rootElem.attr("transform", (d) => { 
-            return "translate(" + this._viewX + "," + this._viewY + ")"; 
+            return "translate(" + (-this._viewX) + "," + (-this._viewY) + ")"; 
         })
 
         this._setupControl();
@@ -285,7 +297,7 @@ class VisualView {
         node.append("rect")
             .attr("class", "header")
             .attr("width", function(d) { return d.width; })
-            .attr("height", function(d) { return 34; })
+            .attr("height", function(d) { return d.headerHeight; })
             .style("fill", nodeHeaderFillColor)
             .on("click", nodePerformSelect)
             .on("dblclick", nodePerformExpandCollapse)
@@ -419,9 +431,6 @@ class VisualView {
     _renderItemsSmall(parentNode, items)
     {
         var self = this;
-        if (!this._controlInfo.isReady) {
-            return;
-        }
         var node =
             parentNode.selectAll("g")
             .data(items, function (d) { 
@@ -439,43 +448,32 @@ class VisualView {
             .attr("id", function(d) { 
                 return d.id; 
             })
-            .attr("transform", smallNodeGroupTransform)
+            .attr("transform", nodeGroupTransform)
             .each(function(d) { 
                 d.smallNode = this; 
             })
 
         node.append("rect")
             .attr("class", "bg")
-            .attr("width", function(d) { return d.width / self._controlInfo.scale; })
-            .attr("height", function(d) { return d.height / self._controlInfo.scale; })
+            .attr("width", function(d) { return d.width; })
+            .attr("height", function(d) { return d.height; })
             .style("fill", function(d) { 
                 var x = color(d.depth); 
                 x = pSBC(0.75, x, false, true);
-                return x;
-            })
-            .style("stroke", function(d) { 
-                var x = color(d.depth); 
-                x = pSBC(-0.50, x, false, true);
                 return x;
             })
             ;
 
         node.append("rect")
             .attr("class", "header")
-            .attr("width", function(d) { return d.width / self._controlInfo.scale; })
-            .attr("height", function(d) { return 34 / self._controlInfo.scale; })
+            .attr("width", function(d) { return d.width; })
+            .attr("height", function(d) { return d.headerHeight; })
             .style("fill", nodeHeaderFillColor)
-            .on("click", nodePerformSelect)
-            .on("dblclick", nodePerformExpandCollapse)
             ;
     }
 
     _updateNodeSmall(visualNode)
     {
-        if (!this._controlInfo.isReady) {
-            return;
-        }
-
         var self = this;
 
         var duration = 200;
@@ -484,22 +482,22 @@ class VisualView {
             .select(visualNode.smallNode)
             .transition()
             .duration(duration)
-            .attr("transform", smallNodeGroupTransform)
+            .attr("transform", nodeGroupTransform)
 
         d3
             .select(visualNode.smallNode)
             .select(".bg")
             .transition()
             .duration(duration)
-            .attr("width", function (d) { return d.width / self._controlInfo.scale; })
-            .attr("height", function (d) { return d.height / self._controlInfo.scale; })
+            .attr("width", function (d) { return d.width; })
+            .attr("height", function (d) { return d.height; })
 
         d3
             .select(visualNode.smallNode)
             .select(".header")
             .transition()
             .duration(duration)
-            .attr("width", function (d) { return d.width / self._controlInfo.scale; })
+            .attr("width", function (d) { return d.width; })
             .style("fill", nodeHeaderFillColor)
     }
 
@@ -511,10 +509,11 @@ class VisualView {
         }
     }
 
-
     _update()
     {
         this._massageSourceData();
+        this._applyPanTransform();
+        this._setupControl();
         this.render();
         this._updateNodeR(this._visualRoot);
         this._setupControl();
@@ -588,13 +587,6 @@ function nodeHeaderFillColor(d)
 
 function nodeGroupTransform(d) { 
     return "translate(" + d.absX + "," + d.absY + ")"; 
-}
-
-function smallNodeGroupTransform(d) { 
-    if (!d.view._controlInfo.isReady) {
-        return "";
-    }
-    return "translate(" + (d.absX / d.view._controlInfo.scale) + "," + (d.absY / d.view._controlInfo.scale) + ")"; 
 }
 
 function nodeExpanderImage(d) {
