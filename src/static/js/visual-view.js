@@ -82,6 +82,8 @@ class VisualView {
 
     _renderControl()
     {
+        var self = this;
+
         this._controlInfo.previewGroupElem = this._svgElem.append("g")
             .attr("class", "preview");
 
@@ -97,6 +99,32 @@ class VisualView {
         this._controlInfo.previewVisibleRectElem = this._controlInfo.previewGroupElem
             .append("rect")
             .attr("class", "preview-visible-rect");
+
+
+        this._controlInfo.previewGroupElem
+            .on("click", () => {
+                var svg = document.getElementById('diagram').getElementsByTagName('svg')[0];
+                let pt = svg.createSVGPoint();
+                pt.x = d3.event.clientX;
+                pt.y = d3.event.clientY;
+
+                // svg.getScreenCTM()
+                // self._controlInfo.previewFullRectElem.getScreenCTM()
+                var target = self._controlInfo.previewFullRectElem._groups[0][0];
+                var cursorpt =  pt.matrixTransform(target.getScreenCTM().inverse());
+                // console.log("   (" + cursorpt.x + ", " + cursorpt.y + ")");
+
+                this._viewX = cursorpt.x / self._controlInfo.scale - this._width / 2;
+                this._viewY = cursorpt.y / self._controlInfo.scale - this._height / 2;
+                this._applyPanTransform();
+            })
+            .call(d3.drag()
+                .on("drag", (d) => {
+                    this._viewX += d3.event.dx / this._controlInfo.scale;
+                    this._viewY += d3.event.dy / this._controlInfo.scale;
+                    this._applyPanTransform();
+                }));
+        // this._applyPanTransform();
     }
 
     setupDimentions()
