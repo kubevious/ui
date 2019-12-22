@@ -125,14 +125,14 @@ class VisualView {
         this._controlInfo.boxWidth = Math.max(100, this._width / boxScale);
         this._controlInfo.boxHeight = Math.max(100, this._height / boxScale);
 
-        this._controlInfo.scale = Math.max(
-            this._visualRoot.width / this._controlInfo.boxWidth,
-            this._visualRoot.height / this._controlInfo.boxHeight);
+        this._controlInfo.scale = Math.min(
+            this._controlInfo.boxWidth / this._visualRoot.width,
+            this._controlInfo.boxHeight / this._visualRoot.height);
 
         this._controlInfo.boxWidth = 
-            Math.max(100, this._visualRoot.width / this._controlInfo.scale);
+            Math.max(100, this._visualRoot.width * this._controlInfo.scale);
         this._controlInfo.boxHeight = 
-            Math.max(100, this._visualRoot.height / this._controlInfo.scale);
+            Math.max(100, this._visualRoot.height * this._controlInfo.scale);
 
         this._controlInfo.x = this._width - this._controlInfo.boxWidth - 20;
         this._controlInfo.y = this._height - this._controlInfo.boxHeight - 20;
@@ -140,10 +140,10 @@ class VisualView {
         if (this._controlInfo.previewGroupElem)
         {
             this._controlInfo.previewGroupElem.attr("transform", (d) => { 
-                var scale = 1 / this._controlInfo.scale;
+                var scale = this._controlInfo.scale;
                 return  "translate(" + this._controlInfo.x + "," + this._controlInfo.y+ ")" 
-                    + " " 
-                    + "scale(" + scale + ", " + scale + ")"
+                    // + " " 
+                    // + "scale(" + scale + ", " + scale + ")"
                     ; 
             })
         }
@@ -151,16 +151,24 @@ class VisualView {
         if (this._controlInfo.previewFullRectElem)
         {
             this._controlInfo.previewFullRectElem
-                .attr("width", this._visualRoot.width)
-                .attr("height", this._visualRoot.height);
+                .attr("width", this._visualRoot.width * this._controlInfo.scale)
+                .attr("height", this._visualRoot.height * this._controlInfo.scale);
+        }
+
+        if (this._controlInfo.previewItemsGroupElem) {
+            this._controlInfo.previewItemsGroupElem.attr("transform", (d) => { 
+                return "scale(" + this._controlInfo.scale + ", " + this._controlInfo.scale + ")"
+                    ; 
+            }) 
         }
 
         if (this._controlInfo.previewVisibleRectElem) {
             this._controlInfo.previewVisibleRectElem
-                .attr("x", this._viewX)
-                .attr("y", this._viewY)
-                .attr("width", this._width)
-                .attr("height", this._height);
+                .attr("x", this._viewX * this._controlInfo.scale)
+                .attr("y", this._viewY * this._controlInfo.scale)
+                .attr("width", this._width * this._controlInfo.scale)
+                .attr("height", this._height * this._controlInfo.scale)
+                ;
         }
 
         // this._renderSmallItems();

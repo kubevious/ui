@@ -16,7 +16,7 @@
 }
 
 .preview {
-    fill-opacity: 0.5;
+    fill-opacity: 0.75;
 }
 
 .preview-full-rect {
@@ -28,7 +28,8 @@
 .preview-visible-rect {
     fill: white;
     stroke: black;
-    stroke-width: 4px;
+    stroke-width: 1px;
+    fill-opacity: 0.5;
 }
 
 
