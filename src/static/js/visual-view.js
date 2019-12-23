@@ -227,6 +227,14 @@ class VisualView {
             return "translate(" + (-this._viewX) + "," + (-this._viewY) + ")"; 
         })
 
+        // d3
+        //     .select(this._rootElem.node)
+        //     .transition()
+        //     .duration(200)
+        //     .attr("transform", (d) => { 
+        //         return "translate(" + (-this._viewX) + "," + (-this._viewY) + ")"; 
+        //     })
+
         this._setupControl();
     }
 
@@ -587,6 +595,13 @@ class VisualView {
                 }
             }
         }
+
+        // if (visualNode.isSelected)
+        // {
+        //     this._viewX = visualNode.absX - 10;
+        //     this._viewY = visualNode.absY - 10;
+        //     this._applyPanTransform();
+        // }
     }
 }
 
