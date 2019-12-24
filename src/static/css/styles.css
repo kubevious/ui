@@ -73,9 +73,21 @@ h1, h2, h3, h4{font-family: 'Montserrat', sans-serif; font-size: 16px;}
     margin: 0 5px 0 0;
     border:1px solid #35373E;
     border-radius:0px;
-    padding:2px 10px;
+    padding:5px 10px 3px;
     color: #FFF;
     font-size: 12px;
+}
+.logs .nav-tabs li.errors a:before{
+    content:"";
+    display: block;
+    width: 16px; height: 16px; float: left; margin: 0 10px 0 0;
+    background: url("../img/filters-ico.svg") 0 0 no-repeat;
+}
+.logs .nav-tabs li.warnings a:before{
+    content:"";
+    display: block;
+    width: 16px; height: 16px; float: left; margin: 0 10px 0 0;
+    background: url("../img/filters-ico.svg") -16px 0 no-repeat;
 }
 .logs .nav-tabs li a.active{
     border:1px solid #FFF;
