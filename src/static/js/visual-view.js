@@ -317,7 +317,7 @@ class VisualView {
             })
 
         node.append("rect")
-            .attr("class", "bg")
+            .attr("class", "node-bg")
             .attr("width", function(d) { return d.width; })
             .attr("height", function(d) { return d.height; })
             .style("fill", function(d) { 
@@ -333,7 +333,7 @@ class VisualView {
             ;
 
         node.append("rect")
-            .attr("class", "header")
+            .attr("class", "node-header")
             .attr("width", function(d) { return d.width; })
             .attr("height", function(d) { return d.headerHeight; })
             .style("fill", nodeHeaderFillColor)
@@ -343,8 +343,8 @@ class VisualView {
 
         node
             .append("circle")
-            .attr("class", "logo-bg")
-            .attr("transform", nodeHeaderTransform('logo', 'center')) 
+            .attr("class", "node-logo-bg")
+            .attr("transform", nodeHeaderTransform("logo", "center")) 
             .attr("r", 12)
             .style("fill", "white")
             .on("click", nodePerformSelect)
@@ -353,12 +353,12 @@ class VisualView {
 
         node
             .append("image")
-            .attr("class", "logo")
+            .attr("class", "node-logo")
             .attr("xlink:href", function(d) {
                 return "img/entities/" + d.data.kind + ".svg";
             })
-            .attr("x", nodeHeaderX('logo'))
-            .attr("y", nodeHeaderY('logo'))
+            .attr("x", nodeHeaderX("logo"))
+            .attr("y", nodeHeaderY("logo"))
             .attr("width", 24)
             .attr("height", 24)
             .on("click", nodePerformSelect)
@@ -366,7 +366,7 @@ class VisualView {
             ;
 
         node.append("text")
-            .attr("class", "title text-light")
+            .attr("class", "node-title text-light")
             .text(nodeHeaderText('title'))
             .attr("transform", nodeHeaderTransform('title', 'text'))  
             .on("click", nodePerformSelect)
@@ -378,7 +378,7 @@ class VisualView {
                 return d.hasHeader('severity');
             })
             .append("rect")
-            .attr("class", "severity")
+            .attr("class", "node-severity")
             .attr("x", nodeHeaderX('severity')) 
             .attr("y", nodeHeaderY('severity'))
             .attr("width", nodeHeaderWidth('severity'))
@@ -393,7 +393,7 @@ class VisualView {
             .filter(function(d) {
                 return d.hasHeader('severity');
             })
-            .attr("class", "severity-text text-light")
+            .attr("class", "node-severity-text text-light")
             .text(nodeHeaderText('severity'))
             // .styles(nodeHeaderStyles('severity'))
             .attr("transform", nodeHeaderTransform('severity', 'text'))  
@@ -404,7 +404,7 @@ class VisualView {
                 return d.hasHeader('expander');
             })
             .append("image")
-            .attr("class", "expandr")
+            .attr("class", "node-expander")
             .attr("xlink:href", nodeExpanderImage)
             .attr("x", nodeHeaderX('expander') ) 
             .attr("y", nodeHeaderY('expander'))
@@ -426,7 +426,7 @@ class VisualView {
 
         d3
             .select(visualNode.node)
-            .select(".bg")
+            .select(".node-bg")
             .transition()
             .duration(duration)
             .attr("width", function (d) { return d.width })
@@ -434,7 +434,7 @@ class VisualView {
 
         d3
             .select(visualNode.node)
-            .select(".header")
+            .select(".node-header")
             .transition()
             .duration(duration)
             .attr("width", function (d) { return d.width })
@@ -442,7 +442,7 @@ class VisualView {
 
         d3
             .select(visualNode.node)
-            .select(".expandr")
+            .select(".node-expander")
             .transition()
             .duration(duration)
             .attr("x", nodeHeaderX('expander'))
@@ -450,14 +450,14 @@ class VisualView {
 
         d3
             .select(visualNode.node)
-            .select(".severity")
+            .select(".node-severity")
             .transition()
             .duration(duration)
             .attr("x", nodeHeaderX('severity'))
 
         d3
             .select(visualNode.node)
-            .select(".severity-text")
+            .select(".node-severity-text")
             .transition()
             .duration(duration)
             .attr("transform", nodeHeaderTransform('severity', 'text'))  
@@ -492,7 +492,7 @@ class VisualView {
             })
 
         node.append("rect")
-            .attr("class", "bg")
+            .attr("class", "node-bg")
             .attr("width", function(d) { return d.width; })
             .attr("height", function(d) { return d.height; })
             .style("fill", function(d) { 
@@ -503,7 +503,7 @@ class VisualView {
             ;
 
         node.append("rect")
-            .attr("class", "header")
+            .attr("class", "node-header")
             .attr("width", function(d) { return d.width; })
             .attr("height", function(d) { return d.headerHeight; })
             .style("fill", nodeHeaderFillColor)
@@ -524,7 +524,7 @@ class VisualView {
 
         d3
             .select(visualNode.smallNode)
-            .select(".bg")
+            .select(".node-bg")
             .transition()
             .duration(duration)
             .attr("width", function (d) { return d.width; })
@@ -532,7 +532,7 @@ class VisualView {
 
         d3
             .select(visualNode.smallNode)
-            .select(".header")
+            .select(".node-header")
             .transition()
             .duration(duration)
             .attr("width", function (d) { return d.width; })
@@ -717,5 +717,4 @@ const pSBC=(p,c0,c1,l)=>{
     a=f.a,t=t.a,f=a>=0||t>=0,a=f?a<0?t:t<0?a:a*P+t*p:0;
     if(h)return"rgb"+(f?"a(":"(")+r+","+g+","+b+(f?","+m(a*1000)/1000:"")+")";
     else return"#"+(4294967296+r*16777216+g*65536+b*256+(f?m(a*255):0)).toString(16).slice(1,f?undefined:-2)
-}
-5
+};

@@ -9,5 +9,8 @@ html, body {height: 100%;font-family: 'Roboto', sans-serif; font-size: 14px; fon
 h1, h2, h3, h4{font-family: 'Montserrat', sans-serif; font-size: 16px;}
 .logo{ width:206px; height: 26px; margin:17px; background: url("../img/logo.svg") left top no-repeat;}
 
+.table-dark pre {
+    color: white;
+}
 
 .temporary{ display: none;}
