@@ -24,40 +24,38 @@
 
 <body>
 
-    <div class="container-fluid main-screen">
-        <div class="row h-100">
-            <div class="col-md-9">
-                <div id="diagram" class="diagram">
-                </div>
-            </div>
+<div class="wrapper">
+    <div class="header"></div>
 
-            <div class="col-md-3">
-                <div id="properties" class="properties">
-                </div>
-            </div>
+    <div class="sidebar">
+        <div id="properties" class="properties">
         </div>
     </div>
 
-    <div class="d-flex flex-column justify-content-between">
+    <div class="content-body">
+
+        <div id="diagram" class="diagram">
+        </div>
+
         <div id="logs" class="logs">
             <table class="table table-striped table-dark">
                 <thead>
-                    <tr>
-                        <th scope="col">Date</th>
-                        <th>Level</th>
-                        <th>Message</th>
-                        <th>Args</th>
-                    </tr>
+                <tr>
+                    <th scope="col">Date</th>
+                    <th>Level</th>
+                    <th>Message</th>
+                    <th>Args</th>
+                </tr>
                 </thead>
                 <tbody id="logTableBody">
                 </tbody>
             </table>
         </div>
     </div>
+</div>
 
-    <div id="temporary">
 
-    </div>
+<div id="temporary"></div>
 </body>
 
 <!-- BEGIN VENDOR SCRIPTS -->
