@@ -59,6 +59,8 @@
     overflow: hidden;
       border:solid 2px #35373E;
       color: #FFF;
+      max-height: 300px;
+      overflow: auto;
   }
   pre{color: #FFF;}
 
