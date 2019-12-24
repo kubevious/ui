@@ -34,7 +34,6 @@ div{box-sizing: border-box;}
     top:60px;
     left:0px;
     right: 370px;
-    padding: 0 0 200px;
 }
 .diagram{position: absolute; top: 0px; bottom:200px; width: 100%;}
 .diagram svg{width: 100%; min-height: 100%;}
