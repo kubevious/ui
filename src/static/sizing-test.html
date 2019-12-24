@@ -6,15 +6,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+    <!-- CSS Fonts -->
+    <link rel="stylesheet" href="css/fonts/roboto.css" />
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- BEGIN VENDOR CSS -->
+    <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css" />
+    <!-- END VENDOR CSS -->
     
+    <!-- BEGIN KUBEVIOUS CSS -->
     <link rel="stylesheet" href="css/styles.css" />
     <link rel="stylesheet" href="css/diagram.css" />
     <link rel="stylesheet" href="css/properties.css" />
+    <!-- END KUBEVIOUS CSS -->
 
     <title>Kubevious</title>
 </head>
@@ -57,30 +60,21 @@
     </div>
 </body>
 
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
-
-
-<script src="https://unpkg.com/js-logger/src/logger.min.js"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
-<script type="text/javascript" src="vendor/d3/d3.min.js"></script>
-<script type="text/javascript" src="vendor/js-yaml/js-yaml.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-
+<!-- BEGIN VENDOR SCRIPTS -->
+<script src="vendor/jquery/jquery-3.2.1.slim.min.js" ></script>
+<script src="vendor/popper/popper.min.js" ></script>
+<script src="vendor/bootstrap/bootstrap.min.js" ></script>
+<script src="vendor/js-logger/logger.min.js"></script>
+<script src="vendor/lodash/lodash.min.js"></script>
+<script src="vendor/d3/d3.min.js" type="text/javascript" ></script>
+<script src="vendor/js-yaml/js-yaml.min.js" type="text/javascript" ></script>
+<script src="vendor/handlebars/handlebars.min-v4.5.3.js"></script>
+<script src="vendor/axios/axios.min.js"></script>
 <script src="vendor/css-element-queries-1.2.1/ResizeSensor.js"></script>
 <script src="vendor/css-element-queries-1.2.1/ElementQueries.js"></script>
+<!-- END VENDOR SCRIPTS -->
 
+<!-- BEGIN KUBEVIOUS SCRIPTS -->
 <script src="js/logging.js"></script>
 <script src="js/visual-node.js"></script>
 <script src="js/visual-view.js"></script>
@@ -90,5 +84,6 @@
 <script src="js/property-pane.js"></script>
 <script src="js/diagram.js"></script>
 <script src="js/ui.js"></script>
+<!-- END KUBEVIOUS SCRIPTS -->
 
 </html>
