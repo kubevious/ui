@@ -71,7 +71,11 @@ class VisualView {
             // .attr("width", this._width)
             // .attr("height", this._height)
 
-        // this.setupDimentions();
+        new ResizeSensor(jQuery(this._parentElem.node()), (size) => { 
+            this.setupDimentions(size);
+        });
+
+        this.setupDimentions();
 
         this._rootElem = this._svgElem.append("g");
         
@@ -119,18 +123,13 @@ class VisualView {
                 }));
     }
 
-    setupDimentions()
+    setupDimentions(size)
     {
-        var size = this._parentElem.node().getBoundingClientRect();
+        if (!size) {
+            size = this._parentElem.node().getBoundingClientRect();
+        }
         this._width = size.width;
         this._height = size.height;
-
-        if (this._svgElem) 
-        {
-            // this._svgElem
-            //     .attr("width", this._width)
-            //     .attr("height", this._height - 10);
-        }
 
         this._setupControl();
     }
@@ -160,11 +159,8 @@ class VisualView {
         if (this._controlInfo.previewGroupElem)
         {
             this._controlInfo.previewGroupElem.attr("transform", (d) => { 
-                var scale = this._controlInfo.scale;
-                return  "translate(" + this._controlInfo.x + "," + this._controlInfo.y+ ")" 
-                    // + " " 
-                    // + "scale(" + scale + ", " + scale + ")"
-                    ; 
+                return  "translate(" + this._controlInfo.x + "," + this._controlInfo.y+ ")"
+                    ;
             })
         }
 

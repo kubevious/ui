@@ -21,7 +21,3 @@ fetchDiagram((sourceData) => {
     view.render();
 
 });
-
-new ResizeSensor(jQuery('#diagram'), function(size){ 
-    view.setupDimentions(size);
-});
