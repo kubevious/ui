@@ -2,12 +2,12 @@
 html, body {height: 100%;font-family: 'Roboto', sans-serif; font-size: 14px; font-weight: 400;}
 .wrapper{min-height: 100%; position: relative; background:#1E1E1E;}
 .header{height: 60px; width: 100%; background:#35373E;}
-.sidebar{position: absolute; right:0px; top:60px; bottom: 0px; width: 370px; border-left:10px solid #35373E;}
+.sidebar{position: absolute; right:0px; top:60px; bottom: 0px; width: 370px; border-left:10px solid #35373E;padding: 15px;}
 .content-body{ min-height: calc(100vh - 60px); position:absolute; top:60px; left:0px; right: 370px;}
 .logs{position: absolute; bottom: 0px; width: 100%; height: 120px; border-top:10px solid #35373E;}
 
 h1, h2, h3, h4{font-family: 'Montserrat', sans-serif; font-size: 16px;}
-.logo{ width:206px; height: 26px; margin:17px; background: url("../img/logo.svg") left top no-repeat;}
+.logo{ width:206px; height: 26px; margin:17px; background: url("../img/logo.svg") left top no-repeat; float: left;}
 
 
 .temporary{ display: none;}
