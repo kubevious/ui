@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat|Roboto&display=swap');
 html, body {height: 100%;font-family: 'Roboto', sans-serif; font-size: 14px; font-weight: 400;}
 div{box-sizing: border-box;}
 .wrapper{min-height: 100%; position: relative; background:#1E1E1E;}
@@ -38,7 +37,7 @@ div{box-sizing: border-box;}
 .diagram{position: absolute; top: 0px; bottom:200px; width: 100%;}
 .diagram svg{width: 100%; min-height: 100%;}
 
-.logs{
+.bottom-panel{
     position: absolute;
     bottom: 0px;
     width: 100%;
@@ -46,7 +45,7 @@ div{box-sizing: border-box;}
     border-top:10px solid #35373E;
     overflow: auto;
 }
-.logs:before{
+.bottom-panel:before{
     content: "";
     display: block;
     width:10px;
@@ -62,37 +61,5 @@ div{box-sizing: border-box;}
 }
 h1, h2, h3, h4{font-family: 'Montserrat', sans-serif; font-size: 16px;}
 .logo{ width:206px; height: 26px; margin:17px; background: url("../img/logo.svg") left top no-repeat; float: left;}
-
-.table-dark pre {
-    color: white;
-}
-
-.logs .nav-tabs{border-bottom:1px solid #35373E; padding: 5px;}
-.logs .nav-tabs li a{
-    float: left;
-    margin: 0 5px 0 0;
-    border:1px solid #35373E;
-    border-radius:0px;
-    padding:5px 10px 3px;
-    color: #FFF;
-    font-size: 12px;
-}
-.logs .nav-tabs li.errors a:before{
-    content:"";
-    display: block;
-    width: 16px; height: 16px; float: left; margin: 0 10px 0 0;
-    background: url("../img/filters-ico.svg") 0 0 no-repeat;
-}
-.logs .nav-tabs li.warnings a:before{
-    content:"";
-    display: block;
-    width: 16px; height: 16px; float: left; margin: 0 10px 0 0;
-    background: url("../img/filters-ico.svg") -16px 0 no-repeat;
-}
-.logs .nav-tabs li a.active{
-    border:1px solid #FFF;
-    background: none;
-    color: #FFF;
-}
 
 .temporary{ display: none;}

@@ -8,7 +8,7 @@
     <link rel="shortcut icon" href="img/favicon.png">
 
     <!-- CSS Fonts -->
-    <link rel="stylesheet" href="css/fonts/roboto.css" />
+    <link rel="stylesheet" href="css/fonts.css" />
 
     <!-- BEGIN VENDOR CSS -->
     <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css" />
@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="css/styles.css" />
     <link rel="stylesheet" href="css/diagram.css" />
     <link rel="stylesheet" href="css/properties.css" />
+    <link rel="stylesheet" href="css/bottom-panel.css" />
     <!-- END KUBEVIOUS CSS -->
 
     <title>Kubevious</title>
@@ -40,20 +41,44 @@
         <div id="diagram" class="diagram">
         </div>
 
-        <div id="logs" class="logs">
+        <div class="bottom-panel">
 
-
-
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item errors">
-                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Errors (2)</a>
+                    <a class="nav-link active" id="errors-tab" data-toggle="tab" href="#errors" role="tab" aria-controls="errors" aria-selected="true">Errors</a>
                 </li>
                 <li class="nav-item warnings">
-                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Warnings (7)</a>
+                    <a class="nav-link" id="warnings-tab" data-toggle="tab" href="#warnings" role="tab" aria-controls="warnings" aria-selected="false">Warnings</a>
+                </li>
+                <li class="nav-item events">
+                    <a class="nav-link" id="events-tab" data-toggle="tab" href="#events" role="tab" aria-controls="events" aria-selected="false">Events</a>
+                </li>
+                <li class="nav-item logs">
+                    <a class="nav-link" id="logs-tab" data-toggle="tab" href="#logs" role="tab" aria-controls="logs" aria-selected="false">Logs</a>
+                </li>
+                <li class="nav-item ui-logs">
+                    <a class="nav-link" id="ui-logs-tab" data-toggle="tab" href="#ui-logs" role="tab" aria-controls="ui-logs" aria-selected="false">UI Logs</a>
                 </li>
             </ul>
-            <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <div class="tab-content" >
+
+                <div class="tab-pane fade show active" id="errors" role="tabpanel" aria-labelledby="errors-tab">
+
+                </div>
+
+                <div class="tab-pane fade" id="warnings" role="tabpanel" aria-labelledby="warnings-tab">
+
+                </div>
+
+                <div class="tab-pane fade" id="events" role="tabpanel" aria-labelledby="events-tab">
+
+                </div>
+
+                <div class="tab-pane fade" id="logs" role="tabpanel" aria-labelledby="logs-tab">
+
+                </div>
+
+                <div class="tab-pane fade" id="ui-logs" role="tabpanel" aria-labelledby="ui-logs-tab">
                     <table class="table table-striped table-dark">
                         <thead>
                         <tr>
@@ -67,20 +92,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                    <table class="table table-striped table-dark">
-                        <thead>
-                        <tr>
-                            <th scope="col">Date</th>
-                            <th>Level</th>
-                            <th>Message</th>
-                            <th>Args</th>
-                        </tr>
-                        </thead>
-                        <tbody id="logTableBody">
-                        </tbody>
-                    </table>
-                </div>
+
             </div>
         </div>
     </div>

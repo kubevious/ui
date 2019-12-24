@@ -1,0 +1,43 @@
+
+.bottom-panel .nav-tabs{border-bottom:1px solid #35373E; padding: 5px;}
+.bottom-panel .nav-tabs li a{
+    float: left;
+    margin: 0 5px 0 0;
+    border:1px solid #35373E;
+    border-radius:0px;
+    padding:5px 10px 3px;
+    color: #FFF;
+    font-size: 12px;
+}
+.bottom-panel .nav-tabs li a:before{
+    content:"";
+    display: block;
+    width: 16px; height: 16px; float: left; margin: 0 10px 0 0;
+}
+.bottom-panel .nav-tabs li.ui-logs a:before{
+    background: url("../img/windows/ui-logs.svg");
+    background-size: contain
+}
+.bottom-panel .nav-tabs li.logs a:before{
+    background: url("../img/windows/logs.svg");
+    background-size: contain
+}
+.bottom-panel .nav-tabs li.events a:before{
+    background: url("../img/windows/events.svg");
+    background-size: contain
+}
+.bottom-panel .nav-tabs li.errors a:before{
+    background: url("../img/filters-ico.svg") 0 0 no-repeat;
+}
+.bottom-panel .nav-tabs li.warnings a:before{
+    background: url("../img/filters-ico.svg") -16px 0 no-repeat;
+}
+.bottom-panel .nav-tabs li a.active{
+    border:1px solid #FFF;
+    background: none;
+    color: #FFF;
+}
+
+.table-dark pre {
+    color: white;
+}
