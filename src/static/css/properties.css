@@ -1,6 +1,9 @@
 .properties .target {
     font-family: 'Roboto';
-    font: 14px sans-serif;
+    font: 12px sans-serif;
+    color: #FFF;
+    margin:0 0 15px;
+    font-weight: 400;
 }
 .properties .target .kind {
     font: 14px sans-serif;
