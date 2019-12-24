@@ -15,12 +15,6 @@
     font-weight: 800;
 }
 
-.properties .property-group .title {
-    font-family: 'Roboto';
-    font: 12px sans-serif;
-    font-weight: 800;
-}
-
 /******* ENVIRONMENT VARIABLES *********/
 
 .environment-variable {
@@ -41,41 +35,55 @@
 
 /****** EXPANDER BEGIN **********/
 .expander {
-    background-color: #eee;
-    color: #444;
+    font-family: 'Montserrat', sans-serif;
+    font-size:15px;
+    background:#35373E;
+    color: #FFF;
     cursor: pointer;
-    padding: 18px;
+    padding:15px 15px 14px;
     width: 100%;
     text-align: left;
     border: none;
     outline: none;
     transition: 0.4s;
+    line-height: 1;
   }
-  
-  .active, .expander:hover {
-    background-color: #ccc;
-  }
+.property-group{margin: 0 0 15px;}
   
   .expander-contents {
-    padding: 0 18px;
-    background-color: white;
+    padding:15px;
     display: none;
     overflow: hidden;
+      border:solid 2px #35373E;
+      color: #FFF;
   }
+  pre{color: #FFF;}
 
   .expander-open {
     display: block;
   }
 
   .expander:after {
-    content: '\02795'; /* Unicode character for "plus" sign (+) */
+   content: ''; /* Unicode character for "plus" sign (+) */
     font-size: 13px;
     color: #777;
     float: right;
     margin-left: 5px;
+      display: block;
+      width: 10px; height: 10px;
+      border: solid #FFF;
+      border-width: 1px 1px 0 0;
+      transform: rotate(135deg);
+      margin:0;
+
   }
   
   .active:after {
-    content: "\2796"; /* Unicode character for "minus" sign (-) */
+      display: block;
+      width: 10px; height: 10px;
+      border: solid #FFF;
+      border-width: 1px 1px 0 0;
+      transform: rotate(-45deg);
+      margin:5px 0 0;
   }
 /****** EXPANDER END **********/
