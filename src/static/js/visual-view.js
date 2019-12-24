@@ -127,9 +127,9 @@ class VisualView {
 
         if (this._svgElem) 
         {
-            this._svgElem
-                .attr("width", this._width)
-                .attr("height", this._height - 10);
+            // this._svgElem
+            //     .attr("width", this._width)
+            //     .attr("height", this._height - 10);
         }
 
         this._setupControl();
