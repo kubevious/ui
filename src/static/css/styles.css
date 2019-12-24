@@ -67,7 +67,20 @@ h1, h2, h3, h4{font-family: 'Montserrat', sans-serif; font-size: 16px;}
     color: white;
 }
 
-.filters{padding: 5px;}
-.filters span{float: left; margin: 0 5px 0 0;border:1px solid #35373E;padding:2px 10px; color: #FFF; font-size: 12px;}
+.logs .nav-tabs{border-bottom:1px solid #35373E; padding: 5px;}
+.logs .nav-tabs li a{
+    float: left;
+    margin: 0 5px 0 0;
+    border:1px solid #35373E;
+    border-radius:0px;
+    padding:2px 10px;
+    color: #FFF;
+    font-size: 12px;
+}
+.logs .nav-tabs li a.active{
+    border:1px solid #FFF;
+    background: none;
+    color: #FFF;
+}
 
 .temporary{ display: none;}
