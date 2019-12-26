@@ -51,6 +51,12 @@
     transition: 0.4s;
     line-height: 1;
   }
+
+.expander-popup {
+    width: 16px;
+    height: 16px;
+}
+
 .property-group{margin: 0 0 15px;}
   
   .expander-contents {

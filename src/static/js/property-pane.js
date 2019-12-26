@@ -31,8 +31,11 @@ function _clearProperties()
 const PropertyGroupTemplate = 
     Handlebars.compile(`
 <div class="property-group">
-<button class="title expander {{extraClassTitle}}" onclick="propertyExpanderHandleClick(event)">{{title}}</button>
-<div class="property-group-contents expander-contents {{extraClassContents}}">
+<button class="expander {{extraClassTitle}}" onclick="propertyExpanderHandleClick(event)">{{title}}</button>
+<a href="#" target="_blank">
+<img class="expander-popup" src="../img/popup.svg" />
+</a>
+<div class="expander-contents {{extraClassContents}}">
 {{{contentHtml}}}
 </div>
 </div>
@@ -106,8 +109,8 @@ function _renderNodeId(node)
 
 }
 
-
 function propertyExpanderHandleClick(event) {
     event.target.classList.toggle("active");
-    event.target.nextElementSibling.classList.toggle("expander-open");
+    var contentsElem = event.target.parentElement.getElementsByClassName("expander-contents")[0];
+    contentsElem.classList.toggle("expander-open");
 }

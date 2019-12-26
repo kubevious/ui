@@ -1,4 +1,4 @@
-html, body {height: 100%;font-family: 'Roboto', sans-serif; font-size: 14px; font-weight: 400;}
+html, body {height: 100%;font-family: 'Roboto', sans-serif; font-size: 14px; font-weight: 400; background: #1E1E1E; color: #FFF;}
 div{box-sizing: border-box;}
 .wrapper{min-height: 100%; position: relative; background:#1E1E1E;}
 .header{height: 60px; width: 100%; background:#35373E;}
