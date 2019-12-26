@@ -1,11 +1,13 @@
 $(".logbarcloaser").click(function(){
     $(".bottom-panel").addClass("hide");
     $(".resetlogbar").addClass("show");
+    $(".diagram").addClass("full");
 });
 
 $(".resetlogbar").click(function(){
     $(".bottom-panel").removeClass("hide");
     $(".resetlogbar").removeClass("show");
+    $(".diagram").removeClass("full");
 });
 
 
@@ -14,9 +16,11 @@ $(".resetlogbar").click(function(){
 $(".sidebarcloaser").click(function(){
     $(".sidebar").addClass("hide");
     $(".resetsidebar").addClass("show");
+    $(".content-body").addClass("full");
 });
 
 $(".resetsidebar").click(function(){
     $(".sidebar").removeClass("hide");
     $(".resetsidebar").removeClass("show");
+    $(".content-body").removeClass("full");
 });

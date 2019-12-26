@@ -122,7 +122,7 @@
     cursor: pointer;
 }
 .sidebar.hide{display:none;}
-.resetsidebar{background:#35373E; padding:3px 15px; color: #FFF; position: absolute; right:-44px; top:130px; display: none; cursor: pointer;transform: rotate(-90deg)}
+.resetsidebar{background:#35373E; padding:3px 15px; color: #FFF; position: absolute; right:-44px; top:130px; display: none; cursor: pointer;transform: rotate(-90deg); z-index: 20;}
 .resetsidebar.show{display: block;}
 
 /****** EXPANDER END **********/
