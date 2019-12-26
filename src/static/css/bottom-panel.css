@@ -14,7 +14,7 @@
     left:0;
     right: 0px;
     margin:0;
-    background:#35373E url("../img/expander.svg") center center no-repeat;
+    background:#35373E url("../img/logbarexpander.svg") center center no-repeat;
     z-index: 20;
     cursor: pointer;
 }
