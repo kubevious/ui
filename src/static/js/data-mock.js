@@ -1623,7 +1623,8 @@ const GRAPH_DATA = {
 const PROPERTIES_DATA =[
     {
       "kind": "yaml",
-      "name": "Config",
+      "id": "config",
+      "title": "Config",
       "config": {
         "name": "gprod-addr-main-app",
         "image": "gcr.io/berlioz-demo-gprod/addr-main-app@sha256:b5e6317de1171f784784f65f8b563c46c069dd6b3093547a3ee4f3cfb2ddb7e1",
@@ -1768,7 +1769,8 @@ const PROPERTIES_DATA =[
     },
     {
       "kind": "key-value",
-      "name": "Environment Variables",
+      "id": "env",
+      "title": "Environment Variables",
       "order": 10,
       "config": {
         "BERLIOZ_TASK_ID": "<pre>fieldRef:\n  apiVersion: v1\n  fieldPath: metadata.uid\n</pre>",

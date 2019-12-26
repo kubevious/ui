@@ -1,6 +1,7 @@
 [{
         "kind": "key-value",
-        "name": "Properties",
+        "id": "props",
+        "title": "Properties",
         "config": {
             "key1": "value1",
             "key2": "value2",
@@ -9,14 +10,16 @@
     },
     {
         "kind": "key-value",
-        "name": "Scale",
+        "id": "scale",
+        "title": "Scale",
         "config": {
             "key1": "value1"
         }
     },
     {
         "kind": "yaml",
-        "name": "Config",
+        "id": "config",
+        "title": "Config",
         "config": {
             "kind": "Deployment",
             "apiVersion": "apps/v1",

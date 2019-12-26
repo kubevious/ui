@@ -11,7 +11,7 @@ function showObjectProperties(node, propertyGroups)
     })
     var isExpanded = true;
     for(var group of propertyGroups) {
-        _renderPropertyGroup(group, isExpanded);
+        _renderPropertyGroup(node, group, isExpanded);
         isExpanded = false;
     }
 }
@@ -32,7 +32,7 @@ const PropertyGroupTemplate =
     Handlebars.compile(`
 <div class="property-group">
 <button class="expander {{extraClassTitle}}" onclick="propertyExpanderHandleClick(event)">{{title}}</button>
-<a href="#" target="_blank">
+<a href="properties.html?dn={{dn}}&group={{groupName}}" target="_blank">
 <img class="expander-popup" src="../img/popup.svg" />
 </a>
 <div class="expander-contents {{extraClassContents}}">
@@ -53,7 +53,7 @@ const KeyValuePairTemplate =
 </div>
 `);
 
-function _renderPropertyGroup(group, isExpanded)
+function _renderPropertyGroup(node, group, isExpanded)
 {
     var contentHtml = "";
 
@@ -76,11 +76,14 @@ function _renderPropertyGroup(group, isExpanded)
     }
 
     var groupHtml = PropertyGroupTemplate({ 
-        title: group.name,
+        title: group.title,
         contentHtml: contentHtml,
         extraClassTitle: (isExpanded ? 'active' : ''),
-        extraClassContents: (isExpanded ? 'expander-open' : '')
+        extraClassContents: (isExpanded ? 'expander-open' : ''),
+        dn: node.data.id,
+        groupName: group.id
     });
+
     $('#properties').append(groupHtml);  
 }
 
