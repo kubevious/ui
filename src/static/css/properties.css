@@ -49,7 +49,7 @@
     border: none;
     outline: none;
     transition: 0.4s;
-    line-height: 1;
+    line-height:20px;
   }
 
 .expander-popup {
@@ -72,30 +72,32 @@
 
   .expander-open {
     display: block;
+    margin:-2px 0 0;
   }
 
-  .expander:after {
+  .openclose{display: block; float: right; width: 20px; height: 20px; background:#292A2F; border-radius: 2px;}
+
+  .expander .openclose:after {
    content: ''; /* Unicode character for "plus" sign (+) */
     font-size: 13px;
     color: #777;
     float: right;
     margin-left: 5px;
       display: block;
-      width: 10px; height: 10px;
+      width:8px; height:8px;
       border: solid #FFF;
       border-width: 1px 1px 0 0;
       transform: rotate(135deg);
-      margin:0;
+      margin:4px 6px 0 0;
 
   }
-  
-  .active:after {
+
+.expander.active .openclose:after{
       display: block;
-      width: 10px; height: 10px;
       border: solid #FFF;
       border-width: 1px 1px 0 0;
       transform: rotate(-45deg);
-      margin:5px 0 0;
+      margin:8px 6px 0 0;
   }
 
 .sidebar{
@@ -125,5 +127,5 @@
 .resetsidebar{background:#35373E; padding:3px 15px; color: #FFF; position: absolute; right:-44px; top:130px; display: none; cursor: pointer;transform: rotate(-90deg); z-index: 20;}
 .resetsidebar.show{display: block;}
 
-.popup-expander{display: block; float: right; margin: -4px -4px 0 0; width: 16px; height: 16px; background:url("../img/popup.svg") center center no-repeat;}
+.popup-expander{display: block; float: right; margin: -2px -2px 0 0; width: 16px; height: 16px; background:url("../img/popup.svg") center center no-repeat;}
 /****** EXPANDER END **********/

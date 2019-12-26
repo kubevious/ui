@@ -21,4 +21,5 @@ div{box-sizing: border-box;}
 h1, h2, h3, h4{font-family: 'Montserrat', sans-serif; font-size: 16px;}
 .logo{ width:206px; height: 26px; margin:17px; background: url("../img/logo.svg") left top no-repeat; float: left;}
 
+button:focus{outline:none;}
 .temporary{ display: none;}
