@@ -14,8 +14,7 @@ div{box-sizing: border-box;}
     overflow: auto;
 }
 
-.sidebar:before{
-    content: "";
+.sidebarcloaser{
     display: block;
     width:10px;
     height: 22px;
@@ -37,28 +36,6 @@ div{box-sizing: border-box;}
 .diagram{position: absolute; top: 0px; bottom:200px; width: 100%;}
 .diagram svg{width: 100%; min-height: 100%;}
 
-.bottom-panel{
-    position: absolute;
-    bottom: 0px;
-    width: 100%;
-    height:200px;
-    border-top:10px solid #35373E;
-    overflow: auto;
-}
-.bottom-panel:before{
-    content: "";
-    display: block;
-    width:10px;
-    height: 22px;
-    position:absolute;
-    top:0px;
-    left: 50%;
-    margin:0 0 0 -11px;
-    background: url("../img/expander.svg") center center no-repeat;
-    z-index: 20;
-    cursor: pointer;
-    transform: rotate(90deg);
-}
 h1, h2, h3, h4{font-family: 'Montserrat', sans-serif; font-size: 16px;}
 .logo{ width:206px; height: 26px; margin:17px; background: url("../img/logo.svg") left top no-repeat; float: left;}
 
