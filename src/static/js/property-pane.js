@@ -32,11 +32,9 @@ const PropertyGroupTemplate =
     Handlebars.compile(`
 <div class="property-group">
 <button class="expander {{extraClassTitle}}" onclick="propertyExpanderHandleClick(event)">{{title}}</button>
-<a href="properties.html?dn={{dn}}&group={{groupName}}" target="_blank">
-<img class="expander-popup" src="../img/popup.svg" />
-</a>
 <div class="expander-contents {{extraClassContents}}">
-{{{contentHtml}}}
+    <a href="properties.html?dn={{dn}}&group={{groupName}}" target="_blank" class="popup-expander"></a>
+    {{{contentHtml}}}
 </div>
 </div>
 `);
