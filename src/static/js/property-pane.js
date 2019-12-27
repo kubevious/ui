@@ -35,9 +35,12 @@ function _clearProperties()
 const PropertyGroupTemplate = 
     Handlebars.compile(`
 <div class="property-group">
-<button class="expander {{extraClassTitle}}" onclick="propertyExpanderHandleClick(event)"><span class="openclose"></span>{{title}}</button>
+<button class="expander {{extraClassTitle}}" onclick="propertyExpanderHandleClick(event)">
+    <span class="openclose"></span>{{title}}
+    <span class="popup-expander" onclick="onPropertyGroupPopup(event)" tag="{{groupName}}"></span>
+</button>
 <div class="expander-contents {{extraClassContents}}">
-    <button class="popup-expander" onclick="onPropertyGroupPopup(event)" tag="{{groupName}}"></button>
+
     {{{contentHtml}}}
 </div>
 </div>
