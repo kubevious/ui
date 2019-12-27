@@ -1,3 +1,5 @@
+var myPropertyGroups = {};
+
 function showObjectProperties(node, propertyGroups)
 {
     Logger.info("[showObjectProperties] ", node.data.id, propertyGroups);
@@ -10,7 +12,9 @@ function showObjectProperties(node, propertyGroups)
         return 100;
     })
     var isExpanded = true;
+    myPropertyGroups = {}; 
     for(var group of propertyGroups) {
+        myPropertyGroups[group.id] = group;
         _renderPropertyGroup(node, group, isExpanded);
         isExpanded = false;
     }
@@ -33,7 +37,7 @@ const PropertyGroupTemplate =
 <div class="property-group">
 <button class="expander {{extraClassTitle}}" onclick="propertyExpanderHandleClick(event)"><span class="openclose"></span>{{title}}</button>
 <div class="expander-contents {{extraClassContents}}">
-    <a href="properties.html?dn={{dn}}&group={{groupName}}" target="_blank" class="popup-expander"></a>
+    <button class="popup-expander" onclick="onPropertyGroupPopup(event)" tag="{{groupName}}"></button>
     {{{contentHtml}}}
 </div>
 </div>
@@ -51,7 +55,7 @@ const KeyValuePairTemplate =
 </div>
 `);
 
-function _renderPropertyGroup(node, group, isExpanded)
+function _renderPropertyGroupContents(group)
 {
     var contentHtml = "";
 
@@ -72,6 +76,13 @@ function _renderPropertyGroup(node, group, isExpanded)
             + jsyaml.safeDump(group.config)
             +  "</pre>"
     }
+
+    return contentHtml;
+}
+
+function _renderPropertyGroup(node, group, isExpanded)
+{
+    var contentHtml = _renderPropertyGroupContents(group);
 
     var groupHtml = PropertyGroupTemplate({ 
         title: group.title,
@@ -114,4 +125,11 @@ function propertyExpanderHandleClick(event) {
     event.target.classList.toggle("active");
     var contentsElem = event.target.parentElement.getElementsByClassName("expander-contents")[0];
     contentsElem.classList.toggle("expander-open");
+}
+
+function onPropertyGroupPopup(event) {
+    var groupName = event.target.getAttribute("tag");
+    var group = myPropertyGroups[groupName];
+    var contentHtml = _renderPropertyGroupContents(group);
+    popupOpen(contentHtml);
 }

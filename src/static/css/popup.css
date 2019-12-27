@@ -1,0 +1,28 @@
+.popup {
+    position: absolute;
+    z-index: 1000;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.popup .inner {
+    border: 1px solid #35373E;
+    background: #1E1E1E;
+    position: absolute;
+    left: 60px;
+    right: 60px;
+    top: 60px;
+    bottom: 60px;
+    overflow-x: overlay;
+    overflow-y: overlay;
+    padding: 20px 20px 20px 20px;
+}
+
+.popup .close {
+    background: url("../img/close.svg");
+    width: 32px;
+    height: 32px;
+}
