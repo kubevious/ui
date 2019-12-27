@@ -13,6 +13,7 @@
     "ejs": "^3.0.1",
     "express": "^4.17.1",
     "express-promise-router": "^3.0.3",
+    "http-proxy-middleware": "^0.20.0",
     "sendevent": "^1.0.5",
     "the-lodash": "^1.0.15",
     "the-logger": "^1.1.20",

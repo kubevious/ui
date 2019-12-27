@@ -8,7 +8,11 @@ class BackendClient {
 
 	get logger() {
 		return this._logger;
-	}
+    }
+    
+    get rootUrl() {
+        return this._rootUrl;
+    }
 
 	get(url, params) {
 		return this._execute("get", url, params, null);

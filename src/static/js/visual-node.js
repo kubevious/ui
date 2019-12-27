@@ -403,6 +403,9 @@ const NODE_RENDER_METADATA = {
             arrangeVertically: true,
             padding: 5
         },
+        replicaset: {
+            arrangeVertically: true
+        },
         raw: {
             arrangeVertically: true,
             padding: 5
