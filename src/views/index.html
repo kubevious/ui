@@ -12,6 +12,7 @@
 
     <!-- BEGIN VENDOR CSS -->
     <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="vendor/hljs/styles/obsidian.css" />
     <!-- END VENDOR CSS -->
     
     <!-- BEGIN KUBEVIOUS CSS -->
@@ -33,9 +34,11 @@
     </div>
 
     <div class="sidebar">
+        <span class="sidebarcloaser"></span>
         <div id="properties" class="properties">
         </div>
     </div>
+    <span class="resetsidebar">Show Sidebar</span>
 
     <div class="content-body">
 
@@ -43,6 +46,7 @@
         </div>
 
         <div class="bottom-panel">
+            <span class="logbarcloaser"></span>
 
             <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item errors">
@@ -96,6 +100,7 @@
 
             </div>
         </div>
+        <span class="resetlogbar">Show Logs</span>
 
     </div>
 </div>
@@ -116,6 +121,7 @@
 <script src="vendor/axios/axios.min.js"></script>
 <script src="vendor/css-element-queries-1.2.1/ResizeSensor.js"></script>
 <script src="vendor/css-element-queries-1.2.1/ElementQueries.js"></script>
+<script src="vendor/hljs/highlight.pack.js"></script>
 <!-- END VENDOR SCRIPTS -->
 
 <!-- BEGIN KUBEVIOUS SCRIPTS -->

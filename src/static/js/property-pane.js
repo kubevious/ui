@@ -72,12 +72,19 @@ function _renderPropertyGroupContents(group)
             properties: propertyList
         });
     } else if (group.kind == "yaml") {
-        contentHtml = "<pre>"
-            + jsyaml.safeDump(group.config)
-            +  "</pre>"
+        var code = jsyaml.safeDump(group.config);
+        contentHtml = renderCode(group.kind, code);
     }
 
     return contentHtml;
+}
+
+function renderCode(language, code)
+{
+    var result = hljs.highlight(language, code);
+    return '<pre><code>'
+        + result.value
+        + "</code></pre>";
 }
 
 function _renderPropertyGroup(node, group, isExpanded)
@@ -122,8 +129,9 @@ function _renderNodeId(node)
 }
 
 function propertyExpanderHandleClick(event) {
-    event.target.classList.toggle("active");
-    var contentsElem = event.target.parentElement.getElementsByClassName("expander-contents")[0];
+    var target = event.currentTarget;
+    target.classList.toggle("active");
+    var contentsElem = target.parentElement.getElementsByClassName("expander-contents")[0];
     contentsElem.classList.toggle("expander-open");
 }
 

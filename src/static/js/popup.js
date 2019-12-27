@@ -1,11 +1,16 @@
-function popupClose()
+function popupClose(event)
 {
+    if (event) {
+        if (event.target != event.currentTarget) {
+            return;
+        }
+    }
     $('#popup').remove()
 }
 
 const PopupTemplate = 
     Handlebars.compile(`
-<div id="popup" class="popup" onclick="popupClose()" >
+<div id="popup" class="popup" onclick="popupClose(event)" >
     <div class="inner">
         {{{contents}}}
     </div>
