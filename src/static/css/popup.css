@@ -6,7 +6,16 @@
     top:80px;
     bottom:80px;
     background: rgba(0, 0, 0, 0.5);
-    box-shadow: 0 0 20px #000;
+}
+.popup:before{
+    content: "";
+    position: absolute;
+    top:-80px;
+    bottom:-80px;
+    left: -80px;
+    right: -80px;
+    z-index: 0;
+    background:rgba(0,0,0,0.8);
 }
 
 .popup .inner {
