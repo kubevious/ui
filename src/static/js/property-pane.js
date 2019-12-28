@@ -39,10 +39,17 @@ const PropertyGroupTemplate =
     <span class="openclose"></span>{{title}}
     <span class="popup-expander" onclick="onPropertyGroupPopup(event)" tag="{{groupName}}"></span>
 </button>
-<div class="expander-contents {{extraClassContents}}">
 
-    {{{contentHtml}}}
+<div class="scrollbar" id="style-3">
+    <div class="force-overflow">
+        <div class="expander-contents {{extraClassContents}}">
+            {{{contentHtml}}}
+        </div>
+    </div>
 </div>
+
+
+
 </div>
 `);
 

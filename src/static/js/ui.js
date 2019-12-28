@@ -1,3 +1,4 @@
+//Expanders
 $(".logbarcloaser").click(function(){
     $(".bottom-panel").addClass("hide");
     $(".resetlogbar").addClass("show");
@@ -9,10 +10,6 @@ $(".resetlogbar").click(function(){
     $(".resetlogbar").removeClass("show");
     $(".diagram").removeClass("full");
 });
-
-
-
-
 $(".sidebarcloaser").click(function(){
     $(".sidebar").addClass("hide");
     $(".resetsidebar").addClass("show");
@@ -23,4 +20,11 @@ $(".resetsidebar").click(function(){
     $(".sidebar").removeClass("hide");
     $(".resetsidebar").removeClass("show");
     $(".content-body").removeClass("full");
+});
+
+//Scroll
+$(document).ready(function () {
+    if (!$.browser.webkit) {
+        $('.customscroll').html('<p>Sorry! Non webkit users. :(</p>');
+    }
 });
