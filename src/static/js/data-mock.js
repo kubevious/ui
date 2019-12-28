@@ -8,6 +8,11 @@ function fetchProperties(node, cb) {
     cb(PROPERTIES_DATA);
 }
 
+function fetchAlerts(node, cb) {
+  Logger.info("[MOCK:fetchAlerts] ", node.id);
+  cb(ALERTS_DATA);
+}
+
 const GRAPH_DATA = {
     "rn": "root",
     "id": "root",
@@ -1797,3 +1802,30 @@ const PROPERTIES_DATA =[
     }
   ]
 ;
+
+const ALERTS_DATA = [
+  {
+      "id": "Initialized-2019-12-27T19:47:53Z",
+      "severity": "warn",
+      "msg": "something happened",
+      "date": "2019-12-27T19:47:53Z"
+  },
+  {
+      "id": "Ready-2019-12-27T19:47:59Z",
+      "severity": "warn",
+      "msg": "something happened",
+      "date": "2019-12-27T19:47:59Z"
+  },
+  {
+      "id": "ContainersReady-2019-12-27T19:47:59Z",
+      "severity": "warn",
+      "msg": "something happened",
+      "date": "2019-12-27T19:47:59Z"
+  },
+  {
+      "id": "PodScheduled-2019-12-27T19:47:53Z",
+      "severity": "warn",
+      "msg": "something happened",
+      "date": "2019-12-27T19:47:53Z"
+  }
+];

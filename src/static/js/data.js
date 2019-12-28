@@ -13,3 +13,11 @@ function fetchProperties(node, cb) {
             cb(result.data);
         })
 }
+
+function fetchAlerts(node, cb) {
+    Logger.info("[fetchAlerts] ", node.id);
+    return backend.get('/api/alerts', { dn: node.id })
+        .then(result => {
+            cb(result.data);
+        })
+}

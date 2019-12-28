@@ -3,10 +3,17 @@ var view = new VisualView(d3.select("#diagram"));
 view.onNodeSelect((node, data) => {
     if (data) {
         Logger.info("[NodeSelected] ", data.id);
+
         fetchProperties(data, (config) => {
             Logger.debug("[GotProperties] ", config);
             showObjectProperties(node, config)
         });
+
+        fetchAlerts(data, (config) => {
+            Logger.debug("[GotAlerts] ", config);
+            showObjectAlerts(node, config)
+        });
+        
     } else {
         Logger.info("[NodeSelected] None");
         clearObjectProperties()
