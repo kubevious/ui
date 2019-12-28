@@ -12,7 +12,7 @@ function GetURLParameter(sParam)
     }
 }
 
-function renderTable(parent, data, columnsInfo)
+function generateTableHtml(data, columnsInfo)
 {
     var html = '';
     html += '<table class="table table-striped table-dark">';
@@ -39,6 +39,11 @@ function renderTable(parent, data, columnsInfo)
     }
     html += '</tbody>';
     html += '</table>';
-    
+    return html;
+}   
+
+function renderTable(parent, data, columnsInfo)
+{
+    var html = generateTableHtml(data, columnsInfo);
     parent.html(html);
 }

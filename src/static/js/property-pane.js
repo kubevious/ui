@@ -58,7 +58,7 @@ const KeyValuePairTemplate =
 </div>
 `);
 
-function _renderPropertyGroupContents(group)
+function _renderPropertyGroupContents(group, useLargeFormat)
 {
     var contentHtml = "";
 
@@ -71,9 +71,20 @@ function _renderPropertyGroupContents(group)
                 value: group.config[key]
             })
         }
-        contentHtml = KeyValuePairTemplate({ 
-            properties: propertyList
-        });
+        if (useLargeFormat) {
+            contentHtml = generateTableHtml(propertyList,
+                [{
+                    name: 'Variable',
+                    value: x => x.key
+                }, {
+                    name: 'Value',
+                    value: x => x.value
+                }]);
+        } else {
+            contentHtml = KeyValuePairTemplate({ 
+                properties: propertyList
+            });
+        }
     } else if (group.kind == "yaml") {
         var code = jsyaml.safeDump(group.config);
         contentHtml = renderCode(group.kind, code);
@@ -92,7 +103,7 @@ function renderCode(language, code)
 
 function _renderPropertyGroup(node, group, isExpanded)
 {
-    var contentHtml = _renderPropertyGroupContents(group);
+    var contentHtml = _renderPropertyGroupContents(group, false);
 
     var groupHtml = PropertyGroupTemplate({ 
         title: group.title,
@@ -141,6 +152,6 @@ function propertyExpanderHandleClick(event) {
 function onPropertyGroupPopup(event) {
     var groupName = event.target.getAttribute("tag");
     var group = myPropertyGroups[groupName];
-    var contentHtml = _renderPropertyGroupContents(group);
+    var contentHtml = _renderPropertyGroupContents(group, true);
     popupOpen(contentHtml);
 }
