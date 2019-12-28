@@ -5,7 +5,6 @@ class VisualNode {
         this._data = data;
         this._parent = null;
         this._children = [];
-        this._id = null;
         this._x = 0; //relative to parent
         this._y = 0; //relative to parent
         this._absX = 0; 
@@ -24,7 +23,7 @@ class VisualNode {
     }
 
     get id() {
-        return this._id;
+        return this._data.dn;
     }
 
     get x() {
@@ -106,10 +105,7 @@ class VisualNode {
     }
 
     get errorCount() {
-        if (this.data.name == "gprod-addr-main-web") {
-            return 12;
-        }
-        return 0;
+        return this.data.allErrorCount;
     }
 
     addChild(child) {

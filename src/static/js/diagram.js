@@ -22,9 +22,33 @@ view.onNodeSelect((node, data) => {
 
 fetchDiagram((sourceData) => {
 
+    massageSourceData(sourceData);
+
     view.skipShowRoot();
     view.setup(); 
     view.acceptSourceData(sourceData);
     view.render();
 
 });
+
+function massageSourceData(data)
+{
+    massageSourceDataNode(data, null);
+}
+
+function massageSourceDataNode(node, parent)
+{
+    var dn;
+    if (parent) {
+        dn = parent.dn + '/' + node.rn;
+    } else {
+        dn = node.rn;
+    }
+    node.dn = dn;
+    node.allErrorCount = node.errorCount;
+    for(var child of node.children)
+    {
+        massageSourceDataNode(child, node);
+        node.allErrorCount += child.allErrorCount;
+    }
+}

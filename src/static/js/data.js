@@ -7,16 +7,16 @@ function fetchDiagram(cb) {
 }
 
 function fetchProperties(node, cb) {
-    Logger.info("[fetchProperties] ", node.id);
-    return backend.get('/api/properties', { dn: node.id })
+    Logger.info("[fetchProperties] ", node.dn);
+    return backend.get('/api/properties', { dn: node.dn })
         .then(result => {
             cb(result.data);
         })
 }
 
 function fetchAlerts(node, cb) {
-    Logger.info("[fetchAlerts] ", node.id);
-    return backend.get('/api/alerts', { dn: node.id })
+    Logger.info("[fetchAlerts] ", node.dn);
+    return backend.get('/api/alerts', { dn: node.dn })
         .then(result => {
             cb(result.data);
         })

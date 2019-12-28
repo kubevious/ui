@@ -241,11 +241,8 @@ class VisualView {
     }
 
     _packSourceData(root) {
-        var i = 0;
         var recurse = (node) => {
             var visualNode = new VisualNode(this, node);
-            visualNode._id = i;
-            i++;
             if (!node.children) {
                 node.children = [];
             }
