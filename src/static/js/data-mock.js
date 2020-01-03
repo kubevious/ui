@@ -13,6 +13,11 @@ function fetchAlerts(node, cb) {
   cb(ALERTS_DATA);
 }
 
+function fetchSearchResults(criteria, cb) {
+    Logger.info("[MOCK:fetchSearchResults] ", criteria);
+    cb(SEARCH_DATA);
+}  
+  
 const GRAPH_DATA = {
   "rn": "root",
   "kind": "root",
@@ -3583,4 +3588,22 @@ const ALERTS_DATA = [
       "msg": "something happened",
       "date": "2019-12-27T19:47:53Z"
   }
+];
+
+const SEARCH_DATA = [
+    {
+        dn: "root/ns-berlioz/app-gprod-berlioz-main-ctlr"
+    },
+    {
+        dn: "root/ns-kubevious/app-kubevious/cont-kubevious/port-http (TCP-4000)"
+    },
+    {
+        dn: "root/ns-kube-system/app-heapster/launcher-Deployment/replicaset-5b66d5bd56/pod-d74sp"
+    },
+    {
+        dn: "root/ns-kubevious/app-kubevious/ingress-kubevious"
+    },
+    {
+        dn: "root/ns-kube-system/app-kube-dns/cont-dnsmasq/vol-kube-dns-config/configmap-kube-dns"
+    }
 ];

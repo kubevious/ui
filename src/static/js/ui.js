@@ -1,4 +1,9 @@
-//Expanders
+// Header Buttons
+$("#btnHeaderSearch").click(function(){
+    openSearch();
+});
+
+// Expanders
 $(".logbarcloaser").click(function(){
     $(".bottom-panel").addClass("hide");
     $(".resetlogbar").addClass("show");
@@ -22,7 +27,7 @@ $(".resetsidebar").click(function(){
     $(".content-body").removeClass("full");
 });
 
-//Scroll
+// Scroll
 $(document).ready(function () {
     if (!$.browser.webkit) {
         $('.customscroll').html('<p>Sorry! Non webkit users. :(</p>');

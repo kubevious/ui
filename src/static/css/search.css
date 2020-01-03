@@ -1,0 +1,13 @@
+.search-input {
+    font-size: 18pt;
+    font-weight: 800;
+}
+
+.search-results {
+    background: #35373E;
+    position: absolute;
+    top: 120px;
+    left: 40px;
+    right: 40px;
+    bottom: 40px;
+}

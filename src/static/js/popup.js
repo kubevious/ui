@@ -18,10 +18,16 @@ const PopupTemplate =
 </div>
 `);
 
-function popupOpen(contents)
+function popupOpen(contents, params)
 {
+    params = params || {};
+
     var html = PopupTemplate({ 
         contents
     });
     $('body').append(html);  
+
+    if (params.focus) {
+        $(params.focus).focus();
+    }
 }
