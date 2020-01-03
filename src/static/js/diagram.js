@@ -52,3 +52,8 @@ function massageSourceDataNode(node, parent)
         node.allErrorCount += child.allErrorCount;
     }
 }
+
+function selectDiagramItem(dn)
+{
+    view.selectNodeByDn(dn);
+}

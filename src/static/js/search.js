@@ -14,14 +14,39 @@ function openSearch()
 
 function performSearch(e)
 {
-
-    var text = e.data;
     fetchSearchResults(e.data, result => {
         var owner = $(".search-results");
         owner.empty();
         for(var item of result)
         {
-            owner.append(item.dn);
+            owner.append(generateSearchItemHtml(item));
         }
     });
+}
+
+const SearchResultItemTemplate = 
+    Handlebars.compile(`
+<div class="search-result" dn="{{dn}}" onclick="onSearchItemClick(event)">
+    <img class="search-logo" src="{{logo}}" />
+    <span class="search-title">{{{title}}}</span>
+</div>
+`);
+function generateSearchItemHtml(item)
+{
+    var dnParts = parseDn(item.dn);
+    var lastPart = _.last(dnParts);
+
+    var html = SearchResultItemTemplate({ 
+        dn: item.dn,
+        title: generateDnPathHtml(dnParts), //item.dn,
+        logo: getNodeLogoUrl(lastPart.kind)
+    });
+    return html;
+}
+
+function onSearchItemClick(event)
+{
+    var dn = $(event.currentTarget).attr("dn");
+    selectDiagramItem(dn);
+    popupClose();
 }

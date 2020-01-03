@@ -118,6 +118,17 @@ class VisualNode {
         this._determineHeader();
     }
 
+    findChildByRn(rn)
+    {
+        for(var x of this._children) 
+        {
+            if (x.data.rn == rn) {
+                return x;
+            }
+        }
+        return null;
+    }
+
     _determineHeader() {
         this._headers = {
         }

@@ -6,23 +6,17 @@
     max-height: 300px;
 }
 
-/*
- *  STYLE 3
- */
-
-#style-3::-webkit-scrollbar-track
+ .scrollbar.dark::-webkit-scrollbar-track
 {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
     background-color: #666;
 }
-
-#style-3::-webkit-scrollbar
+.scrollbar.dark::-webkit-scrollbar
 {
     width: 6px;
     background-color: #F5F5F5;
 }
-
-#style-3::-webkit-scrollbar-thumb
+.scrollbar.dark::-webkit-scrollbar-thumb
 {
     background-color: #333;
 }

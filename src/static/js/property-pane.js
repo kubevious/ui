@@ -39,17 +39,13 @@ const PropertyGroupTemplate =
     <span class="openclose"></span>{{title}}
     <span class="popup-expander" onclick="onPropertyGroupPopup(event)" tag="{{groupName}}"></span>
 </button>
-
-<div class="scrollbar" id="style-3">
+<div class="scrollbar dark">
     <div class="force-overflow">
         <div class="expander-contents {{extraClassContents}}">
             {{{contentHtml}}}
         </div>
     </div>
 </div>
-
-
-
 </div>
 `);
 
@@ -122,6 +118,23 @@ function _renderPropertyGroup(node, group, isExpanded)
     });
 
     $('#properties').append(groupHtml);  
+}
+
+function generateDnPathHtml(dnParts)
+{
+    var html = '<span class="target">'
+    var parts = [];
+    for (var dnPart of dnParts.splice(1))
+    {
+        var partHtml = 
+            '<span class="kind">' + dnPart.kind + '</span>' +
+            '<span> </span>' + 
+            '<span class="name">' + dnPart.name + '</span>';
+        parts.push(partHtml);
+    }
+    html += parts.join(' <span class="separator">&gt;</span> ');
+    html += '</span>'
+    return html;
 }
 
 function _renderNodeId(node)

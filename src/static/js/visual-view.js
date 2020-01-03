@@ -348,7 +348,7 @@ class VisualView {
             .append("image")
             .attr("class", "node-logo")
             .attr("xlink:href", function(d) {
-                return "img/entities/" + d.data.kind + ".svg";
+                return getNodeLogoUrl(d.data.kind);
             })
             .attr("x", nodeHeaderX("logo"))
             .attr("y", nodeHeaderY("logo"))
@@ -596,6 +596,45 @@ class VisualView {
         //     this._applyPanTransform();
         // }
     }
+
+    selectNodeByDn(dn)
+    {
+        if (!this._visualRoot) {
+            return;
+        }
+        var dnParts = parseDn(dn);
+        var topPart = _.head(dnParts);
+        if (topPart.rn != this._visualRoot.data.rn) {
+            return;
+        }
+        this._selectAndExpandNode(this._visualRoot, dnParts.slice(1));
+        
+    }
+
+    _selectAndExpandNode(visualNode, childParts)
+    {
+        visualNode.isExpanded = true;
+        this._update();
+        
+        if (childParts.length == 0) {
+            this.selectNode(visualNode);
+            this._update();
+
+            this._viewX = visualNode.absX - 10;
+            this._viewY = visualNode.absY - 10;
+            this._applyPanTransform();
+            return;
+        }
+
+        var topPart = _.head(childParts);
+        var childVisualNode = visualNode.findChildByRn(topPart.rn);
+        if (!childVisualNode) {
+            this._selectAndExpandNode(visualNode, []);
+            return;
+        }
+
+        this._selectAndExpandNode(childVisualNode, childParts.slice(1));
+    }
 }
 
 function nodePerformExpandCollapse(d)
@@ -672,6 +711,10 @@ function nodeHeaderText(headerName) {
         var header = d.getHeader(headerName);
         return header.text;
     }
+}
+
+function getNodeLogoUrl(kind) {
+    return "img/entities/" + kind + ".svg";
 }
 
 // function nodeHeaderStyles(headerName) { 
