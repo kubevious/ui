@@ -26,6 +26,26 @@ button:focus{outline:none;}
 
 .header .actions {
     position: absolute;
-    top: 15px;
-    right: 15px;
+    top: 10px;
+    right: 20px;
+}
+
+.header .actions .btn {
+    padding: 4px;
+    border: none;
+    background-color: transparent;
+    border: none;
+}
+.header .actions .btn div {
+    background-size: contain;
+    width: 32px;
+    height: 32px;
+    opacity: 0.5;
+}
+.header .actions .btn div:hover {
+    opacity: 1.0;
+}
+
+.header .actions .btn-search div {
+    background-image: url("../img/search.svg");
 }

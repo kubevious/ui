@@ -120,14 +120,27 @@ function _renderPropertyGroup(node, group, isExpanded)
     $('#properties').append(groupHtml);  
 }
 
+const KIND_TO_USER_MAPPING = {
+    'ns': 'Namespace',
+    'app': 'Application',
+    'cont': 'Container',
+    'vol': 'Volume',
+    'configMap': 'ConfigMap',
+    'replicaSet': 'ReplicaSet',
+}
+
 function generateDnPathHtml(dnParts)
 {
-    var html = '<span class="target">'
+    var html = '<span class="dn-path">'
     var parts = [];
     for (var dnPart of dnParts.splice(1))
     {
+        var kind = KIND_TO_USER_MAPPING[dnPart.kind];
+        if (!kind) {
+            kind = _.upperFirst(dnPart.kind);
+        }
         var partHtml = 
-            '<span class="kind">' + dnPart.kind + '</span>' +
+            '<span class="kind">' + kind + '</span>' +
             '<span> </span>' + 
             '<span class="name">' + dnPart.name + '</span>';
         parts.push(partHtml);
@@ -139,25 +152,27 @@ function generateDnPathHtml(dnParts)
 
 function _renderNodeId(node)
 {
-    var html = '<div class="target">'
+    // var html = '<div class="target">'
 
-    var parts = [];
-    var currNode = node;
-    while (currNode) {
-        if (currNode.data.kind == "root") {
-            break;
-        }
-        var partHtml = 
-            '<span class="kind">' + currNode.data.kind + '</span>' +
-            '<span> </span>' + 
-            '<span class="name">' + currNode.data.name + '</span>';
-        parts.push(partHtml);
-        currNode = currNode.parent;
-    }
-    parts.reverse();
-    html += parts.join(' <span class="separator">&gt;</span> ');
+    // var parts = [];
+    // var currNode = node;
+    // while (currNode) {
+    //     if (currNode.data.kind == "root") {
+    //         break;
+    //     }
+    //     var partHtml = 
+    //         '<span class="kind">' + currNode.data.kind + '</span>' +
+    //         '<span> </span>' + 
+    //         '<span class="name">' + currNode.data.name + '</span>';
+    //     parts.push(partHtml);
+    //     currNode = currNode.parent;
+    // }
+    // parts.reverse();
+    // html += parts.join(' <span class="separator">&gt;</span> ');
 
-    html += '</div>'
+    // html += '</div>'
+    var dnParts = parseDn(node.data.dn);
+    var html = generateDnPathHtml(dnParts);
     $('#properties').append(html);  
 
 }

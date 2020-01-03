@@ -1,3 +1,17 @@
+/***************************************/
+
+.properties .dn-path {
+    font-size: 12pt;
+}
+.dn-path .kind {
+    font-weight: 400;
+}
+.dn-path .name {
+    font-weight: 800;
+}
+
+/***************************************/
+
 .environment-variable {
     font-family: 'Roboto';
     font: 12px sans-serif;

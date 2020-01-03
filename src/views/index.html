@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="css/bottom-panel.css" />
     <link rel="stylesheet" href="css/popup.css" />
     <link rel="stylesheet" href="css/scroll.css" />
+    <link rel="stylesheet" href="css/search.css" />
     <!-- END KUBEVIOUS CSS -->
 
     <title>Kubevious</title>
@@ -32,6 +33,10 @@
 <div class="wrapper">
     <div class="header">
         <div class="logo"></div>
+
+        <div class="actions">
+            <button id="btnHeaderSearch" type="button" class="btn btn-search"><div></div></button>
+        </div>
     </div>
 
     <div class="sidebar">
@@ -112,6 +117,7 @@
 
 <!-- BEGIN VENDOR SCRIPTS -->
 <script src="vendor/jquery/jquery-3.2.1.slim.min.js" ></script>
+<script src="vendor/jquery/jquery-migrate-3.1.0.min.js" ></script>
 <script src="vendor/popper/popper.min.js" ></script>
 <script src="vendor/bootstrap/bootstrap.min.js" ></script>
 <script src="vendor/js-logger/logger.min.js"></script>
@@ -127,6 +133,7 @@
 
 <!-- BEGIN KUBEVIOUS SCRIPTS -->
 <script src="js/logging.js"></script>
+<script src="js/naming-utils.js"></script>
 <script src="js/utils.js"></script>
 <script src="js/visual-node.js"></script>
 <script src="js/visual-view.js"></script>
@@ -143,6 +150,7 @@
 <script src="js/diagram.js"></script>
 <script src="js/ui.js"></script>
 <script src="js/popup.js"></script>
+<script src="js/search.js"></script>
 <!-- END KUBEVIOUS SCRIPTS -->
 
 <%- watchScript %>
