@@ -21,3 +21,12 @@ function fetchAlerts(node, cb) {
             cb(result.data);
         })
 }
+
+function fetchSearchResults(criteria, cb) {
+    Logger.info("[fetchSearchResults] ", criteria);
+    return backend.get('/api/search', { criteria: criteria })
+        .then(result => {
+            cb(result.data);
+        })
+}  
+  

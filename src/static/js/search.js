@@ -14,7 +14,8 @@ function openSearch()
 
 function performSearch(e)
 {
-    fetchSearchResults(e.data, result => {
+    var criteria = e.currentTarget.value;
+    fetchSearchResults(criteria, result => {
         var owner = $(".search-results");
         owner.empty();
         for(var item of result)
