@@ -65,6 +65,13 @@ class VisualNode {
         return this._data;
     }
 
+    get flags() {
+        if (!this.data.flags) {
+            return [];
+        }
+        return _.keys(this.data.flags);
+    }
+
     get isExpanded() {
         return this._isExpanded;
     } 
@@ -167,8 +174,18 @@ class VisualNode {
             });
         }
 
+        for(var flag of this.flags) 
+        {
+            this._addToHeader("flag-" + flag, { 
+                kind: 'flag', 
+                icon: flag,
+                location: 'right'
+            });
+        }
+
         this._measureHeaders();
     }
+
 
     _measureHeaders()
     {
@@ -256,6 +273,11 @@ class VisualNode {
                 this._view._measureText(header.text, null, header.style);
             header.width = titleDimentions.width;
             header.height = titleDimentions.height;
+        }
+        else if (header.kind == 'flag')
+        {
+            header.width = 16;
+            header.height = 16;
         }
         if (header.sidesPadding) {
             header.width += header.sidesPadding * 2;

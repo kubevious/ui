@@ -405,6 +405,24 @@ class VisualView {
             .attr("height", 12)
             .on("click", nodePerformExpandCollapse)
             ;
+
+        node
+            .each((d) => { 
+                var iii = 0;
+                for(var flag of d.flags)
+                {
+                    var headerName = 'flag-' + flag;
+                    node
+                        .append("image")
+                        .attr("class", "node-flag")
+                        .attr("xlink:href", nodeHeaderFlagImage(headerName))
+                        .attr("x", nodeHeaderX(headerName)) 
+                        .attr("y", nodeHeaderY(headerName))
+                        .attr("width", nodeHeaderWidth(headerName))
+                        .attr("height", nodeHeaderHeight(headerName))
+                        ;                
+                }
+            })
     }
 
     _updateNode(visualNode)
@@ -677,6 +695,13 @@ function nodeExpanderImage(d) {
 function nodeHeaderTransform(headerName, flavor) { 
     return (d) => {
         return "translate(" + d.getHeaderX(headerName, flavor) + "," + d.getHeaderY(headerName, flavor) + ")"; 
+    }
+}
+
+function nodeHeaderFlagImage(headerName) { 
+    return (d) => {
+        var header = d.getHeader(headerName);
+        return "img/flags/" + header.icon + ".svg";
     }
 }
 

@@ -51,7 +51,7 @@ const PropertyGroupTemplate =
 
 const KeyValuePairTemplate = 
     Handlebars.compile(`
-<div class="environment-variables">
+<div>
     {{#each properties}}
     <div class="environment-variable">
         <div class="name">{{key}}</div>
@@ -63,37 +63,68 @@ const KeyValuePairTemplate =
 
 function _renderPropertyGroupContents(group, useLargeFormat)
 {
-    var contentHtml = "";
-
     if (group.kind == "key-value")
     {
-        var propertyList = [];
-        for(var key of _.keys(group.config)) {
-            propertyList.push({
-                key: key,
-                value: group.config[key]
-            })
-        }
-        if (useLargeFormat) {
-            contentHtml = generateTableHtml(propertyList,
-                [{
-                    name: 'Variable',
-                    value: x => x.key
-                }, {
-                    name: 'Value',
-                    value: x => x.value
-                }]);
-        } else {
-            contentHtml = KeyValuePairTemplate({ 
-                properties: propertyList
-            });
-        }
-    } else if (group.kind == "yaml") {
+        return _renderKeyValueContents(group, useLargeFormat);
+    } 
+    else if (group.kind == "dn-list") 
+    {
+        return _renderDnListContents(group, useLargeFormat);
+    }
+    else if (group.kind == "yaml")
+    {
         var code = jsyaml.safeDump(group.config);
-        contentHtml = renderCode(group.kind, code);
+        return renderCode(group.kind, code);
     }
 
-    return contentHtml;
+    return "";
+}
+
+function _renderKeyValueContents(group, useLargeFormat)
+{
+    var propertyList = [];
+    for(var key of _.keys(group.config)) {
+        propertyList.push({
+            key: key,
+            value: group.config[key]
+        })
+    }
+    if (useLargeFormat) {
+        return generateTableHtml(propertyList,
+            [{
+                name: 'Variable',
+                value: x => x.key
+            }, {
+                name: 'Value',
+                value: x => x.value
+            }]);
+    } else {
+        return KeyValuePairTemplate({ 
+            properties: propertyList
+        });
+    }
+}
+
+function _renderDnListContents(group, useLargeFormat)
+{
+    var dns = group.config;
+    return generateList(dns, dn => {
+
+        // TODO: Make generic with Search Library
+        var dnParts = parseDn(dn);
+        var lastPart = _.last(dnParts);
+    
+        var html = SearchResultItemTemplate({ 
+            dn: dn,
+            title: generateDnPathHtml(dnParts),
+            logo: getNodeLogoUrl(lastPart.kind)
+        });
+        return html;
+
+        // var dnParts = parseDn(dn);
+        // var html = generateDnPathHtml(dnParts);
+        // return html;
+    });
 }
 
 function renderCode(language, code)
@@ -152,29 +183,9 @@ function generateDnPathHtml(dnParts)
 
 function _renderNodeId(node)
 {
-    // var html = '<div class="target">'
-
-    // var parts = [];
-    // var currNode = node;
-    // while (currNode) {
-    //     if (currNode.data.kind == "root") {
-    //         break;
-    //     }
-    //     var partHtml = 
-    //         '<span class="kind">' + currNode.data.kind + '</span>' +
-    //         '<span> </span>' + 
-    //         '<span class="name">' + currNode.data.name + '</span>';
-    //     parts.push(partHtml);
-    //     currNode = currNode.parent;
-    // }
-    // parts.reverse();
-    // html += parts.join(' <span class="separator">&gt;</span> ');
-
-    // html += '</div>'
     var dnParts = parseDn(node.data.dn);
     var html = generateDnPathHtml(dnParts);
     $('#properties').append(html);  
-
 }
 
 function propertyExpanderHandleClick(event) {

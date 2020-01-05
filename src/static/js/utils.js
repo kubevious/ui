@@ -42,6 +42,19 @@ function generateTableHtml(data, columnsInfo)
     return html;
 }   
 
+function generateList(items, generatorCb)
+{
+    var html = '';
+    html += '<div>';
+    for(var item of items)
+    {
+        var itemHtml = generatorCb(item);
+        html += itemHtml;
+    }
+    html += '</div>';
+    return html;
+}   
+
 function renderTable(parent, data, columnsInfo)
 {
     var html = generateTableHtml(data, columnsInfo);
