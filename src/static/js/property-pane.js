@@ -111,7 +111,8 @@ function _renderDnListContents(group, useLargeFormat)
     var dns = group.config;
     return generateList(dns, dn => {
         return generateDnShortcutHtml(dn, {
-            handler: "onPropertyPanelDnClick"
+            handler: "onPropertyPanelDnClick",
+            relativeTo: group.node.data.dn
         });
     });
 }

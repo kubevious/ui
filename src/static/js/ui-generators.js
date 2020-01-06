@@ -16,6 +16,19 @@ function generateDnShortcutHtml(dn, params)
     var dnParts = parseDn(dn);
     var lastPart = _.last(dnParts);
 
+    if (params.relativeTo)
+    {
+        var parentDnParts = parseDn(params.relativeTo);
+        while((dnParts.length > 0) && 
+              (parentDnParts.length > 0) && 
+              (dnParts[0].rn == parentDnParts[0].rn))
+        {
+            dnParts.shift();
+            parentDnParts.shift();
+        }
+    }
+
+
     var html = DnShortcutItemTemplate({ 
         dn: dn,
         title: generateDnPathHtml(dnParts),
@@ -45,7 +58,12 @@ function generateDnPathHtml(dnParts)
 {
     var html = '<span class="dn-path">'
     var parts = [];
-    for (var dnPart of dnParts.splice(1))
+    if (dnParts.length > 0) {
+        if (dnParts[0].kind == 'root') {
+            dnParts = dnParts.splice(1);
+        }
+    }
+    for (var dnPart of dnParts)
     {
         var kind = KIND_TO_USER_MAPPING[dnPart.kind];
         if (!kind) {

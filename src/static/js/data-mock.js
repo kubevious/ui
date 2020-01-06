@@ -5,7 +5,7 @@ function fetchDiagram(cb) {
 
 function fetchProperties(node, cb) {
     Logger.info("[MOCK:fetchProperties] ", node.id);
-    cb(PROPERTIES_DATA);
+    cb(_.cloneDeep(PROPERTIES_DATA));
 }
 
 function fetchAlerts(node, cb) {
