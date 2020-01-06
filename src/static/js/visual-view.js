@@ -625,7 +625,6 @@ class VisualView {
             return;
         }
         this._selectAndExpandNode(this._visualRoot, dnParts.slice(1));
-        
     }
 
     _selectAndExpandNode(visualNode, childParts)
@@ -637,8 +636,16 @@ class VisualView {
             this.selectNode(visualNode);
             this._update();
 
-            this._viewX = visualNode.absX - 10;
-            this._viewY = visualNode.absY - 10;
+            this._viewX = 
+                visualNode.absX
+                - Math.max(this._width / 2 - visualNode.width / 2, 10)
+                ;
+            
+            this._viewY =
+                visualNode.absY
+                - Math.max(this._height / 2 - visualNode.height / 2, 10)
+                ;
+
             this._applyPanTransform();
             return;
         }
