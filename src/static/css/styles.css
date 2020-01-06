@@ -49,3 +49,33 @@ button:focus{outline:none;}
 .header .actions .btn-search div {
     background-image: url("../img/search.svg");
 }
+
+
+/*** COMMON DN PATH ***/
+.dn-path {
+    font-size: 12pt;
+}
+.dn-path .kind {
+    font-weight: 400;
+    font-size: 8pt;
+}
+.dn-path .name {
+    font-weight: 800;
+}
+.dn-path .separator{
+    color: rgb(109, 101, 101);
+}
+
+/*** COMMON DN SHORTCUT ***/
+.dn-shortcut {
+    background: #35373E;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid white;
+    cursor: pointer;
+}
+.dn-logo {
+    width: 32px;
+    height: 32px;
+    margin-right: 10px;
+}

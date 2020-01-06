@@ -1,13 +1,16 @@
 /***************************************/
 
-.properties .dn-path {
+.properties-owner {
+    background: #35373E;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.properties-owner .dn-path {
     font-size: 12pt;
 }
-.dn-path .kind {
-    font-weight: 400;
-}
-.dn-path .name {
-    font-weight: 800;
+.properties-owner .dn-path .kind {
+  font-size: 8pt;
 }
 
 /***************************************/

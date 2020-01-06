@@ -25,24 +25,11 @@ function performSearch(e)
     });
 }
 
-const SearchResultItemTemplate = 
-    Handlebars.compile(`
-<div class="search-result" dn="{{dn}}" onclick="onSearchItemClick(event)">
-    <img class="search-logo" src="{{logo}}" />
-    <span class="search-title">{{{title}}}</span>
-</div>
-`);
 function generateSearchItemHtml(item)
 {
-    var dnParts = parseDn(item.dn);
-    var lastPart = _.last(dnParts);
-
-    var html = SearchResultItemTemplate({ 
-        dn: item.dn,
-        title: generateDnPathHtml(dnParts), //item.dn,
-        logo: getNodeLogoUrl(lastPart.kind)
+    return generateDnShortcutHtml(item.dn, {
+        handler: "onSearchItemClick"
     });
-    return html;
 }
 
 function onSearchItemClick(event)

@@ -218,13 +218,21 @@ class VisualNode {
     }
 
     getHeader(name) {
-        return this._headers[name];
+        var header = this._headers[name];
+        if (!header) {
+            return null;
+        }
+        return header;
     }
 
     getHeaderX(name, flavor)
     {
         var header = this.getHeader(name);
         var value = 0;
+        if (!header) {
+            // TODO: ERROR CASE;
+            return;
+        }
         if (header.location == 'left') {
             value = header.left;
         } else if (header.location == 'right') {

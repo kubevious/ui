@@ -4,7 +4,7 @@ function showObjectProperties(node, propertyGroups)
 {
     Logger.info("[showObjectProperties] ", node.data.id, propertyGroups);
     _clearProperties();
-    _renderNodeId(node);
+    _renderPropertiesNodeDn(node);
     propertyGroups = _.orderBy(propertyGroups, x => {
         if (x.order) {
             return x.order;
@@ -15,6 +15,7 @@ function showObjectProperties(node, propertyGroups)
     myPropertyGroups = {}; 
     for(var group of propertyGroups) {
         myPropertyGroups[group.id] = group;
+        group.node = node;
         _renderPropertyGroup(node, group, isExpanded);
         isExpanded = false;
     }
@@ -109,22 +110,16 @@ function _renderDnListContents(group, useLargeFormat)
 {
     var dns = group.config;
     return generateList(dns, dn => {
-
-        // TODO: Make generic with Search Library
-        var dnParts = parseDn(dn);
-        var lastPart = _.last(dnParts);
-    
-        var html = SearchResultItemTemplate({ 
-            dn: dn,
-            title: generateDnPathHtml(dnParts),
-            logo: getNodeLogoUrl(lastPart.kind)
+        return generateDnShortcutHtml(dn, {
+            handler: "onPropertyPanelDnClick"
         });
-        return html;
-
-        // var dnParts = parseDn(dn);
-        // var html = generateDnPathHtml(dnParts);
-        // return html;
     });
+}
+
+function onPropertyPanelDnClick(event)
+{
+    var dn = $(event.currentTarget).attr("dn");
+    selectDiagramItem(dn);
 }
 
 function renderCode(language, code)
@@ -151,40 +146,13 @@ function _renderPropertyGroup(node, group, isExpanded)
     $('#properties').append(groupHtml);  
 }
 
-const KIND_TO_USER_MAPPING = {
-    'ns': 'Namespace',
-    'app': 'Application',
-    'cont': 'Container',
-    'vol': 'Volume',
-    'configMap': 'ConfigMap',
-    'replicaSet': 'ReplicaSet',
-}
-
-function generateDnPathHtml(dnParts)
-{
-    var html = '<span class="dn-path">'
-    var parts = [];
-    for (var dnPart of dnParts.splice(1))
-    {
-        var kind = KIND_TO_USER_MAPPING[dnPart.kind];
-        if (!kind) {
-            kind = _.upperFirst(dnPart.kind);
-        }
-        var partHtml = 
-            '<span class="kind">' + kind + '</span>' +
-            '<span> </span>' + 
-            '<span class="name">' + dnPart.name + '</span>';
-        parts.push(partHtml);
-    }
-    html += parts.join(' <span class="separator">&gt;</span> ');
-    html += '</span>'
-    return html;
-}
-
-function _renderNodeId(node)
+function _renderPropertiesNodeDn(node)
 {
     var dnParts = parseDn(node.data.dn);
-    var html = generateDnPathHtml(dnParts);
+    var html = '<div class="properties-owner">';
+    html += generateDnPathHtml(dnParts);
+    html += '</div>';
+
     $('#properties').append(html);  
 }
 

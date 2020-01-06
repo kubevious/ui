@@ -407,12 +407,11 @@ class VisualView {
             ;
 
         node
-            .each((d) => { 
-                var iii = 0;
+            .each(function (d) { 
                 for(var flag of d.flags)
                 {
                     var headerName = 'flag-' + flag;
-                    node
+                    d3.select(d.node)
                         .append("image")
                         .attr("class", "node-flag")
                         .attr("xlink:href", nodeHeaderFlagImage(headerName))
@@ -701,6 +700,9 @@ function nodeHeaderTransform(headerName, flavor) {
 function nodeHeaderFlagImage(headerName) { 
     return (d) => {
         var header = d.getHeader(headerName);
+        if (!header) {
+            return "";
+        }
         return "img/flags/" + header.icon + ".svg";
     }
 }
