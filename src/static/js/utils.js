@@ -61,3 +61,8 @@ function renderTable(parent, data, columnsInfo)
     var html = generateTableHtml(data, columnsInfo);
     parent.html(html);
 }
+
+function formatDate(date)
+{
+    return date;
+}

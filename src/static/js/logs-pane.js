@@ -12,7 +12,7 @@ function showObjectAlerts(node, alerts)
                 value: x => '<div class="alert-item ' + x.severity  + '"></div>'
             }, {
                 name: 'Date',
-                value: x => x.date
+                value: x => formatDate(x.date)
             }, {
                 name: 'Message',
                 value: x => x.msg
