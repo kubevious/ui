@@ -46,7 +46,7 @@
     background: url("../img/windows/events.svg");
     background-size: contain
 }
-.bottom-panel .nav-tabs li.errors a:before{
+.bottom-panel .nav-tabs li.alerts a:before{
     background: url("../img/filters-ico.svg") 0 0 no-repeat;
 }
 .bottom-panel .nav-tabs li.warnings a:before{
@@ -65,3 +65,20 @@
 .bottom-panel.hide{display:none;}
 .resetlogbar{background:#35373E; padding:3px 15px; color: #FFF; position: absolute; left: 30px; bottom: 0px; display: none; cursor: pointer;}
 .resetlogbar.show{display: block;}
+
+
+/** ALERTS **/
+.alert-item {
+    width: 16px;
+    height: 16px;
+    background-size: contain;
+}
+.alert-item.warn {
+    background-image: url("../img/alerts/warn.svg");
+}
+.alert-item.error {
+    background-image: url("../img/alerts/error.svg");
+}
+.alert-item.info {
+    background-image: url("../img/alerts/info.svg");
+}

@@ -24,6 +24,7 @@ function generateTableHtml(data, columnsInfo)
         html += columnHtml;
     }
     html += '</tr>';
+    html += '</thead>';
     html += '<tbody>';
     for(var row of data)
     {
@@ -35,7 +36,7 @@ function generateTableHtml(data, columnsInfo)
             html += value;
             html += '</td>';
         }
-        html += '<tr>';
+        html += '</tr>';
     }
     html += '</tbody>';
     html += '</table>';

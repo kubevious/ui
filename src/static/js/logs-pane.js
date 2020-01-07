@@ -5,16 +5,17 @@ function showObjectAlerts(node, alerts)
         alerts = [];
     }
 
-    renderTable($("#errors"), alerts,
-        [{
-            name: 'Date',
-            value: x => x.date
-        }, {
-            name: 'Severity',
-            value: x => x.severity
-        }, {
-            name: 'Message',
-            value: x => x.msg
-        }]
-        )
+    renderTable($("#alerts"), alerts,
+        [
+            {
+                name: '',
+                value: x => '<div class="alert-item ' + x.severity  + '"></div>'
+            }, {
+                name: 'Date',
+                value: x => x.date
+            }, {
+                name: 'Message',
+                value: x => x.msg
+            }
+        ])
 }
