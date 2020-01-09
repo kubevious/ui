@@ -1,7 +1,13 @@
 .search-input {
-    font-size: 18pt;
-    font-weight: 800;
+    font-size:14pt;
+    font-weight:700;
+    background: transparent;
+    border: 1px solid #ccc;
+    border-radius:0px;
+    color: #FFF;
+    padding: 15px;
 }
+.search-input:focus{border:1px solid yellow; background: transparent; color: #FFF; outline: none;}
 
 .search-results .dn-path {
     font-size: 14pt;

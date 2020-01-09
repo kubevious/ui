@@ -5,17 +5,17 @@
     right:80px;
     top:80px;
     bottom:80px;
-    border: 1px solid #35373E;
-    background: #1E1E1E;
+    border:solid 1px #999;
+    background: #35373E;
     overflow:hidden;
 }
 .popup:before{
     content: "";
-    position: absolute;
-    top:-80px;
-    bottom:-80px;
-    left: -80px;
-    right: -80px;
+    position:fixed;
+    top:0px;
+    bottom:0px;
+    left:0px;
+    right:0px;
     z-index: 0;
     background:rgba(0,0,0,0.8);
 }
@@ -26,9 +26,9 @@
     right:0px;
     top:0px;
     padding:40px;
-    height:100px;
     overflow:hidden;
 }
+.popup .popup-header  .form-group{margin: 0px;}
 
 .popup .popup-contents {
     position: absolute;
@@ -36,7 +36,7 @@
     right:0px;
     top:100px;
     bottom:0px;
-    padding:40px;
+    padding:10px 40px 40px;
     overflow:auto;
 }
 

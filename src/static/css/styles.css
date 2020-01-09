@@ -26,28 +26,28 @@ button:focus{outline:none;}
 
 .header .actions {
     position: absolute;
-    top: 10px;
-    right: 20px;
+    top:13px;
+    right:13px;
 }
 
 .header .actions .btn {
-    padding: 4px;
+    padding:6px;
     border: none;
-    background-color: transparent;
+    background:#1d1d1d;
     border: none;
 }
 .header .actions .btn div {
     background-size: contain;
-    width: 32px;
-    height: 32px;
-    opacity: 0.5;
+    width:24px;
+    height:24px;
+    opacity:0.8;
 }
 .header .actions .btn div:hover {
     opacity: 1.0;
 }
 
 .header .actions .btn-search div {
-    background-image: url("../img/search.svg");
+    background: url("../img/search.svg") 0 0 no-repeat;
 }
 
 
@@ -68,12 +68,16 @@ button:focus{outline:none;}
 
 /*** COMMON DN SHORTCUT ***/
 .dn-shortcut {
-    background: #35373E;
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid white;
+    background:transparent;
+    margin-bottom:1px;
+    padding:10px;
+    border-bottom: 1px solid #666;
     cursor: pointer;
 }
+.dn-shortcut:hover {
+    background:#35373E;
+}
+
 .dn-logo {
     width: 32px;
     height: 32px;
