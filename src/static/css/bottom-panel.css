@@ -3,8 +3,12 @@
     bottom: 0px;
     width: 100%;
     height:200px;
-    overflow: auto;
 }
+
+.tab-content .tab-pane{height:152px; overflow: auto;}
+.tab-content .tab-pane table th,
+.tab-content .tab-pane table td{padding: 5px;font-weight:300; font-size:13px;}
+
 .logbarcloaser{
     display: block;
     width:100%;
