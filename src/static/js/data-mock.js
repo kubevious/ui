@@ -3605,5 +3605,32 @@ const SEARCH_DATA = [
     },
     {
         dn: "root/ns-kube-system/app-kube-dns/cont-dnsmasq/vol-kube-dns-config/configmap-kube-dns"
+    },
+    {
+        dn: "root/ns-kube-system/app-kube-dns-autoscaler/launcher-Deployment/replicaset-bb58c6784/pod-dpfv7"
+    },
+    {
+        dn: "root/ns-addr/app-gprod-addr-main-web/cont-gprod-addr-main-web/port-default (TCP-3000)/service-Service"
+    },
+    {
+        dn: "root/ns-addr/app-gprod-addr-main-web/ingress-gprod-addr-web"
+    },
+    {
+        dn: "root/ns-sprt/app-gprod-sprt-main-prmts/cont-gprod-sprt-main-prmts/vol-google-cloud-key"
+    },
+    {
+        dn: "root/ns-sprt/app-gprod-sprt-main-prmts/cont-gprod-sprt-main-prmts/vol-google-cloud-key"
+    },
+    {
+        dn: "root/ns-kube-system/app-metrics-server-v0.3.1/cont-metrics-server-nanny/vol-metrics-server-config-volume/configmap-metrics-server-config"
+    },
+    {
+        dn: "root/ns-berlioz/app-gprod-berlioz-main-ctlr/launcher-Deployment"
+    },
+    {
+        dn: "root/ns-kube-system/app-heapster/cont-heapster-nanny/vol-heapster-config-volume"
+    },
+    {
+        dn: "root/ns-kube-system/app-heapster/cont-prom-to-sd"
     }
 ];

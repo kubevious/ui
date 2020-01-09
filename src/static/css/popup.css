@@ -5,7 +5,9 @@
     right:80px;
     top:80px;
     bottom:80px;
-    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid #35373E;
+    background: #1E1E1E;
+    overflow:hidden;
 }
 .popup:before{
     content: "";
@@ -18,13 +20,21 @@
     background:rgba(0,0,0,0.8);
 }
 
-.popup .inner {
-    border: 1px solid #35373E;
-    background: #1E1E1E;
+.popup .popup-header {
     position: absolute;
     left:0px;
     right:0px;
     top:0px;
+    padding:40px;
+    height:100px;
+    overflow:hidden;
+}
+
+.popup .popup-contents {
+    position: absolute;
+    left:0px;
+    right:0px;
+    top:100px;
     bottom:0px;
     padding:40px;
     overflow:auto;

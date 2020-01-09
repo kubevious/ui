@@ -11,7 +11,10 @@ function popupClose(event)
 const PopupTemplate = 
     Handlebars.compile(`
 <div id="popup" class="popup" onclick="popupClose(event)" >
-    <div class="inner">
+    <div class="popup-header">
+        {{{header}}}
+    </div>
+    <div class="popup-contents">
         {{{contents}}}
     </div>
     <button class="close" onclick="popupClose()" />
@@ -21,9 +24,14 @@ const PopupTemplate =
 function popupOpen(contents, params)
 {
     params = params || {};
+    var header = null;
+    if (params.header) {
+        header = params.header;
+    }
 
     var html = PopupTemplate({ 
-        contents
+        contents,
+        header
     });
     $('body').append(html);  
 

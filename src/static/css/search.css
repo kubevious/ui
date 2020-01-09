@@ -3,14 +3,6 @@
     font-weight: 800;
 }
 
-.search-results {
-    position: absolute;
-    top: 120px;
-    left: 40px;
-    right: 40px;
-    bottom: 40px;
-}
-
 .search-results .dn-path {
     font-size: 14pt;
 }

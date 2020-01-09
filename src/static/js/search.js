@@ -1,14 +1,12 @@
 function openSearch()
 {
-    popupOpen(`
-    <div class="form-group has-success">
-        <input id="searchInput" type="text" class="form-control search-input" placeholder="Search" oninput="performSearch(event)">
-    </div>
-    <div class="search-results">
-    </div>
-    `,
+    popupOpen(`<div class="search-results"></div>`,
     {
-        focus: "#searchInput"
+        focus: "#searchInput",
+        header: `
+        <div class="form-group has-success">
+            <input id="searchInput" type="text" class="form-control search-input" placeholder="Search" oninput="performSearch(event)">
+        </div>`
     })
 }
 
