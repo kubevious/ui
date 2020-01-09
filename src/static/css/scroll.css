@@ -1,10 +1,13 @@
-.scrollbar
-{
+.scrollbar {
     width:100%;
-    border: solid 2px #35373E;
+    border: solid #35373E;
+    border-width: 0 2px 2px;
     overflow-y: scroll;
     max-height: 300px;
 }
+
+.expander{padding: 15px 15px 12px; transition: none;}
+.expander.active{padding: 15px 15px 14px; transition: none;}
 
  .scrollbar.dark::-webkit-scrollbar-track
 {

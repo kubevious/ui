@@ -7,10 +7,13 @@
 }
 
 .properties-owner .dn-path {
-    font-size: 12pt;
+    font-size:12px;
 }
 .properties-owner .dn-path .kind {
-  font-size: 8pt;
+  font-size:12px;
+}
+.dn-path .separator{
+    color:#FFF;
 }
 
 /***************************************/
@@ -34,7 +37,7 @@
 /****** EXPANDER BEGIN **********/
 .expander {
     font-family: 'Montserrat', sans-serif;
-    font-size:15px;
+    font-size:14px;
     background:#35373E;
     color: #FFF;
     cursor: pointer;

@@ -62,9 +62,6 @@ button:focus{outline:none;}
 .dn-path .name {
     font-weight: 800;
 }
-.dn-path .separator{
-    color: rgb(109, 101, 101);
-}
 
 /*** COMMON DN SHORTCUT ***/
 .dn-shortcut {

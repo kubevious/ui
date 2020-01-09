@@ -9,6 +9,10 @@
 .tab-content .tab-pane table th,
 .tab-content .tab-pane table td{padding: 5px;font-weight:300; font-size:13px;}
 
+.table-dark td,
+.table-dark{background:#1E1E1E;}
+.table-dark tr:nth-of-type(2n) td{background:#292A2D;}
+
 .logbarcloaser{
     display: block;
     width:100%;
