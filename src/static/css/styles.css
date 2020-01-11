@@ -62,13 +62,17 @@ button:focus{outline:none;}
 .dn-path .name {
     font-weight: 800;
 }
+.dn-path .separator{
+    color: rgb(109, 101, 101);
+}
 
 /*** COMMON DN SHORTCUT ***/
 .dn-shortcut {
-    background:transparent;
-    margin-bottom:1px;
+    margin-bottom: 10px;
+    background: #333;
+    margin-bottom:10px;
     padding:10px;
-    border-bottom: 1px solid #666;
+    border: 1px solid #666;
     cursor: pointer;
 }
 .dn-shortcut:hover {

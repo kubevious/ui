@@ -7,13 +7,10 @@
 }
 
 .properties-owner .dn-path {
-    font-size:12px;
+    font-size: 12px;
 }
 .properties-owner .dn-path .kind {
-  font-size:12px;
-}
-.dn-path .separator{
-    color:#FFF;
+    font-size: 8px;
 }
 
 /***************************************/
