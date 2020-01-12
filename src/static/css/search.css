@@ -18,18 +18,14 @@
     line-height:33px;
 }
 .search-results .dn-path span {
-    float:left;
     margin: 0 6px 0 0;
 }
 
 .search-results .dn-path span.separator {
-    background: url("../img/separator.svg") center center no-repeat;
-    background-size:100%;
-    text-indent: -5000px;
     width: 6px;
+    padding:0 3px;
 }
 
 .search-results .dn-path .kind {
     font-size: 10pt;
-    color:#999;
 }

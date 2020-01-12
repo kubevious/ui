@@ -57,15 +57,25 @@ button:focus{outline:none;}
 .dn-path {
     font-size: 12pt;
 }
+.dn-path span{
+    display: block;
+    float: left;
+    margin: 0 4px 0 0;
+}
 .dn-path .kind {
     font-weight: 400;
     font-size: 8pt;
+    color: #999;
 }
 .dn-path .name {
     font-weight: 800;
 }
 .dn-path .separator{
-    color: rgb(109, 101, 101);
+    background:url("../img/separator.svg") center center no-repeat;
+    background-size:100%;
+    text-indent:-5000px;
+    width:2px;
+    padding:0 3px;
 }
 
 /*** COMMON DN SHORTCUT ***/

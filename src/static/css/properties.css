@@ -11,16 +11,11 @@
 }
 .properties-owner .dn-path .kind {
     font-size:11px;
-    color: #999;
 }
-.properties-owner .dn-path span{float: left; display: block; margin: 0 4px 0 0; line-height:20px;}
-.properties-owner .dn-path span.separator {
-    background:url("../img/separator.svg") center center no-repeat;
-    background-size:100%;
-    text-indent:-5000px;
-    width:2px;
-    padding:0 3px;
+.properties-owner .dn-path span{
+  margin: 0 4px 0 0; line-height:20px;
 }
+
 
 /***************************************/
 

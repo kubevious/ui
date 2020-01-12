@@ -3385,7 +3385,16 @@ const GRAPH_DATA = {
 }
 ;
 
-const PROPERTIES_DATA =[
+const PROPERTIES_DATA = [
+    {
+        "kind": "dn-list",
+        "id": "shared-with",
+        "title": "Shared With",
+        "order": 5,
+        "config": [
+            "root/ns-kube-system/app-kube-dns/cont-kubedns/vol-kube-dns-config/configmap-kube-dns"
+        ]
+    },
     {
       "kind": "yaml",
       "id": "config",
