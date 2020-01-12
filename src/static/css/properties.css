@@ -132,6 +132,6 @@ pre{
 .resetsidebar{background:#35373E; padding:3px 15px; color: #FFF; position: absolute; right:-44px; top:130px; display: none; cursor: pointer;transform: rotate(-90deg); z-index: 20;}
 .resetsidebar.show{display: block;}
 
-.popup-expander{display: block; float: right; margin: 1px 15px 0 0; width: 16px; height: 16px; background:url("../img/popup.svg") center center no-repeat;border:0px; opacity:0.5;}
+.popup-expander{display: block; float: right; margin:0 10px 0 0; width:20px; height:20px; border-radius: 2px; background:#292A2F url("../img/popup.svg") center center no-repeat; background-size:12px;border:0px;}
 .popup-expander:hover{opacity:1;}
 /****** EXPANDER END **********/
