@@ -12,6 +12,7 @@ const PopupTemplate =
     Handlebars.compile(`
 <div id="popup" class="popup" onclick="popupClose(event)" >
     <div class="popup-header">
+        <h3>Popup Title</h3>
         {{{header}}}
     </div>
     <div class="popup-contents">
