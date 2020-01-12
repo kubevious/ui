@@ -56,7 +56,7 @@ const KIND_TO_USER_MAPPING = {
 
 function generateDnPathHtml(dnParts)
 {
-    var html = '<span class="dn-path">'
+    var html = '<div class="dn-path">'
     var parts = [];
     if (dnParts.length > 0) {
         if (dnParts[0].kind == 'root') {
@@ -76,7 +76,8 @@ function generateDnPathHtml(dnParts)
         parts.push(partHtml);
     }
     html += parts.join(' <span class="separator">&gt;</span> ');
-    html += '</span>'
+    html += '<div class="clearfix"></div>'
+    html += '</div>'
     return html;
 }
 /***   DN PATH END   ***/
