@@ -26,8 +26,8 @@ button:focus{outline:none;}
 
 .header .actions {
     position: absolute;
-    top:13px;
-    right:13px;
+    top:18px;
+    right:18px;
 }
 
 .header .actions .btn {
@@ -46,9 +46,11 @@ button:focus{outline:none;}
     opacity: 1.0;
 }
 
-.header .actions .btn-search div {
-    background: url("../img/search.svg") 0 0 no-repeat;
-}
+.header .actions .btn{ width: 24px; height: 24px; margin:0 0 0 15px;border-radius:0;}
+.header .actions .btn:hover{opacity: 0.5;}
+.header .actions .btn-search{background: url("../img/search.svg") center center no-repeat;}
+.header .actions .github{background: url("../img/github.svg") center center no-repeat;}
+.header .actions .about{background: url("../img/about.svg") center center no-repeat;}
 
 
 /*** COMMON DN PATH ***/
