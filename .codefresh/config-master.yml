@@ -34,6 +34,18 @@ steps:
       - 'git clone https://${{CF_REPO_OWNER}}:$GITHUB_TOKEN@github.com/${{CF_REPO_OWNER}}/cicd.git cicd.git'
       - ls -la
       - ls -la cicd.git/
+  inject_version:
+    title: Inject Version
+    stage: build
+    image: codefresh/cli
+    shell: bash
+    working_directory: "${{CICD_INFO_PATH}}"
+    commands:
+      - pwd
+      - ls -la
+      - source version.sh
+      - echo "module.exports = \"${PRODUCT_VERSION}\";" > /codefresh/volume/${PRODUCT_NAME}/src/version.js
+      - cat /codefresh/volume/${PRODUCT_NAME}/src/version.js
   build:
     title: "Building Docker Image"
     type: build
