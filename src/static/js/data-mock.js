@@ -17,6 +17,12 @@ function fetchSearchResults(criteria, cb) {
     Logger.info("[MOCK:fetchSearchResults] ", criteria);
     cb(SEARCH_DATA);
 }  
+
+function fetchAbout(cb) {
+    Logger.info("[MOCK::fetchAbout]");
+    cb(ABOUT_DATA);
+}  
+  
   
 const GRAPH_DATA = {
   "rn": "root",
@@ -3643,3 +3649,8 @@ const SEARCH_DATA = [
         dn: "root/ns-kube-system/app-heapster/cont-prom-to-sd"
     }
 ];
+
+const ABOUT_DATA = {
+    "version":"v4.5.6",
+    "backend version":"v1.2.3"
+};

@@ -3,6 +3,10 @@ $("#btnHeaderSearch").click(function(){
     openSearch();
 });
 
+$("#btnHeaderAbout").click(function(){
+    openAbout();
+});
+
 // Expanders
 $(".logbarcloaser").click(function(){
     $(".bottom-panel").addClass("hide");

@@ -67,7 +67,7 @@ function _renderPropertyGroupContents(group, useLargeFormat)
 {
     if (group.kind == "key-value")
     {
-        return _renderKeyValueContents(group, useLargeFormat);
+        return _renderKeyValueContents(group.config, useLargeFormat);
     } 
     else if (group.kind == "dn-list") 
     {
@@ -82,13 +82,13 @@ function _renderPropertyGroupContents(group, useLargeFormat)
     return "";
 }
 
-function _renderKeyValueContents(group, useLargeFormat)
+function _renderKeyValueContents(config, useLargeFormat)
 {
     var propertyList = [];
-    for(var key of _.keys(group.config)) {
+    for(var key of _.keys(config)) {
         propertyList.push({
             key: key,
-            value: group.config[key]
+            value: config[key]
         })
     }
     if (useLargeFormat) {

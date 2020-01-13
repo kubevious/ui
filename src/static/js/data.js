@@ -30,3 +30,11 @@ function fetchSearchResults(criteria, cb) {
         })
 }  
   
+function fetchAbout(cb) {
+    Logger.info("[fetchAbout]");
+    return backend.get('/about')
+        .then(result => {
+            cb(result.data);
+        });
+}  
+  
