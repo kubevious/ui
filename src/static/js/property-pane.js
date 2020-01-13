@@ -65,8 +65,12 @@ const KeyValuePairTemplate =
 
 function _renderPropertyGroupContents(group, options)
 {
+    options = options || {};
     if (group.kind == "key-value")
     {
+        if (group.id == 'env') {
+            options.keyLabel = "Variable";
+        }
         return _renderKeyValueContents(group.config, options);
     } 
     else if (group.kind == "dn-list") 
@@ -95,7 +99,7 @@ function _renderKeyValueContents(config, options)
     }
     if (options.useLargeFormat) {
         var keyLabel = options.keyLabel || 'Property';
-        var valueLabel = options.keyLabel || 'Value';
+        var valueLabel = options.valueLabel || 'Value';
         return generateTableHtml(propertyList,
             [{
                 name: keyLabel,
