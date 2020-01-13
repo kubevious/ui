@@ -5,8 +5,7 @@
 const DnShortcutItemTemplate = 
 Handlebars.compile(`
 <div class="dn-shortcut" dn="{{dn}}" {{#if handler}}onclick="{{handler}}(event)"{{/if}}>
-<img class="dn-logo" src="{{logo}}" />
-<span class="dn-title">{{{title}}}</span>
+{{{title}}}
 </div>
 `);
 
@@ -14,7 +13,6 @@ function generateDnShortcutHtml(dn, params)
 {
     params = params || {};
     var dnParts = parseDn(dn);
-    var lastPart = _.last(dnParts);
 
     if (params.relativeTo)
     {
@@ -31,8 +29,7 @@ function generateDnShortcutHtml(dn, params)
 
     var html = DnShortcutItemTemplate({ 
         dn: dn,
-        title: generateDnPathHtml(dnParts),
-        logo: getNodeLogoUrl(lastPart.kind),
+        title: generateDnPathHtml(dnParts, true),
         handler: params.handler
     });
     return html;
