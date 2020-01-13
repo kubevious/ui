@@ -130,3 +130,5 @@ pre{
 .popup-expander{display: block; float: right; margin:0 10px 0 0; width:20px; height:20px; border-radius: 2px; background:#292A2F url("../img/popup.svg") center center no-repeat; background-size:12px;border:0px;}
 .popup-expander:hover{opacity:1;}
 /****** EXPANDER END **********/
+
+.dn-shortcut .dn-path span{ line-height: 20px;}

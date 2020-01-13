@@ -71,9 +71,6 @@ button:focus{outline:none;}
     font-size: 8pt;
     color: #999;
 }
-.dn-path .name {
-    font-weight: 800;
-}
 .dn-path .separator{
     background:url("../img/separator.svg") center center no-repeat;
     background-size:100%;
