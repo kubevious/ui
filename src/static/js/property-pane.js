@@ -1,8 +1,9 @@
-var myPropertyGroups = {};
+var mySelectedObj = {};
 
 function showObjectProperties(node, propertyGroups)
 {
-    Logger.info("[showObjectProperties] ", node.data.id, propertyGroups);
+    Logger.info("[showObjectProperties] ", node.data.dn, propertyGroups);
+    mySelectedObj.dn = node.data.dn;
     _clearProperties();
     _renderPropertiesNodeDn(node);
     propertyGroups = _.orderBy(propertyGroups, x => {
@@ -12,9 +13,9 @@ function showObjectProperties(node, propertyGroups)
         return 100;
     })
     var isExpanded = true;
-    myPropertyGroups = {}; 
+    mySelectedObj.propertyGroups = {}; 
     for(var group of propertyGroups) {
-        myPropertyGroups[group.id] = group;
+        mySelectedObj.propertyGroups[group.id] = group;
         group.node = node;
         _renderPropertyGroup(node, group, isExpanded);
         isExpanded = false;
@@ -166,7 +167,16 @@ function propertyExpanderHandleClick(event) {
 
 function onPropertyGroupPopup(event) {
     var groupName = event.target.getAttribute("tag");
-    var group = myPropertyGroups[groupName];
+    var group = mySelectedObj.propertyGroups[groupName];
     var contentHtml = _renderPropertyGroupContents(group, true);
-    popupOpen(contentHtml);
+
+    var dnParts = parseDn(mySelectedObj.dn);
+    var headerHtml = 
+        generateDnPathHtml(dnParts, true) +
+        '<h3>' + group.title + '</h3>';
+
+    popupOpen(contentHtml, {
+        focus: "#searchInput",
+        header: headerHtml
+    });
 }

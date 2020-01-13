@@ -54,7 +54,7 @@ const KIND_TO_USER_MAPPING = {
     'replicaSet': 'ReplicaSet',
 }
 
-function generateDnPathHtml(dnParts)
+function generateDnPathHtml(dnParts, includeLogo)
 {
     var html = '<div class="dn-path">'
     var parts = [];
@@ -62,6 +62,12 @@ function generateDnPathHtml(dnParts)
         if (dnParts[0].kind == 'root') {
             dnParts = dnParts.splice(1);
         }
+    }
+    var lastPart = _.last(dnParts);
+    if (includeLogo && lastPart) {
+        html += '<img class="dn-logo" src="';
+        html += getNodeLogoUrl(lastPart.kind);
+        html += '" />';
     }
     for (var dnPart of dnParts)
     {
