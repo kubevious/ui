@@ -63,15 +63,15 @@ const KeyValuePairTemplate =
 </div>
 `);
 
-function _renderPropertyGroupContents(group, useLargeFormat)
+function _renderPropertyGroupContents(group, options)
 {
     if (group.kind == "key-value")
     {
-        return _renderKeyValueContents(group.config, useLargeFormat);
+        return _renderKeyValueContents(group.config, options);
     } 
     else if (group.kind == "dn-list") 
     {
-        return _renderDnListContents(group, useLargeFormat);
+        return _renderDnListContents(group, options);
     }
     else if (group.kind == "yaml")
     {
@@ -82,8 +82,10 @@ function _renderPropertyGroupContents(group, useLargeFormat)
     return "";
 }
 
-function _renderKeyValueContents(config, useLargeFormat)
+function _renderKeyValueContents(config, options)
 {
+    options = options || {};
+
     var propertyList = [];
     for(var key of _.keys(config)) {
         propertyList.push({
@@ -91,13 +93,15 @@ function _renderKeyValueContents(config, useLargeFormat)
             value: config[key]
         })
     }
-    if (useLargeFormat) {
+    if (options.useLargeFormat) {
+        var keyLabel = options.keyLabel || 'Property';
+        var valueLabel = options.keyLabel || 'Value';
         return generateTableHtml(propertyList,
             [{
-                name: 'Variable',
+                name: keyLabel,
                 value: x => x.key
             }, {
-                name: 'Value',
+                name: valueLabel,
                 value: x => x.value
             }]);
     } else {
@@ -107,8 +111,10 @@ function _renderKeyValueContents(config, useLargeFormat)
     }
 }
 
-function _renderDnListContents(group, useLargeFormat)
+function _renderDnListContents(group, options)
 {
+    options = options || {};
+
     var dns = group.config;
     return generateList(dns, dn => {
         return generateDnShortcutHtml(dn, {
@@ -134,7 +140,7 @@ function renderCode(language, code)
 
 function _renderPropertyGroup(node, group, isExpanded)
 {
-    var contentHtml = _renderPropertyGroupContents(group, false);
+    var contentHtml = _renderPropertyGroupContents(group);
 
     var groupHtml = PropertyGroupTemplate({ 
         title: group.title,
@@ -168,7 +174,7 @@ function propertyExpanderHandleClick(event) {
 function onPropertyGroupPopup(event) {
     var groupName = event.target.getAttribute("tag");
     var group = mySelectedObj.propertyGroups[groupName];
-    var contentHtml = _renderPropertyGroupContents(group, true);
+    var contentHtml = _renderPropertyGroupContents(group, { useLargeFormat: true });
 
     var dnParts = parseDn(mySelectedObj.dn);
     var headerHtml = 

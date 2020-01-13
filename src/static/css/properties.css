@@ -13,9 +13,15 @@
     font-size:11px;
 }
 .properties-owner .dn-path span{
-  margin: 0 4px 0 0; line-height:20px;
+  margin: 0 4px 0 0;
+  line-height: 20px;
 }
 
+/***************************************/
+
+.property-group .dn-path span {
+  line-height: 25px;
+}
 
 /***************************************/
 
@@ -58,7 +64,7 @@
 
 .property-group{margin: 0 0 15px;}
   
-  .expander-contents {
+.expander-contents {
     padding:15px;
     display: none;
     overflow: hidden;
@@ -131,4 +137,3 @@ pre{
 .popup-expander:hover{opacity:1;}
 /****** EXPANDER END **********/
 
-.dn-shortcut .dn-path span{ line-height: 20px;}

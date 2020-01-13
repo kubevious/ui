@@ -15,10 +15,10 @@
 
 .search-results .dn-path {
     font-size: 14pt;
-    line-height:33px;
 }
 .search-results .dn-path span {
     margin: 0 6px 0 0;
+    line-height:33px;
 }
 
 .search-results .dn-path span.separator {
