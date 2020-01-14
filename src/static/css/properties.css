@@ -121,10 +121,10 @@ pre{
     display: block;
     width:10px;
     height:100%;
-    position:absolute;
+    position:fixed;
     top:0px;
-    left:0;
-    right: 0px;
+    right:360px;
+    bottom:0px;
     margin:0;
     background:#35373E url("../img/sidebarexpander.svg") center center no-repeat;
     z-index: 20;
