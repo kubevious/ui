@@ -48,9 +48,9 @@ button:focus{outline:none;}
 
 .header .actions .btn{ width: 24px; height: 24px; margin:0 0 0 15px;border-radius:0;}
 .header .actions .btn:hover{opacity: 0.5; transition: 0.4s ease all;}
-.header .actions .btn-search{background: url("../img/search.svg") center center no-repeat;}
-.header .actions .btn-github{background: url("../img/github.svg") center center no-repeat;}
-.header .actions .btn-about{background: url("../img/about.svg") center center no-repeat;}
+.header .actions .btn-search{background: url("../img/header-btns/search.svg") center center no-repeat;}
+.header .actions .btn-github{background: url("../img/header-btns/github.svg") center center no-repeat;}
+.header .actions .btn-about{background: url("../img/header-btns/about.svg") center center no-repeat;}
 
 
 /*** COMMON DN PATH ***/
