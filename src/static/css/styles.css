@@ -103,3 +103,13 @@ button:focus{outline:none;}
     height: 32px;
     margin-right: 10px;
 }
+
+.mobile-wrapper{display: none;}
+
+@media only screen and (max-width:768px) {
+    .wrapper {
+        display:none;
+    }
+    .mobile-wrapper{display: block;background:#1E1E1E; text-align: center; padding: 15px;}
+    .mobile-wrapper .logo{width:206px; height: 26px; margin:70px auto; background: url("../img/logo.svg") top center no-repeat; float: none;}
+}
