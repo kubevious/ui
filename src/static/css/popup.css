@@ -44,7 +44,7 @@
 }
 
 .popup .close {
-    background: url("../img/close.svg");
+    background: url("../img/close.svg") center center no-repeat;
     width: 32px;
     height: 32px;
     position:absolute;

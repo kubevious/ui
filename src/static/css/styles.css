@@ -48,10 +48,16 @@ button:focus{outline:none;}
 
 .header .actions .btn{ width: 24px; height: 24px; margin:0 0 0 15px;border-radius:0;}
 .header .actions .btn:hover{opacity: 0.5; transition: 0.4s ease all;}
-.header .actions .btn-search{background: url("../img/header-btns/search.svg") center center no-repeat;}
-.header .actions .btn-github{background: url("../img/header-btns/github.svg") center center no-repeat;}
-.header .actions .btn-about{background: url("../img/header-btns/about.svg") center center no-repeat;}
+.header .actions .btn:active,
+.header .actions .btn:focus{opacity:1; outline:0;}
+.header .actions .btn-search,
+.header .actions .btn-search:active{background: url("../img/header-btns/search.svg") center center no-repeat;}
+.header .actions .btn-github,
+.header .actions .btn-github:active{background: url("../img/header-btns/github.svg") center center no-repeat;}
+.header .actions .btn-about,
+.header .actions .btn-about:active{background: url("../img/header-btns/about.svg") center center no-repeat;}
 
+.btn.focus, .btn:focus{box-shadow:none;}
 
 /*** COMMON DN PATH ***/
 .dn-path {
@@ -65,7 +71,7 @@ button:focus{outline:none;}
     display: block;
     float: left;
     margin: 0 4px 0 0;
-    line-height: 20px;
+    line-height:33px;
 }
 .dn-path .kind {
     font-weight: 400;
