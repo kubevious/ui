@@ -350,8 +350,10 @@ class VisualNode {
 
         if (this._getIsArrangedVertically()) {
             this._arrangeChildrenVertically();
-        } else {
+        } else if (this._getIsArrangedHorizontally()) {
             this._arrangeChildrenHorizontally();
+        } else if (this._getIsArrangedPack()) {
+            this._arrangeChildrenPack();
         }
 
         for(var component of this._getInnerCompontents())
@@ -368,7 +370,21 @@ class VisualNode {
     }
 
     _getIsArrangedVertically() {
-        if (this._resolveValue("arrangeVertically")) {
+        if (this._resolveValue("arrange") == 'vertically') {
+            return true;
+        }
+        return false;
+    }
+
+    _getIsArrangedHorizontally() {
+        if (this._resolveValue("arrange") == 'horizontally') {
+            return true;
+        }
+        return false;
+    }
+
+    _getIsArrangedPack() {
+        if (this._resolveValue("arrange") == 'pack') {
             return true;
         }
         return false;
@@ -391,6 +407,25 @@ class VisualNode {
             child._x = this._paddingLeft;
             child._y = i;
             i += child.height + this._padding;
+        }
+    }
+
+    _arrangeChildrenPack()
+    {
+        var packer = new GrowingPacker();
+        var blocks = this.visibleChildren.map(x => ({ w: x.width + this._padding, h: x.height + this._padding, item: x}));
+        blocks = _.orderBy(blocks, x => Math.max(x.h, x.w), 'desc' );
+        // blocks.sort(function(a,b) { return (Math.max(b.h, b.w) < Math.max(a.h, a.w)); }); // sort inputs for best results
+        packer.fit(blocks);
+
+        for(var block of blocks)
+        {
+            if (block.fit) {
+                block.item._x = this._paddingLeft + block.fit.x;
+                block.item._y = this._headerHeight + this._padding + block.fit.y;
+            } else {
+                console.log("DOES NOT FIT");
+            }
         }
     }
 
@@ -476,31 +511,30 @@ const VISUAL_NODE_COLOR_TABLE = [
 
 const NODE_RENDER_METADATA = {
     default: {
-        arrangeVertically: false,
+        arrange: 'vertically',
         padding: 5,
         paddingLeft: 30,
         expanded: false
     },
     per_kind: {
         root: {
+            arrange: 'horizontally',
             padding: 30,
             expanded: true
         },
         ns: {
-            arrangeVertically: true,
             expanded: true,
             padding: 20
         },
         app: {
-            arrangeVertically: true,
-            padding: 5
+        },
+        cont: {
+            arrange: 'pack',
         },
         replicaset: {
-            arrangeVertically: true
+            arrange: 'pack',
         },
         raw: {
-            arrangeVertically: true,
-            padding: 5
         }
     }
 }
