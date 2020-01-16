@@ -297,7 +297,12 @@ class VisualView {
         node = node
             .enter()
             .append("g")
-            .attr("class", "node")
+            .attr("class", function(d) { 
+                if (d.isSelected) {
+                    return "node selected";
+                }
+                return "node"; 
+            })
             .attr("id", function(d) { 
                 return d.id; 
             })
@@ -349,7 +354,7 @@ class VisualView {
             ;
 
         node.append("text")
-            .attr("class", "node-title text-light")
+            .attr("class", "node-title")
             .text(nodeHeaderText('title'))
             .attr("transform", nodeHeaderTransform('title', 'text'))  
             .on("click", nodePerformSelect)
@@ -376,7 +381,7 @@ class VisualView {
             .filter(function(d) {
                 return d.hasHeader('severity');
             })
-            .attr("class", "node-severity-text text-light")
+            .attr("class", "node-severity-text")
             .text(nodeHeaderText('severity'))
             // .styles(nodeHeaderStyles('severity'))
             .attr("transform", nodeHeaderTransform('severity', 'text'))  
@@ -422,6 +427,12 @@ class VisualView {
             .select(visualNode.node)
             .transition()
             .duration(duration)
+            .attr("class", function(d) { 
+                if (d.isSelected) {
+                    return "node selected";
+                }
+                return "node"; 
+            })
             .attr("transform", nodeGroupTransform)
 
         d3

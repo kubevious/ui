@@ -1,4 +1,15 @@
-.node .text-light {
+.node .node-title {
+    font-family: 'Roboto';
+    font: 14px sans-serif;
+    font-weight: 600;
+    fill: #ffffff;
+}
+
+.selected .node-title {
+    fill: #222222;
+}
+
+.node .node-severity-text {
     font-family: 'Roboto';
     font: 14px sans-serif;
     font-weight: 600;
