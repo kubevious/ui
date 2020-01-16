@@ -1,9 +1,11 @@
+var MyD3ColorScale = d3.scaleOrdinal(d3.schemeTableau10);//schemeTableau10
+
 class VisualNode {
 
-    constructor(view, data) {
+    constructor(view, data, parent) {
         this._view = view;
         this._data = data;
-        this._parent = null;
+        this._parent = parent;
         this._children = [];
         this._x = 0; //relative to parent
         this._y = 0; //relative to parent
@@ -20,6 +22,15 @@ class VisualNode {
         this._headerHeight = 34; //50;
         this._isExpanded = this._resolveValue("expanded");
         this._isSelected = false;
+
+        if (this._parent) {
+            this._parent._children.push(this);
+            this._depth = this._parent.depth + 1;
+        } else {
+            this._depth = -1;
+        }
+
+        this._setupTheme();
     }
 
     get id() {
@@ -55,10 +66,7 @@ class VisualNode {
     }
 
     get depth() {
-        if (this._parent) {
-            return this._parent.depth + 1;
-        }
-        return 1;
+        return this._depth;
     }
 
     get data() {
@@ -115,9 +123,22 @@ class VisualNode {
         return this.data.allErrorCount;
     }
 
-    addChild(child) {
-        child._parent = this;
-        this._children.push(child);
+    get headerFillColor() {
+        if (this.isSelected) {
+            return this._selectedHeaderFillColor;
+        }
+        return this._headerFillColor;
+    }
+
+    get bgFillColor() {
+        if (this.isSelected) {
+            return this._selectedBgFillColor;
+        }
+        return this._bgFillColor;
+    }
+
+    get strokeColor() {
+        return this._strokeColor;
     }
 
     prepare() {
@@ -417,7 +438,35 @@ class VisualNode {
       
         return nodes;
     }
+
+    _setupTheme()
+    {
+        // var x = MyD3ColorScale(this.depth); 
+        var x = VISUAL_NODE_COLOR_TABLE[this.depth % VISUAL_NODE_COLOR_TABLE.length];
+        this._headerFillColor = x;
+        this._selectedHeaderFillColor = '#F8D92F'; // pSBC(-0.25, '#F8D92F', false, true);
+        this._bgFillColor = pSBC(0.75, x, false, true);
+        this._selectedBgFillColor = pSBC(0.75, this._selectedHeaderFillColor, false, true);
+        this._strokeColor = pSBC(-0.50, x, false, true);
+    }
+
 }
+
+const VISUAL_NODE_COLOR_TABLE = [
+    '#7C90BF',
+    '#F58D61',
+    '#66C2A5',
+    '#80B1D2',
+    '#A6D853',
+    '#E2A78E',
+    '#E789C2',
+    '#BDB9DA',
+    '#BD7637',
+    '#D23AEE',
+    '#8331CB',
+    '#BBBBBB',
+    // '#F8D92F', // yellow
+]
 
 const NODE_RENDER_METADATA = {
     default: {
