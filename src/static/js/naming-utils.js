@@ -1,6 +1,47 @@
 function splitDn(dn)
 {
-    var parts = dn.split("/");
+    var parts = [];
+
+    var ch = null;
+    var token = "";
+    var parsingKind = true;
+    var parsingNaming = true;
+    for (var i = 0; i < dn.length; i++) {
+        var skipAdd = false;
+        ch = dn.charAt(i);
+        if (parsingKind) {
+            if (ch == '-') {
+                parsingKind = false;
+            } else if (ch == '/') {
+                skipAdd = true;
+                parts.push(token);
+                token = "";
+            }
+        } else {
+            if (parsingNaming) {
+                if (ch == ']') {
+                    parsingNaming = false;
+                }
+            } else {
+                if (ch == '[') {
+                    parsingNaming = true;
+                } else if (ch == '/') {
+                    skipAdd = true;
+                    parts.push(token);
+                    token = "";
+                }
+            }
+        }
+
+        if (!skipAdd) {
+            token += ch;
+        }
+    }
+
+    if (token.length > 0) {
+        parts.push(token);
+    }
+
     return parts;
 }
 
@@ -17,7 +58,7 @@ function parseRn(rn)
     return {
         rn: rn,
         kind: rn.substr(0, index),
-        name: rn.substr(index + 1)
+        name: rn.substr(index + 2, rn.length - (index + 3))
     };
 }
 
