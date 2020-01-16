@@ -442,12 +442,18 @@ class VisualNode {
     _setupTheme()
     {
         // var x = MyD3ColorScale(this.depth); 
-        var x = VISUAL_NODE_COLOR_TABLE[this.depth % VISUAL_NODE_COLOR_TABLE.length];
-        this._headerFillColor = x;
+
+        // var x = VISUAL_NODE_COLOR_TABLE[this.depth % VISUAL_NODE_COLOR_TABLE.length];
+        // this._headerFillColor = x;
+        // this._bgFillColor = pSBC(0.75, x, false, true);
+        // this._strokeColor = pSBC(-0.50, x, false, true);
+
+        this._headerFillColor = "#35373E";
+        this._bgFillColor =  "#252526";
+        this._strokeColor = "black";
+
         this._selectedHeaderFillColor = '#F8D92F'; // pSBC(-0.25, '#F8D92F', false, true);
-        this._bgFillColor = pSBC(0.75, x, false, true);
         this._selectedBgFillColor = pSBC(0.75, this._selectedHeaderFillColor, false, true);
-        this._strokeColor = pSBC(-0.50, x, false, true);
     }
 
 }
