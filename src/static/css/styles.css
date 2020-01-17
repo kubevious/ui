@@ -111,7 +111,7 @@ button:focus{outline:none;}
         display:none;
     }
     .mobile-wrapper{display: block;background:#1E1E1E; text-align: center; padding: 15px;}
-    .mobile-wrapper .logo{width:206px; height: 26px; margin:70px auto; background: url("../img/logo.svg") top center no-repeat; float: none;}
+    .mobile-wrapper .logo{margin:70px auto; float: none;}
 }
 
 
