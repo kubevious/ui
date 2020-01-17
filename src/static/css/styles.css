@@ -19,7 +19,7 @@ div{box-sizing: border-box;}
 .diagram.full svg{padding-bottom:30px;}
 
 h1, h2, h3, h4{font-family: 'Montserrat', sans-serif; font-size: 16px;}
-.logo{ width:190px; height:40px; margin:10px 15px; background: url("../img/logo.svg") left top no-repeat; float: left;}
+.logo{ width:190px; height:30px; margin:15px; background: url("../img/logo.svg") left top no-repeat; background-size: 100%; float: left;}
 
 button:focus{outline:none;}
 .temporary{ display: none;}
