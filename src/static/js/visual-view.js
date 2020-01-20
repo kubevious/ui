@@ -333,7 +333,7 @@ class VisualView {
             .append("circle")
             .attr("class", "node-logo-bg")
             .attr("transform", nodeHeaderTransform("logo", "center")) 
-            .attr("r", 12)
+            .attr("r", 16)
             .style("fill", "white")
             .on("click", nodePerformSelect)
             .on("dblclick", nodePerformExpandCollapse)
@@ -347,16 +347,24 @@ class VisualView {
             })
             .attr("x", nodeHeaderX("logo"))
             .attr("y", nodeHeaderY("logo"))
-            .attr("width", 24)
-            .attr("height", 24)
+            .attr("width", nodeHeaderWidth('logo'))
+            .attr("height", nodeHeaderHeight('logo'))
             .on("click", nodePerformSelect)
             .on("dblclick", nodePerformExpandCollapse)
             ;
 
         node.append("text")
-            .attr("class", "node-title")
-            .text(nodeHeaderText('title'))
-            .attr("transform", nodeHeaderTransform('title', 'text'))  
+            .attr("class", "node-title-kind")
+            .text(nodeHeaderText('title-kind'))
+            .attr("transform", nodeHeaderTransform('title-kind', 'text'))  
+            .on("click", nodePerformSelect)
+            .on("dblclick", nodePerformExpandCollapse)
+            ;
+
+        node.append("text")
+            .attr("class", "node-title-name")
+            .text(nodeHeaderText('title-name'))
+            .attr("transform", nodeHeaderTransform('title-name', 'text'))  
             .on("click", nodePerformSelect)
             .on("dblclick", nodePerformExpandCollapse)
             ;

@@ -51,6 +51,15 @@ const KIND_TO_USER_MAPPING = {
     'replicaSet': 'ReplicaSet',
 }
 
+function prettyKind(kind)
+{
+    var prettyKind = KIND_TO_USER_MAPPING[kind];
+    if (!prettyKind) {
+        prettyKind = _.upperFirst(kind);
+    }
+    return prettyKind;
+}
+
 function generateDnPathHtml(dnParts, includeLogo)
 {
     var html = '<div class="dn-path">'
@@ -68,10 +77,7 @@ function generateDnPathHtml(dnParts, includeLogo)
     }
     for (var dnPart of dnParts)
     {
-        var kind = KIND_TO_USER_MAPPING[dnPart.kind];
-        if (!kind) {
-            kind = _.upperFirst(dnPart.kind);
-        }
+        var kind = prettyKind(dnPart.kind);
         var partHtml = 
             '<span class="kind">' + kind + '</span>' +
             '<span> </span>' + 

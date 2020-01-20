@@ -19,7 +19,7 @@ class VisualNode {
 
         this._headerPadding = 5;
         this._headerWidth = 0;
-        this._headerHeight = 34; //50;
+        this._headerHeight = 42;
         this._isExpanded = this._resolveValue("expanded");
         this._isSelected = false;
 
@@ -165,15 +165,25 @@ class VisualNode {
         this._addToHeader("logo", { 
             kind: 'fixed', 
             location: 'left', 
-            width: 24, 
-            height: 24 
+            width: 32, 
+            height: 32 
         });
 
         this._addToHeader("title", {
-            kind: 'text', 
-            text: this.data.name, 
-            style: "font-family: 'Roboto'; font: 14px sans-serif; font-weight: 600;",
-            location: 'left'
+            kind: 'column', 
+            location: 'left',
+            cells: [{
+                name: 'kind',
+                kind: 'text', 
+                text: prettyKind(this.data.kind),
+                style: "font-family: 'Roboto'; font: 10px sans-serif; font-weight: 600;"
+            },
+            {
+                name: 'name',
+                kind: 'text', 
+                text: this.data.name,
+                style: "font-family: 'Roboto'; font: 14px sans-serif; font-weight: 600;"
+            }]
         });
 
         if (this.isExpandable) {
@@ -207,7 +217,6 @@ class VisualNode {
         this._measureHeaders();
     }
 
-
     _measureHeaders()
     {
         var left = this._headerPadding; //this._paddingLeft;
@@ -227,6 +236,19 @@ class VisualNode {
 
             header.centerY = (this._headerHeight + header.height) / 2;
             header.top = (this._headerHeight - header.height) / 2;
+
+            if (header.kind == 'column')
+            {
+                var top = header.top;
+                for(var cell of header.cells)
+                {
+                    cell.top = top;
+                    cell.left = header.left;
+                    cell.right = header.right;
+
+                    top += cell.height;
+                }
+            }
         }
         this._headerWidth = left + right;
     }
@@ -296,12 +318,21 @@ class VisualNode {
 
     _measureHeader(header)
     {
-        if (header.kind == 'text')
+        if (header.kind == 'column')
         {
-            var titleDimentions = 
+            for(var cell of header.cells)
+            {
+                this._measureHeader(cell);
+            }
+            header.width = _.max(header.cells.map(x => x.width));
+            header.height = _.sumBy(header.cells, x => x.height);
+        } 
+        else if (header.kind == 'text')
+        {
+            var textDimentions = 
                 this._view._measureText(header.text, null, header.style);
-            header.width = titleDimentions.width;
-            header.height = titleDimentions.height;
+            header.width = textDimentions.width;
+            header.height = textDimentions.height;
         }
         else if (header.kind == 'flag')
         {
@@ -315,9 +346,20 @@ class VisualNode {
 
     _addToHeader(name, info)
     {
-        info.name = name;
+        info.id = name;
+        info.name = info.id;
         this._headers[name] = info;
         this._headersOrder.push(info);
+
+        if (info.kind == 'column') 
+        {
+            for(var cell of info.cells)
+            {
+                cell.id = name + '-' + cell.name;
+                cell.location = info.location;
+                this._headers[cell.id] = cell;
+            }
+        }
     }
 
     _sortChildren() {

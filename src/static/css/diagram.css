@@ -1,11 +1,20 @@
-.node .node-title {
+.node .node-title-kind {
+    font-family: 'Roboto';
+    font: 10px sans-serif;
+    font-weight: 600;
+    fill: #FFFFFFAA;
+}
+.node .node-title-name {
     font-family: 'Roboto';
     font: 14px sans-serif;
     font-weight: 600;
-    fill: #ffffff;
+    fill: #FFFFFF;
 }
 
-.selected .node-title {
+.selected .node-title-kind {
+    fill: #222222;
+}
+.selected .node-title-name {
     fill: #222222;
 }
 
