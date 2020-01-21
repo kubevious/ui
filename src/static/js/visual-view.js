@@ -317,7 +317,7 @@ class VisualView {
             .attr("width", function(d) { return d.width; })
             .attr("height", function(d) { return d.height; })
             .style("fill", nodeBgFillColor)
-            .style("stroke", function(d) { return d.strokeColor; })
+            .style("stroke", nodeStrokeColor)
             ;
 
         node.append("rect")
@@ -451,6 +451,7 @@ class VisualView {
             .attr("width", function (d) { return d.width })
             .attr("height", function (d) { return d.height })
             .style("fill", nodeBgFillColor)
+            .style("stroke", nodeStrokeColor)
 
         d3
             .select(visualNode.node)
@@ -686,6 +687,11 @@ function nodeHeaderFillColor(d)
 function nodeBgFillColor(d)
 {
     return d.bgFillColor;
+}
+
+function nodeStrokeColor(d)
+{
+    return d.strokeColor;
 }
 
 function nodeGroupTransform(d) { 

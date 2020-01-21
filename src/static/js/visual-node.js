@@ -138,6 +138,9 @@ class VisualNode {
     }
 
     get strokeColor() {
+        if (this.isSelected) {
+            return this._selectedStrokeColor;
+        }
         return this._strokeColor;
     }
 
@@ -518,19 +521,14 @@ class VisualNode {
 
     _setupTheme()
     {
-        // var x = MyD3ColorScale(this.depth); 
-
         var x = VISUAL_NODE_COLOR_TABLE[this.depth % VISUAL_NODE_COLOR_TABLE.length];
         this._headerFillColor = x;
-        this._bgFillColor = pSBC(0.75, x, false, true);
-        this._strokeColor = pSBC(-0.50, x, false, true);
+        this._bgFillColor = "#252526"; // pSBC(0.75, x, false, true);
+        this._strokeColor = "#35373E"; //pSBC(-0.50, x, false, true);
 
-        // this._headerFillColor = "#35373E";
-        // this._bgFillColor =  "#252526";
-        // this._strokeColor = "black";
-
-        this._selectedHeaderFillColor = '#EEE61B';// '#F8D92F'; // pSBC(-0.25, '#F8D92F', false, true);
-        this._selectedBgFillColor = '#FCF1B3';// pSBC(0.75, this._selectedHeaderFillColor, false, true);
+        this._selectedHeaderFillColor = '#EEE61B'; // ;// '#F8D92F'; // pSBC(-0.25, '#F8D92F', false, true);
+        this._selectedBgFillColor = '#FCF1B3'; // '#43454D';// '#FCF1B3';// pSBC(0.75, this._selectedHeaderFillColor, false, true);
+        this._selectedStrokeColor = '#AAAAAA';
     }
 
 }
@@ -554,8 +552,8 @@ const VISUAL_NODE_COLOR_TABLE = [
 const NODE_RENDER_METADATA = {
     default: {
         arrange: 'vertically',
-        padding: 5,
-        paddingLeft: 30,
+        padding: 15,
+        paddingLeft: 15,
         expanded: false
     },
     per_kind: {
@@ -566,7 +564,8 @@ const NODE_RENDER_METADATA = {
         },
         ns: {
             expanded: true,
-            padding: 20
+            padding: 20,
+            // arrange: 'pack',
         },
         app: {
         },
