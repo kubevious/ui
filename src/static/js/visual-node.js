@@ -165,16 +165,21 @@ class VisualNode {
         }
         this._headersOrder = [];
 
-        this._addToHeader("logo", { 
-            kind: 'fixed', 
-            location: 'left', 
-            width: 32, 
-            height: 32 
-        });
+        {
+            var size = 32;
+            this._addToHeader("logo", { 
+                kind: 'fixed', 
+                location: 'left', 
+                width: size, 
+                height: size,
+                padding: (this._headerHeight - size) / 2 - this._headerPadding
+            });
+        }
 
         this._addToHeader("title", {
             kind: 'column', 
             location: 'left',
+            padding: 5,
             cells: [{
                 name: 'kind',
                 kind: 'text', 
@@ -190,11 +195,13 @@ class VisualNode {
         });
 
         if (this.isExpandable) {
+            var size = 20;
             this._addToHeader("expander", { 
                 kind: 'fixed', 
                 location: 'right', 
-                width: 12, 
-                height: 12 
+                width: size, 
+                height: size,
+                padding: (this._headerHeight - size) / 2 - this._headerPadding
             });
         }
 
@@ -228,10 +235,16 @@ class VisualNode {
         {
             this._measureHeader(header);
             if (header.location == 'left') {
+                if (header.padding) {
+                    left += header.padding;
+                }
                 header.left = left;
                 left += header.width;
-                left += this._headerPadding; 
+                left += this._headerPadding;
             } else if (header.location == 'right') {
+                if (header.padding) {
+                    right += header.padding;
+                }
                 right += header.width;
                 header.right = right;
                 right += this._headerPadding;
@@ -527,8 +540,10 @@ class VisualNode {
         this._strokeColor = "#35373E"; //pSBC(-0.50, x, false, true);
 
         this._selectedHeaderFillColor = '#EEE61B'; // ;// '#F8D92F'; // pSBC(-0.25, '#F8D92F', false, true);
-        this._selectedBgFillColor = '#FCF1B3'; // '#43454D';// '#FCF1B3';// pSBC(0.75, this._selectedHeaderFillColor, false, true);
+        this._selectedBgFillColor = '#43454D';// '#FCF1B3';// pSBC(0.75, this._selectedHeaderFillColor, false, true);
         this._selectedStrokeColor = '#AAAAAA';
+
+        // this._selectedBgFillColor = '#FCF1B3';
     }
 
 }

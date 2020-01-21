@@ -314,30 +314,39 @@ class VisualView {
 
         node.append("rect")
             .attr("class", "node-bg")
-            .attr("width", function(d) { return d.width; })
-            .attr("height", function(d) { return d.height; })
+            .attr("width", nodeWidth)
+            .attr("height", nodeHeight)
             .style("fill", nodeBgFillColor)
             .style("stroke", nodeStrokeColor)
             ;
 
         node.append("rect")
             .attr("class", "node-header")
-            .attr("width", function(d) { return d.width; })
-            .attr("height", function(d) { return d.headerHeight; })
+            .attr("width", nodeWidth)
+            .attr("height", nodeHeaderBgHeight)
+            .style("fill", nodeBgFillColor)
+            .on("click", nodePerformSelect)
+            .on("dblclick", nodePerformExpandCollapse)
+            ;
+
+        node.append("rect")
+            .attr("class", "node-header-hl")
+            .attr("width", nodeHeaderBgWidth)
+            .attr("height", nodeHeaderBgHeight)
             .style("fill", nodeHeaderFillColor)
             .on("click", nodePerformSelect)
             .on("dblclick", nodePerformExpandCollapse)
             ;
 
-        node
-            .append("circle")
-            .attr("class", "node-logo-bg")
-            .attr("transform", nodeHeaderTransform("logo", "center")) 
-            .attr("r", 16)
-            .style("fill", "white")
-            .on("click", nodePerformSelect)
-            .on("dblclick", nodePerformExpandCollapse)
-            ;
+        // node
+        //     .append("circle")
+        //     .attr("class", "node-logo-bg")
+        //     .attr("transform", nodeHeaderTransform("logo", "center")) 
+        //     .attr("r", 16)
+        //     .style("fill", "white")
+        //     .on("click", nodePerformSelect)
+        //     .on("dblclick", nodePerformExpandCollapse)
+        //     ;
 
         node
             .append("image")
@@ -405,7 +414,7 @@ class VisualView {
             .attr("x", nodeHeaderX('expander') ) 
             .attr("y", nodeHeaderY('expander'))
             .attr("width", nodeHeaderWidth('expander'))
-            .attr("height", 12)
+            .attr("height", nodeHeaderHeight('expander'))
             .on("click", nodePerformExpandCollapse)
             ;
 
@@ -448,8 +457,8 @@ class VisualView {
             .select(".node-bg")
             .transition()
             .duration(duration)
-            .attr("width", function (d) { return d.width })
-            .attr("height", function (d) { return d.height })
+            .attr("width", nodeWidth)
+            .attr("height", nodeHeight)
             .style("fill", nodeBgFillColor)
             .style("stroke", nodeStrokeColor)
 
@@ -458,7 +467,17 @@ class VisualView {
             .select(".node-header")
             .transition()
             .duration(duration)
-            .attr("width", function (d) { return d.width })
+            .attr("width", nodeWidth)
+            .attr("height", nodeHeaderBgHeight)
+            .style("fill", nodeBgFillColor)
+
+        d3
+            .select(visualNode.node)
+            .select(".node-header-hl")
+            .transition()
+            .duration(duration)
+            .attr("width", nodeHeaderBgWidth)
+            .attr("height", nodeHeaderBgHeight)
             .style("fill", nodeHeaderFillColor)
 
         d3
@@ -520,7 +539,7 @@ class VisualView {
             ;
 
         node.append("rect")
-            .attr("class", "node-header")
+            .attr("class", "node-header-hl")
             .attr("width", function(d) { return d.width; })
             .attr("height", function(d) { return d.headerHeight; })
             .style("fill", nodeHeaderFillColor)
@@ -549,7 +568,7 @@ class VisualView {
 
         d3
             .select(visualNode.smallNode)
-            .select(".node-header")
+            .select(".node-header-hl")
             .transition()
             .duration(duration)
             .attr("width", function (d) { return d.width; })
@@ -677,6 +696,29 @@ function nodePerformExpandCollapse(d)
 function nodePerformSelect(d)
 {
     d.view.selectNode(d);
+}
+
+function nodeHeight(d)
+{
+    return d.height;
+}
+
+function nodeWidth(d)
+{
+    return d.width;
+}
+
+function nodeHeaderBgHeight(d)
+{
+    return d.headerHeight;
+}
+
+function nodeHeaderBgWidth(d)
+{
+    if (d.isSelected) {
+        return d.width;
+    }
+    return d.headerHeight;
 }
 
 function nodeHeaderFillColor(d)
