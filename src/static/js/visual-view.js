@@ -366,7 +366,7 @@ class VisualView {
         node.append("text")
             .attr("class", "node-title-kind")
             .text(nodeHeaderText('title-kind'))
-            .attr("transform", nodeHeaderTransform('title-kind', 'text'))  
+            .attr("transform", nodeHeaderTransform('title-kind'))  
             .on("click", nodePerformSelect)
             .on("dblclick", nodePerformExpandCollapse)
             ;
@@ -374,7 +374,7 @@ class VisualView {
         node.append("text")
             .attr("class", "node-title-name")
             .text(nodeHeaderText('title-name'))
-            .attr("transform", nodeHeaderTransform('title-name', 'text'))  
+            .attr("transform", nodeHeaderTransform('title-name'))  
             .on("click", nodePerformSelect)
             .on("dblclick", nodePerformExpandCollapse)
             ;
@@ -385,14 +385,14 @@ class VisualView {
             })
             .append("rect")
             .attr("class", "node-severity")
-            .attr("x", nodeHeaderX('severity')) 
-            .attr("y", nodeHeaderY('severity'))
-            .attr("width", nodeHeaderWidth('severity'))
-            .attr("height", nodeHeaderHeight('severity'))
-            // .attr("height", 12)
-            .attr("rx", 6)
+            .attr("x", nodeHeaderX('severity', 'bounding')) 
+            .attr("y", nodeHeaderY('severity', 'bounding'))
+            .attr("width", nodeHeaderWidth('severity', 'bounding'))
+            .attr("height", nodeHeaderHeight('severity', 'bounding'))
+            .attr("rx", 10)
             .style("fill", "red")
-            // .on("click", nodePerformExpandCollapse)
+            .on("click", nodePerformSelect)
+            .on("dblclick", nodePerformExpandCollapse)
             ;
 
         node.append("text")
@@ -402,7 +402,9 @@ class VisualView {
             .attr("class", "node-severity-text")
             .text(nodeHeaderText('severity'))
             // .styles(nodeHeaderStyles('severity'))
-            .attr("transform", nodeHeaderTransform('severity', 'text'))  
+            .attr("transform", nodeHeaderTransform('severity'))  
+            .on("click", nodePerformSelect)
+            .on("dblclick", nodePerformExpandCollapse)
             ;
 
         node
@@ -494,14 +496,14 @@ class VisualView {
             .select(".node-severity")
             .transition()
             .duration(duration)
-            .attr("x", nodeHeaderX('severity'))
+            .attr("x", nodeHeaderX('severity', 'bounding'))
 
         d3
             .select(visualNode.node)
             .select(".node-severity-text")
             .transition()
             .duration(duration)
-            .attr("transform", nodeHeaderTransform('severity', 'text'))  
+            .attr("transform", nodeHeaderTransform('severity'))  
 
 
         this._updateNodeSmall(visualNode);
@@ -782,16 +784,22 @@ function nodeHeaderY(headerName, flavor) {
     }
 }
 
-function nodeHeaderWidth(headerName) { 
+function nodeHeaderWidth(headerName, flavor) { 
     return (d) => {
         var header = d.getHeader(headerName);
+        if (flavor) {
+            return header[flavor].width;
+        }
         return header.width;
     }
 }
 
-function nodeHeaderHeight(headerName) { 
+function nodeHeaderHeight(headerName, flavor) { 
     return (d) => {
         var header = d.getHeader(headerName);
+        if (flavor) {
+            return header[flavor].height;
+        }
         return header.height;
     }
 }

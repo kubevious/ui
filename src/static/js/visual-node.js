@@ -19,7 +19,7 @@ class VisualNode {
 
         this._headerPadding = 5;
         this._headerWidth = 0;
-        this._headerHeight = 42;
+        this._headerHeight = 40;
         this._isExpanded = this._resolveValue("expanded");
         this._isSelected = false;
 
@@ -188,13 +188,13 @@ class VisualNode {
                 name: 'kind',
                 kind: 'text', 
                 text: prettyKind(this.data.kind),
-                style: "font-family: 'Roboto'; font: 10px sans-serif; font-weight: 600;"
+                style: "font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 500;"
             },
             {
                 name: 'name',
                 kind: 'text', 
                 text: this.data.name,
-                style: "font-family: 'Roboto'; font: 14px sans-serif; font-weight: 600;"
+                style: "font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700;"
             }]
         });
 
@@ -215,7 +215,10 @@ class VisualNode {
                 text: this.errorCount, 
                 style: "font-family: 'Roboto'; font: 14px sans-serif; font-weight: 600;",
                 location: 'right',
-                sidesPadding: 5
+                bounding: {
+                    height: 20,
+                    sidesPadding: 8
+                },
             });
         }
 
@@ -238,22 +241,55 @@ class VisualNode {
         for(var header of this._headersOrder)
         {
             this._measureHeader(header);
-            if (header.location == 'left') {
-                if (header.padding) {
-                    left += header.padding;
+            
+            if (header.bounding)
+            {
+                if (header.location == 'left') {
+                    if (header.padding) {
+                        left += header.padding;
+                    }
+                    header.bounding.left = left;
+                    header.left = header.bounding.left;
+                    if (header.bounding.sidesPadding) {
+                        header.left += header.bounding.sidesPadding;
+                    }
+                    left += header.bounding.width;
+                    left += this._headerPadding;
+                } else if (header.location == 'right') {
+                    if (header.padding) {
+                        right += header.padding;
+                    }
+                    right += header.bounding.width;
+                    header.bounding.right = right;
+                    header.right = header.bounding.right;
+                    if (header.bounding.sidesPadding) {
+                        header.right -= header.bounding.sidesPadding;
+                    }
+                    right += this._headerPadding;
                 }
-                header.left = left;
-                left += header.width;
-                left += this._headerPadding;
-            } else if (header.location == 'right') {
-                if (header.padding) {
-                    right += header.padding;
-                }
-                right += header.width;
-                header.right = right;
-                right += this._headerPadding;
-            }
 
+                header.bounding.centerY = (this._headerHeight + header.bounding.height) / 2;
+                header.bounding.top = (this._headerHeight - header.bounding.height) / 2;
+            }
+            else
+            {
+                if (header.location == 'left') {
+                    if (header.padding) {
+                        left += header.padding;
+                    }
+                    header.left = left;
+                    left += header.width;
+                    left += this._headerPadding;
+                } else if (header.location == 'right') {
+                    if (header.padding) {
+                        right += header.padding;
+                    }
+                    right += header.width;
+                    header.right = right;
+                    right += this._headerPadding;
+                }
+            }
+            
             header.centerY = (this._headerHeight + header.height) / 2;
             header.top = (this._headerHeight - header.height) / 2;
 
@@ -304,9 +340,11 @@ class VisualNode {
         if (flavor == 'center') {
             value += header.width / 2;
         }
-        if (flavor == 'text') {
-            if (header.sidesPadding) {
-                value += header.sidesPadding;
+        if (flavor == 'bounding') {
+            if (header.location == 'left') {
+                value = header.bounding.left;
+            } else if (header.location == 'right') {
+                value = this.width - header.bounding.right;
             }
         }
         return value;
@@ -315,11 +353,14 @@ class VisualNode {
     getHeaderY(name, flavor)
     {
         var header = this.getHeader(name);
-        if (flavor == 'text') {
-            return header.top + header.height/2 + 4;
-        }
         if (flavor == 'center') {
             return header.top + header.height/2;
+        }
+        if (flavor == 'bounding') {
+            return header.bounding.top;
+        }
+        if (header.kind == 'text') {
+            return header.top + header.height/2 + header.height/4;
         }
         return header.top;
     }
@@ -359,8 +400,19 @@ class VisualNode {
             header.width = 16;
             header.height = 16;
         }
-        if (header.sidesPadding) {
-            header.width += header.sidesPadding * 2;
+
+        if (header.bounding)
+        {
+            if (!header.bounding.height) {
+                header.bounding.height = header.height;
+            }
+            if (!header.bounding.width) {
+                header.bounding.width = header.width;
+            }
+            if (header.bounding.sidesPadding) {
+                header.bounding.width = header.width + header.bounding.sidesPadding * 2;
+                header.width += header.bounding.sidesPadding * 2;
+            }
         }
     }
 
@@ -579,12 +631,12 @@ const NODE_RENDER_METADATA = {
     per_kind: {
         root: {
             arrange: 'horizontally',
-            padding: 30,
+            // padding: 30,
             expanded: true
         },
         ns: {
             expanded: true,
-            padding: 20,
+            // padding: 20,
             // arrange: 'pack',
         },
         app: {

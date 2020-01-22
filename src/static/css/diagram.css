@@ -1,13 +1,13 @@
 .node .node-title-kind {
-    font-family: 'Roboto';
-    font: 10px sans-serif;
-    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
     fill: #FFFFFFAA;
 }
 .node .node-title-name {
-    font-family: 'Roboto';
-    font: 14px sans-serif;
-    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
     fill: #FFFFFF;
 }
 
@@ -19,9 +19,9 @@
 }
 
 .node .node-severity-text {
-    font-family: 'Roboto';
-    font: 14px sans-serif;
-    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
     fill: #ffffff;
 }
 
