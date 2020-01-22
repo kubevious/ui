@@ -15,7 +15,7 @@ class VisualNode {
         this._height = 0;
 
         this._padding = this._resolveValue("padding");
-        this._paddingLeft = this._resolveValue("paddingLeft");
+        this._paddingLeft = this._padding;//this._resolveValue("paddingLeft");
 
         this._headerPadding = 5;
         this._headerWidth = 0;
@@ -573,7 +573,7 @@ const NODE_RENDER_METADATA = {
     default: {
         arrange: 'vertically',
         padding: 15,
-        paddingLeft: 15,
+        // paddingLeft: 0, //15,
         expanded: false
     },
     per_kind: {
