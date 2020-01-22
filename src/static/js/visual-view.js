@@ -55,10 +55,6 @@ class VisualView {
 
     setup()
     {
-        // var size = this._parentElem.node().getBoundingClientRect();
-        // this._width = size.width;
-        // this._height = size.height;
-
         this._svgElem = this._parentElem
             .append("svg")
             .attr("position", "absolute")
@@ -131,6 +127,7 @@ class VisualView {
         this._height = size.height;
 
         this._setupControl();
+        this._applyPanTransform();
     }
 
     _setupControl()
@@ -166,8 +163,8 @@ class VisualView {
         if (this._controlInfo.previewFullRectElem)
         {
             this._controlInfo.previewFullRectElem
-                .attr("width", this._visualRoot.width * this._controlInfo.scale)
-                .attr("height", this._visualRoot.height * this._controlInfo.scale);
+                .attr("width", this._controlInfo.boxWidth)   // this._visualRoot.width * this._controlInfo.scale)
+                .attr("height", this._controlInfo.boxHeight) // this._visualRoot.height * this._controlInfo.scale);
         }
 
         if (this._controlInfo.previewItemsGroupElem) {
@@ -211,6 +208,10 @@ class VisualView {
 
     _applyPanTransform()
     {
+        if (!this._rootElem) {
+            return;
+        }
+        
         if (this._visualRoot) {
             this._viewX = Math.min(this._visualRoot.width - this._width, this._viewX);
             this._viewY = Math.min(this._visualRoot.height - this._height, this._viewY);

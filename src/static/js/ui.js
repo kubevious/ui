@@ -8,7 +8,7 @@ $("#btnHeaderAbout").click(function(){
 });
 
 // Expanders
-$(".logbarcloaser").click(function(){
+$(".logbarcloser").click(function(){
     $(".bottom-panel").addClass("hide");
     $(".resetlogbar").addClass("show");
     $(".diagram").addClass("full");
@@ -19,7 +19,7 @@ $(".resetlogbar").click(function(){
     $(".diagram").removeClass("full");
 });
 
-$(".sidebarcloaser").click(function(){
+$(".sidebarcloser").click(function(){
     $(".sidebar").addClass("hide");
     $(".resetsidebar").addClass("show");
     $(".content-body").addClass("full");

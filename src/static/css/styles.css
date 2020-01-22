@@ -11,12 +11,10 @@ div{box-sizing: border-box;}
     right: 370px;
     z-index: 10;
 }
-.content-body.full{right:0px;}
-.content-body.full svg{padding: 0 50px 0 0;}
-.diagram{position: absolute; top: 0px; bottom:200px; width: 100%;}
-.diagram.full{bottom:0px;}
+.diagram{position: absolute; top: 0px; bottom:200px; left: 0px; right: 0px;}
 .diagram svg{width: 100%; min-height: 100%;}
-.diagram.full svg{padding-bottom:30px;}
+.content-body.full{right: 30px;}
+.diagram.full{bottom:30px;}
 
 h1, h2, h3, h4{font-family: 'Montserrat', sans-serif; font-size: 16px;}
 .logo{ width:190px; height:30px; margin:15px; background: url("../img/logo.svg") left top no-repeat; background-size: 100%; float: left;}
