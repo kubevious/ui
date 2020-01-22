@@ -325,7 +325,7 @@ class VisualView {
             .attr("class", "node-header")
             .attr("width", nodeWidth)
             .attr("height", nodeHeaderBgHeight)
-            .style("fill", nodeBgFillColor)
+            .style("fill", nodeHeaderBgFillColor)
             .on("click", nodePerformSelect)
             .on("dblclick", nodePerformExpandCollapse)
             ;
@@ -334,7 +334,7 @@ class VisualView {
             .attr("class", "node-header-hl")
             .attr("width", nodeHeaderBgWidth)
             .attr("height", nodeHeaderBgHeight)
-            .style("fill", nodeHeaderFillColor)
+            .style("fill", nodeHeaderHlFillColor)
             .on("click", nodePerformSelect)
             .on("dblclick", nodePerformExpandCollapse)
             ;
@@ -470,7 +470,7 @@ class VisualView {
             .duration(duration)
             .attr("width", nodeWidth)
             .attr("height", nodeHeaderBgHeight)
-            .style("fill", nodeBgFillColor)
+            .style("fill", nodeHeaderBgFillColor)
 
         d3
             .select(visualNode.node)
@@ -479,7 +479,7 @@ class VisualView {
             .duration(duration)
             .attr("width", nodeHeaderBgWidth)
             .attr("height", nodeHeaderBgHeight)
-            .style("fill", nodeHeaderFillColor)
+            .style("fill", nodeHeaderHlFillColor)
 
         d3
             .select(visualNode.node)
@@ -543,7 +543,7 @@ class VisualView {
             .attr("class", "node-header-hl")
             .attr("width", function(d) { return d.width; })
             .attr("height", function(d) { return d.headerHeight; })
-            .style("fill", nodeHeaderFillColor)
+            .style("fill", nodeHeaderHlFillColor)
             ;
     }
 
@@ -573,7 +573,7 @@ class VisualView {
             .transition()
             .duration(duration)
             .attr("width", function (d) { return d.width; })
-            .style("fill", nodeHeaderFillColor)
+            .style("fill", nodeHeaderHlFillColor)
     }
 
     _updateNodeR(visualNode)
@@ -722,7 +722,12 @@ function nodeHeaderBgWidth(d)
     return d.headerHeight;
 }
 
-function nodeHeaderFillColor(d)
+function nodeHeaderBgFillColor(d)
+{
+    return d.headerBgFillColor;
+}
+
+function nodeHeaderHlFillColor(d)
 {
     return d.headerFillColor;
 }

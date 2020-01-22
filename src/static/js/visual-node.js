@@ -130,6 +130,10 @@ class VisualNode {
         return this._headerFillColor;
     }
 
+    get headerBgFillColor() {
+        return this._headerBgFillColor;
+    }
+
     get bgFillColor() {
         if (this.isSelected) {
             return this._selectedBgFillColor;
@@ -536,12 +540,13 @@ class VisualNode {
     {
         var x = VISUAL_NODE_COLOR_TABLE[this.depth % VISUAL_NODE_COLOR_TABLE.length];
         this._headerFillColor = x;
+        this._headerBgFillColor = '#35373E';
         this._bgFillColor = "#252526"; // pSBC(0.75, x, false, true);
         this._strokeColor = "#35373E"; //pSBC(-0.50, x, false, true);
 
         this._selectedHeaderFillColor = '#EEE61B'; // ;// '#F8D92F'; // pSBC(-0.25, '#F8D92F', false, true);
         this._selectedBgFillColor = '#43454D';// '#FCF1B3';// pSBC(0.75, this._selectedHeaderFillColor, false, true);
-        this._selectedStrokeColor = '#AAAAAA';
+        this._selectedStrokeColor = this._selectedHeaderFillColor; //'#AAAAAA';
 
         // this._selectedBgFillColor = '#FCF1B3';
     }
