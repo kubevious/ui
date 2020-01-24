@@ -374,7 +374,7 @@ class VisualView {
         node.append("text")
             .attr("class", "node-title-name")
             .text(nodeHeaderText('title-name'))
-            .attr("transform", nodeHeaderTransform('title-name'))  
+            .attr("transform", nodeHeaderTransform('title-name'))
             .on("click", nodePerformSelect)
             .on("dblclick", nodePerformExpandCollapse)
             ;
