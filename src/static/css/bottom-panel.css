@@ -25,6 +25,11 @@
     background:#35373E url("../img/logbarexpander.svg") center center no-repeat;
     z-index: 20;
     cursor: pointer;
+    transition:all ease 0.5s;
+}
+.logbarcloser:hover{
+    background:#35373E url("../img/logbarexpander-h.svg") center center no-repeat;
+    transition:all ease 0.5s;
 }
 
 .bottom-panel .nav-tabs{border-bottom:1px solid #35373E; padding:15px 5px 5px;}
