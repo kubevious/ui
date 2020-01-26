@@ -194,7 +194,7 @@ class VisualNode {
                 name: 'name',
                 kind: 'text', 
                 text: this.data.name,
-                style: "font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700;"
+                style: "font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 500;"
             }]
         });
 
@@ -213,7 +213,7 @@ class VisualNode {
             this._addToHeader("severity", { 
                 kind: 'text', 
                 text: this.errorCount, 
-                style: "font-family: 'Roboto'; font: 14px sans-serif; font-weight: 600;",
+                style: "font-family: 'Roboto'; font: 12px sans-serif; font-weight: 500;",
                 location: 'right',
                 bounding: {
                     height: 20,
