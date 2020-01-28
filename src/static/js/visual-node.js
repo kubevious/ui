@@ -188,13 +188,13 @@ class VisualNode {
                 name: 'kind',
                 kind: 'text', 
                 text: prettyKind(this.data.kind),
-                style: "font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 500;"
+                fontSpec: MONTSERRAT_10PX_500
             },
             {
                 name: 'name',
                 kind: 'text', 
                 text: this.data.name,
-                style: "font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 500;"
+                fontSpec: MONTSERRAT_14PX_500
             }]
         });
 
@@ -213,7 +213,7 @@ class VisualNode {
             this._addToHeader("severity", { 
                 kind: 'text', 
                 text: this.errorCount, 
-                style: "font-family: 'Roboto'; font: 12px sans-serif; font-weight: 500;",
+                fontSpec: MONTSERRAT_12PX_500,
                 location: 'right',
                 bounding: {
                     height: 20,
@@ -391,7 +391,7 @@ class VisualNode {
         else if (header.kind == 'text')
         {
             var textDimentions = 
-                this._view._measureText(header.text, null, header.style);
+                this._view._measureText(header.text, header.fontSpec);
             header.width = textDimentions.width;
             header.height = textDimentions.height;
         }

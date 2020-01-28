@@ -19,7 +19,40 @@ class VisualView {
         this._controlInfo = {};
     }
 
-    _measureText(pText, pFontSize, pStyle) {
+    _measureText(text, fontSpec) {
+        if (!fontSpec) {
+            throw new Error("MISSING FONT SPEC");
+        }
+        
+        if (_.isNil(text)) {
+            text = "";
+        } 
+        else if (!_.isString(text)) 
+        {
+            text = text.toString();
+        }
+
+        var totalWidth = 0;
+        var totalHeight = fontSpec.height;
+        for(var i = 0; i < text.length; i++)
+        {
+            var code = text.charCodeAt(i);
+            var index = code - fontSpec.startCode;
+            var width;
+            if (index < 0 || index >= fontSpec.widths.length) {
+                width = fontSpec.defaultWidth;
+            } else {
+                width = fontSpec.widths[index];
+            }
+            totalWidth += width;
+        }
+        return {
+            width: totalWidth,
+            height: totalHeight
+        };
+    }
+
+    _measureTextOld(pText, pStyle) {
         var lDiv = document.createElement('div');
 
         var parent = document.body;

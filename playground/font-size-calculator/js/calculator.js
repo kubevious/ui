@@ -106,8 +106,13 @@ function finishJob(size)
     measureContext.lastFontId = job.fontId;
 
     var width = round(size.width, 2);
-    // FONT_DICT[job.fontId].chars.push(job.char)
-    FONT_DICT[job.fontId].widths.push(width);
+    var height = round(size.height, 2);
+    var info = FONT_DICT[job.fontId];
+    info.widths.push(width);
+    info.defaultWidth = Math.max(info.defaultWidth, width);
+    info.height = Math.max(info.height, height);
+    // info.chars.push(job.char)
+
 
     // console.log(FONT_DICT);
     runNext();
@@ -149,9 +154,11 @@ function runNext()
 
     if (!FONT_DICT[job.fontId]) {
         FONT_DICT[job.fontId] = {
+            defaultWidth: 0,
+            height: 0,
+            startCode: START_ASCII_CODE,
             // chars: [],
-            widths: [],
-            startCode: START_ASCII_CODE
+            widths: []
         };
     }
 
