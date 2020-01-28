@@ -38,8 +38,12 @@ const PropertyGroupTemplate =
     Handlebars.compile(`
 <div class="property-group">
 <button class="expander {{extraClassTitle}}" onclick="propertyExpanderHandleClick(event)">
-    <span class="openclose"></span>{{title}}
-    <span class="popup-expander" onclick="onPropertyGroupPopup(event)" tag="{{groupName}}"></span>
+    {{title}}
+    <span class="property-group-openclose"></span>
+    <span class="property-group-popup" onclick="onPropertyGroupPopup(event)" tag="{{groupName}}"></span>
+    {{#if tooltip}}
+    <span class="property-group-info" data-toggle="tooltip" data-placement="top" title="{{tooltip}}"></span>
+    {{/if}}
 </button>
 <div class="scrollbar dark">
     <div class="force-overflow">
@@ -151,11 +155,14 @@ function _renderPropertyGroup(node, group, isExpanded)
         contentHtml: contentHtml,
         extraClassTitle: (isExpanded ? 'active' : ''),
         extraClassContents: (isExpanded ? 'expander-open' : ''),
+        tooltip: group.tooltip,
         dn: node.data.id,
         groupName: group.id
     });
 
     $('#properties').append(groupHtml);  
+
+    activateTooltips();
 }
 
 function _renderPropertiesNodeDn(node)

@@ -36,3 +36,14 @@ $(document).ready(function () {
         $('.customscroll').html('<p>Sorry! Non webkit users. :(</p>');
     }
 });
+
+// Tooltips
+$(function () {
+    activateTooltips();
+})
+
+function activateTooltips()
+{
+    $('.property-group-info').tooltip()
+    // $('[data-toggle="tooltip"]').tooltip()
+}

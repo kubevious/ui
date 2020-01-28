@@ -796,6 +796,7 @@ const PROPERTIES_DATA = [
         "kind": "dn-list",
         "id": "shared-with",
         "title": "Shared With",
+        "tooltip": "Other objects that also use this configuration.",
         "order": 5,
         "config": [
             "root/ns-kube-system/app-kube-dns/cont-kubedns/vol-kube-dns-config/configmap-kube-dns"
@@ -805,6 +806,7 @@ const PROPERTIES_DATA = [
       "kind": "yaml",
       "id": "config",
       "title": "Config",
+      "tooltip": "Kubernetes YAML Configuration",
       "config": {
         "name": "gprod-addr-main-app",
         "image": "gcr.io/berlioz-demo-gprod/addr-main-app@sha256:b5e6317de1171f784784f65f8b563c46c069dd6b3093547a3ee4f3cfb2ddb7e1",
@@ -951,6 +953,7 @@ const PROPERTIES_DATA = [
       "kind": "key-value",
       "id": "env",
       "title": "Environment Variables",
+      "tooltip": "Environment variables applied to this container. Also contains variables defined in related ConfigMaps.",
       "order": 10,
       "config": {
         "BERLIOZ_TASK_ID": "<pre>fieldRef:\n  apiVersion: v1\n  fieldPath: metadata.uid\n</pre>",
