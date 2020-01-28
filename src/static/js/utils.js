@@ -20,7 +20,11 @@ function generateTableHtml(data, columnsInfo)
     html += '<tr>';
     for(var column of columnsInfo)
     {
-        var columnHtml = '<th>' + column.name + '</th>';
+        var label = column.label;
+        if (!label) {
+            label = column.name;
+        }
+        var columnHtml = '<th>' + label + '</th>';
         html += columnHtml;
     }
     html += '</tr>';
@@ -31,11 +35,12 @@ function generateTableHtml(data, columnsInfo)
         html += '<tr>';
         for(var column of columnsInfo)
         {
-            var cell;
-            if (column.value) {
-                cell = column.value(row);
-            } else {
+            var cell = row;
+            if (column.name) {
                 cell = row[column.name];
+            }
+            if (column.formatter) {
+                cell = column.formatter(cell);
             }
             html += '<td>';
             html += cell;

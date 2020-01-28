@@ -88,18 +88,33 @@ function _renderPropertyGroupContents(group, options)
     }
     else if (group.kind == "table")
     {
-        return _renderTableContents(group.config, options);
+        return _renderTableContents(group, options);
     } 
 
     return "";
 }
 
-function _renderTableContents(config, options)
+function _renderTableContents(group, options)
 {
     options = options || {};
 
+    var config = group.config;
+
     var data = config.rows;
-    var columnsInfo = config.headers.map(x => ({ name: x }));
+    var columnsInfo = config.headers.map(x => {
+        var column = { name: x, label: x };
+        if (config.shortcuts) {
+            if (config.shortcuts[x]) {
+                column.formatter = ((dn) => {
+                    return generateDnShortcutHtml(dn, {
+                        handler: "onPropertyPanelDnClick",
+                        relativeTo: group.node.data.dn
+                    });
+                });
+            }
+        }
+        return column;
+    });
 
     return generateTableHtml(
         data,
@@ -122,11 +137,11 @@ function _renderKeyValueContents(config, options)
         var valueLabel = options.valueLabel || 'Value';
         return generateTableHtml(propertyList,
             [{
-                name: keyLabel,
-                value: x => x.key
+                label: keyLabel,
+                name: 'key'
             }, {
-                name: valueLabel,
-                value: x => x.value
+                label: valueLabel,
+                name: 'value'
             }]);
     } else {
         return KeyValuePairTemplate({ 
