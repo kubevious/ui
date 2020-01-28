@@ -15,6 +15,12 @@ app.set('view engine', 'html');
 var reloadify = require('./lib/reloadify');
 reloadify(app, __dirname + '/static');
 
+if (process.env.FORCE_HTTPS)
+{
+    var redirectToHTTPS = require('express-http-to-https').redirectToHTTPS;
+    app.use(redirectToHTTPS());
+}
+
 app.use(express.static(__dirname + '/static'));
 
 const BackendClient = require('./lib/backend-client');
