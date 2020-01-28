@@ -17,14 +17,15 @@ reloadify(app, __dirname + '/static');
 
 if (process.env.FORCE_HTTPS)
 {
-    function ensureSecure(req, res, next) {
-        if (req.get('X-Forwarded-Proto')=='https' || req.hostname == 'localhost')
-        {
-            next();
-        }
-        else if(req.get('X-Forwarded-Proto')!='https' && req.get('X-Forwarded-Port')!='443')
+    function ensureSecure(req, res, next)
+    {
+        if (req.get('X-Forwarded-Proto') == 'http')
         {
             res.redirect('https://' + req.hostname + req.url);
+        }
+        else
+        {
+            next();
         }
     }
     app.use(ensureSecure);
