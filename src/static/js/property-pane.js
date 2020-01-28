@@ -86,8 +86,24 @@ function _renderPropertyGroupContents(group, options)
         var code = jsyaml.safeDump(group.config);
         return renderCode(group.kind, code);
     }
+    else if (group.kind == "table")
+    {
+        return _renderTableContents(group.config, options);
+    } 
 
     return "";
+}
+
+function _renderTableContents(config, options)
+{
+    options = options || {};
+
+    var data = config.rows;
+    var columnsInfo = config.headers.map(x => ({ name: x }));
+
+    return generateTableHtml(
+        data,
+        columnsInfo);
 }
 
 function _renderKeyValueContents(config, options)

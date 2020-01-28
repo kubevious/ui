@@ -31,9 +31,14 @@ function generateTableHtml(data, columnsInfo)
         html += '<tr>';
         for(var column of columnsInfo)
         {
-            var value = column.value(row);
+            var cell;
+            if (column.value) {
+                cell = column.value(row);
+            } else {
+                cell = row[column.name];
+            }
             html += '<td>';
-            html += value;
+            html += cell;
             html += '</td>';
         }
         html += '</tr>';
