@@ -8,14 +8,16 @@ function showObjectAlerts(node, alerts)
     renderTable($("#alerts"), alerts,
         [
             {
-                name: '',
-                value: x => '<div class="alert-item ' + x.severity  + '"></div>'
+                label: '',
+                name: 'severity',
+                formatter: x => '<div class="alert-item ' + x + '"></div>'
             }, {
-                name: 'Date',
-                value: x => formatDate(x.date)
+                label: 'Date',
+                name: 'date',
+                formatter: x => formatDate(x)
             }, {
-                name: 'Message',
-                value: x => x.msg
+                label: 'Message',
+                name: 'msg'
             }
         ])
 }

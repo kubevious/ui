@@ -44,16 +44,20 @@ button:focus{outline:none;}
     opacity: 1.0;
 }
 
-.header .actions .btn{ width: 24px; height: 24px; margin:0 0 0 15px;border-radius:0;}
+.header .actions .btn{ width: 24px; height: 24px; margin:0 0 0 15px;border-radius:0; background-size: contain; background-repeat: no-repeat; background-color: #35373E;}
 .header .actions .btn:hover{opacity: 0.5; transition: 0.4s ease all;}
 .header .actions .btn:active,
 .header .actions .btn:focus{opacity:1; outline:0;}
 .header .actions .btn-search,
-.header .actions .btn-search:active{background: url("../img/header-btns/search.svg") center center no-repeat;}
+.header .actions .btn-search:active{background-image: url("../img/header-btns/search.svg");}
 .header .actions .btn-github,
-.header .actions .btn-github:active{background: url("../img/header-btns/github.svg") center center no-repeat;}
+.header .actions .btn-github:active{background-image: url("../img/header-btns/github.svg");}
 .header .actions .btn-about,
-.header .actions .btn-about:active{background: url("../img/header-btns/about.svg") center center no-repeat;}
+.header .actions .btn-about:active{background-image: url("../img/header-btns/about.svg");}
+.header .actions .btn-slack,
+.header .actions .btn-slack:active{background-image: url("../img/header-btns/slack.svg");}
+.header .actions .btn-bug,
+.header .actions .btn-bug:active{background-image: url("../img/header-btns/bug.svg");}
 
 .btn.focus, .btn:focus{box-shadow:none;}
 

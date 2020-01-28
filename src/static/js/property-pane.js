@@ -102,9 +102,23 @@ function _renderTableContents(group, options)
 
     var data = config.rows;
     var columnsInfo = config.headers.map(x => {
-        var column = { name: x, label: x };
+        var column = {};
+        if (_.isObject(x))
+        {
+            column.name = x.id
+            if (x.label) {
+                column.label = x.label;
+            }
+        }
+        else
+        {
+            column.name = x;
+        }
+        if (!column.label) {
+            column.label = column.name;
+        }
         if (config.shortcuts) {
-            if (config.shortcuts[x]) {
+            if (config.shortcuts[column.name]) {
                 column.formatter = ((dn) => {
                     return generateDnShortcutHtml(dn, {
                         handler: "onPropertyPanelDnClick",

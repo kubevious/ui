@@ -21,7 +21,7 @@ function generateTableHtml(data, columnsInfo)
     for(var column of columnsInfo)
     {
         var label = column.label;
-        if (!label) {
+        if (_.isNil(label)) {
             label = column.name;
         }
         var columnHtml = '<th>' + label + '</th>';
