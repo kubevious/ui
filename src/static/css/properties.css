@@ -97,7 +97,7 @@ pre {
 }
 
 .property-group-openclose:hover {
-    background: #16171A;
+    background: #FCBD3F;
     transition: all ease 0.4s;
 }
 
@@ -183,13 +183,14 @@ pre {
     height: 20px;
     border-radius: 2px;
     background: #292A2F url("../img/popup.svg") center center no-repeat;
-    background-size: 14px;
+    background-size: 16px;
     border: 0px;
 }
 
 .property-group-popup:hover {
-    background: #16171A url("../img/popup.svg") center center no-repeat;
+    background: #FCBD3F url("../img/popup.svg") center center no-repeat;
     transition: all ease 0.4s;
+    background-size: 16px;
 }
 
 
@@ -206,8 +207,9 @@ pre {
 }
 
 .property-group-info:hover {
-    background: #16171A url("../img/info.svg") center center no-repeat;
+    background: #FCBD3F url("../img/info.svg") center center no-repeat;
     transition: all ease 0.4s;
+    background-size: 14px;
 }
 
 /****** EXPANDER END **********/
