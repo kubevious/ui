@@ -463,6 +463,7 @@ class VisualView {
                         .append("image")
                         .attr("class", "node-flag")
                         .attr("xlink:href", nodeHeaderFlagImage(headerName))
+                        .attr("head", headerName) 
                         .attr("x", nodeHeaderX(headerName)) 
                         .attr("y", nodeHeaderY(headerName))
                         .attr("width", nodeHeaderWidth(headerName))
@@ -538,6 +539,18 @@ class VisualView {
             .duration(duration)
             .attr("transform", nodeHeaderTransform('severity'))  
 
+        d3
+            .select(visualNode.node)
+            .selectAll(".node-flag")
+            .transition()
+            .duration(duration)
+            .attr("x", function(d) {
+                return d.getHeaderX(this.getAttribute("head")); 
+            }) 
+            .attr("y", function(d) {
+                return d.getHeaderY(this.getAttribute("head")); 
+            })
+            ;
 
         this._updateNodeSmall(visualNode);
     }
