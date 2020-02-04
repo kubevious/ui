@@ -49,6 +49,7 @@ const KIND_TO_USER_MAPPING = {
     'vol': 'Volume',
     'configMap': 'ConfigMap',
     'replicaSet': 'ReplicaSet',
+    'hpa': 'HorizontalPodAutoScaler'
 }
 
 function prettyKind(kind)
