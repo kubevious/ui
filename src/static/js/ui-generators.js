@@ -46,6 +46,8 @@ const KIND_TO_USER_MAPPING = {
     'ns': 'Namespace',
     'app': 'Application',
     'cont': 'Container',
+    'initcont': 'Init Container',
+    'sidecont': 'Sidecar Container',
     'vol': 'Volume',
     'configMap': 'ConfigMap',
     'replicaSet': 'ReplicaSet',

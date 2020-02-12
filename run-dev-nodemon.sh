@@ -6,4 +6,6 @@ cd $MY_DIR
 export NODE_ENV=development
 export BACKEND_URL=http://localhost:4000
 # export DEBUG=express:*
+export MYSQL_HOST=localhost
+export MYSQL_PORT=3306
 nodemon src/.
