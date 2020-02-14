@@ -3,6 +3,10 @@ html, body {
     padding: 0;
     background-color: #333;
 }
+#chart {
+    width: 600px;
+    height: 600px;
+}
 svg {
     width: 100%;
 }
