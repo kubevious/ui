@@ -52,36 +52,6 @@ class VisualView {
         };
     }
 
-    _measureTextOld(pText, pStyle) {
-        var lDiv = document.createElement('div');
-
-        var parent = document.body;
-        parent = document.getElementById("temporary");
-    
-        parent.appendChild(lDiv);
-    
-        if (pStyle != null) {
-            lDiv.style = pStyle;
-        }
-        //lDiv.style.fontFamily = "Roboto";
-        //lDiv.style.fontSize = "" + pFontSize + "px";
-        lDiv.style.position = "absolute";
-        lDiv.style.left = -1000;
-        lDiv.style.top = -1000;
-    
-        lDiv.innerHTML = pText;
-    
-        var lResult = {
-            width: lDiv.clientWidth,
-            height: lDiv.clientHeight
-        };
-    
-        parent.removeChild(lDiv);
-        lDiv = null;
-    
-        return lResult;
-    }
-
     skipShowRoot() {
         this._showRoot = false;
     }
@@ -94,13 +64,18 @@ class VisualView {
             .attr("overflow", "hidden")
             .attr("top", 0)
             .attr("left", 0)
-            // .attr("right", 0)
-            // .attr("bottom", 0)
+            .attr("right", 0)
+            .attr("bottom", 0)
             // .attr("width", this._width)
             // .attr("height", this._height)
 
-        new ResizeSensor(jQuery(this._parentElem.node()), (size) => { 
-            this.setupDimentions(size);
+        // new ResizeSensor(jQuery(this._parentElem.node()), (size) => { 
+        // new ResizeSensor($("#diagram"), (size) => { 
+        //     this.setupDimentions(size);
+        // });
+
+        $(document).on('layout-resize-diagramComponent', () => {
+            this.setupDimentions();
         });
 
         this.setupDimentions();
@@ -166,8 +141,12 @@ class VisualView {
     _setupControl()
     {
         if (!this._visualRoot) {
+            console.log("PREVIEW: MISSING VISUAL ROOT");
+            // throw new Error("MISSING VISUAL ROOT");
             return;
         }
+        console.log("PREVIEW: VISUAL ROOT PRESENT");
+
 
         var boxScale = 5
         this._controlInfo.boxWidth = Math.max(100, this._width / boxScale);
@@ -191,6 +170,10 @@ class VisualView {
                 return  "translate(" + this._controlInfo.x + "," + this._controlInfo.y+ ")"
                     ;
             })
+        }
+        else
+        {
+            throw new Error("MISSING PREVIEW GROUP ELEM");
         }
 
         if (this._controlInfo.previewFullRectElem)
@@ -271,6 +254,7 @@ class VisualView {
     {
         this._visualRoot = this._packSourceData(sourceData);
         this._massageSourceData();
+        this._setupControl();
     }
 
     _packSourceData(root) {

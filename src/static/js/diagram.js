@@ -1,35 +1,40 @@
-var view = new VisualView(d3.select("#diagram"));
 
-view.onNodeSelect((node, data) => {
-    if (data) {
-        Logger.info("[NodeSelected] ", data.id);
+var view = null;
+$(document).on("layout-ready", function(e){
+    view = new VisualView(d3.select("#diagram"));
 
-        fetchProperties(data, (config) => {
-            Logger.debug("[GotProperties] ", config);
-            showObjectProperties(node, config)
-        });
+    view.onNodeSelect((node, data) => {
+        if (data) {
+            Logger.info("[NodeSelected] ", data.id);
 
-        fetchAlerts(data, (config) => {
-            Logger.debug("[GotAlerts] ", config);
-            showObjectAlerts(node, config)
-        });
-        
-    } else {
-        Logger.info("[NodeSelected] None");
-        clearObjectProperties()
-    }
+            fetchProperties(data, (config) => {
+                Logger.debug("[GotProperties] ", config);
+                showObjectProperties(node, config)
+            });
+
+            fetchAlerts(data, (config) => {
+                Logger.debug("[GotAlerts] ", config);
+                showObjectAlerts(node, config)
+            });
+            
+        } else {
+            Logger.info("[NodeSelected] None");
+            clearObjectProperties()
+        }
+    });
+
+    fetchDiagram((sourceData) => {
+
+        massageSourceData(sourceData);
+    
+        view.skipShowRoot();
+        view.setup(); 
+        view.acceptSourceData(sourceData);
+        view.render();
+    
+    });
 });
 
-fetchDiagram((sourceData) => {
-
-    massageSourceData(sourceData);
-
-    view.skipShowRoot();
-    view.setup(); 
-    view.acceptSourceData(sourceData);
-    view.render();
-
-});
 
 function massageSourceData(data)
 {

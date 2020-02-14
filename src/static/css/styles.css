@@ -3,6 +3,15 @@ div{box-sizing: border-box;}
 .wrapper{min-height: 100%; position: relative; background:#1E1E1E;}
 .header{height: 60px; width: 100%; background:#35373E;}
 
+#layout-content {
+    position: absolute;
+    top: 60px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    background:#35373E;
+}
+
 .content-body{
     min-height: calc(100vh - 60px);
     position:absolute;
@@ -11,7 +20,7 @@ div{box-sizing: border-box;}
     right: 370px;
     z-index: 10;
 }
-.diagram{position: absolute; top: 0px; bottom:200px; left: 0px; right: 0px;}
+.diagram{position: absolute; top: 0px; bottom:0px; left: 0px; right: 0px;}
 .diagram svg{width: 100%; min-height: 100%;}
 .content-body.full{right: 30px;}
 .diagram.full{bottom:30px;}
