@@ -38,3 +38,18 @@ function fetchAbout(cb) {
         });
 }  
   
+function fetchHistoryRange(cb) {
+    Logger.info("[fetchHistoryRange]");
+    return backend.get('/api/v1/history/range')
+        .then(result => {
+            cb(result.data);
+        });
+}  
+  
+function fetchHistoryTimeline(from, to, cb) {
+    Logger.info("[fetchHistoryTimeline]");
+    return backend.get('/api/v1/history/timeline')
+        .then(result => {
+            cb(result.data);
+        });
+}
