@@ -33,5 +33,7 @@ svg .line {
 }
 .selector * {
     fill: yellow;
+    stroke-width: 2;
     stroke: yellow;
+    cursor: pointer;
 }

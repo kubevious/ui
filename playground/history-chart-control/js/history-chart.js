@@ -55,10 +55,26 @@ function applyHistoryChartData(data) {
         .attr("class", "selector");
     selector
         .append("path")
-        .attr("d", "M-4," + (-0.3 * margin.top) + " h8 l-4,6 z");
+        .attr("d", "M-7," + (-0.4 * margin.top) + " h14 v20 l-7,7 l-7,-7 z");
     selector
         .append("path")
-        .attr("d", "M0," + (-0.3 * margin.top) + " v" + (height + margin.top));
+        .attr("d", "M0," + (-0.4 * margin.top) + " v" + (height + margin.top * 0.7));
+    selector
+        .call(
+            d3.drag().on("drag", dragged)
+        );
+
+    function dragged() {
+        const x = d3.event.x;
+
+        d3.select(this).attr("transform", "translate(" + x + ")");
+
+        const date = +Date.parse(xScale.invert(x));
+        const idx = bisectDate(data, date);
+        console.log("items: ", data[idx].items);
+        console.log("alerts: ", data[idx].alerts);
+    }
+
 
 
     // Append axis to the chart
@@ -83,23 +99,23 @@ function applyHistoryChartData(data) {
         .call(d3.axisRight(yScaleRight));
 
     // Create a transparent rect over the chart to handle mouse events
-    svg
-        .append("rect")
-        .style("fill", "none")
-        .style("pointer-events", "all")
-        .attr("x", 0)
-        .attr("y", 0)
-        .attr("width", width)
-        .attr("height", height)
-        .on("mousemove", function () {
-            const x = d3.mouse(this)[0];
-            const date = +Date.parse(xScale.invert(x));
-            const idx = bisectDate(data, date);
-
-            selector
-                .attr("transform", "translate(" + x + ")");
-
-            console.log("items: ", data[idx].items);
-            console.log("alerts: ", data[idx].alerts);
-        });
+    // svg
+    //     .append("rect")
+    //     .style("fill", "none")
+    //     .style("pointer-events", "all")
+    //     .attr("x", 0)
+    //     .attr("y", 0)
+    //     .attr("width", width)
+    //     .attr("height", height)
+    //     .on("mousemove", function () {
+    //         const x = d3.mouse(this)[0];
+    //         const date = +Date.parse(xScale.invert(x));
+    //         const idx = bisectDate(data, date);
+    //
+    //         selector
+    //             .attr("transform", "translate(" + x + ")");
+    //
+    //         console.log("items: ", data[idx].items);
+    //         console.log("alerts: ", data[idx].alerts);
+    //     });
 }
