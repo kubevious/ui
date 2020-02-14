@@ -141,12 +141,8 @@ class VisualView {
     _setupControl()
     {
         if (!this._visualRoot) {
-            console.log("PREVIEW: MISSING VISUAL ROOT");
-            // throw new Error("MISSING VISUAL ROOT");
             return;
         }
-        console.log("PREVIEW: VISUAL ROOT PRESENT");
-
 
         var boxScale = 5
         this._controlInfo.boxWidth = Math.max(100, this._width / boxScale);

@@ -25,28 +25,42 @@ class KubeviousLayout
                                             {
                                                 type: 'component',
                                                 title: 'Alerts',
-                                                componentName: 'alertsComponent'
+                                                componentName: 'alertsComponent',
+                                                componentState: {
+                                                    allowVerticalScroll: true
+                                                }
                                             },
                                             {
                                                 type: 'component',
                                                 title: 'Events',
-                                                componentName: 'eventsComponent'
+                                                componentName: 'eventsComponent',
+                                                componentState: {
+                                                    allowVerticalScroll: true
+                                                }
                                             },
                                             {
                                                 type: 'component',
                                                 title: 'Logs',
-                                                componentName: 'logsComponent'
+                                                componentName: 'logsComponent',
+                                                componentState: {
+                                                    allowVerticalScroll: true
+                                                }
                                             },
                                             {
                                                 type: 'component',
                                                 title: 'UI Logs',
-                                                componentName: 'uiLogsComponent'
+                                                componentName: 'uiLogsComponent',
+                                                componentState: {
+                                                    allowVerticalScroll: true
+                                                }
                                             },
                                             {
                                                 type: 'component',
                                                 title: 'Timeline',
                                                 componentName: 'testComponent',
-                                                // height: 15
+                                                componentState: {
+                                                    allowVerticalScroll: true
+                                                }
                                             }
                                         ]
                                     }
@@ -56,7 +70,10 @@ class KubeviousLayout
                                 type: 'component',
                                 title: 'Properties',
                                 componentName: 'propertiesComponent',
-                                width: 25
+                                width: 21,
+                                componentState: {
+                                    allowVerticalScroll: true
+                                }
                             }
                         ]
                     }
@@ -97,9 +114,18 @@ class KubeviousLayout
 
             var layoutSettings = container.layoutManager.config.settings;
             layoutSettings.showPopoutIcon = false;	
+            layoutSettings.showCloseIcon = false;	
             
             container.on('resize', () => {
                 $(document).trigger('layout-resize-' + name);
+            })
+
+            container.on('open', (x) => {
+                var element = container.getElement();
+                if (componentState.allowVerticalScroll) 
+                {
+                    element.css("overflow-y", "auto");
+                }
             })
         });
     }
