@@ -1,6 +1,4 @@
-
-
-applyHistoryChartData([
+let data = [
     {
         "date": "2020-02-13T08:54:04.000Z",
         "items": 1248,
@@ -6601,4 +6599,4 @@ applyHistoryChartData([
         "items": 1265,
         "alerts": 58
     }
-]);
+];

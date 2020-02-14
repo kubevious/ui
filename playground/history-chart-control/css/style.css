@@ -1,0 +1,32 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    background-color: #333;
+}
+svg {
+    width: 100%;
+}
+svg text,
+svg .tick {
+    fill: #bbb;
+}
+svg .domain,
+svg .line,
+svg line {
+    stroke: #bbb;
+}
+svg .line {
+    stroke: #fff;
+}
+.line {
+    fill: none;
+    stroke-width: 3px;
+}
+.area {
+    fill: #b77;
+    opacity: 0.8;
+}
+.selector * {
+    fill: yellow;
+    stroke: yellow;
+}
