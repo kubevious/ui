@@ -13,6 +13,7 @@ svg {
 svg text,
 svg .tick {
     fill: #bbb;
+    font-size: 15px;
 }
 svg .domain,
 svg .line,
