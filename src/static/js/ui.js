@@ -32,7 +32,10 @@ $(".resetsidebar").click(function(){
 
 // Scroll
 $(document).ready(function () {
-    if (!$.browser.webkit) {
+    var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+    var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
+
+    if (!isChrome && !isSafari) {
         $('.customscroll').html('<p>Sorry! Non webkit users. :(</p>');
     }
 });

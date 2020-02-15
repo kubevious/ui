@@ -104,6 +104,18 @@ class KubeviousLayout
         this._setupContent('logsComponent', '<div id="logs"></div>');
         this._setupContent('uiLogsComponent', '<div id="ui-logs"><table class="table table-striped table-dark"><thead><tr><th scope="col">Date</th><th>Level</th><th>Message</th><th>Args</th></tr></thead><tbody id="logTableBody"></tbody></table></div>');
 
+        this._layout.on('itemCreated', function(item) {
+        });
+
+        this._layout.on('componentCreated', function(component) {
+        });
+
+        this._layout.on('stackCreated', function(stack) {
+        });
+
+        this._layout.on('tabCreated', function(tab) {
+        });
+
         this._layout.init();
     }
 
