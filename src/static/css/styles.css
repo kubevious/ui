@@ -12,6 +12,8 @@ div{box-sizing: border-box;}
     background:#35373E;
 }
 
+.size-to-parent{position: absolute; top: 0px; bottom:0px; left: 0px; right: 0px;}
+
 .content-body{
     min-height: calc(100vh - 60px);
     position:absolute;
@@ -20,7 +22,6 @@ div{box-sizing: border-box;}
     right: 370px;
     z-index: 10;
 }
-.diagram{position: absolute; top: 0px; bottom:0px; left: 0px; right: 0px;}
 .diagram svg{width: 100%; min-height: 100%;}
 .content-body.full{right: 30px;}
 .diagram.full{bottom:30px;}

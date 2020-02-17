@@ -57,10 +57,7 @@ class KubeviousLayout
                                             {
                                                 type: 'component',
                                                 title: 'Timeline',
-                                                componentName: 'testComponent',
-                                                componentState: {
-                                                    allowVerticalScroll: true
-                                                }
+                                                componentName: 'timelineComponent'
                                             }
                                         ]
                                     }
@@ -95,7 +92,7 @@ class KubeviousLayout
             container.getElement().html( '<h2>' + '</h2>' );
         });
 
-        this._setupContent('diagramComponent', '<div id="diagram" class="diagram"></div>');
+        this._setupContent('diagramComponent', '<div id="diagram" class="diagram size-to-parent"></div>');
 
         this._setupContent('propertiesComponent', '<div id="properties" class="properties"></div>');
 
@@ -103,6 +100,7 @@ class KubeviousLayout
         this._setupContent('eventsComponent', '<div id="events"></div>');
         this._setupContent('logsComponent', '<div id="logs"></div>');
         this._setupContent('uiLogsComponent', '<div id="ui-logs"><table class="table table-striped table-dark"><thead><tr><th scope="col">Date</th><th>Level</th><th>Message</th><th>Args</th></tr></thead><tbody id="logTableBody"></tbody></table></div>');
+        this._setupContent('timelineComponent', '<div id="timeline" class="timeline size-to-parent"></div>');
 
         this._layout.on('itemCreated', function(item) {
         });
