@@ -71,10 +71,10 @@ class HistoryView {
     _getMargin()
     {
         return { 
-            top: this._height * 0.2,
-            right: this._width * 0.1,
-            bottom: this._height * 0.2,
-            left: this._width * 0.1 
+            top: 50,
+            right: 50,
+            bottom: 30,
+            left: 50
         };
     }
 

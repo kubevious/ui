@@ -1,6 +1,7 @@
 .timeline svg .changes {
     stroke: #fff;
     stroke-width: 3px;
+    fill: none;
 }
 
 .timeline svg .alerts {
