@@ -211,6 +211,7 @@ class HistoryView {
 
     selectDate(date)
     {
+        this._selectorElem.attr("transform", "translate(" + this._xScale(date) + ")");
         console.log("[selectDate] " + date);
     }
 };
