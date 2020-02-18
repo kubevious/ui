@@ -3,6 +3,10 @@ class HistoryView {
     constructor(parentElem)
     {
         this._parentElem = parentElem;
+
+        setTimeout(() => {
+            this.selectDate(new Date("2020-02-13T06:52:28.000Z"));
+        }, 4000)
     }
 
     get data() {
@@ -50,10 +54,12 @@ class HistoryView {
         if (!size) {
             size = this._parentElem.node().getBoundingClientRect();
         }
-        this._width = size.width;
-        this._height = size.height;
 
         var margin = this._getMargin();
+
+        this._width = size.width - margin.left - margin.right;
+        this._height = size.height - margin.top - margin.bottom;
+
         var viewBox = [
             (-margin.left),
             (-margin.top),
@@ -201,6 +207,11 @@ class HistoryView {
 
         const idx = bisectDate(this.data, date);
         console.log("index: " + idx + "selected timeline node: ", this.data[idx]);
+    }
+
+    selectDate(date)
+    {
+        console.log("[selectDate] " + date);
     }
 };
 
