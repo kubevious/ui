@@ -30,14 +30,6 @@ function applyHistoryChartData(data) {
         .domain(d3.extent(data, function(d) { return d.alerts; }))
         .range([height, 0]);
 
-    // Create & append line chart
-    const line = d3.line()
-        .x(function(d) { return xScale(+Date.parse(d.date)); })
-        .y(function(d) { return yScaleLeft(d.items);  });
-    svg.append("path")
-        .datum(data)
-        .attr("class", "line")
-        .attr("d", line);
 
     // Create & append area chart
     const area = d3.area()
@@ -48,6 +40,15 @@ function applyHistoryChartData(data) {
         .datum(data)
         .attr("class", "area")
         .attr("d", area);
+
+    // Create & append line chart
+    const line = d3.line()
+        .x(function(d) { return xScale(+Date.parse(d.date)); })
+        .y(function(d) { return yScaleLeft(d.items);  });
+    svg.append("path")
+        .datum(data)
+        .attr("class", "line")
+        .attr("d", line);
 
     // Create & append selector line
     const selector = svg
@@ -74,8 +75,6 @@ function applyHistoryChartData(data) {
         console.log("items: ", data[idx].items);
         console.log("alerts: ", data[idx].alerts);
     }
-
-
 
     // Append axis to the chart
     svg

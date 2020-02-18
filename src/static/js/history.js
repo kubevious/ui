@@ -15,7 +15,10 @@ class HistoryClient {
 		});
 
 		fetchHistoryTimeline(this._dateFrom, this._dateTo, data => {
-
+			historyScope.data = _.orderBy(data, ['date'], ['asc']);
+			if (historyScope.historyView) {
+				historyScope.historyView.render();
+			}
 		});
 	}
 

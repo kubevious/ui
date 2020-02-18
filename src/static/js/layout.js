@@ -24,6 +24,11 @@ class KubeviousLayout
                                         content: [
                                             {
                                                 type: 'component',
+                                                title: 'Timeline',
+                                                componentName: 'timelineComponent'
+                                            },
+                                            {
+                                                type: 'component',
                                                 title: 'Alerts',
                                                 componentName: 'alertsComponent',
                                                 componentState: {
@@ -53,11 +58,6 @@ class KubeviousLayout
                                                 componentState: {
                                                     allowVerticalScroll: true
                                                 }
-                                            },
-                                            {
-                                                type: 'component',
-                                                title: 'Timeline',
-                                                componentName: 'timelineComponent'
                                             }
                                         ]
                                     }

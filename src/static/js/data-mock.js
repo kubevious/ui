@@ -4316,12 +4316,12 @@ const HISTORY_TIMELINE = [
     },
     {
         "date": "2020-02-14T09:48:15.000Z",
-        "items": 248,
-        "alerts": 25
+        "items": 1248,
+        "alerts": 125
     },
     {
         "date": "2020-02-14T10:03:34.000Z",
-        "items": 248,
+        "items": 1248,
         "alerts": 25
     }
 ];

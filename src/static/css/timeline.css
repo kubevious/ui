@@ -1,0 +1,16 @@
+.timeline svg .changes {
+    stroke: #fff;
+    stroke-width: 3px;
+}
+
+.timeline svg .alerts {
+    fill: #b77;
+    opacity: 0.8;
+}
+
+.timeline svg .selector * {
+    fill: yellow;
+    stroke-width: 2;
+    stroke: yellow;
+    cursor: pointer;
+}
