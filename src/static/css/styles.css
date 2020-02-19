@@ -1,11 +1,11 @@
 html, body {height: 100%;font-family: 'Roboto', sans-serif; font-size: 14px; font-weight: 400; background: #1E1E1E; color: #FFF;}
 div{box-sizing: border-box;}
-.wrapper{min-height: 100%; position: relative; background:#1E1E1E;}
+.wrapper{min-height: 100%; position: relative; background:#000;}
 .header{height: 60px; width: 100%; background:#35373E;}
 
 #layout-content {
     position: absolute;
-    top: 60px;
+    top: 65px;
     bottom: 0px;
     left: 0px;
     right: 0px;
