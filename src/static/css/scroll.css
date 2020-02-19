@@ -1,7 +1,7 @@
 .scrollbar {
     width:100%;
     border: solid #35373E;
-    border-width: 0 2px 2px;
+    border-width:0px;
     overflow-y: scroll;
     max-height: 300px;
 }

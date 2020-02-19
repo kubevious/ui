@@ -1,14 +1,13 @@
 
 .properties {
-    margin:5px;
+    margin:0px;
 }
 
 /***************************************/
 
 .properties-owner {
-    background: #35373E;
-    padding: 15px;
-    margin-bottom: 15px;
+    padding:7px 5px 6px;
+    margin:1px 0;
 }
 
 .properties-owner .dn-path {
@@ -52,7 +51,7 @@
 
 .expander {
     font-family: 'Montserrat', sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     background: #35373E;
     color: #FFF;
     cursor: pointer;
@@ -71,11 +70,11 @@
 }
 
 .property-group {
-    margin: 0 0 5px;
+    margin: 0 0 1px;
 }
 
 .expander-contents {
-    padding: 15px;
+    padding:10px;
     display: none;
     overflow: hidden;
     border-right: solid 2px #35373E;
