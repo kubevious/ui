@@ -10,8 +10,8 @@
 }
 
 .timeline svg .selector * {
-    fill: yellow;
+    fill: rgb(252, 189, 63);
     stroke-width: 2;
-    stroke: yellow;
+    stroke: rgb(252, 189, 63);
     cursor: pointer;
 }

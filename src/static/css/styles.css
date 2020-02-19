@@ -32,6 +32,11 @@ h1, h2, h3, h4{font-family: 'Montserrat', sans-serif; font-size: 16px;}
 button:focus{outline:none;}
 .temporary{ display: none;}
 
+.header .history-info {
+    text-align: center;
+    padding-top: 18px;
+}
+
 .header .actions {
     position: absolute;
     top:18px;
