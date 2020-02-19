@@ -74,7 +74,7 @@ class VisualView {
         //     this.setupDimentions(size);
         // });
 
-        $(document).on('layout-resize-diagramComponent', () => {
+        $(document).on('layout-resize-universeComponent', () => {
             this.setupDimentions();
         });
 
