@@ -127,59 +127,6 @@ pre {
     margin: 8px 6px 0 0;
 }
 
-.sidebar {
-    position: absolute;
-    right: 0px;
-    top: 60px;
-    bottom: 0px;
-    width: 370px;
-    padding: 15px 15px 15px 25px;
-    z-index: 10;
-    overflow: auto;
-}
-
-.sidebarcloser {
-    display: block;
-    width: 10px;
-    height: 100%;
-    position: fixed;
-    top: 0px;
-    right: 360px;
-    bottom: 0px;
-    margin: 0;
-    background: #35373E url("../img/sidebarexpander.svg") center center no-repeat;
-    z-index: 20;
-    cursor: pointer;
-    min-height: 100%;
-    transition: all ease 0.5s;
-}
-
-.sidebarcloser:hover {
-    background: #35373E url("../img/sidebarexpander-h.svg") center center no-repeat;
-    transition: all ease 0.5s;
-}
-
-.sidebar.hide {
-    display: none;
-}
-
-.resetsidebar {
-    background: #35373E;
-    padding: 3px 15px;
-    color: #FFF;
-    position: absolute;
-    right: -44px;
-    top: 130px;
-    display: none;
-    cursor: pointer;
-    transform: rotate(-90deg);
-    z-index: 20;
-}
-
-.resetsidebar.show {
-    display: block;
-}
-
 .property-group-popup {
     display: block;
     float: right;
