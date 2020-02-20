@@ -57,6 +57,24 @@ class KubeviousLayout
         this._activateLayout();
     }
 
+    hideComponent(id)
+    {
+        var info = this._getComponent(id);
+        info.goldenContainer.close();
+    }
+
+    showComponent(id)
+    {
+        var info = this._getComponent(id);
+        var componentLayout = this._getComponentLayout(info);
+        this._layout.root.contentItems[ 0 ].addChild( componentLayout );
+    }
+
+    _getComponent(id)
+    {
+        return _.filter(this._components, x => x.id == id)[0];
+    }
+
     _activateLayout()
     {
         /**************************/
@@ -100,13 +118,26 @@ class KubeviousLayout
         this._layout.on('itemCreated', function(item) {
         });
 
-        this._layout.on('componentCreated', function(component) {
+        this._layout.on('componentCreated', (component) => {
+            var info = this._getComponent(component.componentName);
+            info.goldenComponent = component;
+            info.goldenContainer = component.container;
         });
 
         this._layout.on('stackCreated', function(stack) {
         });
 
-        this._layout.on('tabCreated', function(tab) {
+        this._layout.on('tabCreated', (tab) => {
+            var info = this._getComponent(tab.contentItem.componentName);
+            info.goldenTab = tab;
+        });
+
+        this._layout.on('itemDestroyed', (item) => {
+            if (item.type == 'component')
+            {
+                var info = this._getComponent(item.componentName);
+                menuScope.menuController.markClosed(info.id);
+            }
         });
 
         this._layout.init();
@@ -120,7 +151,9 @@ class KubeviousLayout
         info.id = id;
         this._components.push(info);
 
-        menuScope.menuController.registerWindow(id, info.name);
+        if (!info.skipClose) {
+            menuScope.menuController.registerWindow(info.id, info.name);
+        }
     }
 
     _getLocationComponents(location)
@@ -202,6 +235,4 @@ class KubeviousLayout
 
 
 
-
-
-new KubeviousLayout();
+var kubeviousLayout = new KubeviousLayout();

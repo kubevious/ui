@@ -24,6 +24,13 @@ class MenuController
         this.setupItems();
     }
 
+    markClosed(id)
+    {
+        var info = this._windows[id];
+        info.isVisible = false;
+        this._refreshItem(info);
+    }
+
     handleClick(target)
     {
         var windowId = target.getAttribute('tool-window-id');
@@ -32,6 +39,15 @@ class MenuController
         var info = this._windows[windowId];
         info.isVisible = target.checked;
         this._refreshItem(info);
+
+        if (!info.isVisible)
+        {
+            kubeviousLayout.hideComponent(info.id);
+        }
+        else
+        {
+            kubeviousLayout.showComponent(info.id);
+        }
     }
 
     setupItems()
