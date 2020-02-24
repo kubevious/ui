@@ -7,9 +7,9 @@ class HistoryView {
         this._selectorPositionDate = null;
         this._showAxis = false;
 
-        setTimeout(() => {
-            this.selectDate(new Date("2020-02-13T06:52:28.000Z"));
-        }, 4000)
+        // setTimeout(() => {
+        //     this.selectDate(new Date("2020-02-13T06:52:28.000Z"));
+        // }, 4000)
     }
 
     get data() {

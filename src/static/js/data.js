@@ -48,7 +48,11 @@ function fetchHistoryRange(cb) {
   
 function fetchHistoryTimeline(from, to, cb) {
     Logger.info("[fetchHistoryTimeline]");
-    return backend.get('/api/v1/history/timeline')
+    var params = {
+        from: from,
+        to: to
+    };
+    return backend.get('/api/v1/history/timeline', params)
         .then(result => {
             cb(result.data);
         });

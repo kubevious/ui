@@ -8,7 +8,7 @@ class HistoryClient {
 
 	constructor()
 	{
-		this._dateFrom = null;
+		this._dateFrom = moment().subtract(1, 'days').toISOString();
 		this._dateTo = null;
 		this._selectedDate = null;
 		
