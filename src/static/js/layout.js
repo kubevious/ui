@@ -51,14 +51,14 @@ class KubeviousLayout
             name: 'Timeline',
             location: 'bottom',
             html: '<div id="timeline" class="timeline size-to-parent">' + 
-                '<div class="tl-actions">' +
-                    '<a class="view"></a>' +
-                    '<a class="plus"></a>' +
-                    '<a class="minus"></a>' +
-                    '<a class="left"></a>' +
-                    '<a class="right"></a>' +
-                '</div>' +
-            '</div>',
+            '</div>'+
+            '<div class="tl-actions">' +
+                '<a class="view"></a>' +
+                '<a class="plus"></a>' +
+                '<a class="minus"></a>' +
+                '<a class="left"></a>' +
+                '<a class="right"></a>' +
+            '</div>' ,
             allowVerticalScroll: true
         });
 
