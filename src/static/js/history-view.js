@@ -19,7 +19,7 @@ class HistoryView {
     setup()
     {
         this._svgElem = this._parentElem
-            .append("svg")
+            .insert("svg", ":first-child")
             .attr("position", "absolute")
             .attr("overflow", "hidden")
             .attr("top", 0)
