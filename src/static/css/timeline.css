@@ -18,10 +18,16 @@
 
 .timeline.size-to-parent{right:51px;}
 
-.tl-actions{padding: 0 15px;border-left:solid 1px #35373E;float: right;}
+.tl-actions{padding:10px 15px;border-left:solid 1px #35373E;float: right;}
 .tl-actions a{display: block; width: 20px; height:20px; margin: 0 auto 5px;border-radius: 2px;}
 .tl-actions a.view{background:#292A2F url('../img/view.svg') center center no-repeat; background-size:16px;}
 .tl-actions a.plus{background:#292A2F url('../img/plus.svg') center center no-repeat; background-size:16px;}
 .tl-actions a.minus{background:#292A2F url('../img/minus.svg') center center no-repeat; background-size:16px;}
 .tl-actions a.left{background:#292A2F url('../img/left.svg') center center no-repeat; background-size:16px;}
 .tl-actions a.right{background:#292A2F url('../img/right.svg') center center no-repeat; background-size:16px;}
+
+.tl-actions a.view:hover{background:#35373E url('../img/view.svg') center center no-repeat;}
+.tl-actions a.plus:hover{background:#35373E url('../img/plus.svg') center center no-repeat;}
+.tl-actions a.minus:hover{background:#35373E url('../img/minus.svg') center center no-repeat;}
+.tl-actions a.left:hover{background:#35373E url('../img/left.svg') center center no-repeat;}
+.tl-actions a.right:hover{background:#35373E url('../img/right.svg') center center no-repeat;}
