@@ -267,7 +267,7 @@ class HistoryView {
     handleDateChange(date)
     {
         console.log("[handleDateChange] " + date.toISOString());
-        historyScope.historyClient.selectDate(date);
+        historyScope.client.selectDate(date);
     }
 };
 

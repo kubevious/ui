@@ -53,11 +53,12 @@ class KubeviousLayout
             html: '<div id="timeline" class="timeline size-to-parent">' + 
             '</div>'+
             '<div class="tl-actions">' +
-                '<a class="view"></a>' +
-                '<a class="plus"></a>' +
-                '<a class="minus"></a>' +
-                '<a class="left"></a>' +
-                '<a class="right"></a>' +
+                '<a class="reset" onclick="historyScope.client.resetView()"></a>' +
+                '<a id="btnTimelineTimeMachine" class="view" onclick="historyScope.client.toggleTimeMachine()"></a>' +
+                '<a class="plus" onclick="historyScope.client.zoomIn()"></a>' +
+                '<a class="minus" onclick="historyScope.client.zoomOut()"></a>' +
+                '<a class="left" onclick="historyScope.client.panLeft()"></a>' +
+                '<a class="right" onclick="historyScope.client.panRight()"></a>' +
             '</div>' ,
             allowVerticalScroll: true
         });

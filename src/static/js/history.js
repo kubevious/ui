@@ -47,12 +47,43 @@ class HistoryClient {
 		}, 100);
 	}
 
+	toggleTimeMachine()
+	{
+
+	}
+
+	zoomIn()
+	{
+
+	}
+
+	zoomOut()
+	{
+
+	}
+
+	panLeft()
+	{
+
+	}
+
+	panRight()
+	{
+
+	}
+
+	resetView()
+	{
+
+	}
+
 	_loadSnapshot()
 	{
 		console.log("[HistoryClient::_loadSnapshot] " + this._selectedDate);
 		this._dateChangeTimerId = null;
-
 	}
 
 }
-historyScope.historyClient = new HistoryClient();
+
+
+historyScope.client = new HistoryClient();
