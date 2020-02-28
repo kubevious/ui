@@ -20,6 +20,22 @@ class KubeviousLayout
         });
 
         this._register({
+            name: 'Timeline',
+            location: 'bottom',
+            html: '<div id="timeline" class="timeline size-to-parent">' + 
+            '</div>'+
+            '<div class="tl-actions">' +
+                '<a class="reset" onclick="historyScope.client.resetView()"></a>' +
+                '<a id="btnTimelineTimeMachine" class="timemachine" onclick="historyScope.client.toggleTimeMachine()"></a>' +
+                '<a class="plus" onclick="historyScope.client.zoomIn()"></a>' +
+                '<a class="minus" onclick="historyScope.client.zoomOut()"></a>' +
+                '<a class="left" onclick="historyScope.client.panLeft()"></a>' +
+                '<a class="right" onclick="historyScope.client.panRight()"></a>' +
+            '</div>' ,
+            allowVerticalScroll: true
+        });
+
+        this._register({
             name: 'Alerts',
             location: 'bottom',
             html: '<div id="alerts"></div>',
@@ -47,21 +63,7 @@ class KubeviousLayout
             allowVerticalScroll: true
         });
 
-        this._register({
-            name: 'Timeline',
-            location: 'bottom',
-            html: '<div id="timeline" class="timeline size-to-parent">' + 
-            '</div>'+
-            '<div class="tl-actions">' +
-                '<a class="reset" onclick="historyScope.client.resetView()"></a>' +
-                '<a id="btnTimelineTimeMachine" class="view" onclick="historyScope.client.toggleTimeMachine()"></a>' +
-                '<a class="plus" onclick="historyScope.client.zoomIn()"></a>' +
-                '<a class="minus" onclick="historyScope.client.zoomOut()"></a>' +
-                '<a class="left" onclick="historyScope.client.panLeft()"></a>' +
-                '<a class="right" onclick="historyScope.client.panRight()"></a>' +
-            '</div>' ,
-            allowVerticalScroll: true
-        });
+     
 
         this._activateLayout();
     }
@@ -231,6 +233,7 @@ class KubeviousLayout
                 {
                     element.css("overflow-y", "auto");
                 }
+                self._triggerEvent('layout-open-' + name);
             })
         });
     }

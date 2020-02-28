@@ -34,7 +34,20 @@ button:focus{outline:none;}
 
 .header .history-info {
     text-align: center;
+    margin: auto auto auto auto;
+    display: block;
     padding-top: 18px;
+    padding-left: 190px;
+    padding-right: 250px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+}
+
+.time-machine-header-span {
+    background:url(../img/alerts/warn.svg) left top; 
+    width:16px; 
+    height:16px;
+    display: inline-block;
 }
 
 .header .actions {

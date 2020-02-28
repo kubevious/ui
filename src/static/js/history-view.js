@@ -6,14 +6,17 @@ class HistoryView {
         this._selectorPositionX = 0;
         this._selectorPositionDate = null;
         this._showAxis = false;
-
-        // setTimeout(() => {
-        //     this.selectDate(new Date("2020-02-13T06:52:28.000Z"));
-        // }, 4000)
+        this._selectorVisible = false;
     }
 
     get data() {
         return historyScope.data;
+    }
+
+    setSelectorVisibility(value)
+    {
+        this._selectorVisible = value;
+        this.render();
     }
 
     setup()
@@ -187,8 +190,13 @@ class HistoryView {
 
     _renderSelector()
     {
-        var margin = this._getMargin();
         this._selectorElem.html("");
+
+        if (!this._selectorVisible) {
+            return;
+        }
+
+        var margin = this._getMargin();
         this._selectorElem
             .append("path")
             .attr("d", "M-7," + (-0.4 * margin.top) + " h14 v20 l-7,7 l-7,-7 z");
@@ -273,6 +281,6 @@ class HistoryView {
 
 
 $(document).on("layout-ready", function(e){
-    historyScope.historyView = new HistoryView(d3.select("#timeline"));
-    historyScope.historyView.setup();
+    historyScope.view = new HistoryView(d3.select("#timeline"));
+    historyScope.view.setup();
 });

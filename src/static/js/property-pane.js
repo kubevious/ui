@@ -180,7 +180,7 @@ function _renderDnListContents(group, options)
 function onPropertyPanelDnClick(event)
 {
     var dn = $(event.currentTarget).attr("dn");
-    selectDiagramItem(dn);
+    diagramScope.client.selectDiagramItem(dn);
 }
 
 function renderCode(language, code)

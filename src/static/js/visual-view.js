@@ -17,6 +17,8 @@ class VisualView {
         this._onNodeSelectCb = [];
 
         this._controlInfo = {};
+
+        this._flatVisualNodes = [];
     }
 
     _measureText(text, fontSpec) {

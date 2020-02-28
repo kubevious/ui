@@ -33,6 +33,6 @@ function generateSearchItemHtml(item)
 function onSearchItemClick(event)
 {
     var dn = $(event.currentTarget).attr("dn");
-    selectDiagramItem(dn);
+    diagramScope.client.selectDiagramItem(dn);
     popupClose();
 }
