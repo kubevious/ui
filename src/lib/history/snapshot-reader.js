@@ -30,10 +30,11 @@ class HistorySnapshotReader
         
         this._registerStatement('GET_DIFFS_FOR_SNAPSHOT', 'SELECT * FROM `diffs` WHERE `in_snapshot` = 0 AND `snapshot_id` = ? ORDER BY `date`;');
         this._registerStatement('GET_DIFFS_FOR_SNAPSHOT_AND_DATE', 'SELECT * FROM `diffs` WHERE `in_snapshot` = 0 AND `snapshot_id` = ? AND `date` <= ? ORDER BY `date`;');
+        this._registerStatement('FIND_DIFF_FOR_DATE', 'SELECT * FROM `diffs` WHERE `date` <= ? ORDER BY `date` DESC LIMIT 1;');
 
-        this._registerStatement('GET_SNAPSHOT_ITEMS', 'SELECT `id`, `dn`, `info`, `config` FROM `snap_items` WHERE `snapshot_id` = ?');
+        this._registerStatement('GET_SNAPSHOT_ITEMS', 'SELECT `id`, `dn`, `kind`, `config-kind`, `name`, `config` FROM `snap_items` WHERE `snapshot_id` = ?');
 
-        this._registerStatement('GET_DIFF_ITEMS', 'SELECT `id`, `dn`, `info`, `present`, `config` FROM `diff_items` WHERE `diff_id` = ?');
+        this._registerStatement('GET_DIFF_ITEMS', 'SELECT `id`, `dn`, `kind`, `config-kind`, `name`, `present`, `config` FROM `diff_items` WHERE `diff_id` = ?');
     }
 
     _registerStatement()
@@ -72,6 +73,24 @@ class HistorySnapshotReader
         }
     }
 
+    querySnapshotForDate(date)
+    {  
+        return this.findDiffForDate(date)
+            .then(diffObj => {
+                if (!diffObj) {
+                    return null;
+                }
+                if (diffObj.in_snapshot) 
+                {
+                    return this.reconstructSnapshotById(diffObj.snapshot_id);
+                }
+                else
+                {
+                    return this.reconstructSnapshotByIdAndDiffDate(diffObj.snapshot_id, date);
+                }
+            })
+    }
+
 
     /*******/
 
@@ -83,6 +102,19 @@ class HistorySnapshotReader
     queryDiffsForSnapshotAndDate(snapshotId, date)
     {
         return this._execute('GET_DIFFS_FOR_SNAPSHOT_AND_DATE', [snapshotId, date]);
+    }
+
+    findDiffForDate(date)
+    {
+        var snapshotId = null;
+        return this._execute('FIND_DIFF_FOR_DATE', [date])
+            .then(results => {
+                if (results.length == 0) {
+                    return null;
+                }
+                var diff = _.head(results);
+                return diff;
+            })
     }
 
     querySnapshotItems(snapshotId)
@@ -111,6 +143,25 @@ class HistorySnapshotReader
             .then(snapshotItems => {
                 snapshotReconstructor = new SnapshotReconstructor(snapshotItems);
                 return this.queryDiffsForSnapshot(snapshotId)
+            })
+            .then(diffs => {
+                return this._queryDiffsItems(diffs)
+            })
+            .then(diffsItems => {
+                snapshotReconstructor.applyDiffsItems(diffsItems);
+                return snapshotReconstructor.getSnapshot();
+            })
+            ;
+    }
+
+    reconstructSnapshotByIdAndDiffDate(snapshotId, date)
+    {
+        var snapshotReconstructor = null;
+        return Promise.resolve()
+            .then(() => this.querySnapshotItems(snapshotId))
+            .then(snapshotItems => {
+                snapshotReconstructor = new SnapshotReconstructor(snapshotItems);
+                return this.queryDiffsForSnapshotAndDate(snapshotId, date)
             })
             .then(diffs => {
                 return this._queryDiffsItems(diffs)

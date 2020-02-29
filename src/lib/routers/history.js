@@ -39,13 +39,29 @@ module.exports = ({app, router, history}) => {
                 var result = data.map(x => {
                     return {
                         date: x.date,
-                        items: x.summary.snapshot.items,
-                        alerts: x.summary.snapshot.alerts
+                        items: x.summary.delta.items, //x.summary.snapshot.items
+                        alerts: x.summary.snapshot.alerts,
                     }
                 });
                 return res.send(result);
-            })
+            });
+    });
 
+
+    router.get('/snapshot', function(req, res) {
+        if (!req.query.date) {
+            return res.status(400).send({
+                message: 'Missing date.'
+             });
+        }
+
+        return history.querySnapshotForDate(req.query.date)
+            .then(snapshot => {
+                if (!snapshot) {
+                    return res.send({});
+                }
+                return res.send(snapshot.getItems());
+            })
     });
 
     app.use('/api/v1/history', router);
