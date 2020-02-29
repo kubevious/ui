@@ -20,8 +20,6 @@ class VisualNode {
         this._headerPadding = 5;
         this._headerWidth = 0;
         this._headerHeight = 40;
-        this._isExpanded = this._resolveValue("expanded");
-        this._isSelected = false;
 
         if (this._parent) {
             this._parent._children.push(this);
@@ -31,6 +29,18 @@ class VisualNode {
         }
 
         this._setupTheme();
+    }
+
+    get view() {
+        return this._view;
+    }
+
+    get node() {
+        return this.view._d3NodeDict[this.id];
+    }
+
+    get smallNode() {
+        return this.view._d3SmallNodeDict[this.id];
     }
 
     get id() {
@@ -81,19 +91,33 @@ class VisualNode {
     }
 
     get isExpanded() {
-        return this._isExpanded;
+        if (this.view._expandedNodeIds[this.id]) {
+            return true;
+        }
+        return false;
     } 
 
     set isExpanded(value) {
-        this._isExpanded = value;
+        if (value) {
+            this.view._expandedNodeIds[this.id] = true;
+        } else {
+            delete this.view._expandedNodeIds[this.id];
+        }
     } 
 
     get isSelected() {
-        return this._isSelected;
+        if (this.view._selectedNodeIds[this.id]) {
+            return true;
+        }
+        return false;
     } 
 
     set isSelected(value) {
-        this._isSelected = value;
+        if (value) {
+            this.view._selectedNodeIds[this.id] = true;
+        } else {
+            delete this.view._selectedNodeIds[this.id];
+        }
     }
 
     get visibleChildren() {
@@ -327,11 +351,11 @@ class VisualNode {
     getHeaderX(name, flavor)
     {
         var header = this.getHeader(name);
-        var value = 0;
         if (!header) {
-            // TODO: ERROR CASE;
-            return;
+            // TODO: Error
+            return 0;
         }
+        var value = 0;
         if (header.location == 'left') {
             value = header.left;
         } else if (header.location == 'right') {
@@ -353,6 +377,10 @@ class VisualNode {
     getHeaderY(name, flavor)
     {
         var header = this.getHeader(name);
+        if (!header) {
+            // TODO: Error
+            return 0;
+        }
         if (flavor == 'center') {
             return header.top + header.height/2;
         }
@@ -368,12 +396,20 @@ class VisualNode {
     getHeaderCenterX(name)
     {
         var header = this.getHeader(name);
+        if (!header) {
+            // TODO: Error
+            return 0;
+        }
         return this.getHeaderX(name) + header.width / 2;
     }
 
     getHeaderCenterY(name)
     {
         var header = this.getHeader(name);
+        if (!header) {
+            // TODO: Error
+            return 0;
+        }
         return header.top + header.height/2;
     }
 
@@ -573,10 +609,34 @@ class VisualNode {
         }
     }
 
+    autoexpand() {
+        var nodes = [];
+      
+        let recurse = function(node) {
+
+            if (!node.view._existingNodeIds[node.id])
+            {
+                node.view._existingNodeIds[node.id] = true;
+                if (node._resolveValue("expanded"))
+                {
+                    node.isExpanded = true;
+                }
+            }
+
+            for(var child of node._children) {
+                recurse(child);
+            }
+        }
+    
+        recurse(this);
+      
+        return nodes;
+    }
+
     extract() {
         var nodes = [];
       
-        function recurse(node) {
+        let recurse = function(node) {
             nodes.push(node);
             for(var child of node.visibleChildren) {
                 recurse(child);

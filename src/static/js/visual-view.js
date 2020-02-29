@@ -1,5 +1,3 @@
-
-
 class VisualView {
 
     constructor(parentElem)
@@ -19,6 +17,11 @@ class VisualView {
         this._controlInfo = {};
 
         this._flatVisualNodes = [];
+
+        this._existingNodeIds = {};
+        // this._visibleNodeIds = {};
+        this._expandedNodeIds = {};
+        this._selectedNodeIds = {};
     }
 
     _measureText(text, fontSpec) {
@@ -60,6 +63,9 @@ class VisualView {
 
     setup()
     {
+        this._d3NodeDict = {};
+        this._d3SmallNodeDict = {};
+
         this._svgElem = this._parentElem
             .append("svg")
             .attr("position", "absolute")
@@ -68,13 +74,6 @@ class VisualView {
             .attr("left", 0)
             .attr("right", 0)
             .attr("bottom", 0)
-            // .attr("width", this._width)
-            // .attr("height", this._height)
-
-        // new ResizeSensor(jQuery(this._parentElem.node()), (size) => { 
-        // new ResizeSensor($("#diagram"), (size) => { 
-        //     this.setupDimentions(size);
-        // });
 
         $(document).on('layout-resize-universeComponent', () => {
             this.setupDimentions();
@@ -273,12 +272,22 @@ class VisualView {
 
     _massageSourceData()
     {
+        if (!this._visualRoot) {
+            return;
+        }
+        this._visualRoot.autoexpand();
         this._visualRoot.measureAndArrange();
         this._visualRoot.calculateAbsolutePos();
         this._flatVisualNodes = this._visualRoot.extract();
         if (!this._showRoot) {
             this._flatVisualNodes.shift();
         }
+
+        // for(var visualNode of this._flatVisualNodes)
+        // {
+        //     _updateNode
+        //     this._visibleNodeIds
+        // }
     }
 
     render()
@@ -308,6 +317,9 @@ class VisualView {
             //.delay(100)
             //.attr("width", function (d) { return 0; })
             //.attr("height", function (d) { return 0; })
+            .each(function(d) { 
+                delete self._d3NodeDict[d.id];
+            })
             .remove();
         
         node = node
@@ -324,8 +336,7 @@ class VisualView {
             })
             .attr("transform", nodeGroupTransform)
             .each(function(d) { 
-                d.view = self; 
-                d.node = this; 
+                self._d3NodeDict[d.id] = this;
             })
 
         node.append("rect")
@@ -353,16 +364,6 @@ class VisualView {
             .on("click", nodePerformSelect)
             .on("dblclick", nodePerformExpandCollapse)
             ;
-
-        // node
-        //     .append("circle")
-        //     .attr("class", "node-logo-bg")
-        //     .attr("transform", nodeHeaderTransform("logo", "center")) 
-        //     .attr("r", 16)
-        //     .style("fill", "white")
-        //     .on("click", nodePerformSelect)
-        //     .on("dblclick", nodePerformExpandCollapse)
-        //     ;
 
         node
             .append("image")
@@ -459,6 +460,10 @@ class VisualView {
     {
         var duration = 200;
 
+        if (!visualNode.node) {
+            return;
+        }
+
         d3
             .select(visualNode.node)
             .transition()
@@ -548,6 +553,9 @@ class VisualView {
 
         node
             .exit()
+            .each(function(d) { 
+                delete self._d3SmallNodeDict[d.id];
+            })
             .remove();
         
         node = node
@@ -559,7 +567,7 @@ class VisualView {
             })
             .attr("transform", nodeGroupTransform)
             .each(function(d) { 
-                d.smallNode = this; 
+                self._d3SmallNodeDict[d.id] = this;
             })
 
         node.append("rect")
@@ -582,6 +590,10 @@ class VisualView {
         var self = this;
 
         var duration = 200;
+
+        if (!visualNode.smallNode) {
+            return;
+        }
 
         d3
             .select(visualNode.smallNode)
@@ -614,13 +626,15 @@ class VisualView {
         }
     }
 
-    _update()
+    updateAll()
     {
         this._massageSourceData();
         this._applyPanTransform();
         this._setupControl();
         this.render();
-        this._updateNodeR(this._visualRoot);
+        if (this._visualRoot) {
+            this._updateNodeR(this._visualRoot);
+        }
         this._setupControl();
     }
 
@@ -687,11 +701,11 @@ class VisualView {
     _selectAndExpandNode(visualNode, childParts)
     {
         visualNode.isExpanded = true;
-        this._update();
+        this.updateAll();
         
         if (childParts.length == 0) {
             this.selectNode(visualNode);
-            this._update();
+            this.updateAll();
 
             this._viewX = 
                 visualNode.absX
@@ -721,7 +735,7 @@ class VisualView {
 function nodePerformExpandCollapse(d)
 {
     d.isExpanded = !d.isExpanded;
-    d.view._update();
+    d.view.updateAll();
 }
 
 function nodePerformSelect(d)
@@ -794,7 +808,8 @@ function nodeHeaderFlagImage(headerName) {
     return (d) => {
         var header = d.getHeader(headerName);
         if (!header) {
-            return "";
+            // TODO: Error
+            return '';
         }
         return "img/flags/" + header.icon + ".svg";
     }
@@ -815,6 +830,10 @@ function nodeHeaderY(headerName, flavor) {
 function nodeHeaderWidth(headerName, flavor) { 
     return (d) => {
         var header = d.getHeader(headerName);
+        if (!header) {
+            // TODO: Error
+            return 0;
+        }
         if (flavor) {
             return header[flavor].width;
         }
@@ -825,6 +844,10 @@ function nodeHeaderWidth(headerName, flavor) {
 function nodeHeaderHeight(headerName, flavor) { 
     return (d) => {
         var header = d.getHeader(headerName);
+        if (!header) {
+            // TODO: Error
+            return 0;
+        }
         if (flavor) {
             return header[flavor].height;
         }
@@ -835,6 +858,10 @@ function nodeHeaderHeight(headerName, flavor) {
 function nodeHeaderText(headerName) { 
     return (d) => {
         var header = d.getHeader(headerName);
+        if (!header) {
+            // TODO: Error
+            return '';
+        }
         return header.text;
     }
 }

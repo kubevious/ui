@@ -1,6 +1,6 @@
 function showObjectAlerts(node, alerts)
 {
-    Logger.info("[showObjectAlerts] ", node.data.id, alerts);
+    Logger.info("[showObjectAlerts] ", node.data.dn, alerts);
     if (!alerts) {
         alerts = [];
     }

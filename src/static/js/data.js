@@ -57,3 +57,14 @@ function fetchHistoryTimeline(from, to, cb) {
             cb(result.data);
         });
 }
+
+function fetchHistorySnapshot(date, cb) {
+    Logger.info("[fetchHistorySnapshot]");
+    var params = {
+        date: date
+    };
+    return backend.get('/api/v1/history/snapshot', params)
+        .then(result => {
+            cb(result.data);
+        });
+}

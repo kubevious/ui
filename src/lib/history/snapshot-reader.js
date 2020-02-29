@@ -32,9 +32,9 @@ class HistorySnapshotReader
         this._registerStatement('GET_DIFFS_FOR_SNAPSHOT_AND_DATE', 'SELECT * FROM `diffs` WHERE `in_snapshot` = 0 AND `snapshot_id` = ? AND `date` <= ? ORDER BY `date`;');
         this._registerStatement('FIND_DIFF_FOR_DATE', 'SELECT * FROM `diffs` WHERE `date` <= ? ORDER BY `date` DESC LIMIT 1;');
 
-        this._registerStatement('GET_SNAPSHOT_ITEMS', 'SELECT `id`, `dn`, `kind`, `config-kind`, `name`, `config` FROM `snap_items` WHERE `snapshot_id` = ?');
+        this._registerStatement('GET_SNAPSHOT_ITEMS', 'SELECT `id`, `dn`, `kind`, `config-kind`, `name`, `config` FROM `snap_items` WHERE `snapshot_id` = ? AND `config-kind` = ?');
 
-        this._registerStatement('GET_DIFF_ITEMS', 'SELECT `id`, `dn`, `kind`, `config-kind`, `name`, `present`, `config` FROM `diff_items` WHERE `diff_id` = ?');
+        this._registerStatement('GET_DIFF_ITEMS', 'SELECT `id`, `dn`, `kind`, `config-kind`, `name`, `present`, `config` FROM `diff_items` WHERE `diff_id` = ? AND `config-kind` = ?');
     }
 
     _registerStatement()
@@ -73,8 +73,13 @@ class HistorySnapshotReader
         }
     }
 
-    querySnapshotForDate(date)
+    querySnapshotForDate(date, configKind)
     {  
+        return this._genericReconstructSnapshot(date, 'node');
+    }
+
+    _genericReconstructSnapshot(date, configKind)
+    {
         return this.findDiffForDate(date)
             .then(diffObj => {
                 if (!diffObj) {
@@ -82,18 +87,16 @@ class HistorySnapshotReader
                 }
                 if (diffObj.in_snapshot) 
                 {
-                    return this.reconstructSnapshotById(diffObj.snapshot_id);
+                    return this.reconstructSnapshotById(diffObj.snapshot_id, configKind);
                 }
                 else
                 {
-                    return this.reconstructSnapshotByIdAndDiffDate(diffObj.snapshot_id, date);
+                    return this.reconstructSnapshotByIdAndDiffDate(diffObj.snapshot_id, date, configKind);
                 }
-            })
+            }) 
     }
 
-
     /*******/
-
     queryDiffsForSnapshot(snapshotId)
     {
         return this._execute('GET_DIFFS_FOR_SNAPSHOT', [snapshotId]);
@@ -117,9 +120,9 @@ class HistorySnapshotReader
             })
     }
 
-    querySnapshotItems(snapshotId)
+    querySnapshotItems(snapshotId, configKind)
     {
-        return this._execute('GET_SNAPSHOT_ITEMS', [snapshotId]);
+        return this._execute('GET_SNAPSHOT_ITEMS', [snapshotId, configKind]);
     }
 
     queryRecentSnapshot()
@@ -130,22 +133,22 @@ class HistorySnapshotReader
             });
     }
 
-    queryDiffItems(diffId)
+    queryDiffItems(diffId, configKind)
     {
-        return this._execute('GET_DIFF_ITEMS', [diffId]);
+        return this._execute('GET_DIFF_ITEMS', [diffId, configKind]);
     }
 
-    reconstructSnapshotById(snapshotId)
+    reconstructSnapshotById(snapshotId, configKind)
     {
         var snapshotReconstructor = null;
         return Promise.resolve()
-            .then(() => this.querySnapshotItems(snapshotId))
+            .then(() => this.querySnapshotItems(snapshotId, configKind))
             .then(snapshotItems => {
                 snapshotReconstructor = new SnapshotReconstructor(snapshotItems);
                 return this.queryDiffsForSnapshot(snapshotId)
             })
             .then(diffs => {
-                return this._queryDiffsItems(diffs)
+                return this._queryDiffsItems(diffs, configKind)
             })
             .then(diffsItems => {
                 snapshotReconstructor.applyDiffsItems(diffsItems);
@@ -154,17 +157,17 @@ class HistorySnapshotReader
             ;
     }
 
-    reconstructSnapshotByIdAndDiffDate(snapshotId, date)
+    reconstructSnapshotByIdAndDiffDate(snapshotId, date, configKind)
     {
         var snapshotReconstructor = null;
         return Promise.resolve()
-            .then(() => this.querySnapshotItems(snapshotId))
+            .then(() => this.querySnapshotItems(snapshotId, configKind))
             .then(snapshotItems => {
                 snapshotReconstructor = new SnapshotReconstructor(snapshotItems);
                 return this.queryDiffsForSnapshotAndDate(snapshotId, date)
             })
             .then(diffs => {
-                return this._queryDiffsItems(diffs)
+                return this._queryDiffsItems(diffs, configKind)
             })
             .then(diffsItems => {
                 snapshotReconstructor.applyDiffsItems(diffsItems);
@@ -185,10 +188,10 @@ class HistorySnapshotReader
             })
     }
 
-    _queryDiffsItems(diffs)
+    _queryDiffsItems(diffs, configKind)
     {
         return Promise.serial(diffs, diff => {
-            return this.queryDiffItems(diff.id);
+            return this.queryDiffItems(diff.id, configKind);
         });
     }
 

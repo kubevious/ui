@@ -8,7 +8,7 @@ class DiagramClient
 	constructor()
 	{
         this._timeMachineDate = null;
-        this._loadData();
+        this.setTimeMachineDate(null)
     }
 
     setTimeMachineDate(date)
@@ -23,24 +23,23 @@ class DiagramClient
         
         if (!this._timeMachineDate) 
         {
-            this._loadData();
+            fetchDiagram((sourceData) => {
+                this._acceptSourceData(sourceData);
+            });
         }
         else
         {
-            // this._loadData();
-            this._acceptSourceData({
-                rn: "root",
-                kind: "root"
+            fetchHistorySnapshot(this._timeMachineDate, (sourceData) => {
+                this._acceptSourceData(sourceData);
             });
+
+            // this._acceptSourceData({
+            //     rn: "root",
+            //     kind: "root"
+            // });
         }
 	}
     
-    _loadData()
-    {
-        fetchDiagram((sourceData) => {
-            this._acceptSourceData(sourceData);
-        });
-    }
 
     _acceptSourceData(sourceData)
     {
@@ -59,7 +58,7 @@ class DiagramClient
         if (this._sourceData) {
             diagramScope.view.acceptSourceData(this._sourceData);
         }
-        diagramScope.view.render();
+        diagramScope.view.updateAll();
     }
 
     massageSourceData(data)
@@ -98,7 +97,7 @@ class DiagramClient
 
         diagramScope.view.onNodeSelect((node, data) => {
             if (data) {
-                Logger.info("[NodeSelected] ", data.id);
+                Logger.info("[NodeSelected] ", data.dn);
     
                 fetchProperties(data, (config) => {
                     Logger.debug("[GotProperties] ", config);

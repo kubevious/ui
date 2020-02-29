@@ -2,6 +2,7 @@ const Promise = require('the-promise');
 const _ = require('the-lodash');
 const mysql = require('mysql2');
 const events = require('events');
+const DateUtils = require('./date-utils');
 
 class MySqlDriver
 {
@@ -87,13 +88,16 @@ class MySqlDriver
                     if (_.isUndefined(x)) {
                         return null;
                     }
+                    // if (_.isDate(x)) {
+                    //     return DateUtils.toMysqlFormat(x);
+                    // }
                     if (_.isPlainObject(x) || _.isArray(x)) {
                         return _.stableStringify(x);
                     }
                     return x;
                 })
             }
-            // this.logger.info("[executeStatement] final params: ", params);
+            this.logger.silly("[executeStatement] final params: ", params);
 
             statement.execute(params, (err, results, fields) => {
                 if (err) {
@@ -101,7 +105,7 @@ class MySqlDriver
                     reject(err);
                     return;
                 }
-                this.logger.silly("[executeStatement] DONE: %s", id);
+                // this.logger.info("[executeStatement] DONE: %s", id, results);
                 resolve(results);
             });
         });
@@ -186,7 +190,8 @@ class MySqlDriver
                 port     : process.env.MYSQL_PORT,
                 user     : 'root',
                 password : '',
-                database : 'kubevious'
+                database : 'kubevious',
+                timezone: 'Z'
             });
 
             connection.on('error', (err) => {
