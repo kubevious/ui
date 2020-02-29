@@ -58,7 +58,7 @@ class DiagramClient
         if (this._sourceData) {
             diagramScope.view.acceptSourceData(this._sourceData);
         }
-        diagramScope.view.updateAll();
+        diagramScope.view.updateAll(true);
     }
 
     massageSourceData(data)

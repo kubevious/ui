@@ -439,29 +439,46 @@ class VisualView {
 
         node
             .each(function (d) { 
-                for(var flag of d.flags)
-                {
-                    var headerName = 'flag-' + flag;
-                    d3.select(d.node)
-                        .append("image")
-                        .attr("class", "node-flag")
-                        .attr("xlink:href", nodeHeaderFlagImage(headerName))
-                        .attr("head", headerName) 
-                        .attr("x", nodeHeaderX(headerName)) 
-                        .attr("y", nodeHeaderY(headerName))
-                        .attr("width", nodeHeaderWidth(headerName))
-                        .attr("height", nodeHeaderHeight(headerName))
-                        ;                
-                }
+                self._updateNodeFlags(d);
             })
     }
 
-    _updateNode(visualNode)
+    _updateNodeFlags(visualNode)
+    {
+        var selection = 
+            d3.select(visualNode.node)
+                .selectAll(".node-flag")
+                .data(visualNode.flagNodes, function (x) { 
+                    return x.headerName;
+                });
+
+        selection
+            .exit()
+            .remove();
+
+        selection
+            .enter()
+                .append("image")
+                .attr("class", "node-flag")
+                .attr("xlink:href", x => x.imgSrc)
+                .attr("head", x => x.headerName) 
+                .attr("x", x => x.x()) 
+                .attr("y", x => x.y())
+                .attr("width", x => x.width())
+                .attr("height", x => x.height());
+    }
+
+    _updateNode(visualNode, isFullUpdate)
     {
         var duration = 200;
 
         if (!visualNode.node) {
             return;
+        }
+
+        if (isFullUpdate)
+        {
+            this._updateNodeFlags(visualNode);
         }
 
         d3
@@ -531,12 +548,8 @@ class VisualView {
             .selectAll(".node-flag")
             .transition()
             .duration(duration)
-            .attr("x", function(d) {
-                return d.getHeaderX(this.getAttribute("head")); 
-            }) 
-            .attr("y", function(d) {
-                return d.getHeaderY(this.getAttribute("head")); 
-            })
+            .attr("x", x => x.x()) 
+            .attr("y", x => x.y())
             ;
 
         this._updateNodeSmall(visualNode);
@@ -618,22 +631,22 @@ class VisualView {
             .style("fill", nodeHeaderHlFillColor)
     }
 
-    _updateNodeR(visualNode)
+    _updateNodeR(visualNode, isFullUpdate)
     {
-        this._updateNode(visualNode);
+        this._updateNode(visualNode, isFullUpdate);
         for(var child of visualNode.visibleChildren) {
-            this._updateNodeR(child);
+            this._updateNodeR(child, isFullUpdate);
         }
     }
 
-    updateAll()
+    updateAll(isFullUpdate)
     {
         this._massageSourceData();
         this._applyPanTransform();
         this._setupControl();
         this.render();
         if (this._visualRoot) {
-            this._updateNodeR(this._visualRoot);
+            this._updateNodeR(this._visualRoot, isFullUpdate);
         }
         this._setupControl();
     }

@@ -275,6 +275,9 @@ const GRAPH_DATA = {
                   "kind": "app",
                   "order": 100,
                   "errorCount": 3,
+                  "flags": {
+                      "shared": true
+                  },
                   "children": [
                       {
                           "rn": "launcher-Deployment",
@@ -1383,6 +1386,9 @@ const HISTORY_GRAPH_DATA = {
                     "kind": "app",
                     "order": 100,
                     "errorCount": 0,
+                    "flags": {
+                        "radioactive": true
+                    },
                     "children": [
                         {
                             "rn": "launcher-Deployment",
