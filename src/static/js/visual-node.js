@@ -29,6 +29,7 @@ class VisualNode {
         }
 
         this._flagNodes = [];
+        this._severityNodes = [];
 
         this._setupTheme();
     }
@@ -94,6 +95,10 @@ class VisualNode {
 
     get flagNodes() {
         return this._flagNodes;
+    }
+
+    get severityNodes() {
+        return this._severityNodes;
     }
 
     get isExpanded() {
@@ -250,6 +255,12 @@ class VisualNode {
                     sidesPadding: 8
                 },
             });
+
+            this._severityNodes = [
+                new VisualNodeSeverity(this, 'severity', 'bounding')
+            ]
+        } else {
+            this._severityNodes = [];
         }
 
         for(var flag of this.flags) 
@@ -671,6 +682,60 @@ class VisualNode {
         // this._selectedBgFillColor = '#FCF1B3';
     }
 
+}
+
+class VisualNodeSeverity
+{
+    constructor(node, headerName, flavor)
+    {
+        this._node = node;
+        this._headerName = headerName;
+        this._flavor = flavor;
+    }
+
+    get node() {
+        return this._node;
+    }
+
+    get headerName() {
+        return this._headerName;
+    }
+
+    get header() {
+        return this.node.getHeader(this.headerName);
+    }
+
+    x() {
+        return this.node.getHeaderX(this.headerName, this._flavor);
+    }
+
+    y() {
+        return this.node.getHeaderY(this.headerName, this._flavor);
+    }
+
+    width() {
+        var header = this.header;
+        if (!header) {
+            // TODO: Error
+            return 0;
+        }
+        if (this._flavor) {
+            return header[this._flavor].width;
+        }
+        return header.width;
+    }
+
+    height() {
+        var header = this.header;
+        if (!header) {
+            // TODO: Error
+            return 0;
+        }
+        if (this._flavor) {
+            return header[this._flavor].height;
+        }
+        return header.height;
+    }  
 }
 
 class VisualNodeHeaderFlag

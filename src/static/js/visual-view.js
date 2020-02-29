@@ -395,21 +395,21 @@ class VisualView {
             .on("dblclick", nodePerformExpandCollapse)
             ;
 
-        node
-            .filter(function(d) {
-                return d.hasHeader('severity');
-            })
-            .append("rect")
-            .attr("class", "node-severity")
-            .attr("x", nodeHeaderX('severity', 'bounding')) 
-            .attr("y", nodeHeaderY('severity', 'bounding'))
-            .attr("width", nodeHeaderWidth('severity', 'bounding'))
-            .attr("height", nodeHeaderHeight('severity', 'bounding'))
-            .attr("rx", 10)
-            .style("fill", "red")
-            .on("click", nodePerformSelect)
-            .on("dblclick", nodePerformExpandCollapse)
-            ;
+        // node
+        //     .filter(function(d) {
+        //         return d.hasHeader('severity');
+        //     })
+        //     .append("rect")
+        //     .attr("class", "node-severity")
+        //     .attr("x", nodeHeaderX('severity', 'bounding')) 
+        //     .attr("y", nodeHeaderY('severity', 'bounding'))
+        //     .attr("width", nodeHeaderWidth('severity', 'bounding'))
+        //     .attr("height", nodeHeaderHeight('severity', 'bounding'))
+        //     .attr("rx", 10)
+        //     .style("fill", "red")
+        //     .on("click", nodePerformSelect)
+        //     .on("dblclick", nodePerformExpandCollapse)
+        //     ;
 
         node.append("text")
             .filter(function(d) {
@@ -417,7 +417,6 @@ class VisualView {
             })
             .attr("class", "node-severity-text")
             .text(nodeHeaderText('severity'))
-            // .styles(nodeHeaderStyles('severity'))
             .attr("transform", nodeHeaderTransform('severity'))  
             .on("click", nodePerformSelect)
             .on("dblclick", nodePerformExpandCollapse)
@@ -439,11 +438,39 @@ class VisualView {
 
         node
             .each(function (d) { 
-                self._updateNodeFlags(d);
+                self._renderNodeSeverity(d);
+                self._renderNodeFlags(d);
             })
     }
 
-    _updateNodeFlags(visualNode)
+    _renderNodeSeverity(visualNode)
+    {
+        var selection = 
+            d3.select(visualNode.node)
+                .selectAll(".node-severity")
+                .data(visualNode.severityNodes, function (x) { 
+                    return x.headerName;
+                });
+
+        selection
+            .exit()
+                .remove();
+    
+        selection
+            .enter()
+                .append("rect")
+                .attr("class", "node-severity")
+                .attr("x", x => x.x()) 
+                .attr("y", x => x.y())
+                .attr("width", x => x.width())
+                .attr("height", x => x.height())
+                .attr("rx", 10)
+                .style("fill", "red")
+                .on("click", nodePerformSelect)
+                .on("dblclick", nodePerformExpandCollapse)
+    }
+
+    _renderNodeFlags(visualNode)
     {
         var selection = 
             d3.select(visualNode.node)
@@ -461,7 +488,6 @@ class VisualView {
                 .append("image")
                 .attr("class", "node-flag")
                 .attr("xlink:href", x => x.imgSrc)
-                .attr("head", x => x.headerName) 
                 .attr("x", x => x.x()) 
                 .attr("y", x => x.y())
                 .attr("width", x => x.width())
@@ -478,7 +504,8 @@ class VisualView {
 
         if (isFullUpdate)
         {
-            this._updateNodeFlags(visualNode);
+            this._renderNodeSeverity(visualNode);
+            this._renderNodeFlags(visualNode);
         }
 
         d3
@@ -534,7 +561,13 @@ class VisualView {
             .select(".node-severity")
             .transition()
             .duration(duration)
-            .attr("x", nodeHeaderX('severity', 'bounding'))
+            .attr("x", x => {
+                var severityNode = _.head(x.severityNodes);
+                if (severityNode) {
+                    return severityNode.x();
+                }
+                return 0;
+            })
 
         d3
             .select(visualNode.node)
@@ -548,7 +581,9 @@ class VisualView {
             .selectAll(".node-flag")
             .transition()
             .duration(duration)
-            .attr("x", x => x.x()) 
+            .attr("x", x => {
+                return x.x()
+            }) 
             .attr("y", x => x.y())
             ;
 
