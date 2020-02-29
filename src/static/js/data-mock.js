@@ -274,7 +274,7 @@ const GRAPH_DATA = {
                   "name": "gprod-addr-main-app",
                   "kind": "app",
                   "order": 100,
-                  "errorCount": 0,
+                  "errorCount": 3,
                   "children": [
                       {
                           "rn": "launcher-Deployment",
