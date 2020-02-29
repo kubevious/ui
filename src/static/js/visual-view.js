@@ -282,12 +282,6 @@ class VisualView {
         if (!this._showRoot) {
             this._flatVisualNodes.shift();
         }
-
-        // for(var visualNode of this._flatVisualNodes)
-        // {
-        //     _updateNode
-        //     this._visibleNodeIds
-        // }
     }
 
     render()
@@ -396,24 +390,37 @@ class VisualView {
             ;
 
         node
-            .filter(function(d) {
-                return d.hasHeader('expander');
-            })
-            .append("image")
-            .attr("class", "node-expander")
-            .attr("xlink:href", nodeExpanderImage)
-            .attr("x", nodeHeaderX('expander') ) 
-            .attr("y", nodeHeaderY('expander'))
-            .attr("width", nodeHeaderWidth('expander'))
-            .attr("height", nodeHeaderHeight('expander'))
-            .on("click", nodePerformExpandCollapse)
-            ;
-
-        node
             .each(function (d) { 
+                self._renderNodeExpander(d);
                 self._renderNodeSeverity(d);
                 self._renderNodeFlags(d);
             })
+    }
+
+    _renderNodeExpander(visualNode)
+    {
+        var selection = 
+            d3.select(visualNode.node)
+                .selectAll(".node-expander")
+                .data(visualNode.expanderNodes, function (x) { 
+                    return x.headerName;
+                });
+
+        selection
+            .exit()
+            .remove();
+
+        selection
+            .enter()
+                .append("image")
+                .attr("class", "node-expander")
+                .attr("xlink:href", x => x.imgSrc)
+                .attr("x", x => x.x()) 
+                .attr("y", x => x.y())
+                .attr("width", x => x.width())
+                .attr("height", x => x.height())
+                .on("click", nodePerformExpandCollapse)
+                ;
     }
 
     _renderNodeSeverity(visualNode)
@@ -501,6 +508,7 @@ class VisualView {
 
         if (isFullUpdate)
         {
+            this._renderNodeExpander(visualNode);
             this._renderNodeSeverity(visualNode);
             this._renderNodeFlags(visualNode);
         }
@@ -601,9 +609,21 @@ class VisualView {
             .select(".node-expander")
             .transition()
             .duration(duration)
-            .attr("x", nodeHeaderX('expander'))
-            .attr("xlink:href", nodeExpanderImage)
-
+            .attr("x", x => {
+                var expanderNode = _.head(x.expanderNodes);
+                if (expanderNode) {
+                    return expanderNode.x();
+                }
+                return 0;
+            })
+            .attr("xlink:href", x => {
+                var expanderNode = _.head(x.expanderNodes);
+                if (expanderNode) {
+                    return expanderNode.imgSrc;
+                }
+                return 0;
+            })
+            ;
 
 
         this._updateNodeSmall(visualNode);

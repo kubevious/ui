@@ -28,6 +28,7 @@ class VisualNode {
             this._depth = -1;
         }
 
+        this._expanderNodes = []
         this._flagNodes = [];
         this._severityNodes = [];
         this._severityTextNodes = [];
@@ -92,6 +93,10 @@ class VisualNode {
             return [];
         }
         return _.keys(this.data.flags);
+    }
+
+    get expanderNodes() {
+        return this._expanderNodes;
     }
 
     get flagNodes() {
@@ -247,6 +252,12 @@ class VisualNode {
                 height: size,
                 padding: (this._headerHeight - size) / 2 - this._headerPadding
             });
+
+            this._expanderNodes = [
+                new VisualNodeHeaderExpander(this, 'expander')
+            ];
+        } else {
+            this._expanderNodes = [];
         }
 
         if (this.hasErrors) {
@@ -693,44 +704,11 @@ class VisualNode {
 
 }
 
-class VisualNodeText
-{
-    constructor(node, headerName, flavor)
-    {
-        this._node = node;
-        this._headerName = headerName;
-        this._flavor = flavor;
-    }
 
-    get node() {
-        return this._node;
-    }
-
-    get headerName() {
-        return this._headerName;
-    }
-
-    get header() {
-        return this.node.getHeader(this.headerName);
-    }
-
-    text() {
-        var header = this.header;
-        if (!header) {
-            // TODO: Error
-            return '';
-        }
-        return header.text;
-    }
-
-    transform() {
-        return "translate(" + 
-            this.node.getHeaderX(this.headerName, this._flavor) + "," + 
-            this.node.getHeaderY(this.headerName, this._flavor) + ")"; 
-    }  
-}
-
-class VisualNodeSeverity
+/*
+ *
+ */
+class BaseVisualNodeHeader
 {
     constructor(node, headerName, flavor)
     {
@@ -781,31 +759,60 @@ class VisualNodeSeverity
             return header[this._flavor].height;
         }
         return header.height;
+    }
+
+    transform() {
+        return "translate(" + 
+            this.node.getHeaderX(this.headerName, this._flavor) + "," + 
+            this.node.getHeaderY(this.headerName, this._flavor) + ")"; 
     }  
 }
 
-class VisualNodeHeaderFlag
+/*
+ *
+ */
+class VisualNodeText extends BaseVisualNodeHeader
+{
+    constructor(node, headerName, flavor)
+    {
+        super(node, headerName, flavor);
+    }
+
+    text() {
+        var header = this.header;
+        if (!header) {
+            // TODO: Error
+            return '';
+        }
+        return header.text;
+    }
+}
+
+/*
+ *
+ */
+class VisualNodeSeverity extends BaseVisualNodeHeader
+{
+    constructor(node, headerName, flavor)
+    {
+        super(node, headerName, flavor);
+    }
+}
+
+/*
+ *
+ */
+class VisualNodeHeaderFlag extends BaseVisualNodeHeader
 {
     constructor(node, flag)
     {
-        this._node = node;
-        this._flag = flag;
-    }
+        super(node, 'flag-' + flag, null);
 
-    get node() {
-        return this._node;
+        this._flag = flag;
     }
 
     get flag() {
         return this._flag;
-    }
-
-    get headerName() {
-        return 'flag-' + this.flag;
-    }
-
-    get header() {
-        return this.node.getHeader(this.headerName);
     }
 
     get imgSrc() { 
@@ -816,41 +823,30 @@ class VisualNodeHeaderFlag
         }
         return "img/flags/" + header.icon + ".svg";
     }
-
-    x() {
-        return this.node.getHeaderX(this.headerName);
-    }
-
-    y() {
-        return this.node.getHeaderY(this.headerName);
-    }
-
-    width(flavor) {
-        var header = this.header;
-        if (!header) {
-            // TODO: Error
-            return 0;
-        }
-        if (flavor) {
-            return header[flavor].width;
-        }
-        return header.width;
-    }
-
-    height(flavor) {
-        var header = this.header;
-        if (!header) {
-            // TODO: Error
-            return 0;
-        }
-        if (flavor) {
-            return header[flavor].height;
-        }
-        return header.height;
-    }
-
 }
 
+/*
+ *
+ */
+class VisualNodeHeaderExpander extends BaseVisualNodeHeader
+{
+    constructor(node, headerName)
+    {
+        super(node, headerName, null);
+    }
+
+    get imgSrc() { 
+        if (this.node.isExpanded) {
+            return "img/collapse.svg";
+        } else {
+            return "img/expand.svg";
+        }
+    }
+}
+
+/*
+ *
+ */
 const VISUAL_NODE_COLOR_TABLE = [
     '#7C90BF',
     '#F58D61',
