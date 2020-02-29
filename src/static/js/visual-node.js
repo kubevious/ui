@@ -30,6 +30,7 @@ class VisualNode {
 
         this._flagNodes = [];
         this._severityNodes = [];
+        this._severityTextNodes = [];
 
         this._setupTheme();
     }
@@ -99,6 +100,10 @@ class VisualNode {
 
     get severityNodes() {
         return this._severityNodes;
+    }
+
+    get severityTextNodes() {
+        return this._severityTextNodes;
     }
 
     get isExpanded() {
@@ -259,8 +264,12 @@ class VisualNode {
             this._severityNodes = [
                 new VisualNodeSeverity(this, 'severity', 'bounding')
             ]
+            this._severityTextNodes = [
+                new VisualNodeText(this, 'severity')
+            ]
         } else {
             this._severityNodes = [];
+            this._severityTextNodes = [];
         }
 
         for(var flag of this.flags) 
@@ -682,6 +691,43 @@ class VisualNode {
         // this._selectedBgFillColor = '#FCF1B3';
     }
 
+}
+
+class VisualNodeText
+{
+    constructor(node, headerName, flavor)
+    {
+        this._node = node;
+        this._headerName = headerName;
+        this._flavor = flavor;
+    }
+
+    get node() {
+        return this._node;
+    }
+
+    get headerName() {
+        return this._headerName;
+    }
+
+    get header() {
+        return this.node.getHeader(this.headerName);
+    }
+
+    text() {
+        var header = this.header;
+        if (!header) {
+            // TODO: Error
+            return '';
+        }
+        return header.text;
+    }
+
+    transform() {
+        return "translate(" + 
+            this.node.getHeaderX(this.headerName, this._flavor) + "," + 
+            this.node.getHeaderY(this.headerName, this._flavor) + ")"; 
+    }  
 }
 
 class VisualNodeSeverity

@@ -618,7 +618,7 @@ const GRAPH_DATA = {
                   "name": "gprod-addr-main-proc",
                   "kind": "app",
                   "order": 100,
-                  "errorCount": 0,
+                  "errorCount": 4,
                   "children": [
                       {
                           "rn": "launcher-Deployment",
@@ -819,7 +819,7 @@ const HISTORY_GRAPH_DATA = {
             "name": "addr",
             "kind": "ns",
             "order": 100,
-            "errorCount": 0,
+            "errorCount": 2,
             "children": [
                 {
                     "rn": "raw-Raw Configs",
@@ -827,217 +827,7 @@ const HISTORY_GRAPH_DATA = {
                     "kind": "raw",
                     "order": 1000,
                     "errorCount": 0,
-                    "children": [
-                        {
-                            "rn": "raw-ConfigMaps",
-                            "name": "ConfigMaps",
-                            "kind": "raw",
-                            "order": 100,
-                            "errorCount": 0,
-                            "children": [
-                                {
-                                    "rn": "configmap-addr-gprod-addr-main-app-consumes",
-                                    "name": "addr-gprod-addr-main-app-consumes",
-                                    "kind": "configmap",
-                                    "order": 100,
-                                    "errorCount": 0,
-                                    "children": []
-                                },
-                                {
-                                    "rn": "configmap-addr-gprod-addr-main-proc-consumesdatabase",
-                                    "name": "addr-gprod-addr-main-proc-consumesdatabase",
-                                    "kind": "configmap",
-                                    "order": 100,
-                                    "errorCount": 0,
-                                    "children": []
-                                },
-                                {
-                                    "rn": "configmap-addr-gprod-addr-main-proc-consumes",
-                                    "name": "addr-gprod-addr-main-proc-consumes",
-                                    "kind": "configmap",
-                                    "order": 100,
-                                    "errorCount": 0,
-                                    "children": []
-                                },
-                                {
-                                    "rn": "configmap-addr-gprod-addr-main-app-consumesdatabase",
-                                    "name": "addr-gprod-addr-main-app-consumesdatabase",
-                                    "kind": "configmap",
-                                    "order": 100,
-                                    "errorCount": 0,
-                                    "children": []
-                                },
-                                {
-                                    "rn": "configmap-addr-gprod-addr-main-app-consumesqueue",
-                                    "name": "addr-gprod-addr-main-app-consumesqueue",
-                                    "kind": "configmap",
-                                    "order": 100,
-                                    "errorCount": 0,
-                                    "children": []
-                                },
-                                {
-                                    "rn": "configmap-addr-gprod-addr-main-proc-consumesqueue",
-                                    "name": "addr-gprod-addr-main-proc-consumesqueue",
-                                    "kind": "configmap",
-                                    "order": 100,
-                                    "errorCount": 0,
-                                    "children": []
-                                }
-                            ]
-                        },
-                        {
-                            "rn": "raw-Services",
-                            "name": "Services",
-                            "kind": "raw",
-                            "order": 100,
-                            "errorCount": 0,
-                            "children": [
-                                {
-                                    "rn": "service-gprod-addr-main-web-default",
-                                    "name": "gprod-addr-main-web-default",
-                                    "kind": "service",
-                                    "order": 100,
-                                    "errorCount": 0,
-                                    "children": [
-                                        {
-                                            "rn": "ingress-gprod-addr-web",
-                                            "name": "gprod-addr-web",
-                                            "kind": "ingress",
-                                            "order": 100,
-                                            "errorCount": 0,
-                                            "children": []
-                                        }
-                                    ]
-                                },
-                                {
-                                    "rn": "service-gprod-addr-main-app-default",
-                                    "name": "gprod-addr-main-app-default",
-                                    "kind": "service",
-                                    "order": 100,
-                                    "errorCount": 0,
-                                    "children": []
-                                }
-                            ]
-                        },
-                        {
-                            "rn": "raw-Ingresses",
-                            "name": "Ingresses",
-                            "kind": "raw",
-                            "order": 100,
-                            "errorCount": 0,
-                            "children": [
-                                {
-                                    "rn": "ingress-gprod-addr-web",
-                                    "name": "gprod-addr-web",
-                                    "kind": "ingress",
-                                    "order": 100,
-                                    "errorCount": 0,
-                                    "children": []
-                                }
-                            ]
-                        },
-                        {
-                            "rn": "raw-ReplicaSets",
-                            "name": "ReplicaSets",
-                            "kind": "raw",
-                            "order": 100,
-                            "errorCount": 0,
-                            "children": [
-                                {
-                                    "rn": "replicaset-gprod-addr-main-proc-995fcd496",
-                                    "name": "gprod-addr-main-proc-995fcd496",
-                                    "kind": "replicaset",
-                                    "order": 100,
-                                    "errorCount": 0,
-                                    "children": [
-                                        {
-                                            "rn": "pod-rc8mg",
-                                            "name": "rc8mg",
-                                            "kind": "pod",
-                                            "order": 100,
-                                            "errorCount": 0,
-                                            "children": []
-                                        }
-                                    ]
-                                },
-                                {
-                                    "rn": "replicaset-gprod-addr-main-web-c9759bc44",
-                                    "name": "gprod-addr-main-web-c9759bc44",
-                                    "kind": "replicaset",
-                                    "order": 100,
-                                    "errorCount": 0,
-                                    "children": [
-                                        {
-                                            "rn": "pod-2vqh6",
-                                            "name": "2vqh6",
-                                            "kind": "pod",
-                                            "order": 100,
-                                            "errorCount": 0,
-                                            "children": []
-                                        }
-                                    ]
-                                },
-                                {
-                                    "rn": "replicaset-gprod-addr-main-app-6fdb86d945",
-                                    "name": "gprod-addr-main-app-6fdb86d945",
-                                    "kind": "replicaset",
-                                    "order": 100,
-                                    "errorCount": 0,
-                                    "children": [
-                                        {
-                                            "rn": "pod-5kd9b",
-                                            "name": "5kd9b",
-                                            "kind": "pod",
-                                            "order": 100,
-                                            "errorCount": 0,
-                                            "children": []
-                                        }
-                                    ]
-                                },
-                                {
-                                    "rn": "replicaset-gprod-addr-main-web-544ccdf995",
-                                    "name": "gprod-addr-main-web-544ccdf995",
-                                    "kind": "replicaset",
-                                    "order": 100,
-                                    "errorCount": 0,
-                                    "children": []
-                                }
-                            ]
-                        },
-                        {
-                            "rn": "raw-Pods",
-                            "name": "Pods",
-                            "kind": "raw",
-                            "order": 100,
-                            "errorCount": 0,
-                            "children": [
-                                {
-                                    "rn": "pod-gprod-addr-main-proc-995fcd496-rc8mg",
-                                    "name": "gprod-addr-main-proc-995fcd496-rc8mg",
-                                    "kind": "pod",
-                                    "order": 100,
-                                    "errorCount": 0,
-                                    "children": []
-                                },
-                                {
-                                    "rn": "pod-gprod-addr-main-app-6fdb86d945-5kd9b",
-                                    "name": "gprod-addr-main-app-6fdb86d945-5kd9b",
-                                    "kind": "pod",
-                                    "order": 100,
-                                    "errorCount": 0,
-                                    "children": []
-                                },
-                                {
-                                    "rn": "pod-gprod-addr-main-web-c9759bc44-2vqh6",
-                                    "name": "gprod-addr-main-web-c9759bc44-2vqh6",
-                                    "kind": "pod",
-                                    "order": 100,
-                                    "errorCount": 0,
-                                    "children": []
-                                }
-                            ]
-                        }
-                    ]
+                    "children": []
                 },
                 {
                     "rn": "app-gprod-addr-main-app",
@@ -1385,7 +1175,7 @@ const HISTORY_GRAPH_DATA = {
                     "name": "gprod-addr-main-proc",
                     "kind": "app",
                     "order": 100,
-                    "errorCount": 0,
+                    "errorCount": 5,
                     "flags": {
                         "radioactive": true
                     },
