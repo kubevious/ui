@@ -177,7 +177,7 @@ class HistoryClient {
 		var html = '';
 
 		if (this._isTimeMachineActive && this._selectedDate) {
-			html = '<span class="time-machine-header-span"></span> Time Machine Active: ' + this._selectedDate.toISOString();
+			html = '<span class="time-machine-header-span"></span><span>Time Machine Active: ' + this._selectedDate.toISOString() + '</span>';
 		}
 
 		$('#history-info').html(html);
