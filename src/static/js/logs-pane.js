@@ -1,10 +1,22 @@
-function showObjectAlerts(node, alerts)
+function showObjectAlerts(dn, alerts)
 {
-    Logger.info("[showObjectAlerts] ", node.data.dn, alerts);
+    Logger.info("[showObjectAlerts] %s", dn, alerts);
+    _renderAlertsTable(alerts)
+}
+
+function clearObjectAlerts()
+{
+    Logger.info("[clearObjectAlerts] ");
+
+    _renderAlertsTable([])
+}
+
+
+function _renderAlertsTable(alerts)
+{
     if (!alerts) {
         alerts = [];
     }
-
     renderTable($("#alerts"), alerts,
         [
             {
@@ -21,3 +33,9 @@ function showObjectAlerts(node, alerts)
             }
         ])
 }
+
+
+$(document).on("layout-open-alertsComponent", function(e){
+    // TODO: handle case of alerts reopen.
+    clearObjectAlerts();
+});

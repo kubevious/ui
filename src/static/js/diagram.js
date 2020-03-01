@@ -7,6 +7,7 @@ class DiagramClient
 {
 	constructor()
 	{
+        this._selectedDn = null;
         this._timeMachineDate = null;
         this.setTimeMachineDate(null)
     }
@@ -32,12 +33,9 @@ class DiagramClient
             fetchHistorySnapshot(this._timeMachineDate, (sourceData) => {
                 this._acceptSourceData(sourceData);
             });
-
-            // this._acceptSourceData({
-            //     rn: "root",
-            //     kind: "root"
-            // });
         }
+
+        this._loadSelection();
 	}
     
 
@@ -98,26 +96,54 @@ class DiagramClient
         diagramScope.view.onNodeSelect((node, data) => {
             if (data) {
                 Logger.info("[NodeSelected] ", data.dn);
-    
-                fetchProperties(data.dn, (config) => {
-                    Logger.debug("[GotProperties] ", config);
-                    showObjectProperties(node, config)
-                });
-    
-                fetchAlerts(data.dn, (config) => {
-                    Logger.debug("[GotAlerts] ", config);
-                    showObjectAlerts(node, config)
-                });
-                
+                this._selectDn(data.dn);
             } else {
                 Logger.info("[NodeSelected] None");
-                clearObjectProperties()
+                this._selectDn(null);
             }
         });
 
         diagramScope.view.skipShowRoot();
         diagramScope.view.setup(); 
         this._renderData();
+    }
+
+    _selectDn(dn)
+    {
+        this._selectedDn = dn;
+        this._loadSelection();
+    }
+
+    _loadSelection()
+    {
+        if (this._selectedDn)
+        {
+            if (this._timeMachineDate)
+            {
+                fetchHistoryProperties(this._selectedDn, this._timeMachineDate, (config) => {
+                    Logger.debug("[GotHistoryProperties] ", config);
+                    showObjectProperties(this._selectedDn, config.props);
+                    showObjectAlerts(this._selectedDn, config.alerts);
+                })
+            }
+            else
+            {
+                fetchProperties(this._selectedDn, (config) => {
+                    Logger.debug("[GotProperties] ", config);
+                    showObjectProperties(this._selectedDn, config)
+                });
+        
+                fetchAlerts(this._selectedDn, (config) => {
+                    Logger.debug("[GotAlerts] ", config);
+                    showObjectAlerts(this._selectedDn, config)
+                });
+            }
+        }
+        else
+        {
+            clearObjectProperties();
+            clearObjectAlerts();
+        }
     }
 }
 

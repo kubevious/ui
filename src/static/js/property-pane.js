@@ -1,11 +1,11 @@
 var mySelectedObj = {};
 
-function showObjectProperties(node, propertyGroups)
+function showObjectProperties(dn, propertyGroups)
 {
-    Logger.info("[showObjectProperties] ", node.data.dn, propertyGroups);
-    mySelectedObj.dn = node.data.dn;
+    Logger.info("[showObjectProperties] %s", dn, propertyGroups);
+    mySelectedObj.dn = dn;
     _clearProperties();
-    _renderPropertiesNodeDn(node);
+    _renderPropertiesNodeDn(dn);
     propertyGroups = _.orderBy(propertyGroups, x => {
         if (x.order) {
             return x.order;
@@ -16,8 +16,8 @@ function showObjectProperties(node, propertyGroups)
     mySelectedObj.propertyGroups = {}; 
     for(var group of propertyGroups) {
         mySelectedObj.propertyGroups[group.id] = group;
-        group.node = node;
-        _renderPropertyGroup(node, group, isExpanded);
+        group.dn = dn;
+        _renderPropertyGroup(group, isExpanded);
         isExpanded = false;
     }
 }
@@ -122,7 +122,7 @@ function _renderTableContents(group, options)
                 column.formatter = ((dn) => {
                     return generateDnShortcutHtml(dn, {
                         handler: "onPropertyPanelDnClick",
-                        relativeTo: group.node.data.dn
+                        relativeTo: group.dn
                     });
                 });
             }
@@ -172,7 +172,7 @@ function _renderDnListContents(group, options)
     return generateList(dns, dn => {
         return generateDnShortcutHtml(dn, {
             handler: "onPropertyPanelDnClick",
-            relativeTo: group.node.data.dn
+            relativeTo: group.dn
         });
     });
 }
@@ -191,7 +191,7 @@ function renderCode(language, code)
         + "</code></pre>";
 }
 
-function _renderPropertyGroup(node, group, isExpanded)
+function _renderPropertyGroup(group, isExpanded)
 {
     var contentHtml = _renderPropertyGroupContents(group);
 
@@ -201,7 +201,7 @@ function _renderPropertyGroup(node, group, isExpanded)
         extraClassTitle: (isExpanded ? 'active' : ''),
         extraClassContents: (isExpanded ? 'expander-open' : ''),
         tooltip: group.tooltip,
-        dn: node.data.id,
+        dn: group.dn,
         groupName: group.id
     });
 
@@ -210,9 +210,9 @@ function _renderPropertyGroup(node, group, isExpanded)
     activateTooltips();
 }
 
-function _renderPropertiesNodeDn(node)
+function _renderPropertiesNodeDn(dn)
 {
-    var dnParts = parseDn(node.data.dn);
+    var dnParts = parseDn(dn);
     var html = '<div class="properties-owner">';
     html += generateDnPathHtml(dnParts);
     html += '</div>';

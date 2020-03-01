@@ -47,7 +47,7 @@ function fetchHistoryRange(cb) {
 }  
   
 function fetchHistoryTimeline(from, to, cb) {
-    Logger.info("[fetchHistoryTimeline]");
+    Logger.info("[fetchHistoryTimeline] %s - %s", from, to);
     var params = {
         from: from,
         to: to
@@ -59,7 +59,7 @@ function fetchHistoryTimeline(from, to, cb) {
 }
 
 function fetchHistorySnapshot(date, cb) {
-    Logger.info("[fetchHistorySnapshot]");
+    Logger.info("[fetchHistorySnapshot] %s", date);
     var params = {
         date: date
     };
@@ -68,3 +68,17 @@ function fetchHistorySnapshot(date, cb) {
             cb(result.data);
         });
 }
+
+
+function fetchHistoryProperties(dn, date, cb) {
+    Logger.info("[fetchHistoryProperties] %s :: %s", dn, date);
+    var params = {
+        dn: dn,
+        date: date
+    };
+    return backend.get('/api/v1/history/props', params)
+        .then(result => {
+            cb(result.data);
+        });
+}
+  
