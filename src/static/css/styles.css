@@ -32,24 +32,19 @@ h1, h2, h3, h4{font-family: 'Montserrat', sans-serif; font-size: 16px;}
 button:focus{outline:none;}
 .temporary{ display: none;}
 
+.history-info span{display: inline-block;}
+.history-info span:before{content:""; float: left; width: 24px; height: 24px;background:url(../img/alerts/warn.svg) left top; margin:-3px 10px 0 0;}
+
 .header .history-info {
     text-align: center;
     margin: auto auto auto auto;
     display: block;
-    padding-top: 18px;
+    padding-top:22px;
     padding-left:250px;
     padding-right:250px;
     font-family: 'Montserrat', sans-serif;
     font-weight:400;
 }
-
-.time-machine-header-span {
-    background:url(../img/alerts/warn.svg) left top; 
-    width:24px;
-    height:24px;
-    display: inline-block;
-}
-
 .header .actions {
     position: absolute;
     top:18px;
