@@ -5,6 +5,6 @@
     <desc>Created with Sketch.</desc>
     <defs></defs>
     <g id="Artboard-8" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <polygon id="Shape" fill="#FFFFFF" fill-rule="nonzero" transform="translate(8.000000, 7.899814) rotate(90.000000) translate(-8.000000, -7.899814) " points="12.3305969 5 8.00035581 9.45849345 3.67030884 5.00035581 3 5.65148339 8.00035581 10.7996287 13 5.65148339"></polygon>
+        <path d="M8,10 L14,10 L14,12 L6,12 L6,10 L6,4 L8,4 L8,10 Z" id="Combined-Shape" fill="#FFFFFF" transform="translate(10.000000, 8.000000) rotate(45.000000) translate(-10.000000, -8.000000) "></path>
     </g>
 </svg>
