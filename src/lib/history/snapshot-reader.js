@@ -32,9 +32,15 @@ class HistorySnapshotReader
         this._registerStatement('GET_DIFFS_FOR_SNAPSHOT_AND_DATE', 'SELECT * FROM `diffs` WHERE `in_snapshot` = 0 AND `snapshot_id` = ? AND `date` <= ? ORDER BY `date`;');
         this._registerStatement('FIND_DIFF_FOR_DATE', 'SELECT * FROM `diffs` WHERE `date` <= ? ORDER BY `date` DESC LIMIT 1;');
 
-        this._registerStatement('GET_SNAPSHOT_ITEMS', 'SELECT `id`, `dn`, `kind`, `config-kind`, `name`, `config` FROM `snap_items` WHERE `snapshot_id` = ? AND `config-kind` = ?');
+        // this._registerStatement('GET_SNAPSHOT_ITEMS_CONFIGKIND_DN', 'SELECT `id`, `dn`, `kind`, `config-kind`, `name`, `config` FROM `snap_items` WHERE `snapshot_id` = ? AND `config-kind` IN (?) AND `dn` = ?');
+        // this._registerStatement('GET_SNAPSHOT_ITEMS_CONFIGKIND', 'SELECT `id`, `dn`, `kind`, `config-kind`, `name`, `config` FROM `snap_items` WHERE `snapshot_id` = ? AND `config-kind` IN (?)');
+        // this._registerStatement('GET_SNAPSHOT_ITEMS_DN', 'SELECT `id`, `dn`, `kind`, `config-kind`, `name`, `config` FROM `snap_items` WHERE `snapshot_id` = ? AND `dn` = ?');
+        // this._registerStatement('GET_SNAPSHOT_ITEMS', 'SELECT `id`, `dn`, `kind`, `config-kind`, `name`, `config` FROM `snap_items` WHERE `snapshot_id` = ?');
 
-        this._registerStatement('GET_DIFF_ITEMS', 'SELECT `id`, `dn`, `kind`, `config-kind`, `name`, `present`, `config` FROM `diff_items` WHERE `diff_id` = ? AND `config-kind` = ?');
+        // this._registerStatement('GET_DIFF_ITEMS_CONFIGKIND_DN', 'SELECT `id`, `dn`, `kind`, `config-kind`, `name`, `present`, `config` FROM `diff_items` WHERE `diff_id` = ? AND `config-kind` IN (?) AND `dn` = ?');
+        // this._registerStatement('GET_DIFF_ITEMS_CONFIGKIND', 'SELECT `id`, `dn`, `kind`, `config-kind`, `name`, `present`, `config` FROM `diff_items` WHERE `diff_id` = ? AND `config-kind` IN (?)');
+        // this._registerStatement('GET_DIFF_ITEMS_DN', 'SELECT `id`, `dn`, `kind`, `config-kind`, `name`, `present`, `config` FROM `diff_items` WHERE `diff_id` = ? AND `dn` = ?');
+        // this._registerStatement('GET_DIFF_ITEMS', 'SELECT `id`, `dn`, `kind`, `config-kind`, `name`, `present`, `config` FROM `diff_items` WHERE `diff_id` = ?');
     }
 
     _registerStatement()
@@ -75,24 +81,22 @@ class HistorySnapshotReader
 
     querySnapshotForDate(date, configKind)
     {  
-        return this._genericReconstructSnapshot(date, 'node');
+        return this._genericReconstructSnapshot(date, configKind, null);
     }
 
-    _genericReconstructSnapshot(date, configKind)
+    queryDnSnapshotForDate(dn, date, configKind)
+    {
+        return this._genericReconstructSnapshot(date, configKind, { dn: dn});
+    }
+
+    _genericReconstructSnapshot(date, configKind, dnFilter)
     {
         return this.findDiffForDate(date)
             .then(diffObj => {
                 if (!diffObj) {
                     return null;
                 }
-                if (diffObj.in_snapshot) 
-                {
-                    return this.reconstructSnapshotById(diffObj.snapshot_id, configKind);
-                }
-                else
-                {
-                    return this.reconstructSnapshotByIdAndDiffDate(diffObj.snapshot_id, date, configKind);
-                }
+                return this.reconstructSnapshotByIdAndDiffDate(diffObj.snapshot_id, date, configKind, dnFilter);
             }) 
     }
 
@@ -120,11 +124,6 @@ class HistorySnapshotReader
             })
     }
 
-    querySnapshotItems(snapshotId, configKind)
-    {
-        return this._execute('GET_SNAPSHOT_ITEMS', [snapshotId, configKind]);
-    }
-
     queryRecentSnapshot()
     {
         return this._execute('GET_RECENT_SNAPSHOT')
@@ -133,41 +132,187 @@ class HistorySnapshotReader
             });
     }
 
-    queryDiffItems(diffId, configKind)
+    querySnapshotItems(snapshotId, configKind, dnFilter)
     {
-        return this._execute('GET_DIFF_ITEMS', [diffId, configKind]);
+        var conditions = [];
+        var params = []
+
+        conditions.push('`snapshot_id` = ?')
+        params.push(snapshotId)
+
+        if (this._hasDnFilter(dnFilter))
+        {
+            conditions.push('`dn` = ?')
+            params.push(dnFilter.dn)
+        }
+
+        configKind = this._massageConfigKind(configKind);
+        if (configKind)
+        {
+            var configSqlParts = []
+            for(var kind of configKind)
+            {
+                configSqlParts.push('`config-kind` = ?');
+                params.push(kind);
+            } 
+            conditions.push('(' + configSqlParts.join(' OR ') + ')');
+        }
+
+        var sql = 'SELECT `id`, `dn`, `kind`, `config-kind`, `name`, `config`'
+            + ' FROM `snap_items`';
+
+        if (conditions.length > 0)
+        {
+            sql = sql + 
+                ' WHERE '
+                + conditions.join(' AND ');
+        }
+
+        return this._executeSql(sql, params);
+
+
+
+        // var hasDnFilter = this._hasDnFilter(dnFilter);
+        // configKind = this._massageConfigKind(configKind);
+
+        // if (configKind)
+        // {
+        //     if (hasDnFilter)
+        //     {
+        //         return this._execute('GET_SNAPSHOT_ITEMS_CONFIGKIND_DN', [snapshotId, configKind, dnFilter.dn]);
+        //     }
+        //     else
+        //     {
+        //         return this._execute('GET_SNAPSHOT_ITEMS_CONFIGKIND', [snapshotId, configKind]);
+        //     }
+        // }
+        // else
+        // {
+        //     if (hasDnFilter)
+        //     {
+        //         return this._execute('GET_SNAPSHOT_ITEMS_DN', [snapshotId, dnFilter.dn]);
+        //     }
+        //     else
+        //     {
+        //         return this._execute('GET_SNAPSHOT_ITEMS', [snapshotId]);
+        //     }
+        // }
     }
 
-    reconstructSnapshotById(snapshotId, configKind)
+    queryDiffItems(diffId, configKind, dnFilter)
+    {
+        var conditions = [];
+        var params = []
+
+        conditions.push('`diff_id` = ?')
+        params.push(diffId)
+
+        if (this._hasDnFilter(dnFilter))
+        {
+            conditions.push('`dn` = ?')
+            params.push(dnFilter.dn)
+        }
+
+        configKind = this._massageConfigKind(configKind);
+        if (configKind)
+        {
+            var configSqlParts = []
+            for(var kind of configKind)
+            {
+                configSqlParts.push('`config-kind` = ?');
+                params.push(kind);
+            } 
+            conditions.push('(' + configSqlParts.join(' OR ') + ')');
+        }
+
+        var sql = 'SELECT `id`, `dn`, `kind`, `config-kind`, `name`, `present`, `config`'
+            + ' FROM `diff_items`';
+
+        if (conditions.length > 0)
+        {
+            sql = sql + 
+                ' WHERE '
+                + conditions.join(' AND ');
+        }
+
+        return this._executeSql(sql, params);
+
+        // if (configKind)
+        // {
+        //     if (hasDnFilter)
+        //     {
+        //         return this._execute('GET_DIFF_ITEMS_CONFIGKIND_DN', [diffId, configKind, dnFilter.dn]);
+        //     }
+        //     else
+        //     {
+        //         return this._execute('GET_DIFF_ITEMS_CONFIGKIND', [diffId, configKind]);
+        //     }
+        // }
+        // else
+        // {
+        //     if (hasDnFilter)
+        //     {
+        //         return this._execute('GET_DIFF_ITEMS_DN', [diffId, dnFilter.dn]);
+        //     }
+        //     else
+        //     {
+        //         return this._execute('GET_DIFF_ITEMS', [diffId]);
+        //     }
+        // }
+    }
+
+    _massageConfigKind(configKind)
+    {
+        if (configKind)
+        {
+            if (!_.isArray(configKind))
+            {
+                configKind = [ configKind ];
+            }
+            else 
+            {
+                if (configKind.length == 0)
+                {
+                    configKind = null;
+                }
+            }
+        }
+        else
+        {
+            configKind = null;
+        }
+        return configKind;
+    }
+
+    _hasDnFilter(dnFilter)
+    {
+        var hasDnFilter = false;
+        if (dnFilter) {
+            if (dnFilter.dn) {
+                hasDnFilter = true;
+            }
+        }
+        return hasDnFilter;
+    }
+
+    reconstructSnapshotByIdAndDiffDate(snapshotId, date, configKind, dnFilter)
     {
         var snapshotReconstructor = null;
         return Promise.resolve()
-            .then(() => this.querySnapshotItems(snapshotId, configKind))
+            .then(() => this.querySnapshotItems(snapshotId, configKind, dnFilter))
             .then(snapshotItems => {
                 snapshotReconstructor = new SnapshotReconstructor(snapshotItems);
-                return this.queryDiffsForSnapshot(snapshotId)
+                if (date)
+                {
+                    return this.queryDiffsForSnapshotAndDate(snapshotId, date)
+                }
+                else
+                {
+                    return this.queryDiffsForSnapshot(snapshotId);
+                }
             })
             .then(diffs => {
-                return this._queryDiffsItems(diffs, configKind)
-            })
-            .then(diffsItems => {
-                snapshotReconstructor.applyDiffsItems(diffsItems);
-                return snapshotReconstructor.getSnapshot();
-            })
-            ;
-    }
-
-    reconstructSnapshotByIdAndDiffDate(snapshotId, date, configKind)
-    {
-        var snapshotReconstructor = null;
-        return Promise.resolve()
-            .then(() => this.querySnapshotItems(snapshotId, configKind))
-            .then(snapshotItems => {
-                snapshotReconstructor = new SnapshotReconstructor(snapshotItems);
-                return this.queryDiffsForSnapshotAndDate(snapshotId, date)
-            })
-            .then(diffs => {
-                return this._queryDiffsItems(diffs, configKind)
+                return this._queryDiffsItems(diffs, configKind, dnFilter)
             })
             .then(diffsItems => {
                 snapshotReconstructor.applyDiffsItems(diffsItems);
@@ -184,14 +329,14 @@ class HistorySnapshotReader
                 if (!snapshot) {
                     return new Snapshot();
                 }
-                return this.reconstructSnapshotById(snapshot.id);
+                return this.reconstructSnapshotByIdAndDiffDate(snapshot.id, null, 'node');
             })
     }
 
-    _queryDiffsItems(diffs, configKind)
+    _queryDiffsItems(diffs, configKind, dnFilter)
     {
         return Promise.serial(diffs, diff => {
-            return this.queryDiffItems(diff.id, configKind);
+            return this.queryDiffItems(diff.id, configKind, dnFilter);
         });
     }
 
@@ -201,6 +346,12 @@ class HistorySnapshotReader
     {
         return this._driver.executeStatement(statementId, params);
     }
+
+    _executeSql(sql, params)
+    {
+        return this._driver.executeSql(sql, params);
+    }
+
 
 }
 

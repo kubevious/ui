@@ -81,23 +81,7 @@ class MySqlDriver
                 return;
             }
 
-            if (!params) {
-                params = []
-            } else {
-                params = params.map(x => {
-                    if (_.isUndefined(x)) {
-                        return null;
-                    }
-                    // if (_.isDate(x)) {
-                    //     return DateUtils.toMysqlFormat(x);
-                    // }
-                    if (_.isPlainObject(x) || _.isArray(x)) {
-                        return _.stableStringify(x);
-                    }
-                    return x;
-                })
-            }
-            this.logger.silly("[executeStatement] final params: ", params);
+            params = this._massageParams(params);
 
             statement.execute(params, (err, results, fields) => {
                 if (err) {
@@ -109,6 +93,50 @@ class MySqlDriver
                 resolve(results);
             });
         });
+    }
+
+    executeSql(sql, params)
+    {
+        return new Promise((resolve, reject) => {
+            this.logger.silly("[executeSql] executing: %s", sql);
+            this.logger.info("[executeSql] executing: %s", sql, params);
+
+            if (!this._connection) {
+                reject("NOT CONNECTED");
+                return;
+            }
+            
+            params = this._massageParams(params);
+
+            this._connection.execute(sql, params, (err, results, fields) => {
+                if (err) {
+                    this.logger.error("[executeSql] ERROR IN \"%s\". ", sql, err);
+                    reject(err);
+                    return;
+                }
+                // this.logger.info("[executeSql] DONE: %s", sql, results);
+                resolve(results);
+            });
+        });
+    }
+
+    _massageParams(params)
+    {
+        if (!params) {
+            params = []
+        } else {
+            params = params.map(x => {
+                if (_.isUndefined(x)) {
+                    return null;
+                }
+                if (_.isPlainObject(x)) { // || _.isArray(x)
+                    return _.stableStringify(x);
+                }
+                return x;
+            })
+        }
+        this.logger.info("[_massageParams] final params: ", params);
+        return params;
     }
 
     executeStatements(statements)

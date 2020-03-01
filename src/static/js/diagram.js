@@ -99,12 +99,12 @@ class DiagramClient
             if (data) {
                 Logger.info("[NodeSelected] ", data.dn);
     
-                fetchProperties(data, (config) => {
+                fetchProperties(data.dn, (config) => {
                     Logger.debug("[GotProperties] ", config);
                     showObjectProperties(node, config)
                 });
     
-                fetchAlerts(data, (config) => {
+                fetchAlerts(data.dn, (config) => {
                     Logger.debug("[GotAlerts] ", config);
                     showObjectAlerts(node, config)
                 });

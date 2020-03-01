@@ -58,12 +58,52 @@ module.exports = ({logger, app, router, history}) => {
 
         var date = DateUtils.makeDate(req.query.date); 
 
-        return history.querySnapshotForDate(date)
+        return history.querySnapshotForDate(date, 'node')
             .then(snapshot => {
                 if (!snapshot) {
                     return res.send({});
                 }
                 return res.send(snapshot.generateTree());
+            })
+    });
+
+    router.get('/props', function(req, res) {
+
+        if (!req.query.dn) {
+            return res.status(400).send({
+                message: 'Missing dn.'
+             });
+        }
+
+        if (!req.query.date) {
+            return res.status(400).send({
+                message: 'Missing date.'
+             });
+        }
+
+        var date = DateUtils.makeDate(req.query.date); 
+        return history.queryDnSnapshotForDate(req.query.dn, date, ['props', 'alerts'])
+            .then(snapshot => {
+                var result = {
+                    alerts: [],
+                    props: []
+                }
+
+                if (snapshot) 
+                {
+                    for(var item of snapshot.getItems())
+                    {
+                        if (item["config-kind"] == 'props')
+                        {
+                            result.props.push(item.config);
+                        } 
+                        else if (item["config-kind"] == 'alerts')
+                        {
+                            result.alerts = item.config;
+                        }
+                    }
+                }
+                return res.send(result);
             })
     });
 

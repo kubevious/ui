@@ -3,13 +3,13 @@ function fetchDiagram(cb) {
     cb(GRAPH_DATA);
 }
 
-function fetchProperties(node, cb) {
-    Logger.info("[MOCK:fetchProperties] ", node.id);
+function fetchProperties(dn, cb) {
+    Logger.info("[MOCK:fetchProperties] %s", dn);
     cb(_.cloneDeep(PROPERTIES_DATA));
 }
 
-function fetchAlerts(node, cb) {
-    Logger.info("[MOCK:fetchAlerts] ", node.id);
+function fetchAlerts(dn, cb) {
+    Logger.info("[MOCK:fetchAlerts] %s", dn);
     cb(ALERTS_DATA);
 }
 
@@ -34,8 +34,13 @@ function fetchHistoryTimeline(from, to, cb) {
 }
 
 function fetchHistorySnapshot(date, cb) {
-    Logger.info("[MOCK::fetchHistoryTimeline]");
+    Logger.info("[MOCK::fetchHistoryTimeline] %s", date);
     cb(HISTORY_GRAPH_DATA);
+}
+
+function fetchHistoryProperties(dn, date, cb) {
+    Logger.info("[MOCK:fetchHistoryProperties] %s :: %s ", dn, date);
+    cb(_.cloneDeep(HISTORY_PROPERTIES));
 }
 
 const GRAPH_DATA = {
@@ -2296,4 +2301,59 @@ const HISTORY_TIMELINE = [
 const HISTORY_RANGE = {
     "min_date": "2020-02-13T03:10:50.000Z",
     "max_date": "2020-02-14T10:03:34.000Z"
+};
+
+const HISTORY_PROPERTIES = {
+    "alerts": [
+        {
+            "id": "Port-3500",
+            "msg": "Missing port 3500 definition.",
+            "date": "2020-02-29T06:32:57.340Z",
+            "severity": "warn"
+        }
+    ],
+    "props": [
+        {
+            "id": "config",
+            "kind": "yaml",
+            "title": "Config",
+            "config": {
+                "kind": "Service",
+                "spec": {
+                    "type": "ClusterIP",
+                    "ports": [
+                        {
+                            "port": 80,
+                            "protocol": "TCP",
+                            "targetPort": 3500
+                        }
+                    ],
+                    "selector": {
+                        "app": "book-web"
+                    },
+                    "clusterIP": "10.75.1.215",
+                    "sessionAffinity": "None"
+                },
+                "status": {
+                    "loadBalancer": {}
+                },
+                "metadata": {
+                    "uid": "f70267ff-34c1-11ea-9cdc-42010a8001cf",
+                    "name": "book-web-svc-2",
+                    "labels": {
+                        "name": "book-web-svc-2"
+                    },
+                    "selfLink": "/api/v1/namespaces/book/services/book-web-svc-2",
+                    "namespace": "book",
+                    "annotations": {
+                        "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"v1\",\"kind\":\"Service\",\"metadata\":{\"annotations\":{},\"labels\":{\"name\":\"book-web-svc-2\"},\"name\":\"book-web-svc-2\",\"namespace\":\"book\"},\"spec\":{\"ports\":[{\"port\":80,\"protocol\":\"TCP\",\"targetPort\":3500}],\"selector\":{\"app\":\"book-web\"},\"type\":\"ClusterIP\"}}\n"
+                    },
+                    "resourceVersion": "206743",
+                    "creationTimestamp": "2020-01-11T22:30:26Z"
+                },
+                "apiVersion": "v1"
+            },
+            "tooltip": "Kubernetes YAML Configuration"
+        }
+    ]
 };
