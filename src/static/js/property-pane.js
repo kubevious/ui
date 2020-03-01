@@ -1,9 +1,17 @@
-var mySelectedObj = {};
+var propertiesScope = {
+    dn: null,
+    expandedMap: {}
+};
 
 function showObjectProperties(dn, propertyGroups)
 {
     Logger.info("[showObjectProperties] %s", dn, propertyGroups);
-    mySelectedObj.dn = dn;
+    var tryRecoverExpansion = false;
+    if (propertiesScope.dn == dn) {
+        tryRecoverExpansion = true;
+    } else {
+        propertiesScope.dn = dn;
+    }
     _clearProperties();
     _renderPropertiesNodeDn(dn);
     propertyGroups = _.orderBy(propertyGroups, x => {
@@ -12,19 +20,34 @@ function showObjectProperties(dn, propertyGroups)
         }
         return 100;
     })
-    var isExpanded = true;
-    mySelectedObj.propertyGroups = {}; 
+    var isFirst = true;
+    propertiesScope.propertyGroups = {}; 
     for(var group of propertyGroups) {
-        mySelectedObj.propertyGroups[group.id] = group;
+        var isExpanded = false;
+        if (tryRecoverExpansion)
+        {
+            if (propertiesScope.expandedMap[group.id]) {
+                isExpanded = true;
+            }
+        }
+        else
+        {
+            isExpanded = isFirst;
+        }
+        propertiesScope.propertyGroups[group.id] = group;
         group.dn = dn;
         _renderPropertyGroup(group, isExpanded);
-        isExpanded = false;
+        propertiesScope.expandedMap[group.id] = isExpanded;
+        isFirst = false;
     }
 }
 
 function clearObjectProperties()
 {
     Logger.info("[clearObjectProperties] ");
+    propertiesScope.dn = null;
+    propertiesScope.expandedMap = {};
+
     _clearProperties();
 }
 
@@ -37,7 +60,7 @@ function _clearProperties()
 const PropertyGroupTemplate = 
     Handlebars.compile(`
 <div class="property-group">
-<button class="expander {{extraClassTitle}}" onclick="propertyExpanderHandleClick(event)">
+<button class="expander {{extraClassTitle}}" onclick="propertyExpanderHandleClick(event)" tag="{{groupName}}">
     {{title}}
     <span class="property-group-openclose"></span>
     <span class="property-group-popup" onclick="onPropertyGroupPopup(event)" tag="{{groupName}}"></span>
@@ -225,14 +248,18 @@ function propertyExpanderHandleClick(event) {
     target.classList.toggle("active");
     var contentsElem = target.parentElement.getElementsByClassName("expander-contents")[0];
     contentsElem.classList.toggle("expander-open");
+
+    var groupId = target.getAttribute('tag');
+    propertiesScope.expandedMap[groupId] = 
+        target.classList.contains('active');
 }
 
 function onPropertyGroupPopup(event) {
     var groupName = event.target.getAttribute("tag");
-    var group = mySelectedObj.propertyGroups[groupName];
+    var group = propertiesScope.propertyGroups[groupName];
     var contentHtml = _renderPropertyGroupContents(group, { useLargeFormat: true });
 
-    var dnParts = parseDn(mySelectedObj.dn);
+    var dnParts = parseDn(propertiesScope.dn);
     var headerHtml = 
         generateDnPathHtml(dnParts, true) +
         '<h3>' + group.title + '</h3>';
