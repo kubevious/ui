@@ -161,8 +161,7 @@ class HistoryView {
             .call(d3
                 .axisBottom(this._xScale)
                 .tickFormat(function(d){
-                    return d.toISOString();
-                    // return d3.timeFormat("%H:%M")(d)
+                    return formatDate(d);
                 })
                 .ticks(horizontalTickCount)
                 

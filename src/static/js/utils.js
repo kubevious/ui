@@ -72,11 +72,20 @@ function renderTable(parent, data, columnsInfo)
     parent.html(html);
 }
 
+var todayStr = moment(new Date()).format('YYYY-MM-DD');
 function formatDate(date)
 {
-    return date;
+    var dayStr = moment(date).format('YYYY-MM-DD');
+    var timeStr = moment(date).format('hh:mm:ss A');
+    if (todayStr == dayStr)
+    {
+        return timeStr;
+    }
+    else
+    {
+        return dayStr + ' ' + timeStr;
+    }
 }
-
 
 /*** COLOR UTILS ***/
 const pSBC=(p,c0,c1,l)=>{
