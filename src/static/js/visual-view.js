@@ -201,22 +201,40 @@ class VisualView {
 
     _setupPanning()
     {
-        this._drag = d3.drag()
-            .on("start", (d) => {
-                //d3.select(this).raise().attr("stroke", "black");
-            })
+        this._setupPanningByMouseDrag();
+        
+        this._setupPanningByWheel();
+
+        this._applyPanTransform();
+    }
+
+    _setupPanningByMouseDrag()
+    {
+        var drag = d3.drag()
             .on("drag", (d) => {
                 this._viewX -= d3.event.dx;
                 this._viewY -= d3.event.dy;
         
                 this._applyPanTransform();
             })
-            .on("end", (d) => {
-                //d3.select(this).attr("stroke", null);
-            });
+            ;
+        this._svgElem.call(drag);
+    }
 
-        this._rootElem.call(this._drag);
-        this._applyPanTransform();
+    _setupPanningByWheel()
+    {
+        var doScroll = (e) => {
+            this._viewX += e.deltaX;
+            this._viewY += e.deltaY;
+            this._applyPanTransform();
+
+            e.preventDefault();
+        };
+          
+        var elem = document.getElementById("diagram");
+        if (elem.addEventListener) {
+            elem.addEventListener("wheel", doScroll, false);
+        }
     }
 
     _applyPanTransform()
