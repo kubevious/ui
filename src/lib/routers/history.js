@@ -1,5 +1,5 @@
 const _ = require("the-lodash");
-const DateUtils = require('../utils/date-utils');
+const DateUtils = require("kubevious-helpers").DateUtils;
 
 module.exports = ({logger, app, router, history}) => {
 
@@ -93,11 +93,11 @@ module.exports = ({logger, app, router, history}) => {
                 {
                     for(var item of snapshot.getItems())
                     {
-                        if (item["config-kind"] == 'props')
+                        if (item["config_kind"] == 'props')
                         {
                             result.props.push(item.config);
                         } 
-                        else if (item["config-kind"] == 'alerts')
+                        else if (item["config_kind"] == 'alerts')
                         {
                             result.alerts = item.config;
                         }

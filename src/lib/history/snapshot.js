@@ -1,7 +1,7 @@
 const Promise = require('the-promise');
 const _ = require('the-lodash');
 const Helpers = require('./helpers');
-const DnUtils = require('../utils/dn-utils');
+const DnUtils = require("kubevious-helpers").DnUtils;
 
 class Snapshot
 {
@@ -103,7 +103,7 @@ class Snapshot
             return node;
         };
 
-        for (var item of this.getItems().filter(x => x['config-kind'] == 'node'))
+        for (var item of this.getItems().filter(x => x['config_kind'] == 'node'))
         {
             makeNode(item.dn, item.config);
         }

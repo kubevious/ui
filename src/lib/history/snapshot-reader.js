@@ -32,15 +32,15 @@ class HistorySnapshotReader
         this._registerStatement('GET_DIFFS_FOR_SNAPSHOT_AND_DATE', 'SELECT * FROM `diffs` WHERE `in_snapshot` = 0 AND `snapshot_id` = ? AND `date` <= ? ORDER BY `date`;');
         this._registerStatement('FIND_DIFF_FOR_DATE', 'SELECT * FROM `diffs` WHERE `date` <= ? ORDER BY `date` DESC LIMIT 1;');
 
-        // this._registerStatement('GET_SNAPSHOT_ITEMS_CONFIGKIND_DN', 'SELECT `id`, `dn`, `kind`, `config-kind`, `name`, `config` FROM `snap_items` WHERE `snapshot_id` = ? AND `config-kind` IN (?) AND `dn` = ?');
-        // this._registerStatement('GET_SNAPSHOT_ITEMS_CONFIGKIND', 'SELECT `id`, `dn`, `kind`, `config-kind`, `name`, `config` FROM `snap_items` WHERE `snapshot_id` = ? AND `config-kind` IN (?)');
-        // this._registerStatement('GET_SNAPSHOT_ITEMS_DN', 'SELECT `id`, `dn`, `kind`, `config-kind`, `name`, `config` FROM `snap_items` WHERE `snapshot_id` = ? AND `dn` = ?');
-        // this._registerStatement('GET_SNAPSHOT_ITEMS', 'SELECT `id`, `dn`, `kind`, `config-kind`, `name`, `config` FROM `snap_items` WHERE `snapshot_id` = ?');
+        // this._registerStatement('GET_SNAPSHOT_ITEMS_CONFIGKIND_DN', 'SELECT `id`, `dn`, `kind`, `config_kind`, `name`, `config` FROM `snap_items` WHERE `snapshot_id` = ? AND `config_kind` IN (?) AND `dn` = ?');
+        // this._registerStatement('GET_SNAPSHOT_ITEMS_CONFIGKIND', 'SELECT `id`, `dn`, `kind`, `config_kind`, `name`, `config` FROM `snap_items` WHERE `snapshot_id` = ? AND `config_kind` IN (?)');
+        // this._registerStatement('GET_SNAPSHOT_ITEMS_DN', 'SELECT `id`, `dn`, `kind`, `config_kind`, `name`, `config` FROM `snap_items` WHERE `snapshot_id` = ? AND `dn` = ?');
+        // this._registerStatement('GET_SNAPSHOT_ITEMS', 'SELECT `id`, `dn`, `kind`, `config_kind`, `name`, `config` FROM `snap_items` WHERE `snapshot_id` = ?');
 
-        // this._registerStatement('GET_DIFF_ITEMS_CONFIGKIND_DN', 'SELECT `id`, `dn`, `kind`, `config-kind`, `name`, `present`, `config` FROM `diff_items` WHERE `diff_id` = ? AND `config-kind` IN (?) AND `dn` = ?');
-        // this._registerStatement('GET_DIFF_ITEMS_CONFIGKIND', 'SELECT `id`, `dn`, `kind`, `config-kind`, `name`, `present`, `config` FROM `diff_items` WHERE `diff_id` = ? AND `config-kind` IN (?)');
-        // this._registerStatement('GET_DIFF_ITEMS_DN', 'SELECT `id`, `dn`, `kind`, `config-kind`, `name`, `present`, `config` FROM `diff_items` WHERE `diff_id` = ? AND `dn` = ?');
-        // this._registerStatement('GET_DIFF_ITEMS', 'SELECT `id`, `dn`, `kind`, `config-kind`, `name`, `present`, `config` FROM `diff_items` WHERE `diff_id` = ?');
+        // this._registerStatement('GET_DIFF_ITEMS_CONFIGKIND_DN', 'SELECT `id`, `dn`, `kind`, `config_kind`, `name`, `present`, `config` FROM `diff_items` WHERE `diff_id` = ? AND `config_kind` IN (?) AND `dn` = ?');
+        // this._registerStatement('GET_DIFF_ITEMS_CONFIGKIND', 'SELECT `id`, `dn`, `kind`, `config_kind`, `name`, `present`, `config` FROM `diff_items` WHERE `diff_id` = ? AND `config_kind` IN (?)');
+        // this._registerStatement('GET_DIFF_ITEMS_DN', 'SELECT `id`, `dn`, `kind`, `config_kind`, `name`, `present`, `config` FROM `diff_items` WHERE `diff_id` = ? AND `dn` = ?');
+        // this._registerStatement('GET_DIFF_ITEMS', 'SELECT `id`, `dn`, `kind`, `config_kind`, `name`, `present`, `config` FROM `diff_items` WHERE `diff_id` = ?');
     }
 
     _registerStatement()
@@ -152,13 +152,13 @@ class HistorySnapshotReader
             var configSqlParts = []
             for(var kind of configKind)
             {
-                configSqlParts.push('`config-kind` = ?');
+                configSqlParts.push('`config_kind` = ?');
                 params.push(kind);
             } 
             conditions.push('(' + configSqlParts.join(' OR ') + ')');
         }
 
-        var sql = 'SELECT `id`, `dn`, `kind`, `config-kind`, `name`, `config`'
+        var sql = 'SELECT `id`, `dn`, `kind`, `config_kind`, `name`, `config`'
             + ' FROM `snap_items`';
 
         if (conditions.length > 0)
@@ -219,13 +219,13 @@ class HistorySnapshotReader
             var configSqlParts = []
             for(var kind of configKind)
             {
-                configSqlParts.push('`config-kind` = ?');
+                configSqlParts.push('`config_kind` = ?');
                 params.push(kind);
             } 
             conditions.push('(' + configSqlParts.join(' OR ') + ')');
         }
 
-        var sql = 'SELECT `id`, `dn`, `kind`, `config-kind`, `name`, `present`, `config`'
+        var sql = 'SELECT `id`, `dn`, `kind`, `config_kind`, `name`, `present`, `config`'
             + ' FROM `diff_items`';
 
         if (conditions.length > 0)

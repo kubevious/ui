@@ -1,15 +1,15 @@
 const Server = require('./server');
 const BackendClient = require('./backend-client');
-const MysqlDriver = require("./utils/mysql-driver");
+const MySqlDriver = require("kubevious-helpers").MySqlDriver;
 const SnapshotReader = require('./history/snapshot-reader');
 
 class Context {
-	constructor(logger, app) {
+	constructor(logger) {
         this._logger = logger;
         
         this._server = new Server(this);
         this._backendClient = new BackendClient(logger);
-        this._mysqlDriver = new MysqlDriver(logger);
+        this._mysqlDriver = new MySqlDriver(logger);
         this._snapshotReader = new SnapshotReader(logger, this._mysqlDriver);
 	}
 
