@@ -53,7 +53,7 @@ class Server
         var routerContext = {
             logger: this.logger.sublogger(name),
             backend: this._context.backendClient,
-            history: this._context.snapshotReader,
+            history: this._context.historySnapshotReader,
             router,
             app: this._app
         }
