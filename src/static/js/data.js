@@ -6,17 +6,9 @@ function fetchDiagram(cb) {
         })
 }
 
-function fetchProperties(dn, cb) {
-    Logger.info("[fetchProperties] %s", dn);
-    return backend.get('/api/properties', { dn: dn })
-        .then(result => {
-            cb(result.data);
-        })
-}
-
-function fetchAlerts(dn, cb) {
-    Logger.info("[fetchAlerts] %s", dn);
-    return backend.get('/api/alerts', { dn: dn })
+function fetchAssets(dn, cb) {
+    Logger.info("[fetchAssets] %s", dn);
+    return backend.get('/api/assets', { dn: dn })
         .then(result => {
             cb(result.data);
         })
