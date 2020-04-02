@@ -128,14 +128,10 @@ class DiagramClient
             }
             else
             {
-                fetchProperties(this._selectedDn, (config) => {
-                    Logger.debug("[GotProperties] ", config);
-                    showObjectProperties(this._selectedDn, config)
-                });
-        
-                fetchAlerts(this._selectedDn, (config) => {
-                    Logger.debug("[GotAlerts] ", config);
-                    showObjectAlerts(this._selectedDn, config)
+                fetchAssets(this._selectedDn, (config) => {
+                    Logger.debug("[GotAssets] ", config);
+                    showObjectProperties(this._selectedDn, config.props)
+                    showObjectAlerts(this._selectedDn, config.alerts)
                 });
             }
         }

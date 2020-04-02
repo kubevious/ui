@@ -3,14 +3,12 @@ function fetchDiagram(cb) {
     cb(GRAPH_DATA);
 }
 
-function fetchProperties(dn, cb) {
-    Logger.info("[MOCK:fetchProperties] %s", dn);
-    cb(_.cloneDeep(PROPERTIES_DATA));
-}
-
-function fetchAlerts(dn, cb) {
-    Logger.info("[MOCK:fetchAlerts] %s", dn);
-    cb(ALERTS_DATA);
+function fetchAssets(dn, cb) {
+    Logger.info("[MOCK:fetchAssets] %s", dn);
+    cb(_.cloneDeep({
+        props: PROPERTIES_DATA,
+        alerts: ALERTS_DATA
+    }));
 }
 
 function fetchSearchResults(criteria, cb) {
