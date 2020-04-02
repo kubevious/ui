@@ -68,7 +68,7 @@ function fetchHistoryProperties(dn, date, cb) {
         dn: dn,
         date: date
     };
-    return backend.get('/api/v1/history/props', params)
+    return backend.get('/api/v1/history/assets', params)
         .then(result => {
             cb(result.data);
         });

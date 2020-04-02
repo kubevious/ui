@@ -67,7 +67,7 @@ module.exports = ({logger, app, router, history}) => {
             })
     });
 
-    router.get('/props', function(req, res) {
+    router.get('/assets', function(req, res) {
 
         if (!req.query.dn) {
             return res.status(400).send({
@@ -93,11 +93,11 @@ module.exports = ({logger, app, router, history}) => {
                 {
                     for(var item of snapshot.getItems())
                     {
-                        if (item["config_kind"] == 'props')
+                        if (item.config_kind == 'props')
                         {
                             result.props.push(item.config);
                         } 
-                        else if (item["config_kind"] == 'alerts')
+                        else if (item.config_kind == 'alerts')
                         {
                             result.alerts = item.config;
                         }
