@@ -49,9 +49,10 @@ const KIND_TO_USER_MAPPING = {
     'initcont': 'Init Container',
     'sidecont': 'Sidecar Container',
     'vol': 'Volume',
-    'configMap': 'ConfigMap',
-    'replicaSet': 'ReplicaSet',
-    'hpa': 'HorizontalPodAutoScaler'
+    'configMap': 'Config Map',
+    'replicaSet': 'Replica Set',
+    'hpa': 'Horizontal Pod AutoScaler',
+    'svcaccnt': 'Service Account',
 }
 
 function prettyKind(kind)
