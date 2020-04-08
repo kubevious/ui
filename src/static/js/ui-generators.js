@@ -42,19 +42,6 @@ function generateDnShortcutHtml(dn, params)
 /*************************/
 /***   DN PATH BEGIN   ***/
 
-const KIND_TO_USER_MAPPING = {
-    'ns': 'Namespace',
-    'app': 'Application',
-    'cont': 'Container',
-    'initcont': 'Init Container',
-    'sidecont': 'Sidecar Container',
-    'vol': 'Volume',
-    'configMap': 'Config Map',
-    'replicaSet': 'Replica Set',
-    'hpa': 'Horizontal Pod AutoScaler',
-    'svcaccnt': 'Service Account',
-}
-
 function prettyKind(kind)
 {
     var prettyKind = KIND_TO_USER_MAPPING[kind];

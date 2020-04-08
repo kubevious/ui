@@ -27,6 +27,7 @@ class Server
         this._app.use(express.static(path.resolve(__dirname, '../static')));
 
         this._app.engine('html', ejs.renderFile);
+        this._app.engine('js', ejs.renderFile);
         this._app.set('views', path.resolve(__dirname, '../views'));
         this._app.set('view engine', 'html');
         

@@ -1,16 +1,18 @@
-module.exports = ({app, backend}) => {
+const Docs = require("kubevious-helpers").Docs;
 
-    app.get('/', function(req, res) {
+module.exports = ({app, router, backend}) => {
+
+    router.get('/', function(req, res) {
         res.render('index');
     });
 
-    app.get('/version', function (req, res) {
+    router.get('/version', function (req, res) {
         res.send({
             version: require('../../version')
         });
     });
 
-    app.get('/about', function (req, res) {
+    router.get('/about', function (req, res) {
         var info = {
             version: require('../../version')
         }
@@ -30,5 +32,10 @@ module.exports = ({app, backend}) => {
             });
 
     });
+
+    router.get('/docs.js', function (req, res) {
+        res.render('docs.js', { kinds: Docs.KIND_TO_USER_MAPPING });
+    });
     
+    app.use('/', router);
 };
