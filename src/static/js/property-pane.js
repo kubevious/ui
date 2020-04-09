@@ -132,6 +132,10 @@ function _renderTableContents(group, options)
             if (x.label) {
                 column.label = x.label;
             }
+
+            if (x.kind) {
+                column.formatter = _determineColumnFormatter(group, x.kind);
+            }
         }
         else
         {
@@ -140,22 +144,30 @@ function _renderTableContents(group, options)
         if (!column.label) {
             column.label = column.name;
         }
-        if (config.shortcuts) {
-            if (config.shortcuts[column.name]) {
-                column.formatter = ((dn) => {
-                    return generateDnShortcutHtml(dn, {
-                        handler: "onPropertyPanelDnClick",
-                        relativeTo: group.dn
-                    });
-                });
-            }
-        }
         return column;
     });
 
     return generateTableHtml(
         data,
         columnsInfo);
+}
+
+function _determineColumnFormatter(group, kind)
+{
+    if (kind == 'shortcut') {
+        return ((dn) => {
+            return generateDnShortcutHtml(dn, {
+                handler: "onPropertyPanelDnClick",
+                relativeTo: group.dn
+            });
+        });
+    }
+
+    if (kind == 'check') {
+        return ((value) => {
+            return generateCheckHtml(value);
+        });
+    }
 }
 
 function _renderKeyValueContents(config, options)

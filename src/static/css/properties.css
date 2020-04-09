@@ -164,3 +164,18 @@ pre {
 }
 
 /****** EXPANDER END **********/
+
+.properties-checkbox {
+    display: block;
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+}
+.properties-checkbox.checked {
+    background-image: url("../img/check/true.svg");
+}
+.properties-checkbox.unchecked {
+    background-image: url("../img/check/false.svg");
+}

@@ -40,7 +40,7 @@ function generateTableHtml(data, columnsInfo)
                 cell = row[column.name];
             }
             if (column.formatter) {
-                cell = column.formatter(cell);
+                cell = column.formatter(cell, row);
             }
             html += '<td>';
             html += cell;

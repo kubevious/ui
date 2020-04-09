@@ -81,3 +81,18 @@ function generateDnPathHtml(dnParts, includeLogo)
     return html;
 }
 /***   DN PATH END   ***/
+
+
+
+function generateCheckHtml(value)
+{
+    if (_.isUndefined(value)) {
+        return "";
+    }
+
+    if (value) {
+        return '<div class="properties-checkbox checked"><div>';
+    } else {
+        return '<div class="properties-checkbox unchecked"><div>';
+    }
+}
