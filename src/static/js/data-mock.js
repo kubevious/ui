@@ -2009,6 +2009,11 @@ const GRAPH_DATA = {
           "kind": "ns",
           "order": 100,
           "errorCount": 0,
+          "flags": {
+              "radioactive": true,
+              "xnamespace": true,
+              "shared": true
+          },
           "children": [
               {
                   "rn": "raw-Raw Configs",
@@ -2252,6 +2257,10 @@ const GRAPH_DATA = {
                                   "kind": "replicaset",
                                   "order": 100,
                                   "errorCount": 0,
+                                  "flags": {
+                                     "radioactive": true,
+                                     "xnamespace": true
+                                  },
                                   "children": [
                                       {
                                           "rn": "pod-fb7vt",

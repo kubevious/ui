@@ -34,7 +34,11 @@ module.exports = ({app, router, backend}) => {
     });
 
     router.get('/docs.js', function (req, res) {
-        res.render('docs.js', { kinds: Docs.KIND_TO_USER_MAPPING });
+        var params = {
+            kinds: Docs.KIND_TO_USER_MAPPING,
+            flags: Docs.FLAG_TOOLTIPS
+        }
+        res.render('docs.js', params);
     });
     
     app.use('/', router);

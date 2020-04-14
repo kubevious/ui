@@ -494,6 +494,7 @@ class VisualView {
 
     _renderNodeFlags(visualNode)
     {
+        var self = this;
         var selection = 
             d3.select(visualNode.node)
                 .selectAll(".node-flag")
@@ -513,7 +514,38 @@ class VisualView {
                 .attr("x", x => x.x()) 
                 .attr("y", x => x.y())
                 .attr("width", x => x.width())
-                .attr("height", x => x.height());
+                .attr("height", x => x.height())
+                .on("mouseover", function (d, i) {
+                    self._showFlagTooltip(this, d.flag);
+                })
+                .on("mouseout", function (d, i) {
+                    self._closeFlagTooltip(this, d.name);
+                });
+      ;
+    }
+
+    _showFlagTooltip(elem, name)
+    {
+        var descr = FLAG_TOOLTIPS[name];
+        if (!descr) {
+            return;
+        }
+        var template = 
+            '<div class="tooltip">' + 
+        	'	<div class="tooltip-arrow"></div>' + 
+        	'	<div class="tooltip-inner"></div>' + 
+        	'</div>';
+        $(elem).tooltip({
+            template: template,
+            title: descr,
+            html: true
+        });
+        $(elem).tooltip('show');
+    }
+
+    _closeFlagTooltip(elem, name)
+    {
+        $(elem).tooltip('dispose');
     }
 
     _updateNode(visualNode, isFullUpdate)
