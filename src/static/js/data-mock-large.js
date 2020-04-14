@@ -1518,6 +1518,7 @@ const GRAPH_DATA = {
           "kind": "ns",
           "order": 100,
           "errorCount": 4,
+          "warnCount": 12,
           "children": [
               {
                   "rn": "app-gprod-berlioz-main-ctlr",

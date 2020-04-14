@@ -160,12 +160,12 @@ class VisualNode {
         return this._parent;
     }
 
-    get hasErrors() {
-        return this.errorCount > 0;
+    get errorCount() {
+        return this.data.alerts['error'];
     }
 
-    get errorCount() {
-        return this.data.allErrorCount;
+    get warnCount() {
+        return this.data.alerts['warn'];
     }
 
     get headerFillColor() {
@@ -260,8 +260,27 @@ class VisualNode {
             this._expanderNodes = [];
         }
 
-        if (this.hasErrors) {
-            this._addToHeader("severity", { 
+        this._severityNodes = [];
+        this._severityTextNodes = [];
+
+        if (this.warnCount) {
+            this._addToHeader("warns", { 
+                kind: 'text', 
+                text: this.warnCount, 
+                fontSpec: MONTSERRAT_12PX_500,
+                location: 'right',
+                bounding: {
+                    height: 20,
+                    sidesPadding: 8
+                },
+            });
+
+            this._severityNodes.push(new VisualNodeSeverity(this, 'warns', 'bounding', SEVERITY_BG_COLOR_WARN));
+            this._severityTextNodes.push(new VisualNodeText(this, 'warns'));
+        }
+
+        if (this.errorCount) {
+            this._addToHeader("errors", { 
                 kind: 'text', 
                 text: this.errorCount, 
                 fontSpec: MONTSERRAT_12PX_500,
@@ -272,15 +291,8 @@ class VisualNode {
                 },
             });
 
-            this._severityNodes = [
-                new VisualNodeSeverity(this, 'severity', 'bounding')
-            ]
-            this._severityTextNodes = [
-                new VisualNodeText(this, 'severity')
-            ]
-        } else {
-            this._severityNodes = [];
-            this._severityTextNodes = [];
+            this._severityNodes.push(new VisualNodeSeverity(this, 'errors', 'bounding', SEVERITY_BG_COLOR_ERROR));
+            this._severityTextNodes.push(new VisualNodeText(this, 'errors'));
         }
 
         for(var flag of this.flags) 
@@ -793,9 +805,14 @@ class VisualNodeText extends BaseVisualNodeHeader
  */
 class VisualNodeSeverity extends BaseVisualNodeHeader
 {
-    constructor(node, headerName, flavor)
+    constructor(node, headerName, flavor, fill)
     {
         super(node, headerName, flavor);
+        this._fill = fill;
+    }
+
+    get fill() {
+        return this._fill;
     }
 }
 
@@ -862,6 +879,13 @@ const VISUAL_NODE_COLOR_TABLE = [
     '#BBBBBB',
     // '#F8D92F', // yellow
 ]
+
+/*
+ *
+ */
+const SEVERITY_BG_COLOR_ERROR = 'red';
+const SEVERITY_BG_COLOR_WARN = '#f58142';
+
 
 const NODE_RENDER_METADATA = {
     default: {

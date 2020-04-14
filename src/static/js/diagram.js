@@ -73,15 +73,42 @@ class DiagramClient
             dn = node.rn;
         }
         node.dn = dn;
-        node.allErrorCount = node.errorCount;
+
+        node.alerts = {};
+        const ALERT_SEVERITIES = ['error', 'warn'];
+        for(var severity of ALERT_SEVERITIES)
+        {
+            node.alerts[severity] = this._getNodeErrorCount(node, severity);
+        }
+
         if (node.children)
         {
             for(var child of node.children)
             {
                 this.massageSourceDataNode(child, node);
-                node.allErrorCount += child.allErrorCount;
+                for(var severity of ALERT_SEVERITIES)
+                {
+                    node.alerts[severity] += child.alerts[severity];
+                }
             }
         }
+    }
+
+    _getNodeErrorCount(node, kind)
+    {
+        if (node.alertCount) {
+            if (node.alertCount[kind]) {
+                return node.alertCount[kind];
+            }
+        }
+        else 
+        {
+            var propName = kind + "Count";
+            if (node[propName]) {
+                return node[propName];
+            }
+        }
+        return 0;
     }
 
     selectDiagramItem(dn)

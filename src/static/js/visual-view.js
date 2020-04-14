@@ -464,7 +464,9 @@ class VisualView {
                     .attr("width", x => x.width())
                     .attr("height", x => x.height())
                     .attr("rx", 10)
-                    .style("fill", "red")
+                    .style("fill", x => x.fill)
+                    .style("stroke", "rgb(53, 55, 62)")
+                    .style("stroke-width", "1")
                     .on("click", nodePerformSelect)
                     .on("dblclick", nodePerformExpandCollapse)
         }
@@ -581,36 +583,24 @@ class VisualView {
 
         d3
             .select(visualNode.node)
-            .select(".node-severity")
+            .selectAll(".node-severity")
             .transition()
             .duration(duration)
             .attr("x", x => {
-                var severityNode = _.head(x.severityNodes);
-                if (severityNode) {
-                    return severityNode.x();
-                }
-                return 0;
+                return x.x();
             })
             ;
 
         d3
             .select(visualNode.node)
-            .select(".node-severity-text")
+            .selectAll(".node-severity-text")
             .text(x => {
-                var severityTextNode = _.head(x.severityTextNodes);
-                if (severityTextNode) {
-                    return severityTextNode.text();
-                }
-                return '';
+                return x.text();
             }) 
             .transition()
             .duration(duration)
             .attr("transform", x => {
-                var severityTextNode = _.head(x.severityTextNodes);
-                if (severityTextNode) {
-                    return severityTextNode.transform();
-                }
-                return '';
+                return x.transform();
             })
             ;
 
