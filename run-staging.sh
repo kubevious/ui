@@ -7,4 +7,7 @@ export NODE_ENV=production
 export BACKEND_URL=http://localhost:4000
 export MYSQL_HOST=localhost
 export MYSQL_PORT=3306
+export MYSQL_USER=root
+export MYSQL_PASS=
+export MYSQL_DB=kubevious
 node src/.

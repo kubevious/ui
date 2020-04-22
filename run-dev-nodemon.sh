@@ -8,4 +8,7 @@ export BACKEND_URL=http://localhost:4000
 # export DEBUG=express:*
 export MYSQL_HOST=localhost
 export MYSQL_PORT=3306
+export MYSQL_USER=root
+export MYSQL_PASS=
+export MYSQL_DB=kubevious
 nodemon src/.
