@@ -61,7 +61,6 @@ function fetchHistorySnapshot(date, cb) {
         });
 }
 
-
 function fetchHistoryProperties(dn, date, cb) {
     Logger.info("[fetchHistoryProperties] %s :: %s", dn, date);
     var params = {
@@ -69,6 +68,16 @@ function fetchHistoryProperties(dn, date, cb) {
         date: date
     };
     return backend.get('/api/v1/history/assets', params)
+        .then(result => {
+            cb(result.data);
+        });
+}
+  
+function fetchPolicyList(cb) {
+    Logger.info("[fetchPolicyList] ", );
+    var params = {
+    };
+    return backend.get('/api/v1/policy', params)
         .then(result => {
             cb(result.data);
         });

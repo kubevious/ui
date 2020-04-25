@@ -12,6 +12,15 @@ class KubeviousLayout
         });
 
         this._register({
+            name: 'Policy Editor',
+            location: 'main',
+            html: '<div id="policy" class="policy size-to-parent">' + 
+            '<div id="policy-list"></div>' +
+            '<div id="policy-editor"></div>' +
+            '</div>'
+        });
+
+        this._register({
             name: 'Properties',
             location: 'right',
             html: '<div id="properties" class="properties"></div>',
@@ -59,7 +68,7 @@ class KubeviousLayout
                 '<a class="minus" onclick="historyScope.client.zoomOut()"></a>' +
                 '<a class="left" onclick="historyScope.client.panLeft()"></a>' +
                 '<a class="right" onclick="historyScope.client.panRight()"></a>' +
-            '</div>' ,
+            '</div>',
             allowVerticalScroll: true
         });
 
