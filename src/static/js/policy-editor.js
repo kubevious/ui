@@ -18,7 +18,7 @@ class PolicyEditor {
 
     refresh()
     {
-        fetchPolicyList(data => {
+        backendFetchPolicyList(data => {
             this._policyList = data;
             this._renderPolicies()
         })

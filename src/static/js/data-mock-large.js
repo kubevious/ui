@@ -40,6 +40,50 @@ function fetchHistoryProperties(dn, date, cb) {
     Logger.info("[MOCK:fetchHistoryProperties] %s :: %s ", dn, date);
     cb(_.cloneDeep(HISTORY_PROPERTIES));
 }
+
+
+var MOCK_POLICY_INDEX=3;
+var MOCK_POLICY_LIST = [
+    {
+        id: 1,
+        name: 'policy 1',
+        target: 'target-1',
+        script: 'script-1'
+    },
+    {
+        id: 2,
+        name: 'policy 2',
+        target: 'target-2',
+        script: 'script-2'
+    }
+];
+function backendFetchPolicyList(cb) {
+    Logger.info("[backendFetchPolicyList] ");
+    var res = MOCK_POLICY_LIST.map(x => ({ id: x.id, name: x.name }));
+    cb(res);
+}
+function backendCreatePolicy(policy, cb) {
+    Logger.info("[backendCreatePolicy] ", policy);
+    policy = _.clone(policy);
+    policy.id = MOCK_POLICY_INDEX;
+    MOCK_POLICY_INDEX++;
+    MOCK_POLICY_LIST.push(policy);
+    cb(policy);
+}
+function backendDeletePolicy(id, cb) {
+    Logger.info("[backendDeletePolicy] %s", id);
+    MOCK_POLICY_LIST = MOCK_POLICY_LIST.filter(x => x.id != id);
+    cb();
+}
+function backendUpdatePolicy(id, config, cb) {
+    Logger.info("[backendUpdatePolicy] %s", id, config);
+    var policy = _.head(MOCK_POLICY_LIST.filter(x => x.id == id));
+    if (policy) {
+        policy.target = config.target;
+        policy.script = config.script;
+    }
+    cb(policy);
+}
   
 const GRAPH_DATA = {
   "rn": "root",
