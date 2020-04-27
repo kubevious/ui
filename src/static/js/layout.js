@@ -190,8 +190,11 @@ class KubeviousLayout
         }
 
         var layout = {
-            type: 'stack',
-            height: 20
+            type: 'stack'
+        }
+
+        if (location != 'main') {
+            layout.height = 20;
         }
         layout.content = _.map(components, x => this._getComponentLayout(x));
         return layout;
