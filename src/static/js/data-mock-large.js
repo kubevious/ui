@@ -89,6 +89,7 @@ function backendUpdatePolicy(id, config, cb) {
     var policy = _.head(MOCK_POLICY_LIST.filter(x => x.id == id));
     if (policy) {
         policy.name = config.name;
+        policy.enabled = config.enabled;
         policy.target = config.target;
         policy.script = config.script;
     }
