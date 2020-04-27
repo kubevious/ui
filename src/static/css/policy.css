@@ -1,0 +1,97 @@
+#policy {
+    display: flex;
+}
+
+#policy-list {
+    width: 250px;
+    background: #35373E;
+}
+
+#policy-editor {
+    width: 100%;
+}
+
+.policy-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+    margin: 15px 0 20px;
+}
+
+.new-policy-btn {
+    background: #0EFB5F;
+    border: none;
+    color: black;
+    padding: 5px 10px;
+}
+
+.policies {
+    display: flex;
+    flex-direction: column;
+    padding: 0 50px;
+}
+
+.policy-item-button {
+    border: none;
+    background: none;
+    color: white;
+    margin: 10px 0;
+}
+
+.policy-container {
+    overflow-y: scroll;
+    height: 100%;
+    padding: 50px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+}
+
+.field-input {
+    width: 100%;
+    border: 2px solid #1e1e1e;
+    outline: none;
+    padding: 10px 20px;
+}
+
+.required-field {
+    border: 2px solid red;
+}
+
+.btn-group {
+    display: flex;
+}
+
+.btn-group .btn {
+    margin-right: 10px;
+    border-radius: unset;
+}
+
+.start-policy-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.start-text {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.start-btn-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.policy-item-button:hover, .new-policy-btn:hover {
+    cursor: pointer;
+}
+
+.btn:disabled:hover {
+    cursor: not-allowed;
+}
