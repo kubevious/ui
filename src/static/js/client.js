@@ -6,8 +6,16 @@ class BackendClient {
 		return this._execute("get", url, params, null);
 	}
 
+	delete(url, params) {
+		return this._execute("delete", url, params, null);
+	}
+
 	post(url, data, params) {
 		return this._execute("post", url, params, data);
+	}
+
+	put(url, data, params) {
+		return this._execute("put", url, params, data);
 	}
 
 	_execute(method, url, params, data) {

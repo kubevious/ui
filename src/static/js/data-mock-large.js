@@ -46,15 +46,17 @@ var MOCK_POLICY_INDEX=3;
 var MOCK_POLICY_LIST = [
     {
         id: 1,
+        enabled: true,
         name: 'policy 1',
         target: 'target-1',
         script: 'script-1'
     },
     {
         id: 2,
+        enabled: false,
         name: 'policy 2',
         target: 'target-2',
-        script: 'script-2'
+        script: 'if (item.hasChild("Ingress")) \n { \n \t if (item.config.spec.type == \'ClusterIP\') \n \t{ \n \t\tfail(\'Use ClusterIP for Ingress exposed services\'); \n \t } \n }'
     }
 ];
 function backendFetchPolicyList(cb) {
@@ -62,6 +64,13 @@ function backendFetchPolicyList(cb) {
     var res = MOCK_POLICY_LIST.map(x => ({ id: x.id, name: x.name }));
     cb(res);
 }
+
+function backendFetchPolicy(id, cb) {
+    Logger.info("[backendFetchPolicy] ");
+    var res = MOCK_POLICY_LIST.find(policy => policy.id === id);
+    cb(res);
+}
+
 function backendCreatePolicy(policy, cb) {
     Logger.info("[backendCreatePolicy] ", policy);
     policy = _.clone(policy);
@@ -79,6 +88,7 @@ function backendUpdatePolicy(id, config, cb) {
     Logger.info("[backendUpdatePolicy] %s", id, config);
     var policy = _.head(MOCK_POLICY_LIST.filter(x => x.id == id));
     if (policy) {
+        policy.name = config.name;
         policy.target = config.target;
         policy.script = config.script;
     }
