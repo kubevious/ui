@@ -5,6 +5,7 @@
 #policy-list {
     width: 250px;
     background: #35373E;
+    position: relative;
 }
 
 #policy-editor {
@@ -15,28 +16,69 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 15px;
-    margin: 15px 0 20px;
+    padding: 20px 15px;
+    border-bottom: 1px solid #4E515B;
+    color: black;
+}
+
+.start-new-policy-btn {
+    border: none;
+    margin-top: 20px;
+    background: #4ECD77;
+    color: white;
+    padding: 10px 40px;
 }
 
 .new-policy-btn {
-    background: #0EFB5F;
+    display: flex;
+    align-items: center;
     border: none;
-    color: black;
-    padding: 5px 10px;
+    margin-top: 20px;
+    background: none;
+    color: white;
+}
+
+.circle-btn {
+    background: #4ECD77;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
 }
 
 .policies {
     display: flex;
     flex-direction: column;
-    padding: 0 50px;
 }
 
 .policy-item-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     border: none;
     background: none;
     color: white;
-    margin: 10px 0;
+    padding: 10px 15px;
+    border-bottom: 1px solid #4E515B;
+    text-align: left;
+}
+
+.policy-item-button.selected {
+    background: #1E1E1E;
+}
+
+.indicator {
+    width: 7px;
+    height: 7px;
+    background: #4E515B;
+    border-radius: 50%;
+}
+
+.indicator.enabled {
+    background: #4ECD77;
 }
 
 .policy-container {
@@ -53,22 +95,43 @@
 
 .field-input {
     width: 100%;
-    border: 2px solid #1e1e1e;
     outline: none;
     padding: 10px 20px;
+    background: #35373E;
+    border: 1px solid #4E515B;
+    color: white;
+}
+
+.CodeMirror.cm-s-darcula {
+    background: #35373E;
+    border: 1px solid #4E515B;
 }
 
 .required-field {
-    border: 2px solid red;
+    border: 1px solid red;
 }
 
 .btn-group {
     display: flex;
 }
 
-.btn-group .btn {
+.policy-btn {
     margin-right: 10px;
-    border-radius: unset;
+    background: inherit;
+    border: 1px solid #4E515B;
+    border-radius: 3px;
+    padding: 10px 30px;
+    color: #4E515B;
+    outline: none;
+}
+
+.policy-btn.save-btn {
+    background: #4ECD77;
+    color: white;
+}
+
+.policy-btn:hover {
+    cursor: pointer;;
 }
 
 .start-policy-container {
@@ -88,7 +151,68 @@
     justify-content: center;
 }
 
-.policy-item-button:hover, .new-policy-btn:hover {
+.checkbox-container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 3px;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: black;
+    border: 5px solid #4E515B;
+}
+
+.checkbox-container input:checked ~ .checkmark {
+    background-color: #4ECD77;
+    border: 5px solid #4E515B;
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.list-btn {
+    position: absolute;
+    bottom: 10px;
+    left: 25px;
+}
+
+.menu-btn {
+    border: none;
+    background: #0EFB5F;
+    color: white;
+    margin-right: 20px;
+    padding: 5px 15px;
+}
+
+.menu-btn:hover {
+    cursor: pointer;
+}
+
+
+.policy-item-button:hover, .new-policy-btn:hover, .start-new-policy-btn:hover {
     cursor: pointer;
 }
 

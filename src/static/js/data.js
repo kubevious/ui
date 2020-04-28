@@ -114,3 +114,12 @@ function backendUpdatePolicy(id, config, cb) {
             cb(result.data);
         });
 }
+
+function backendExportPolicies(cb) {
+    Logger.info("[backendExportPolicies] %s");
+    return backend.get('/api/v1/policy/export')
+        .then(result => {
+            Logger.info("[backendExportPolicies] Result: ", result.data);
+            cb(result.data);
+        });
+}
