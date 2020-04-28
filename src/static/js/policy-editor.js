@@ -73,7 +73,8 @@ class PolicyEditor {
                 "<div class='circle-btn'>+</div> New Policy" +
             "</button> " +
             "<div class='list-btn'>" +
-                "<button class='menu-btn' onclick='policyEditor.client.import()'>Import</button>" +
+                "<label for='upload-policy' class='file-upload'>Import</label>" +
+                "<input type='file' id='upload-policy' name='upload-policy' onchange='policyEditor.client.uploadFile()' />" +
                 "<button class='menu-btn' onclick='policyEditor.client.export()'>Export</button>" +
                 "<a id='exportAnchor' style='display:none' />" +
             "</div>"
@@ -266,6 +267,24 @@ class PolicyEditor {
             exportElem.setAttribute('download', 'policies.json')
             exportElem.click()
         })
+    }
+
+    uploadFile()
+    {
+        const input = document.getElementById('upload-policy')
+
+        if (input.files.length === 0) {
+            console.error('No file selected.');
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function fileReadCompleted() {
+            backendImportPolicies(JSON.parse(reader.result), () => {})
+        };
+
+        reader.readAsText(input.files[0]);
+        this.refresh()
     }
 
     isEmptyFields()
