@@ -123,3 +123,12 @@ function backendExportPolicies(cb) {
             cb(result.data);
         });
 }
+
+function backendImportPolicies(policies, cb) {
+    Logger.info("[backendImportPolicies] %s", policies);
+    return backend.post('/api/v1/policy/import', policies)
+        .then(result => {
+            Logger.info("[backendImportPolicies] Result: ", result.data);
+            cb(result.data);
+        });
+}

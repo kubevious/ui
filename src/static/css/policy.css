@@ -6,6 +6,8 @@
     width: 250px;
     background: #35373E;
     position: relative;
+    height: 100%;
+    overflow-y: scroll;
 }
 
 #policy-editor {
@@ -194,16 +196,26 @@
 }
 
 .list-btn {
-    position: absolute;
-    bottom: 10px;
-    left: 25px;
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+input[type="file"] {
+    display: none;
+}
+.file-upload {
+    border: none;
+    background: #0EFB5F;
+    color: white;
+    margin: 0 20px 0 0;
+    padding: 5px 15px;
 }
 
 .menu-btn {
     border: none;
     background: #0EFB5F;
     color: white;
-    margin-right: 20px;
     padding: 5px 15px;
 }
 
@@ -211,8 +223,7 @@
     cursor: pointer;
 }
 
-
-.policy-item-button:hover, .new-policy-btn:hover, .start-new-policy-btn:hover {
+.policy-item-button:hover, .new-policy-btn:hover, .start-new-policy-btn:hover, .file-upload:hover {
     cursor: pointer;
 }
 
