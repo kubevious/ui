@@ -142,13 +142,22 @@ class PolicyEditor {
         $('.field-input.script').val(this._selectedPolicy.script)
         $('.enable-checkbox').prop('checked', this._selectedPolicy.enabled)
 
-        CodeMirror.fromTextArea(document.getElementById('script'), {
-            mode: "javascript",
+        const codeMirror = CodeMirror.fromTextArea(document.getElementById('script'), {
+            mode: 'javascript',
             smartIntend: true,
-            theme: 'darcula'
-        }).on('change', editor => {
+            theme: 'darcula',
+            extraKeys: { 'Ctrl-Space': 'autocomplete' }
+        })
+
+        codeMirror.on('change', editor => {
             policyEditor.client.changePolicy(editor.getValue(), 'script', 'script')
-        });
+        })
+
+        codeMirror.on('keyup', function (cm, event) {
+            if (!cm.state.completionActive && event.keyCode > 64 && event.keyCode < 91) {
+                CodeMirror.commands.autocomplete(cm, null, { completeSingle: false })
+            }
+        })
 
     }
 
