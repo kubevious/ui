@@ -73,13 +73,44 @@ function fetchHistoryProperties(dn, date, cb) {
         });
 }
   
-function fetchPolicyList(cb) {
-    Logger.info("[fetchPolicyList] ", );
-    var params = {
-    };
-    return backend.get('/api/v1/policy', params)
+function backendFetchPolicyList(cb) {
+    Logger.info("[backendFetchPolicyList] ", );
+    return backend.get('/api/v1/policy')
         .then(result => {
             cb(result.data);
         });
 }
-  
+
+function backendFetchPolicy(id, cb) {
+    Logger.info("[backendFetchPolicyList] %s", id);
+    return backend.get('/api/v1/policy/' + id)
+        .then(result => {
+            cb(result.data);
+        });
+}
+
+function backendCreatePolicy(policy, cb) {
+    Logger.info("[backendCreatePolicy] ", policy);
+    return backend.post('/api/v1/policy', policy)
+        .then(result => {
+            Logger.info("[backendCreatePolicy] Result: ", result.data);
+            cb(result.data);
+        });
+}
+
+function backendDeletePolicy(id, cb) {
+    Logger.info("[backendDeletePolicy] %s", id);
+    return backend.delete('/api/v1/policy/' + id)
+        .then(result => {
+            cb(result.data);
+        });
+}
+
+function backendUpdatePolicy(id, config, cb) {
+    Logger.info("[backendUpdatePolicy] %s", id, config);
+    return backend.put('/api/v1/policy/' + id, config)
+        .then(result => {
+            Logger.info("[backendUpdatePolicy] Result: ", result.data);
+            cb(result.data);
+        });
+}

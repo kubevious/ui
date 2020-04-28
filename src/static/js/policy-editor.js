@@ -171,7 +171,7 @@ class PolicyEditor {
 
     createNewPolicy()
     {
-        this._selectedPolicy = { name: '', target: '', script: '' }
+        this._selectedPolicy = { name: '', enabled: true, target: '', script: '' }
         this._renderPolicyEditor()
     }
 

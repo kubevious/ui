@@ -41,16 +41,19 @@ function fetchHistoryProperties(dn, date, cb) {
     cb(_.cloneDeep(HISTORY_PROPERTIES));
 }
 
+
 var MOCK_POLICY_INDEX=3;
 var MOCK_POLICY_LIST = [
     {
         id: 1,
+        enabled: true,
         name: 'policy 1',
         target: 'target-1',
         script: 'script-1'
     },
     {
         id: 2,
+        enabled: false,
         name: 'policy 2',
         target: 'target-2',
         script: 'if (item.hasChild("Ingress")) \n { \n \t if (item.config.spec.type == \'ClusterIP\') \n \t{ \n \t\tfail(\'Use ClusterIP for Ingress exposed services\'); \n \t } \n }'
@@ -86,6 +89,7 @@ function backendUpdatePolicy(id, config, cb) {
     var policy = _.head(MOCK_POLICY_LIST.filter(x => x.id == id));
     if (policy) {
         policy.name = config.name;
+        policy.enabled = config.enabled;
         policy.target = config.target;
         policy.script = config.script;
     }
