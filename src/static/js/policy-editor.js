@@ -46,7 +46,7 @@ class PolicyEditor {
                 "<div class='start-wrapper'>" +
                     "<div class='start-text'>You have no policies defined. Time to create your new policy:</div>" +
                     "<div class='start-btn-wrapper'>" +
-                        "<button class='start new-policy-btn' onclick='policyEditor.client.createNewPolicy()'>New Policy</button> " +
+                        "<button class='start-new-policy-btn' onclick='policyEditor.client.createNewPolicy()'>New Policy</button> " +
                     "</div>" +
                     "<div class='start-text'>Learn more about Kubevious policies here.</div>" +
                 "</div>" +
@@ -61,7 +61,6 @@ class PolicyEditor {
 
         html += "<div class='policy-header'>" +
                     "<div class='title'>Summary - " + this._policyList.length +"</div>" +
-                    "<button class='new-policy-btn' onclick='policyEditor.client.createNewPolicy()'>New Policy</button> " +
                 "</div>" +
                 "<div class='policies'>"
 
@@ -69,7 +68,15 @@ class PolicyEditor {
         {
             html += this._renderPolicy(x)
         }
-        html += "</div>"
+        html += "</div>" +
+            "<button class='new-policy-btn' onclick='policyEditor.client.createNewPolicy()'>" +
+                "<div class='circle-btn'>+</div> New Policy" +
+            "</button> " +
+            "<div class='list-btn'>" +
+                "<button class='menu-btn' onclick='policyEditor.client.import()'>Import</button>" +
+                "<button class='menu-btn' onclick='policyEditor.client.export()'>Export</button>" +
+                "<a id='exportAnchor' style='display:none' />" +
+            "</div>"
 
         $('#policy-list').html(html);
     }
@@ -85,7 +92,12 @@ class PolicyEditor {
 
     _renderPolicy(x)
     {
-        var html = '<button class="policy-item-button" onclick="policyEditor.client.selectPolicy(' + x.id + ')">' + x.name + "</button>";
+        const className = 'indicator ' + (x.enabled ? 'enabled' : 'disabled')
+
+        var html = '<button class="policy-item-button" onclick="policyEditor.client.selectPolicy(' + x.id + ', event)">' +
+            x.name +
+            '<div class="' + className + '" />' +
+            '</button>';
         return html;
     }
 
@@ -114,6 +126,10 @@ class PolicyEditor {
                         "</div>" +
                         "<textarea id='script' class='field-input script' name='script' required />" +
                     "</div>" +
+                    "<label class='checkbox-container'>Enable/Disable" +
+                        "<input type='checkbox'  onclick='policyEditor.client.changeEnable()' class='enable-checkbox' />" +
+                        "<span class='checkmark'></span>" +
+                    "</label> " +
                 "<div class='btn-group'>" +
                     this.renderButtons() +
                 "</div>" +
@@ -124,11 +140,12 @@ class PolicyEditor {
         $('.field-input.name').val(this._selectedPolicy.name)
         $('.field-input.target').val(this._selectedPolicy.target)
         $('.field-input.script').val(this._selectedPolicy.script)
+        $('.enable-checkbox').prop('checked', this._selectedPolicy.enabled)
 
         CodeMirror.fromTextArea(document.getElementById('script'), {
             mode: "javascript",
-            lineNumbers : true,
-            smartIntend: true
+            smartIntend: true,
+            theme: 'darcula'
         }).on('change', editor => {
             policyEditor.client.changePolicy(editor.getValue(), 'script', 'script')
         });
@@ -140,9 +157,10 @@ class PolicyEditor {
         var html = ""
 
         if (this._selectedPolicy.id) {
-            html += "<button class='btn' onclick='policyEditor.client.cancelPolicy()'>Cancel</button>" +
-                "<button class='btn save-btn' onclick='policyEditor.client.savePolicy()'>Save</button>" +
-                "<button class='btn' onclick='policyEditor.client.deletePolicy()'>Delete</button>"
+            html += "<button class='policy-btn' onclick='policyEditor.client.deletePolicy()'>Delete</button>" +
+                "<button class='policy-btn' onclick='policyEditor.client.cancelPolicy()'>Cancel</button>" +
+                "<button class='policy-btn save-btn' onclick='policyEditor.client.savePolicy()'>Save</button>"
+
         } else {
             html += "<button class='btn create-btn' onclick='policyEditor.client.createPolicy()' disabled>Create</button>"
         }
@@ -160,12 +178,15 @@ class PolicyEditor {
         this._selectedPolicy = { ...this._initPolicy }
     }
 
-    selectPolicy(id)
+    selectPolicy(id, event)
     {
         backendFetchPolicy(id, data => {
             this._selectedPolicy = { ...data }
             this._renderPolicyEditor()
             this.setInitPolicy()
+
+            $('.policy-item-button').removeClass('selected')
+            $(event.target).addClass('selected')
         })
     }
 
@@ -194,6 +215,11 @@ class PolicyEditor {
         $('.create-btn, .save-btn').prop('disabled', this.isEmptyFields())
     }
 
+    changeEnable()
+    {
+        this._selectedPolicy.enabled = !this._selectedPolicy.enabled
+    }
+
     cancelPolicy()
     {
         this.setSelectedPolicy()
@@ -219,6 +245,17 @@ class PolicyEditor {
     {
         backendCreatePolicy(this._selectedPolicy, () => {
             this.refresh()
+        })
+    }
+
+    export()
+    {
+        backendExportPolicies(response => {
+            const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(response))
+            const exportElem = document.getElementById('exportAnchor')
+            exportElem.setAttribute('href', dataStr)
+            exportElem.setAttribute('download', 'policies.json')
+            exportElem.click()
         })
     }
 
