@@ -61,6 +61,7 @@ class PolicyEditor {
 
         html += "<div class='policy-header'>" +
                     "<div class='title'>Summary - " + this._policyList.length +"</div>" +
+                    "<button class='remove-btn' onclick='policyEditor.client.removeAllPolicies()'>x</button>" +
                 "</div>" +
                 "<div class='policies'>"
 
@@ -279,12 +280,18 @@ class PolicyEditor {
         }
 
         const reader = new FileReader();
-        reader.onload = function fileReadCompleted() {
-            backendImportPolicies(JSON.parse(reader.result), () => {})
+        reader.onload = () => {
+            backendImportPolicies(JSON.parse(reader.result), () => this.refresh())
         };
 
         reader.readAsText(input.files[0]);
-        this.refresh()
+    }
+
+    removeAllPolicies()
+    {
+        backendRemoveAllPolicies(() => {
+            this.refresh()
+        })
     }
 
     isEmptyFields()
