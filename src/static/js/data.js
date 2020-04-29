@@ -132,3 +132,12 @@ function backendImportPolicies(policies, cb) {
             cb(result.data);
         });
 }
+
+function backendRemoveAllPolicies(cb) {
+    Logger.info("[backendRemoveAllPolicies] %s");
+    return backend.delete('/api/v1/policy')
+        .then(result => {
+            Logger.info("[backendRemoveAllPolicies] Result: ");
+            cb(result.data);
+        });
+}

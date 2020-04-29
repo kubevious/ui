@@ -23,9 +23,13 @@
     color: black;
 }
 
+.remove-btn {
+    background: none;
+    border: none;
+}
+
 .start-new-policy-btn {
     border: none;
-    margin-top: 20px;
     background: #4ECD77;
     color: white;
     padding: 10px 40px;
@@ -222,7 +226,8 @@ input[type="file"] {
     cursor: pointer;
 }
 
-.policy-item-button:hover, .new-policy-btn:hover, .start-new-policy-btn:hover, .file-upload:hover {
+.policy-item-button:hover, .new-policy-btn:hover, .start-new-policy-btn:hover, .file-upload:hover,
+.remove-btn:hover {
     cursor: pointer;
 }
 
