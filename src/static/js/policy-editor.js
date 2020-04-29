@@ -73,9 +73,9 @@ class PolicyEditor {
                 "<div class='circle-btn'>+</div> New Policy" +
             "</button> " +
             "<div class='list-btn'>" +
-                "<label for='upload-policy' class='file-upload'>Import</label>" +
+                "<label for='upload-policy' class='file-upload'>Restore</label>" +
                 "<input type='file' id='upload-policy' name='upload-policy' onchange='policyEditor.client.uploadFile()' />" +
-                "<button class='menu-btn' onclick='policyEditor.client.export()'>Export</button>" +
+                "<button class='menu-btn' onclick='policyEditor.client.export()'>Backup</button>" +
                 "<a id='exportAnchor' style='display:none' />" +
             "</div>"
 
