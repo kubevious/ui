@@ -12,11 +12,11 @@ class KubeviousLayout
         });
 
         this._register({
-            name: 'Policy Editor',
+            name: 'Rule Editor',
             location: 'main',
-            html: '<div id="policy" class="policy size-to-parent">' + 
-            '<div id="policy-list"></div>' +
-            '<div id="policy-editor"></div>' +
+            html: '<div id="rule" class="rule size-to-parent">' +
+            '<div id="rule-list"></div>' +
+            '<div id="rule-editor"></div>' +
             '</div>'
         });
 

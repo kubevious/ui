@@ -73,71 +73,51 @@ function fetchHistoryProperties(dn, date, cb) {
         });
 }
   
-function backendFetchPolicyList(cb) {
-    Logger.info("[backendFetchPolicyList] ", );
-    return backend.get('/api/v1/policy')
+function backendFetchRuleList(cb) {
+    return backend.get('/api/v1/rule')
         .then(result => {
             cb(result.data);
         });
 }
 
-function backendFetchPolicy(id, cb) {
-    Logger.info("[backendFetchPolicyList] %s", id);
-    return backend.get('/api/v1/policy/' + id)
+function backendFetchRule(id, cb) {
+    return backend.get('/api/v1/rule/' + id)
         .then(result => {
             cb(result.data);
         });
 }
 
-function backendCreatePolicy(policy, cb) {
-    Logger.info("[backendCreatePolicy] ", policy);
-    return backend.post('/api/v1/policy', policy)
-        .then(result => {
-            Logger.info("[backendCreatePolicy] Result: ", result.data);
-            cb(result.data);
-        });
-}
-
-function backendDeletePolicy(id, cb) {
-    Logger.info("[backendDeletePolicy] %s", id);
-    return backend.delete('/api/v1/policy/' + id)
+function backendCreateRule(policy, cb) {
+    return backend.post('/api/v1/rule', policy)
         .then(result => {
             cb(result.data);
         });
 }
 
-function backendUpdatePolicy(id, config, cb) {
-    Logger.info("[backendUpdatePolicy] %s", id, config);
-    return backend.put('/api/v1/policy/' + id, config)
+function backendDeleteRule(id, cb) {
+    return backend.delete('/api/v1/rule/' + id)
         .then(result => {
-            Logger.info("[backendUpdatePolicy] Result: ", result.data);
             cb(result.data);
         });
 }
 
-function backendExportPolicies(cb) {
-    Logger.info("[backendExportPolicies] %s");
-    return backend.get('/api/v1/policy/export')
+function backendUpdateRule(id, config, cb) {
+    return backend.put('/api/v1/rule/' + id, config)
         .then(result => {
-            Logger.info("[backendExportPolicies] Result: ", result.data);
             cb(result.data);
         });
 }
 
-function backendImportPolicies(policies, cb) {
-    Logger.info("[backendImportPolicies] %s", policies);
-    return backend.post('/api/v1/policy/import', policies)
+function backendExportRules(cb) {
+    return backend.get('/api/v1/rule/export')
         .then(result => {
-            Logger.info("[backendImportPolicies] Result: ", result.data);
             cb(result.data);
         });
 }
 
-function backendRemoveAllPolicies(cb) {
-    Logger.info("[backendRemoveAllPolicies] %s");
-    return backend.delete('/api/v1/policy')
+function backendImportRules(policies, cb) {
+    return backend.post('/api/v1/rule/import', policies)
         .then(result => {
-            Logger.info("[backendRemoveAllPolicies] Result: ");
             cb(result.data);
         });
 }

@@ -1,20 +1,20 @@
-#policy {
+#rule {
     display: flex;
 }
 
-#policy-list {
-    width: 250px;
+#rule-list {
+    width: 270px;
     background: #35373E;
     position: relative;
     height: 100%;
     overflow-y: scroll;
 }
 
-#policy-editor {
+#rule-editor {
     width: 100%;
 }
 
-.policy-header {
+.rule-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -28,14 +28,14 @@
     border: none;
 }
 
-.start-new-policy-btn {
+.start-new-rule-btn {
     border: none;
     background: #4ECD77;
     color: white;
     padding: 10px 40px;
 }
 
-.new-policy-btn {
+.new-rule-btn {
     display: flex;
     align-items: center;
     border: none;
@@ -55,12 +55,12 @@
     margin-right: 10px;
 }
 
-.policies {
+.rules {
     display: flex;
     flex-direction: column;
 }
 
-.policy-item-button {
+.rule-item-button {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -72,7 +72,7 @@
     text-align: left;
 }
 
-.policy-item-button.selected {
+.rule-item-button.selected {
     background: #1E1E1E;
 }
 
@@ -87,7 +87,7 @@
     background: #4ECD77;
 }
 
-.policy-container {
+.rule-container {
     overflow-y: scroll;
     height: 100%;
     padding: 50px;
@@ -121,7 +121,7 @@
     display: flex;
 }
 
-.policy-btn {
+.rule-btn {
     margin-right: 10px;
     background: inherit;
     border: 1px solid #4E515B;
@@ -131,16 +131,16 @@
     outline: none;
 }
 
-.policy-btn.save-btn {
+.rule-btn.save-btn {
     background: #4ECD77;
     color: white;
 }
 
-.policy-btn:hover {
+.rule-btn:hover {
     cursor: pointer;;
 }
 
-.start-policy-container {
+.start-rule-container {
     width: 100%;
     display: flex;
     justify-content: center;
@@ -202,17 +202,70 @@
     display: flex;
     justify-content: center;
     margin: 20px 0;
+    position: relative;
 }
 
 input[type="file"] {
     display: none;
 }
 .file-upload {
+    display: flex;
+    justify-content: space-between;
     border: none;
     background: #0EFB5F;
     color: white;
-    margin: 0 20px 0 0;
-    padding: 5px 15px;
+    margin: 0 0 0 20px;
+}
+
+.label-text {
+    width: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.label-arrow {
+    position: relative;
+    width: 30px;
+    height: 31px;
+    background: #149B21;
+}
+
+.label-arrow:after {
+    content: "";
+    top: 10px;
+    left: 9px;
+    position: absolute;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 12px solid white;
+}
+
+#import-container {
+    position: absolute;
+    top: 36px;
+    width: 108px;
+    right: 4px;
+    background: #D6D6D6;
+    color: black;
+}
+
+.option:first-child {
+    border-bottom: 1px solid #4E515B;
+}
+
+.option:hover {
+    cursor: pointer;
+}
+
+.option-btn {
+    border: none;
+    background: none;
+}
+
+.option-desc {
+    font-size: 12px;
+    padding: 0 5px;
 }
 
 .menu-btn {
@@ -222,12 +275,31 @@ input[type="file"] {
     padding: 5px 15px;
 }
 
-.menu-btn:hover {
-    cursor: pointer;
+.editor-title {
+    font-size: 30px;
+    margin-bottom: 25px;
 }
 
-.policy-item-button:hover, .new-policy-btn:hover, .start-new-policy-btn:hover, .file-upload:hover,
-.remove-btn:hover {
+.rule-summary-box {
+    height: 200px;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    background: #35373E;
+}
+
+.summary-title {
+    font-size: 16px;
+}
+
+.summary-value {
+    font-size: 96px;
+}
+
+.rule-item-button:hover, .new-rule-btn:hover, .start-new-rule-btn:hover, .file-upload:hover,
+.remove-btn:hover, .menu-btn:hover, .title:hover {
     cursor: pointer;
 }
 
