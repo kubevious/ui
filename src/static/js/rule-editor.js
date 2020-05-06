@@ -15,8 +15,8 @@ class RuleEditor {
 		});
 
         $('body').click(function (e) {
-            if (!$(e.target).closest('.list-btn').length) {
-                $('.import-options').css('display', 'none')
+            if (!$(e.target).closest('.rule-header').length) {
+                $('#import-container').css('display', 'none')
             }
         })
         
@@ -33,27 +33,24 @@ class RuleEditor {
 
     _render()
     {
-        if (this._ruleList.length === 0) {
-            $('#rule-list').css('display', 'none')
+        this._renderRules();
 
+        if (this._ruleList.length === 0) {
             this._renderStartPage()
         } else {
-            $('#rule-list').css('display', 'initial')
-
-            this._renderRules();
             this._renderRuleMainPage()
         }
     }
 
     _renderStartPage()
     {
-        $('#rule-list').css('display', 'none')
-
         var html = "<div class='start-rule-container'>" +
                 "<div class='start-wrapper'>" +
                     "<div class='start-text'>You have no rules defined. Time to create your new rule:</div>" +
                     "<div class='start-btn-wrapper'>" +
-                        "<button class='start-new-rule-btn' onclick='ruleEditor.client.createNewRule()'>New Rule</button> " +
+                        "<button class='button success new-rule-btn' onclick='ruleEditor.client.createNewRule()'>" +
+                            "<div class='plus'>+</div> New Rule" +
+                        "</button> " +
                     "</div>" +
                     "<div class='start-text'>Learn more about Kubevious rule here.</div>" +
                 "</div>" +
@@ -67,7 +64,19 @@ class RuleEditor {
         var html = "";
 
         html += "<div class='rule-header'>" +
-                    "<div class='title' onclick='ruleEditor.client.openSummary()'>Summary</div>" +
+                    "<div class='btn-group'>" +
+                        "<button class='button success new-rule-btn' onclick='ruleEditor.client.createNewRule()'>" +
+                            "<div class='plus'>+</div> New Rule" +
+                        "</button> " +
+                        "<button class='button square light export' onclick='ruleEditor.client.export()'>" +
+                            "<i class='fas fa-download'></i>" +
+                        "</button>" +
+                        "<a id='exportAnchor' style='display:none' />" +
+
+                        "<button class='button square light' onclick='ruleEditor.client._renderExportOptions()'>" +
+                            "<i class='fas fa-undo'></i>" +
+                        "</button>" +
+                    "</div>" +
                 "</div>" +
                 "<div class='rules'>"
 
@@ -76,52 +85,34 @@ class RuleEditor {
             html += this._renderRule(x)
         }
         html += "</div>" +
-            "<button class='new-rule-btn' onclick='ruleEditor.client.createNewRule()'>" +
-                "<div class='circle-btn'>+</div> New Rule" +
-            "</button> " +
-            "<div class='list-btn'>" +
-                "<button class='menu-btn' onclick='ruleEditor.client.export()'>Backup</button>" +
-                "<a id='exportAnchor' style='display:none' />" +
-                this.renderLabel() +
-                "<input type='file' id='upload-rule' name='upload-rule' onchange='ruleEditor.client.uploadFile()' />" +
-            "</div>"
 
         $('#rule-list').html(html);
-    }
 
-    renderLabel()
-    {
-        var html = ""
-
-        html += "<label for='upload-rule' class='file-upload'>" +
-            "<div class='label-text'>Import</div>" +
-            "</label>" +
-            "<div class='label-arrow' onclick='ruleEditor.client._renderExportOptions()' />" +
-            "<div id='import-container' />"
-
-        return html
+        $('.button.export').prop('disabled', this._ruleList.length === 0)
     }
 
     _renderExportOptions()
     {
         var html = ""
 
-        html+= "<div class='import-options'>" +
+        html+= "<div id='import-container'>" +
+            "<div class='import-caret'></div>"+
+            "<div class='import-options'>" +
                     "<div class='option' onclick='ruleEditor.client.setSelectedImport(true)'>" +
-                        "<button class='option-btn'>Restore</button>" +
-                        "<div class='option-desc'>" +
-                            'Import rules from file and delete  any extra rule.' +
-                        "</div>" +
+                        "<label for='upload-rule' class='option-desc'>" +
+                            "<b>Restore</b> from backup" +
+                        "</label>" +
                     "</div>" +
                     "<div class='option' onclick='ruleEditor.client.setSelectedImport(false)'>" +
-                        "<button class='option-btn'>Import</button>" +
-                        "<div class='option-desc'>" +
-                            ' Import rules from file and keep existing extra rules.' +
+                        "<label for='upload-rule' class='option-desc'>" +
+                            "<b>Merge</b> from backup preserving existing roles" +
                         "</div>" +
                 "</div>" +
+            "<input type='file' id='upload-rule' name='upload-rule' onchange='ruleEditor.client.uploadFile()' />" +
+            "</div>" +
             "</div>"
 
-        $('#import-container').html(html);
+        $('#rule-editor').append(html);
     }
 
     _renderRuleMainPage()
@@ -130,11 +121,8 @@ class RuleEditor {
 
         var html = ""
 
-        html += "<div class='rule-container'>" +
-                "<div class='rule-summary-box'>" +
-                    "<span class='summary-title'>Number of rules</span>" +
-                    "<span class='summary-value'>" + this._ruleList.length + "</span>" +
-                "</div> " +
+        html += "<div class='rule-container main'>" +
+                    'No selected rule' +
             "</div>"
 
         $('#rule-editor').html(html);
@@ -230,15 +218,25 @@ class RuleEditor {
         var html = ""
 
         if (this._selectedRule.id) {
-            html += "<button class='rule-btn' onclick='ruleEditor.client.deleteRule()'>Delete</button>" +
-                "<button class='rule-btn' onclick='ruleEditor.client.openSummary()'>Cancel</button>" +
-                "<button class='rule-btn save-btn' onclick='ruleEditor.client.saveRule()'>Save</button>"
+            html += "<button class='button' onclick='ruleEditor.client.deleteRule()'>Delete</button>" +
+                "<button class='button' onclick='ruleEditor.client.openSummary()'>Cancel</button>" +
+                "<button class='button success' onclick='ruleEditor.client.saveRule()'>Save</button>"
 
         } else {
-            html += "<button class='btn create-btn' onclick='ruleEditor.client.createRule()' disabled>Create</button>"
+            html += "<button class='button success create-btn' onclick='ruleEditor.client.createRule()' disabled>Create</button>"
         }
 
         return html
+    }
+
+    _renderSuccessPage()
+    {
+        var html = "<div class='rule-container main success'>" +
+                        "<i class='fas fa-check' />" +
+                        'Role successfully saved' +
+                    "</div>"
+
+        $('#rule-editor').html(html)
     }
 
     selectRule(id, event)
@@ -255,8 +253,7 @@ class RuleEditor {
     setSelectedImport(value)
     {
         this._deleteExtra = value
-        $('.import-options').css('display', 'none')
-        $('.label-text').html(this._deleteExtra ? 'Import' : 'Restore')
+        $('#import-container').css('display', 'none')
     }
 
     createNewRule()
@@ -292,7 +289,11 @@ class RuleEditor {
     saveRule()
     {
         backendUpdateRule(this._selectedRule.id, this._selectedRule, () => {
-            this.refresh()
+            this._renderSuccessPage()
+
+            setTimeout(() => {
+                this.refresh()
+            }, 1000)
         })
     }
 
@@ -307,7 +308,11 @@ class RuleEditor {
     createRule()
     {
         backendCreateRule(this._selectedRule, () => {
-            this.refresh()
+            this._renderSuccessPage()
+
+            setTimeout(() => {
+                this.refresh()
+            }, 1000)
         })
     }
 
