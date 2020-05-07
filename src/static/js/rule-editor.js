@@ -172,6 +172,7 @@ class RuleEditor {
                 "<div class='btn-group'>" +
                     this.renderButtons() +
                 "</div>" +
+                "<div class='error-area'></div>" +
             "</div>"
 
         $('#rule-editor').html(html);
@@ -288,7 +289,12 @@ class RuleEditor {
 
     saveRule()
     {
-        backendUpdateRule(this._selectedRule.id, this._selectedRule, () => {
+        backendUpdateRule(this._selectedRule.id, this._selectedRule, (data) => {
+            if (data && data.message) {
+                this.showError(data)
+                return
+            }
+
             this._renderSuccessPage()
 
             setTimeout(() => {
@@ -299,7 +305,12 @@ class RuleEditor {
 
     deleteRule()
     {
-        backendDeleteRule(this._selectedRule.id, () => {
+        backendDeleteRule(this._selectedRule.id, (data) => {
+            if (data && data.message) {
+                this.showError(data)
+                return
+            }
+
             this._selectedRule = null
             this.refresh()
         })
@@ -307,7 +318,12 @@ class RuleEditor {
 
     createRule()
     {
-        backendCreateRule(this._selectedRule, () => {
+        backendCreateRule(this._selectedRule, (data) => {
+            if (data && data.message) {
+                this.showError(data)
+                return
+            }
+
             this._renderSuccessPage()
 
             setTimeout(() => {
@@ -359,6 +375,11 @@ class RuleEditor {
     isEmptyFields()
     {
         return Object.values(this._selectedRule).some(item => item === '')
+    }
+
+    showError(error)
+    {
+        $('.error-area').append('<div class="error">' + error.message + '</div>')
     }
 }
 

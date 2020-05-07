@@ -90,22 +90,22 @@ function backendFetchRule(id, cb) {
 function backendCreateRule(policy, cb) {
     return backend.post('/api/v1/rule', policy)
         .then(result => {
-            cb(result.data);
-        });
+            cb(result.data)
+        }).catch(err => cb(err))
 }
 
 function backendDeleteRule(id, cb) {
     return backend.delete('/api/v1/rule/' + id)
         .then(result => {
             cb(result.data);
-        });
+        }).catch(err => cb(err))
 }
 
 function backendUpdateRule(id, config, cb) {
     return backend.put('/api/v1/rule/' + id, config)
         .then(result => {
             cb(result.data);
-        });
+        }).catch(err => cb(err))
 }
 
 function backendExportRules(cb) {

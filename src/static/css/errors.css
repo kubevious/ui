@@ -1,0 +1,12 @@
+.error-area {
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+}
+
+.error {
+    margin-top: 10px;
+    border: 1px solid red;
+    border-radius: 3px;
+    padding: 10px;
+}
