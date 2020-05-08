@@ -156,7 +156,7 @@ class RuleEditor {
                         "<div class='label-wrapper'> " +
                             "<label>Target</label>" +
                         "</div>" +
-                        "<input class='field-input target' name='target' oninput='ruleEditor.client.changeRule(event.target.value, event.target.name, event.target)' required />" +
+                        "<textarea id='target' class='field-input target' name='target' required />" +
                     "</div>" +
 
                     "<div class='field'>" +
@@ -180,6 +180,58 @@ class RuleEditor {
         $('.field-input.target').val(this._selectedRule.target)
         $('.field-input.script').val(this._selectedRule.script)
         $('.enable-checkbox').prop('checked', this._selectedRule.enabled)
+
+        const targetCodeMirror = CodeMirror.fromTextArea(document.getElementById('target'), {
+            smartIntend: true,
+            theme: 'darcula',
+            extraKeys: { 'Ctrl-Space': 'autocomplete' },
+            hintOptions: {globalScope: {
+
+                }}
+        })
+
+        targetCodeMirror.on('change', editor => {
+            ruleEditor.client.changeRule(editor.getValue(), 'target', 'target')
+        })
+
+        targetCodeMirror.on('keyup', function (cm, event) {
+            if (!cm.state.completionActive && event.keyCode > 64 && event.keyCode < 91) {
+                snippet()
+            }
+        })
+
+        const snippets = [
+            { text: 'select', displayText: 'select' },
+            { text: 'resource', displayText: 'resource' },
+            { text: 'child', displayText: 'child' },
+            { text: 'descendant', displayText: 'descendant' },
+            { text: 'filter', displayText: 'filter' },
+            { text: 'labels', displayText: 'labels' },
+            { text: 'label', displayText: 'label' },
+            { text: 'name', displayText: 'name' },
+            { text: 'debugOutput', displayText: 'debugOutput' },
+        ]
+
+        function snippet() {
+            CodeMirror.showHint(targetCodeMirror, function () {
+                const cursor = targetCodeMirror.getCursor()
+                const token = targetCodeMirror.getTokenAt(cursor)
+                const start = token.start
+                const end = cursor.ch
+                const line = cursor.line
+                const currentWord = token.string
+
+                const list = snippets.filter(function (item) {
+                    return item.text.indexOf(currentWord) >= 0
+                })
+
+                return {
+                    list: list.length ? list : snippets,
+                    from: CodeMirror.Pos(line, start),
+                    to: CodeMirror.Pos(line, end)
+                }
+            }, { completeSingle: false })
+        }
 
         const codeMirror = CodeMirror.fromTextArea(document.getElementById('script'), {
             mode: 'javascript',
