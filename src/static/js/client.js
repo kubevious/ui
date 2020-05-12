@@ -40,6 +40,7 @@ class BackendClient {
 			})
 			.catch(reason => {
 				Logger.error("ERROR calling %s to %s", options.method, options.url, reason);
+				showError(reason, options)
                 throw reason;
 			});
 	}

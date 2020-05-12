@@ -87,7 +87,7 @@ function formatDate(date)
     }
 }
 
-function showError(err) {
+function showError(err, options) {
     var html = '<div class="error-box">' +
                     '<div class="error">' +
                         '<div class="error-text">' +
@@ -104,7 +104,7 @@ function showError(err) {
 
     $('.more-text').on('click', () => {
         if ($('.full-error-container').length === 0) {
-            showFullError(err)
+            showFullError(err, options)
         } else {
             $('.full-error-container').remove()
             $('.more-text').html('more details')
@@ -116,9 +116,12 @@ function closeError() {
     $('.error-box').remove()
 }
 
-function showFullError(err) {
+function showFullError(err, options) {
     var html = '<div class="full-error-container">' +
-                    err.toString() +
+                    '<div class="msg">' + err.toString() + '</div>' +
+                    '<div class="msg">Cannot ' + options.method.toUpperCase() +
+                        (options.method === 'get' ? ' from ' : ' to ') +
+                        options.url + '</div>' +
                 '</div>'
 
     $('.more-text').html('less details')
