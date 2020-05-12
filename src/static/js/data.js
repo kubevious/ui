@@ -73,13 +73,51 @@ function fetchHistoryProperties(dn, date, cb) {
         });
 }
   
-function fetchPolicyList(cb) {
-    Logger.info("[fetchPolicyList] ", );
-    var params = {
-    };
-    return backend.get('/api/v1/policy', params)
+function backendFetchRuleList(cb) {
+    return backend.get('/api/v1/rule')
         .then(result => {
             cb(result.data);
         });
 }
-  
+
+function backendFetchRule(id, cb) {
+    return backend.get('/api/v1/rule/' + id)
+        .then(result => {
+            cb(result.data);
+        });
+}
+
+function backendCreateRule(policy, cb) {
+    return backend.post('/api/v1/rule', policy)
+        .then(result => {
+            cb(result.data)
+        }).catch(err => showError(err))
+}
+
+function backendDeleteRule(id, cb) {
+    return backend.delete('/api/v1/rule/' + id)
+        .then(result => {
+            cb(result.data);
+        }).catch(err => showError(err))
+}
+
+function backendUpdateRule(id, config, cb) {
+    return backend.put('/api/v1/rule/' + id, config)
+        .then(result => {
+            cb(result.data);
+        }).catch(err => showError(err))
+}
+
+function backendExportRules(cb) {
+    return backend.get('/api/v1/rule/export')
+        .then(result => {
+            cb(result.data);
+        }).catch(err => showError(err))
+}
+
+function backendImportRules(policies, cb) {
+    return backend.post('/api/v1/rule/import', policies)
+        .then(result => {
+            cb(result.data);
+        }).catch(err => showError(err))
+}
