@@ -1434,7 +1434,7 @@ const PROPERTIES_DATA = [
         "tooltip": "Other objects that also use this configuration.",
         "order": 5,
         "config": [
-            "root/ns-kube-system/app-kube-dns/cont-kubedns/vol-kube-dns-config/configmap-kube-dns"
+            "root/ns-[kube-system]/app-[kube-dns]/cont-[kubedns]/vol-[kube-dns-config]/configmap-[kube-dns]"
         ]
     },
     {
