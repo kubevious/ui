@@ -87,6 +87,13 @@ function backendFetchRule(id, cb) {
         });
 }
 
+function backendFetchRuleData(id, cb) {
+    return backend.get('/api/v1/rule/' + id + '/data')
+        .then(result => {
+            cb(result.data);
+        });
+}
+
 function backendCreateRule(policy, cb) {
     return backend.post('/api/v1/rule', policy)
         .then(result => {

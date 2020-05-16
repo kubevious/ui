@@ -8,6 +8,7 @@ class RuleEditor {
 	{
         this._ruleList = [];
         this._selectedRule = null;
+        this._selectedRuleData = null;
         this._deleteExtra = false
 
         $(document).on("layout-open-ruleEditorComponent", () => {
@@ -172,6 +173,7 @@ class RuleEditor {
                 "<div class='btn-group'>" +
                     this.renderButtons() +
                 "</div>" +
+                "<div id='rule-data-container'></div>"
             "</div>"
 
         $('#rule-editor').html(html);
@@ -252,6 +254,18 @@ class RuleEditor {
 
     }
 
+    _renderRuleData()
+    {
+        if (this._selectedRuleData)
+        {
+            var html = '<pre><code>' + 
+                JSON.stringify(this._selectedRuleData, null, 4) +
+            '</code></pre>'
+
+            $('#rule-data-container').html(html);
+        }
+    }
+
     renderEditorTitle()
     {
         var html = ""
@@ -296,10 +310,19 @@ class RuleEditor {
         backendFetchRule(id, data => {
             this._selectedRule = { ...data }
             this._renderRuleEditor()
+            this._renderRuleData();
 
             $('.rule-item-button').removeClass('selected')
             $(event.target).addClass('selected')
         })
+
+        backendFetchRuleData(id, data => {
+            this._selectedRuleData = data;
+            this._renderRuleData();
+
+            console.log("*****")
+            console.log(data);
+        });
     }
 
     setSelectedImport(value)
@@ -353,6 +376,7 @@ class RuleEditor {
     {
         backendDeleteRule(this._selectedRule.id, (data) => {
             this._selectedRule = null
+            this._selectedRuleData = null;
             this.refresh()
         })
     }
@@ -405,6 +429,7 @@ class RuleEditor {
     openSummary()
     {
         this._selectedRule = null
+        this._selectedRuleData = null;
         this._renderRuleMainPage()
     }
 
