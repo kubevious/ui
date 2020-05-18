@@ -140,7 +140,10 @@ function backendFetchRule(id, cb) {
         {
             res.logs.push({
                 kind: 'error',
-                msg: 'This is error number ' + i
+                msg: {
+                    source: (i % 2 == 0) ? ['target'] : ['script'],
+                    msg: 'This is error number ' + i
+                }
             });
         }
     }
