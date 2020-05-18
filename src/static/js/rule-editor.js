@@ -10,6 +10,7 @@ class RuleEditor {
         this._selectedRule = null;
         this._selectedRuleData = null;
         this._deleteExtra = false
+        this.selectedTab = 'rule'
 
         $(document).on("layout-open-ruleEditorComponent", () => {
             this._render();
@@ -178,6 +179,7 @@ class RuleEditor {
                         "</div>" +
                         "<textarea id='script' class='field-input script' name='script' required />" +
                     "</div>" +
+                    "<div class='editor-errors' />" +
                     "<label class='checkbox-container'>Enable/Disable" +
                         "<input type='checkbox'  onclick='ruleEditor.client.changeEnable()' class='enable-checkbox' />" +
                         "<span class='checkmark'></span>" +
@@ -185,7 +187,7 @@ class RuleEditor {
                 "<div class='btn-group'>" +
                     this.renderButtons() +
                 "</div>" +
-                "<div id='rule-data-container'></div>"
+                "<div id='rule-data-container'></div>" +
             "</div>"
 
         $('#rule-editor').html(html);
@@ -264,18 +266,29 @@ class RuleEditor {
             }
         })
 
+        this._renderRuleDataErrors()
     }
 
-    _renderRuleData()
+    _renderRuleDataErrors()
     {
-        if (this._selectedRuleData)
+        var html = ''
+        if  (this._selectedRuleData && this._selectedRuleData.logs.length !== 0)
         {
-            var html = '<pre><code>' + 
-                JSON.stringify(this._selectedRuleData, null, 4) +
-            '</code></pre>'
+            this._selectedRuleData.logs.forEach(err => {
+                html += '<div class="err-box">' +
+                    '<div class="alert-item error"></div>' +
+                    err.msg.msg+
+                    '</div>'
 
-            $('#rule-data-container').html(html);
+                if (err.msg.source.includes('target')) {
+                    $('.CodeMirror')[0].style.border = '1px solid red'
+                } else if (err.msg.source.includes('script')) {
+                    $('.CodeMirror')[1].style.border = '1px solid red'
+                }
+            })
         }
+
+        $('.editor-errors').append(html)
     }
 
     renderEditorTitle()
@@ -285,7 +298,56 @@ class RuleEditor {
         if (this.isEmptyFields()) {
             html += "<div class='editor-title'>Create new rule</div>"
         } else {
-            html += "<div class='editor-title'>Edit rule</div>"
+            html += '<div class="editor-title">' +
+                        '<div class="tab rule-tab ' + (this.selectedTab === 'rule' ? 'selected' : '') + '" onclick="ruleEditor.client.changeSelectedTab(event, `rule`)">Edit rule</div>' +
+                        '<div class="tab object-tab ' + (this.selectedTab === 'object' ? 'selected' : '') + '" onclick="ruleEditor.client.changeSelectedTab(event, `object`)">' +
+                '           Affected Objects (' + this._selectedRuleData.items.length +')' +
+                        '</div>' +
+                    '</div>'
+        }
+
+        return html
+    }
+
+    changeSelectedTab(e, tab)
+    {
+        this.selectedTab = tab
+
+        switch (tab) {
+            case 'rule':
+                this._renderRuleEditor()
+                break
+            case 'object':
+                this._renderObjectsPage()
+                break
+            default:
+                this._renderRuleEditor()
+                break
+        }
+    }
+
+    _renderObjectsPage()
+    {
+        var html = ''
+
+        html += '<div class="rule-container">' +
+            this.renderEditorTitle() +
+            (this._selectedRuleData.items.length !== 0 ? this.renderObjectItems() : 'No objects affected by this rule') +
+            '</div>'
+
+        $('#rule-editor').html(html)
+    }
+
+    renderObjectItems()
+    {
+        var html = ''
+
+        if (this._selectedRuleData.items.length !== 0) {
+            this._selectedRuleData.items.forEach(item => {
+                html += generateDnShortcutHtml(item.dn, {
+                    handler: "onPropertyPanelDnClick",
+                })
+            })
         }
 
         return html
@@ -319,6 +381,8 @@ class RuleEditor {
 
     selectRule(id, event)
     {
+        this.selectedTab = 'rule'
+
         backendFetchRule(id, data => {
             Logger.info("[backendFetchRule] id=%s, ", id, data);
 
@@ -328,7 +392,6 @@ class RuleEditor {
                 logs: data.logs
             };
             this._renderRuleEditor()
-            this._renderRuleData();
 
             $('.rule-item-button').removeClass('selected')
             $(event.target).addClass('selected')
