@@ -42,8 +42,7 @@ function fetchHistoryProperties(dn, date, cb) {
 }
 
 
-var MOCK_POLICY_INDEX=3;
-var MOCK_POLICY_LIST = [
+var MOCK_RULE_LIST = [
     {
         id: 1,
         enabled: true,
@@ -59,34 +58,110 @@ var MOCK_POLICY_LIST = [
         script: 'if (item.hasChild("Ingress")) \n { \n \t if (item.config.spec.type == \'ClusterIP\') \n \t{ \n \t\tfail(\'Use ClusterIP for Ingress exposed services\'); \n \t } \n }'
     }
 ];
-function backendFetchPolicyList(cb) {
-    Logger.info("[backendFetchPolicyList] ");
-    var res = MOCK_POLICY_LIST.map(x => ({ id: x.id, name: x.name }));
+function backendFetchRuleList(cb) {
+    Logger.info("[backendFetchRuleList] ");
+    var res = MOCK_RULE_LIST.map(x => ({ id: x.id, name: x.name, enabled: x.enabled, error_count: x.id % 3 }));
     cb(res);
 }
 
-function backendFetchPolicy(id, cb) {
-    Logger.info("[backendFetchPolicy] ");
-    var res = MOCK_POLICY_LIST.find(policy => policy.id === id);
+function backendFetchRule(id, cb) {
+    Logger.info("[backendFetchRule] ");
+    var res = MOCK_RULE_LIST.find(policy => policy.id === id);
+    if (res)
+    {
+        res = {
+            rule: res,
+            items: [
+                {
+                    "dn": "root/ns-[gitlab]/app-[gitlab-gitlab-exporter]/initcont-[configure]/image-[busybox]",
+                    "has_error": 1,
+                    "has_warning": 0
+                },
+                {
+                    "dn": "root/ns-[gitlab]/app-[gitlab-gitlab-shell]/initcont-[configure]/image-[busybox]",
+                    "has_error": 1,
+                    "has_warning": 0
+                },
+                {
+                    "dn": "root/ns-[gitlab]/app-[gitlab-minio]/initcont-[configure]/image-[busybox]",
+                    "has_error": 1,
+                    "has_warning": 0
+                },
+                {
+                    "dn": "root/ns-[gitlab]/app-[gitlab-registry]/initcont-[configure]/image-[busybox]",
+                    "has_error": 1,
+                    "has_warning": 0
+                },
+                {
+                    "dn": "root/ns-[gitlab]/app-[gitlab-sidekiq-all-in-1]/initcont-[configure]/image-[busybox]",
+                    "has_error": 1,
+                    "has_warning": 0
+                },
+                {
+                    "dn": "root/ns-[gitlab]/app-[gitlab-task-runner]/initcont-[configure]/image-[busybox]",
+                    "has_error": 1,
+                    "has_warning": 0
+                },
+                {
+                    "dn": "root/ns-[gitlab]/app-[gitlab-unicorn]/initcont-[configure]/image-[busybox]",
+                    "has_error": 1,
+                    "has_warning": 0
+                },
+                {
+                    "dn": "root/ns-[gitlab]/app-[gitlab-gitaly]/initcont-[configure]/image-[busybox]",
+                    "has_error": 1,
+                    "has_warning": 0
+                },
+                {
+                    "dn": "root/ns-[gitlab]/app-[gitlab-redis-server]/initcont-[configure]/image-[busybox]",
+                    "has_error": 1,
+                    "has_warning": 0
+                },
+                {
+                    "dn": "root/ns-[gitlab]/app-[gitlab-migrations.1]/initcont-[configure]/image-[busybox]",
+                    "has_error": 1,
+                    "has_warning": 0
+                },
+                {
+                    "dn": "root/ns-[sock-shop]/app-[carts-db]/cont-[carts-db]/image-[mongo]",
+                    "has_error": 1,
+                    "has_warning": 0
+                },
+                {
+                    "dn": "root/ns-[sock-shop]/app-[orders-db]/cont-[orders-db]/image-[mongo]",
+                    "has_error": 1,
+                    "has_warning": 0
+                }
+            ],
+            logs: []
+        }
+
+        for(var i = 0; i < res.rule.id % 3; i++)
+        {
+            res.logs.push({
+                kind: 'error',
+                msg: 'This is error number ' + i
+            });
+        }
+    }
     cb(res);
 }
 
-function backendCreatePolicy(policy, cb) {
-    Logger.info("[backendCreatePolicy] ", policy);
+function backendCreateRule(policy, cb) {
+    Logger.info("[backendCreateRule] ", policy);
     policy = _.clone(policy);
-    policy.id = MOCK_POLICY_INDEX;
-    MOCK_POLICY_INDEX++;
-    MOCK_POLICY_LIST.push(policy);
+    policy.id = _.max(MOCK_RULE_LIST.map(x => x.id)) + 1;
+    MOCK_RULE_LIST.push(policy);
     cb(policy);
 }
-function backendDeletePolicy(id, cb) {
-    Logger.info("[backendDeletePolicy] %s", id);
-    MOCK_POLICY_LIST = MOCK_POLICY_LIST.filter(x => x.id != id);
+function backendDeleteRule(id, cb) {
+    Logger.info("[backendDeleteRule] %s", id);
+    MOCK_RULE_LIST = MOCK_RULE_LIST.filter(x => x.id != id);
     cb();
 }
 function backendUpdatePolicy(id, config, cb) {
     Logger.info("[backendUpdatePolicy] %s", id, config);
-    var policy = _.head(MOCK_POLICY_LIST.filter(x => x.id == id));
+    var policy = _.head(MOCK_RULE_LIST.filter(x => x.id == id));
     if (policy) {
         policy.name = config.name;
         policy.enabled = config.enabled;
@@ -94,6 +169,24 @@ function backendUpdatePolicy(id, config, cb) {
         policy.script = config.script;
     }
     cb(policy);
+}
+
+function backendExportRules(cb) {
+    var data = _.cloneDeep(MOCK_RULE_LIST);
+    for(var x of data)
+    {
+        delete x.id;
+    }
+    cb(data);
+}
+
+function backendImportRules(policies, cb) {
+    MOCK_RULE_LIST = _.clone(policies);
+    for(var i = 0; i < MOCK_RULE_LIST.length; i++)
+    {
+        MOCK_RULE_LIST[i] = i + 1;
+    }
+    cb();
 }
 
 const GRAPH_DATA = {
@@ -1434,7 +1527,7 @@ const PROPERTIES_DATA = [
         "tooltip": "Other objects that also use this configuration.",
         "order": 5,
         "config": [
-            "root/ns-kube-system/app-kube-dns/cont-kubedns/vol-kube-dns-config/configmap-kube-dns"
+            "root/ns-[kube-system]/app-[kube-dns]/cont-[kubedns]/vol-[kube-dns-config]/configmap-[kube-dns]"
         ]
     },
     {

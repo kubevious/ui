@@ -83,12 +83,17 @@
 .indicator {
     width: 7px;
     height: 7px;
-    background: #4E515B;
     border-radius: 50%;
 }
 
 .indicator.enabled {
     background: #4ECD77;
+}
+.indicator.disabled {
+    background: #4E515B;
+}
+.indicator.invalid {
+    background: rgb(197, 6, 6);
 }
 
 .rule-container {

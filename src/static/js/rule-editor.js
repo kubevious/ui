@@ -8,6 +8,7 @@ class RuleEditor {
 	{
         this._ruleList = [];
         this._selectedRule = null;
+        this._selectedRuleData = null;
         this._deleteExtra = false
 
         $(document).on("layout-open-ruleEditorComponent", () => {
@@ -26,6 +27,8 @@ class RuleEditor {
     refresh()
     {
         backendFetchRuleList(data => {
+            Logger.info("[backendFetchRuleList] ", data);
+
             this._ruleList = [...data];
             this._render()
         })
@@ -130,7 +133,17 @@ class RuleEditor {
 
     _renderRule(x)
     {
-        const className = 'indicator ' + (x.enabled ? 'enabled' : 'disabled')
+        var indicatorClass = null;
+        if (!x.enabled) {
+            indicatorClass = 'disabled';
+        }
+        else if (x.error_count)
+        {
+            indicatorClass = 'invalid';
+        } else {
+            indicatorClass = 'enabled';
+        }
+        const className = 'indicator ' + indicatorClass;
 
         var html = '<button class="rule-item-button" onclick="ruleEditor.client.selectRule(' + x.id + ', event)">' +
             x.name +
@@ -172,6 +185,7 @@ class RuleEditor {
                 "<div class='btn-group'>" +
                     this.renderButtons() +
                 "</div>" +
+                "<div id='rule-data-container'></div>"
             "</div>"
 
         $('#rule-editor').html(html);
@@ -252,6 +266,18 @@ class RuleEditor {
 
     }
 
+    _renderRuleData()
+    {
+        if (this._selectedRuleData)
+        {
+            var html = '<pre><code>' + 
+                JSON.stringify(this._selectedRuleData, null, 4) +
+            '</code></pre>'
+
+            $('#rule-data-container').html(html);
+        }
+    }
+
     renderEditorTitle()
     {
         var html = ""
@@ -294,8 +320,15 @@ class RuleEditor {
     selectRule(id, event)
     {
         backendFetchRule(id, data => {
-            this._selectedRule = { ...data }
+            Logger.info("[backendFetchRule] id=%s, ", id, data);
+
+            this._selectedRule = { ...data.rule }
+            this._selectedRuleData = {
+                items: data.items,
+                logs: data.logs
+            };
             this._renderRuleEditor()
+            this._renderRuleData();
 
             $('.rule-item-button').removeClass('selected')
             $(event.target).addClass('selected')
@@ -353,6 +386,7 @@ class RuleEditor {
     {
         backendDeleteRule(this._selectedRule.id, (data) => {
             this._selectedRule = null
+            this._selectedRuleData = null;
             this.refresh()
         })
     }
@@ -405,6 +439,7 @@ class RuleEditor {
     openSummary()
     {
         this._selectedRule = null
+        this._selectedRuleData = null;
         this._renderRuleMainPage()
     }
 
