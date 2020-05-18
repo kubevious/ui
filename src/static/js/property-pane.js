@@ -214,6 +214,7 @@ function _renderDnListContents(group, options)
 
 function onPropertyPanelDnClick(event)
 {
+    kubeviousLayout.activateComponent('universeComponent');
     var dn = $(event.currentTarget).attr("dn");
     diagramScope.client.selectDiagramItem(dn);
 }

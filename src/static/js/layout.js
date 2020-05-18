@@ -88,6 +88,18 @@ class KubeviousLayout
         this._layout.root.contentItems[ 0 ].addChild( componentLayout );
     }
 
+    activateComponent(id)
+    {
+        var info = this._getComponent(id);
+
+        var stack = info.goldenTab.contentItem.parent;
+        var stackComponent = _.head(stack.contentItems.filter(x => x.componentName == info.goldenTab.contentItem.componentName));
+        if (stackComponent)
+        {
+            stack.setActiveContentItem(stackComponent);
+        }
+    }
+
     _getComponent(id)
     {
         return _.filter(this._components, x => x.id == id)[0];
