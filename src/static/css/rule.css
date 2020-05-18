@@ -277,8 +277,23 @@ input[type="file"] {
 }
 
 .editor-title {
+    display: flex;
     font-size: 30px;
     margin-bottom: 25px;
+}
+
+.editor-title .tab {
+    margin-right: 20px;
+    color: #737888;
+}
+
+.editor-title .tab:hover {
+    cursor: pointer;
+}
+
+.editor-title .tab.selected {
+    color: white;
+    border-bottom: 1px solid #4ECD77;
 }
 
 .rule-summary-box {
@@ -297,6 +312,29 @@ input[type="file"] {
 
 .summary-value {
     font-size: 96px;
+}
+
+.editor-errors {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+}
+
+.editor-errors:empty {
+    margin: 0;
+}
+
+.editor-errors .err-box {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.editor-errors .err-box:last-child {
+    margin-bottom: 0;
+}
+
+.editor-errors .err-box .alert-item {
+    margin-right: 20px;
 }
 
 .rule-item-button:hover, .new-rule-btn:hover, .start-new-rule-btn:hover, .file-upload:hover,
