@@ -27,6 +27,8 @@ class RuleEditor {
     refresh()
     {
         backendFetchRuleList(data => {
+            Logger.info("[backendFetchRuleList] ", data);
+
             this._ruleList = [...data];
             this._render()
         })
@@ -131,7 +133,17 @@ class RuleEditor {
 
     _renderRule(x)
     {
-        const className = 'indicator ' + (x.enabled ? 'enabled' : 'disabled')
+        var indicatorClass = null;
+        if (!x.enabled) {
+            indicatorClass = 'disabled';
+        }
+        else if (x.error_count)
+        {
+            indicatorClass = 'invalid';
+        } else {
+            indicatorClass = 'enabled';
+        }
+        const className = 'indicator ' + indicatorClass;
 
         var html = '<button class="rule-item-button" onclick="ruleEditor.client.selectRule(' + x.id + ', event)">' +
             x.name +
@@ -308,21 +320,19 @@ class RuleEditor {
     selectRule(id, event)
     {
         backendFetchRule(id, data => {
-            this._selectedRule = { ...data }
+            Logger.info("[backendFetchRule] id=%s, ", id, data);
+
+            this._selectedRule = { ...data.rule }
+            this._selectedRuleData = {
+                items: data.items,
+                logs: data.logs
+            };
             this._renderRuleEditor()
             this._renderRuleData();
 
             $('.rule-item-button').removeClass('selected')
             $(event.target).addClass('selected')
         })
-
-        backendFetchRuleData(id, data => {
-            this._selectedRuleData = data;
-            this._renderRuleData();
-
-            console.log("*****")
-            console.log(data);
-        });
     }
 
     setSelectedImport(value)
