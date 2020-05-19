@@ -148,6 +148,7 @@ class RuleEditor {
 
         var html = '<button class="rule-item-button" onclick="ruleEditor.client.selectRule(' + x.id + ', event)">' +
             x.name +
+            ((!x.isCurrent) ? '<div class="busy-rule-indicator"></div>' : "") + 
             '<div class="' + className + '" />' +
             '</button>';
         return html;
@@ -295,9 +296,13 @@ class RuleEditor {
     {
         var html = ""
 
-        if (this.isEmptyFields()) {
+        if (this.isNewRule()) {
             html += "<div class='editor-title'>Create new rule</div>"
         } else {
+            if (!this._selectedRule.isCurrent) {
+                html += '<div class="busy-rule-indicator"></div>'
+            }
+
             html += '<div class="editor-title">' +
                         '<div class="tab rule-tab ' + (this.selectedTab === 'rule' ? 'selected' : '') + '" onclick="ruleEditor.client.changeSelectedTab(event, `rule`)">Edit rule</div>' +
                         '<div class="tab object-tab ' + (this.selectedTab === 'object' ? 'selected' : '') + '" onclick="ruleEditor.client.changeSelectedTab(event, `object`)">' +
@@ -509,6 +514,16 @@ class RuleEditor {
     isEmptyFields()
     {
         return Object.values(this._selectedRule).some(item => item === '')
+    }
+
+    isNewRule()
+    {
+        if (this._selectedRule) {
+            if (this._selectedRule.id) {
+                return false;
+            }
+        }
+        return true;
     }
 }
 
