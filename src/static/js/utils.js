@@ -87,6 +87,48 @@ function formatDate(date)
     }
 }
 
+function showError(err, options) {
+    var html = '<div class="error-box">' +
+                    '<div class="error">' +
+                        '<div class="error-text">' +
+                            err.toString() +
+                        '</div>' +
+                        '<div class="more-text">' +
+                            'more details' +
+                        '</div>' +
+                        '<div class="close-error" onclick="closeError()">x</div>' +
+                    '</div>' +
+                '</div>'
+
+    $('#layout-content').append(html)
+
+    $('.more-text').on('click', () => {
+        if ($('.full-error-container').length === 0) {
+            showFullError(err, options)
+        } else {
+            $('.full-error-container').remove()
+            $('.more-text').html('more details')
+        }
+    })
+}
+
+function closeError() {
+    $('.error-box').remove()
+}
+
+function showFullError(err, options) {
+    var html = '<div class="full-error-container">' +
+                    '<div class="msg">' + err.toString() + '</div>' +
+                    '<div class="msg">Cannot ' + options.method.toUpperCase() +
+                        (options.method === 'get' ? ' from ' : ' to ') +
+                        options.url + '</div>' +
+                '</div>'
+
+    $('.more-text').html('less details')
+
+    $('.error-box').append(html)
+}
+
 /*** COLOR UTILS ***/
 const pSBC=(p,c0,c1,l)=>{
     let r,g,b,P,f,t,h,i=parseInt,m=Math.round,a=typeof(c1)=="string";

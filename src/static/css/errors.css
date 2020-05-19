@@ -1,0 +1,44 @@
+.lm_items {
+    position: relative;
+}
+
+.error-box {
+    position: absolute;
+    top: 0;
+    left: 40%;
+    z-index: 10;
+    background: red;
+    color: white;
+    padding: 5px 15px;
+}
+
+.error {
+    display: flex;
+    position: relative;
+}
+
+.more-text {
+    margin-left: 20px;
+    text-decoration: underline;
+}
+
+.more-text:hover {
+    cursor: pointer;
+}
+
+.close-error {
+    position: absolute;
+    right: -12px;
+    top: -6px;
+    font-size: 10px;
+}
+
+.close-error:hover {
+    cursor: pointer;
+}
+
+.full-error-container {
+    padding: 10px;
+    margin-top: 10px;
+    background: #C4C4C4;
+}

@@ -61,7 +61,6 @@ function fetchHistorySnapshot(date, cb) {
         });
 }
 
-
 function fetchHistoryProperties(dn, date, cb) {
     Logger.info("[fetchHistoryProperties] %s :: %s", dn, date);
     var params = {
@@ -74,3 +73,51 @@ function fetchHistoryProperties(dn, date, cb) {
         });
 }
   
+function backendFetchRuleList(cb) {
+    return backend.get('/api/v1/rule')
+        .then(result => {
+            cb(result.data);
+        });
+}
+
+function backendFetchRule(id, cb) {
+    return backend.get('/api/v1/rule/' + id)
+        .then(result => {
+            cb(result.data);
+        });
+}
+
+function backendCreateRule(policy, cb) {
+    return backend.post('/api/v1/rule', policy)
+        .then(result => {
+            cb(result.data)
+        });
+}
+
+function backendDeleteRule(id, cb) {
+    return backend.delete('/api/v1/rule/' + id)
+        .then(result => {
+            cb(result.data);
+        });
+}
+
+function backendUpdateRule(id, config, cb) {
+    return backend.put('/api/v1/rule/' + id, config)
+        .then(result => {
+            cb(result.data);
+        });
+}
+
+function backendExportRules(cb) {
+    return backend.get('/api/v1/rule/export')
+        .then(result => {
+            cb(result.data);
+        });
+}
+
+function backendImportRules(policies, cb) {
+    return backend.post('/api/v1/rule/import', policies)
+        .then(result => {
+            cb(result.data);
+        });
+}

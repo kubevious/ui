@@ -1,0 +1,355 @@
+#rule {
+    display: flex;
+}
+
+#rule-list {
+    width: 300px;
+    background: #35373E;
+    position: relative;
+    height: 100%;
+    overflow-y: auto;
+}
+
+#rule-editor {
+    width: 100%;
+    position: relative;
+}
+
+.rule-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 15px;
+    border-bottom: 1px solid #4E515B;
+    color: black;
+}
+
+.remove-btn {
+    background: none;
+    border: none;
+}
+
+.start-new-rule-btn {
+    border: none;
+    background: #4ECD77;
+    color: white;
+    padding: 10px 40px;
+}
+
+.new-rule-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 120px;
+    padding: 5px 10px !important;
+}
+
+.plus {
+    font-size: 20px;
+}
+
+.circle-btn {
+    background: #4ECD77;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.rules {
+    display: flex;
+    flex-direction: column;
+}
+
+.rule-item-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: none;
+    background: none;
+    color: white;
+    padding: 10px 15px;
+    border-bottom: 1px solid #4E515B;
+    text-align: left;
+}
+
+.rule-item-button.selected {
+    background: #1E1E1E;
+}
+
+.indicator {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+}
+
+.indicator.enabled {
+    background: #4ECD77;
+}
+.indicator.disabled {
+    background: #4E515B;
+}
+.indicator.invalid {
+    background: rgb(197, 6, 6);
+}
+
+.rule-container {
+    overflow-y: scroll;
+    height: 100%;
+    padding: 50px;
+}
+
+.rule-container.main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #737888;
+}
+
+.rule-container.success {
+    color: white;
+}
+
+.rule-container.success i {
+    color: #4ECD77;
+    margin-right: 10px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+}
+
+.field-input {
+    width: 100%;
+    outline: none;
+    padding: 10px 20px;
+    background: #35373E;
+    border: 1px solid #4E515B;
+    color: white;
+}
+
+.CodeMirror.cm-s-darcula {
+    background: #35373E;
+    border: 1px solid #4E515B;
+}
+
+.required-field {
+    border: 1px solid red;
+}
+
+.btn-group {
+    display: flex;
+}
+
+.rule-header .btn-group {
+    width: 100%;
+    justify-content: space-around;
+}
+
+.start-rule-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.start-text {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.start-text:last-child {
+    color: #737888;
+}
+
+.start-btn-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.list-btn {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+    position: relative;
+}
+
+input[type="file"] {
+    display: none;
+}
+.file-upload {
+    margin-bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.label-text {
+    width: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.label-arrow {
+    position: relative;
+    width: 30px;
+    height: 31px;
+    background: #149B21;
+}
+
+.label-arrow:after {
+    content: "";
+    top: 10px;
+    left: 9px;
+    position: absolute;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 12px solid white;
+}
+
+#import-container {
+    width: 200px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #557C9B;
+    border-radius: 3px;
+    color: white;
+}
+
+.import-caret {
+    width: 12px;
+    height: 12px;
+    transform: rotate(45deg);
+    position: absolute;
+    left: -6px;
+    top: 25px;
+    background: #557C9B;
+}
+
+.import-options {
+    padding: 10px;
+}
+
+.option {
+    padding: 10px 0;
+}
+
+.option:hover {
+    cursor: pointer;
+}
+
+.option label:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.option:first-child {
+    border-bottom: 1px solid #7796af;
+}
+
+.option:hover {
+    cursor: pointer;
+}
+
+.option-btn {
+    border: none;
+    background: none;
+}
+
+.option-desc {
+    font-size: 12px;
+    padding: 0 5px;
+}
+
+.menu-btn {
+    border: none;
+    background: #0EFB5F;
+    color: white;
+    padding: 5px 15px;
+}
+
+.editor-title {
+    display: flex;
+    font-size: 30px;
+    margin-bottom: 25px;
+}
+
+.editor-title .tab {
+    margin-right: 20px;
+    color: #737888;
+}
+
+.editor-title .tab:hover {
+    cursor: pointer;
+}
+
+.editor-title .tab.selected {
+    color: white;
+    border-bottom: 1px solid #4ECD77;
+}
+
+.rule-summary-box {
+    height: 200px;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    background: #35373E;
+}
+
+.summary-title {
+    font-size: 16px;
+}
+
+.summary-value {
+    font-size: 96px;
+}
+
+.editor-errors {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+}
+
+.editor-errors:empty {
+    margin: 0;
+}
+
+.editor-errors .err-box {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.editor-errors .err-box:last-child {
+    margin-bottom: 0;
+}
+
+.editor-errors .err-box .alert-item {
+    margin-right: 20px;
+}
+
+.rule-item-button:hover, .new-rule-btn:hover, .start-new-rule-btn:hover, .file-upload:hover,
+.remove-btn:hover, .menu-btn:hover, .title:hover {
+    cursor: pointer;
+}
+
+.btn:disabled:hover {
+    cursor: not-allowed;
+}
+
+.busy-rule-indicator {
+    width: 16px;
+    height: 16px;
+    background-size: contain;
+    background-repeat: no-repeat no-repeat;
+    background-image: url("../img/busy.svg");
+}

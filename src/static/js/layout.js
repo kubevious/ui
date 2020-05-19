@@ -12,6 +12,15 @@ class KubeviousLayout
         });
 
         this._register({
+            name: 'Rule Editor',
+            location: 'main',
+            html: '<div id="rule" class="rule size-to-parent">' +
+            '<div id="rule-list"></div>' +
+            '<div id="rule-editor"></div>' +
+            '</div>'
+        });
+
+        this._register({
             name: 'Properties',
             location: 'right',
             html: '<div id="properties" class="properties"></div>',
@@ -59,7 +68,7 @@ class KubeviousLayout
                 '<a class="minus" onclick="historyScope.client.zoomOut()"></a>' +
                 '<a class="left" onclick="historyScope.client.panLeft()"></a>' +
                 '<a class="right" onclick="historyScope.client.panRight()"></a>' +
-            '</div>' ,
+            '</div>',
             allowVerticalScroll: true
         });
 
@@ -77,6 +86,18 @@ class KubeviousLayout
         var info = this._getComponent(id);
         var componentLayout = this._getComponentLayout(info);
         this._layout.root.contentItems[ 0 ].addChild( componentLayout );
+    }
+
+    activateComponent(id)
+    {
+        var info = this._getComponent(id);
+
+        var stack = info.goldenTab.contentItem.parent;
+        var stackComponent = _.head(stack.contentItems.filter(x => x.componentName == info.goldenTab.contentItem.componentName));
+        if (stackComponent)
+        {
+            stack.setActiveContentItem(stackComponent);
+        }
     }
 
     _getComponent(id)
@@ -181,8 +202,11 @@ class KubeviousLayout
         }
 
         var layout = {
-            type: 'stack',
-            height: 20
+            type: 'stack'
+        }
+
+        if (location != 'main') {
+            layout.height = 20;
         }
         layout.content = _.map(components, x => this._getComponentLayout(x));
         return layout;
