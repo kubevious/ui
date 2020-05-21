@@ -24,10 +24,6 @@ function _renderAlertsTable(alerts)
                 name: 'severity',
                 formatter: x => '<div class="alert-item ' + x + '"></div>'
             }, {
-                label: 'Date',
-                name: 'date',
-                formatter: x => formatDate(x)
-            }, {
                 label: 'Message',
                 name: 'msg'
             }
