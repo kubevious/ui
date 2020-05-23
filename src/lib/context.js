@@ -1,8 +1,5 @@
 const Server = require('./server');
 const BackendClient = require('./backend-client');
-const MySqlDriver = require("kubevious-helpers").MySqlDriver;
-
-const HistorySnapshotReader = require("kubevious-helpers").History.SnapshotReader;
 
 class Context {
 	constructor(logger) {
@@ -10,8 +7,6 @@ class Context {
         
         this._server = new Server(this);
         this._backendClient = new BackendClient(logger);
-        this._mysqlDriver = new MySqlDriver(logger);
-        this._historySnapshotReader = new HistorySnapshotReader(logger, this._mysqlDriver);
 	}
 
 	get logger() {
@@ -30,15 +25,10 @@ class Context {
         return this._mysqlDriver;
     }
 
-    get historySnapshotReader() {
-        return this._historySnapshotReader;
-    }
-
     run()
     {
         this.logger.info("[run] BEGIN");
         return Promise.resolve()
-            .then(() => this._mysqlDriver.connect())
             .then(() => this._server.run())
             .catch(reason => {
                 console.log("***** ERROR *****");

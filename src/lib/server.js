@@ -41,7 +41,7 @@ class Server
     _loadRouters()
     {
         this._loadRouter('web');
-        this._loadRouter('history');
+        // this._loadRouter('history');
         this._loadRouter('api');
     }
 
