@@ -116,3 +116,5 @@ logs_berlioz
 .history
 
 .idea/
+
+src-react/node_modules
