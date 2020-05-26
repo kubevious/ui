@@ -1,0 +1,92 @@
+.wrapper {
+    min-height: 100%;
+    position: relative;
+    background: #000;
+}
+
+.header {
+    height: 60px;
+    width: 100%;
+    background: #35373E;
+}
+
+.logo {
+    width: 190px;
+    height: 30px;
+    margin: 15px;
+    background: url("/img/logo.svg") left top no-repeat;
+    background-size: 100%;
+    float: left;
+}
+
+.header .actions {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+}
+
+.header .actions .btn {
+    border: none;
+    background: #1d1d1d;
+}
+
+.header .actions .btn:hover {
+    cursor: pointer;
+}
+
+.header .actions .btn div {
+    background-size: contain;
+    width: 24px;
+    height: 24px;
+    opacity: 0.8;
+}
+
+.header .actions .btn div:hover {
+    opacity: 1.0;
+}
+
+.header .actions .btn {
+    width: 24px;
+    height: 24px;
+    margin: 0 0 0 15px;
+    border-radius: 0;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: #35373E;
+}
+
+.header .actions .btn:hover {
+    opacity: 0.5;
+    transition: 0.4s ease all;
+}
+
+.header .actions .btn:active, .header .actions .btn:focus {
+    opacity: 1;
+    outline: 0;
+}
+
+.header .actions .btn-search, .header .actions .btn-search:active {
+    background-image: url("/img/header-btns/search.svg");
+}
+
+.header .actions .btn-about, .header .actions .btn-about:active {
+    background-image: url("/img/header-btns/about.svg");
+}
+
+.header .actions .btn img {
+    width: 24px;
+    height: 24px;
+}
+
+.header .actions .btn-settings, .header .actions .btn-settings:active {
+    background: url("/img/header-btns/settings.svg") no-repeat center center;
+    background-size: 20px;
+}
+
+.header .actions .btn-settings {
+    position: relative;
+}
+
+.btn-github, .btn-slack, .btn-bug {
+    padding: 0 !important;
+}
