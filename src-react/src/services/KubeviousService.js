@@ -24,10 +24,24 @@ class KubeviousService {
     }
 
     fetchAbout(cb) {
-        return BackendClient.get('/about')
-            .then(result => {
-                cb(result.data);
+        var info = {
+            version: require('../version')
+        }
+                  
+        return Promise.resolve()
+            .then(() => {
+                return BackendClient.get('/version')
+                    .then(result => {
+                        info['backend version'] = result.data.version;
+                    })
+                    .catch(reason => {
+                        info['backend version'] = "unknown";
+                    });
+            })
+            .then(() => {
+                cb(info);
             });
+  
     }
 
     fetchHistoryRange(cb) {
