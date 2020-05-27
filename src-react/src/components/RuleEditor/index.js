@@ -423,14 +423,14 @@ class RuleEditor extends Component {
                         <div className="import-caret"/>
                         <div className="import-options">
                             <div className="option">
-                                <label for="upload-rule" className="option-desc"
+                                <label htmlFor="upload-rule" className="option-desc"
                                        onClick={() => this.setState({ deleteExtra: true })}>
                                     <b>Restore</b> from backup
                                 </label>
                             </div>
 
                             <div className="option">
-                                <label for="upload-rule" className="option-desc"
+                                <label htmlFor="upload-rule" className="option-desc"
                                        onClick={() => this.setState({ deleteExtra: false })}>
                                     <b>Merge</b> from backup preserving existing roles
                                 </label>
