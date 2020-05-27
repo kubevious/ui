@@ -7,7 +7,7 @@ const Popup = ({ header, contents }) => {
     return (
         <div id="popup" className="popup">
             <div className="popup-header">
-                <DnComponent dn={dn} />
+                {dn && <DnComponent dn={dn} />}
                 <h3>{title}</h3>
             </div>
             <div className="popup-contents">

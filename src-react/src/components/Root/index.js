@@ -8,6 +8,8 @@ import RootApiService from '../../services/RootApiService'
 import SharedState from '../../state/shared-state'
 import StateHandler from '../../state/state-handler'
 import MockRootApiService from '../../services-mock/MockRootApiService'
+import { popupOpen } from '../../utils/ui-utils'
+import About from '../About'
 
 const Root = () => {
     const state = new SharedState()
@@ -16,6 +18,17 @@ const Root = () => {
     const service = rootService.kubevious();
 
     const stateHandler = new StateHandler(state, service);
+
+    const openAbout = () => {
+        service.fetchAbout((result) => {
+            popupOpen(<About result={result}/>, {
+                header: {
+                    title: 'About Kubevious'
+                }
+            })
+
+        })
+    }
 
     return (
         <div className="wrapper">
@@ -34,7 +47,7 @@ const Root = () => {
                     <a href="https://github.com/kubevious/kubevious" target="_blank" className="btn btn-github">
                         <img src={githubImg} alt="github"/>
                     </a>
-                    <button id="btnHeaderAbout" type="button" className="btn btn-about"/>
+                    <button id="btnHeaderAbout" type="button" className="btn btn-about" onClick={openAbout}/>
                     <button id="btnHeaderSearch" type="button" className="btn btn-search"/>
                     <button className="btn btn-settings">
                         <span id="tool-windows-menu" className="settings-menu">
@@ -43,7 +56,7 @@ const Root = () => {
                 </div>
             </div>
 
-            <GoldenLayoutComponent service={service} state={state} />
+            <GoldenLayoutComponent service={service} state={state}/>
         </div>
     )
 }
