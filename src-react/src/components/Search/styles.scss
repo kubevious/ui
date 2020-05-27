@@ -1,0 +1,51 @@
+.search-popup {
+  padding: 40px;
+  overflow-y: auto;
+
+  .search-input {
+    font-size: 22px;
+    font-weight: 700;
+    background: transparent;
+    border: 1px solid #ccc;
+    border-radius: 0px;
+    color: #FFF;
+    padding: 15px;
+
+    &:focus {
+      border: 1px solid yellow;
+      background: transparent;
+      color: #FFF;
+      outline: none;
+    }
+  }
+
+  .search-results {
+    margin-top: 20px;
+  }
+
+  .search-results .dn-logo {
+    float: left;
+  }
+
+  .search-results .dn-path {
+    font-size: 14pt;
+  }
+
+  .search-results .dn-path span {
+    margin: 0 6px 0 0;
+    line-height: 33px;
+  }
+
+  .search-results .dn-path span.separator {
+    width: 6px;
+    padding: 0 3px;
+  }
+
+  .search-results .dn-path .kind {
+    font-size: 10pt;
+  }
+
+  button:focus {
+    outline: none;
+  }
+}

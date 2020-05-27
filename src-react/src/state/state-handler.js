@@ -21,7 +21,6 @@ class StateHandler {
     _handleDiagramChange() {
         this._state.subscribe(['time_machine_enabled', 'time_machine_date'],
             ({ time_machine_enabled, time_machine_date }) => {
-                console.log('time_machine_enabled', time_machine_enabled)
                 if (time_machine_enabled) {
                     this._service.fetchHistorySnapshot(time_machine_date, (sourceData) => {
                         this._state.set('diagram_data', sourceData);
@@ -60,7 +59,7 @@ class StateHandler {
     _handleSelectedObjectAssetsChange() {
         this._state.subscribe('selected_object_assets',
             (selected_object_assets) => {
-
+                console.log('selected_object_assets', selected_object_assets)
                 if (selected_object_assets) {
                     this._state.set('selected_object_props', selected_object_assets.props);
                     this._state.set('selected_object_alerts', selected_object_assets.alerts);

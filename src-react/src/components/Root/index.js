@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import bugImg from '../../assets/header-btns/bug.svg'
 import slackImg from '../../assets/header-btns/slack.svg'
 import githubImg from '../../assets/header-btns/github.svg'
@@ -10,8 +10,11 @@ import StateHandler from '../../state/state-handler'
 import MockRootApiService from '../../services-mock/MockRootApiService'
 import { popupOpen } from '../../utils/ui-utils'
 import About from '../About'
+import Search from '../Search'
 
 const Root = () => {
+    const [showSearch, setShowSearch] = useState(false)
+
     const state = new SharedState()
 
     const rootService = process.env.REACT_APP_MOCKED_DATA ? new MockRootApiService(state) : new RootApiService(state);
@@ -29,6 +32,10 @@ const Root = () => {
 
         })
     }
+
+    const openSearch = () => setShowSearch(!showSearch)
+
+    const hideSearch = () => setShowSearch(false)
 
     return (
         <div className="wrapper">
@@ -48,7 +55,7 @@ const Root = () => {
                         <img src={githubImg} alt="github"/>
                     </a>
                     <button id="btnHeaderAbout" type="button" className="btn btn-about" onClick={openAbout}/>
-                    <button id="btnHeaderSearch" type="button" className="btn btn-search"/>
+                    <button id="btnHeaderSearch" type="button" className="btn btn-search" onClick={openSearch}/>
                     <button className="btn btn-settings">
                         <span id="tool-windows-menu" className="settings-menu">
                         </span>
@@ -57,6 +64,8 @@ const Root = () => {
             </div>
 
             <GoldenLayoutComponent service={service} state={state}/>
+
+            {showSearch && <Search service={service} hideSearch={hideSearch} state={state}/>}
         </div>
     )
 }

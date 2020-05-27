@@ -5,7 +5,6 @@ import { isEmptyArray } from '../../utils/util'
 import cx from 'classnames'
 
 const RulesList = ({ rules, selectedRule, selectRule, createNewRule, setVisibleOptions, service }) => {
-    console.log('---', selectedRule)
 
     const exportRules = () => {
         service.backendExportRules(response => {

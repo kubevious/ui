@@ -7,7 +7,7 @@ import {
 
 import './styles.scss'
 
-const DnShortcutComponent = ({ dn, options, state }) => {
+const DnShortcutComponent = ({ dn, options, state, hidePopup }) => {
     setTimeout(() => {
         $('.dn-shortcut').on('click', (e) => onPropertyPanelDnClick(e))
     }, 0)
@@ -15,7 +15,7 @@ const DnShortcutComponent = ({ dn, options, state }) => {
     const onPropertyPanelDnClick = (event) => {
         const dn = $(event.currentTarget).attr('dn');
         state.set('selected_dn', dn);
-        popupClose();
+        hidePopup ? hidePopup() : popupClose()
     }
 
     return (
