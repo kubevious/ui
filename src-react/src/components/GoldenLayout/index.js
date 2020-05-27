@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { Component, PureComponent } from 'react'
 import ReactDOM from 'react-dom'
 import $ from 'jquery'
 import _ from 'lodash'
@@ -23,67 +23,64 @@ class GoldenLayoutComponent extends PureComponent {
     }
 
     componentDidMount() {
-        setTimeout(() => {
-            this._register({
-                name: 'Universe',
-                component: Diagram,
-                location: 'main',
-                title: 'Universe',
-                skipClose: true
-            })
-            this._register({
-                name: 'Rule Editor',
-                component: RuleEditor,
-                location: 'main',
-                title: 'Rule Editor',
-            })
-            this._register({
-                name: 'Properties',
-                component: Properties,
-                location: 'right',
-                title: 'Properties',
-                width: 25,
-                allowVerticalScroll: true
-            })
-            this._register({
-                name: 'Alerts',
-                component: Alerts,
-                location: 'bottom',
-                title: 'Alerts',
-                allowVerticalScroll: true
-            })
-            this._register({
-                name: 'Events',
-                component: Events,
-                location: 'bottom',
-                title: 'Events',
-                allowVerticalScroll: true
-            })
-            this._register({
-                name: 'Logs',
-                component: Logs,
-                location: 'bottom',
-                title: 'Logs',
-                allowVerticalScroll: true
-            })
-            this._register({
-                name: 'UI Logs',
-                component: UiLogs,
-                location: 'bottom',
-                title: 'UI Logs',
-                allowVerticalScroll: true
-            })
-            this._register({
-                name: 'Timeline',
-                component: Timeline,
-                location: 'bottom',
-                title: 'Timeline',
-                allowVerticalScroll: true
-            })
+        this._register({
+            name: 'Universe',
+            component: Diagram,
+            location: 'main',
+            title: 'Universe',
+            skipClose: true
+        })
+        this._register({
+            name: 'Rule Editor',
+            component: RuleEditor,
+            location: 'main',
+            title: 'Rule Editor'
+        })
+        this._register({
+            name: 'Properties',
+            component: Properties,
+            location: 'right',
+            title: 'Properties',
+            width: 25,
+            allowVerticalScroll: true
+        })
+        this._register({
+            name: 'Alerts',
+            component: Alerts,
+            location: 'bottom',
+            title: 'Alerts',
+            allowVerticalScroll: true
+        })
+        this._register({
+            name: 'Events',
+            component: Events,
+            location: 'bottom',
+            title: 'Events',
+            allowVerticalScroll: true
+        })
+        this._register({
+            name: 'Logs',
+            component: Logs,
+            location: 'bottom',
+            title: 'Logs',
+            allowVerticalScroll: true
+        })
+        this._register({
+            name: 'UI Logs',
+            component: UiLogs,
+            location: 'bottom',
+            title: 'UI Logs',
+            allowVerticalScroll: true
+        })
+        this._register({
+            name: 'Timeline',
+            component: Timeline,
+            location: 'bottom',
+            title: 'Timeline',
+            allowVerticalScroll: true
+        })
 
-            this._activateLayout()
-
-        }, 0)
+        this._activateLayout()
     }
 
     _activateLayout() {

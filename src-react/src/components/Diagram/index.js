@@ -40,7 +40,6 @@ class Diagram extends Component {
     }
 
     massageSourceData(data) {
-        console.log('data', data)
         this.massageSourceDataNode(data, null)
     }
 
@@ -102,11 +101,9 @@ class Diagram extends Component {
         diagramScope.view.updateAll(true)
     }
 
-    _selectDn(dn) {
-        throw new Error('zzz');
-        this.props.state.set('selected_dn', dn);
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        return nextProps !== this.props;
     }
-
 
     render() {
         return (

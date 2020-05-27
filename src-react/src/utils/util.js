@@ -9,3 +9,7 @@ export const isEmptyObject = (obj) => {
 export const isEmptyArray = (arr) => {
     return !arr || arr.length === 0;
 }
+
+export const getRandomInt = () => {
+    return Math.floor(Math.random(1) * Math.floor(1048576));
+}
