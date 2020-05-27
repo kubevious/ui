@@ -1,10 +1,15 @@
 import KubeviousService from './MockKubeviousService'
 
 class MockRootApiService {
+    constructor(state)
+    {
+
+    }
+
     kubevious(id) {
         return new KubeviousService(id)
     }
 }
 
-export default new MockRootApiService()
+export default MockRootApiService
 

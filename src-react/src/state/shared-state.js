@@ -94,25 +94,29 @@ class SharedState
     {
         var diff = {};
 
-        for(var name of _.keys(this._values))
         {
-            var value = this._values[name];
-            var lastValue = this._lastValues[name];
-
-            if (!_.fastDeepEqual(value, lastValue))
+            for(var name of _.keys(this._values))
             {
-                diff[name] = true;
+                var value = this._values[name];
+                var lastValue = this._lastValues[name];
+
+                if (!_.fastDeepEqual(value, lastValue))
+                {
+                    diff[name] = true;
+                }
             }
         }
 
-        for(var name of _.keys(this._lastValues))
         {
-            var value = this._values[name];
-            if (_.isNullOrUndefined(value)) {
-                diff[name] = true;
+            for(var name of _.keys(this._lastValues))
+            {
+                var value = this._values[name];
+                if (_.isNullOrUndefined(value)) {
+                    diff[name] = true;
+                }
             }
         }
-
+        
         var subscriberIDs = {};
         for(var name of _.keys(diff))
         {

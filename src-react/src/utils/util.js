@@ -7,5 +7,5 @@ export const isEmptyObject = (obj) => {
 }
 
 export const isEmptyArray = (arr) => {
-    return arr.length === 0;
+    return !arr || arr.length === 0;
 }

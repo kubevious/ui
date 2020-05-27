@@ -10,8 +10,11 @@ import StateHandler from '../../state/state-handler'
 import MockRootApiService from '../../services-mock/MockRootApiService'
 
 const Root = () => {
-    const service = process.env.REACT_APP_MOCKED_DATA ? MockRootApiService.kubevious() : RootApiService.kubevious()
     const state = new SharedState()
+
+    const rootService = process.env.REACT_APP_MOCKED_DATA ? new MockRootApiService(state) : new RootApiService(state);
+    const service = rootService.kubevious();
+
     const stateHandler = new StateHandler(state, service);
 
     return (

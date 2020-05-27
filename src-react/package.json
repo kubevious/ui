@@ -27,7 +27,8 @@
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
     "the-lodash": "^1.1.1",
-    "webpack-jquery-ui": "^2.0.1"
+    "webpack-jquery-ui": "^2.0.1",
+    "websocket-subscription-client": "^1.0.6"
   },
   "proxy": "http://localhost:4000",
   "scripts": {

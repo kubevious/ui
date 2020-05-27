@@ -48,14 +48,22 @@ class RuleEditor extends Component {
         this.createRule = this.createRule.bind(this)
     }
 
+    get sharedState() {
+        return this.props.state;
+    }
+
     componentDidMount() {
-        this.refresh()
+        // this.refresh()
+
+        this.sharedState.subscribe('rule_editor_items', (value) => {
+            this.setState({ rules: value })
+        })
     }
 
     refresh() {
-        this.service.backendFetchRuleList((response) => {
-            this.setState({ rules: response })
-        })
+        // this.service.backendFetchRuleList((response) => {
+        //     this.setState({ rules: response })
+        // })
     }
 
     selectTab(tab) {
@@ -63,6 +71,12 @@ class RuleEditor extends Component {
     }
 
     selectRule(rule) {
+        if (rule) {
+            this.sharedState.set('rule_editor_rule_id', rule.id);
+        } else {
+            this.sharedState.set('rule_editor_rule_id', null);
+        }
+
         this.service.backendFetchRule(rule.id, data => {
             this.setState({
                 selectedRule: { ...data.rule },
