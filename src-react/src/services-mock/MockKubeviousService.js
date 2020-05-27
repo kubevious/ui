@@ -10,8 +10,11 @@ import {
 import MockRuleService from './MockRuleService'
 
 class MockKubeviousService {
-    constructor(clusterId) {
+    constructor(clusterId, state) {
         this.clusterId = clusterId
+        this._state = state;
+
+        this._ruleService = new MockRuleService(state);
     }
 
     fetchDiagram(cb) {
@@ -50,7 +53,7 @@ class MockKubeviousService {
     }
 
     rules() {
-        return new MockRuleService()
+        return this._ruleService;
     }
 }
 

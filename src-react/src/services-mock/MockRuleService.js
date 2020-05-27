@@ -25,6 +25,20 @@ let MOCK_RULE_LIST = [
 ];
 
 class MockRuleService {
+
+    constructor(state)
+    {
+        this._state = state;
+        this._notifyRules();
+    }
+
+    _notifyRules()
+    {
+        this.backendFetchRuleList((result) => {
+            this._state.set('rule_editor_items', result);
+        })
+    }
+
     backendFetchRuleList(cb) {
         var res = MOCK_RULE_LIST.map(x => ({ id: x.id, name: x.name, enabled: x.enabled, error_count: x.id % 3 }));
         cb(res);
@@ -118,11 +132,13 @@ class MockRuleService {
         rule.id = _.max(MOCK_RULE_LIST.map(x => x.id)) + 1;
         MOCK_RULE_LIST.push(rule);
         cb(rule);
+        this._notifyRules();
     }
 
     backendDeleteRule(id, cb) {
         MOCK_RULE_LIST = MOCK_RULE_LIST.filter(x => x.id !== id);
         cb();
+        this._notifyRules();
     }
 
     backendUpdateRule(id, config, cb) {
@@ -134,6 +150,7 @@ class MockRuleService {
             rule.script = config.script;
         }
         cb(rule);
+        this._notifyRules();
     }
 
     backendExportRules(cb) {
