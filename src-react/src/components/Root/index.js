@@ -20,7 +20,7 @@ const Root = () => {
     const rootService = process.env.REACT_APP_MOCKED_DATA ? new MockRootApiService(state) : new RootApiService(state);
     const service = rootService.kubevious();
 
-    const stateHandler = new StateHandler(state, service);
+    const stateHandler = new StateHandler(state, rootService);
 
     const openAbout = () => {
         service.fetchAbout((result) => {

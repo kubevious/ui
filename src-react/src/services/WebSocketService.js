@@ -31,15 +31,17 @@ class WebSocketService
                 JSON.stringify(target)
             );
 
+            this._state.set('rule_editor_selected_rule_status', value);
+
         });
 
-        this._state.subscribe('rule_editor_rule_id',
-            (rule_editor_rule_id) => {
+        this._state.subscribe('rule_editor_selected_rule_id',
+            (rule_editor_selected_rule_id) => {
 
                 selectedRuleScope.replace([
                     { 
-                        kind: 'rule',
-                        id: rule_editor_rule_id
+                        kind: 'rule-status',
+                        id: rule_editor_selected_rule_id
                     }
                 ]);
 

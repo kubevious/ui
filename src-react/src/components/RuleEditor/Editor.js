@@ -6,15 +6,13 @@ import DnShortcutComponent from '../DnShortcutComponent'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
 
-const Editor = ({ rules, selectedRule, selectedRuleData, createNewRule, saveRule, deleteRule, createRule, openSummary, state, isSuccess }) => {
+const Editor = ({ rules, isNewRule, selectedRule, selectedRuleData, createNewRule, saveRule, deleteRule, createRule, openSummary, state, isSuccess }) => {
     const [selectedTab, setSelectedTab] = useState('rule')
     const [rule, setRule] = useState({ name: '' })
 
     useEffect(() => {
         setRule({ ...selectedRule })
     }, [selectedRule, selectedRuleData])
-
-    const isNewRule = useMemo(() => Object.values(rule).every(item => item == ''), [selectedRule])
 
     const setErrorEditor = (field) => {
         return selectedRuleData.logs.find(item => item.msg.source.includes(field)) &&
