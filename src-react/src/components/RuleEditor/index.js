@@ -154,7 +154,7 @@ class RuleEditor extends PureComponent {
         return (
             <div className="RuleEditor-container">
                 <RulesList rules={this.state.rules} selectRule={this.selectRule} createNewRule={this.createNewRule}
-                           setVisibleOptions={this.setVisibleOptions} service={this.service}/>
+                           setVisibleOptions={this.setVisibleOptions} service={this.service} selectedRule={this.state.selectedRule}/>
 
                 <Editor rules={this.state.rules} selectedRule={this.state.selectedRule}
                         selectedRuleData={this.state.selectedRuleData} createNewRule={this.createNewRule}

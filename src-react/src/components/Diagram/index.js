@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import VisualView from './visual-view'
 import * as d3 from 'd3'
+import $ from 'jquery'
 
 import './styles.css'
 import '../Popup/styles.css'
@@ -26,6 +27,12 @@ class Diagram extends Component {
 
     componentDidMount() {
         this.setupView()
+
+        $('.lm_content').each(function () {
+            if ($(this).children().hasClass('diagram')) {
+                $(this).css('overflow', 'hidden')
+            }
+        })
     }
 
     selectDiagramItem(dn) {
@@ -107,7 +114,7 @@ class Diagram extends Component {
 
     render() {
         return (
-            <div id="diagram"/>
+            <div id="diagram" className="diagram"/>
         )
     }
 

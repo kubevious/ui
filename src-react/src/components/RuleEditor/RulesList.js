@@ -4,7 +4,8 @@ import { faDownload, faUndo } from '@fortawesome/free-solid-svg-icons'
 import { isEmptyArray } from '../../utils/util'
 import cx from 'classnames'
 
-const RulesList = ({ rules, selectRule, createNewRule, setVisibleOptions, service }) => {
+const RulesList = ({ rules, selectedRule, selectRule, createNewRule, setVisibleOptions, service }) => {
+    console.log('---', selectedRule)
 
     const exportRules = () => {
         service.backendExportRules(response => {
@@ -37,7 +38,9 @@ const RulesList = ({ rules, selectRule, createNewRule, setVisibleOptions, servic
 
             <div className="rules">
                 {!isEmptyArray(rules) && rules.map(rule => (
-                    <button key={rule.id} className="rule-item-button" onClick={() => selectRule(rule)}>
+                    <button key={rule.id}
+                            className={cx('rule-item-button', { 'selected': rule.id === selectedRule.id })}
+                            onClick={() => selectRule(rule)}>
                         {rule.name}
                         <div
                             className={cx('indicator', { 'enabled': rule.enabled }, { 'disabled': !rule.enabled })}/>

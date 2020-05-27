@@ -83,6 +83,10 @@
   padding: 10px 15px;
   border-bottom: 1px solid #4E515B;
   text-align: left;
+
+  &:focus {
+    outline: none;
+  }
 }
 
 .rule-item-button.selected {
@@ -231,7 +235,7 @@ input[type="file"] {
   width: 200px;
   position: absolute;
   top: 10px;
-  left: 10px;
+  left: 235px;
   background: #557C9B;
   border-radius: 3px;
   color: white;
