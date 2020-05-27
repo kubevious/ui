@@ -21,6 +21,7 @@ const Root = () => {
         <div className="wrapper">
             <div className="header">
                 <div className="logo"/>
+                <div id="history-info" className="history-info"/>
                 <div className="actions">
                     <a href="https://github.com/kubevious/kubevious/issues/new/choose" target="_blank"
                        className="btn btn-bug">

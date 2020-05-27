@@ -10,6 +10,9 @@ import Properties from '../Properties'
 import Alerts from '../Alerts'
 import Timeline from '../Timeline'
 import RuleEditor from '../RuleEditor'
+import Logs from '../Logs'
+import UiLogs from '../UiLogs'
+import Events from '../Events'
 
 import './styles.scss'
 
@@ -51,21 +54,21 @@ class GoldenLayoutComponent extends PureComponent {
             })
             this._register({
                 name: 'Events',
-                component: Timeline,
+                component: Events,
                 location: 'bottom',
                 title: 'Events',
                 allowVerticalScroll: true
             })
             this._register({
                 name: 'Logs',
-                component: Timeline,
+                component: Logs,
                 location: 'bottom',
                 title: 'Logs',
                 allowVerticalScroll: true
             })
             this._register({
                 name: 'UI Logs',
-                component: Timeline,
+                component: UiLogs,
                 location: 'bottom',
                 title: 'UI Logs',
                 allowVerticalScroll: true

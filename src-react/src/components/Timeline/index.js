@@ -293,7 +293,7 @@ class Timeline extends Component {
         if (selectorPositionX > this._width) {
             selectorPositionX = this._width;
         }
-        this._selectorElem.attr('transform', 'translate(' + selectorPositionX + ')'); 
+        this._selectorElem.attr('transform', 'translate(' + selectorPositionX + ')');
     }
 
     _renderChart(chartObj, chartClass) {
@@ -364,7 +364,7 @@ class Timeline extends Component {
                 if (time_machine_enabled && time_machine_target_date) {
                     html = '<span>Time Machine Active: ' + formatDate(time_machine_target_date) + '</span>';
                 }
-                $('.header-timeline').html(html);
+                $('.history-info').html(html);
             });
 
         this._state.subscribe(['time_machine_enabled', 'time_machine_target_date'],
@@ -380,19 +380,19 @@ class Timeline extends Component {
         this._state.subscribe('time_machine_target_date',
             ( time_machine_target_date ) => {
                 this._cancelPendingTimeouts();
-                                
+
                 if (!time_machine_target_date) {
                     this._state.set('time_machine_date', null);
                 } else {
-        
+
                     this._dateChangeTimerId = setTimeout(() => {
                         this._cancelPendingTimeouts();
-        
+
                         this._state.set('time_machine_date', time_machine_target_date);
-        
+
                     }, 250);
-        
-                    
+
+
                 }
             });
 

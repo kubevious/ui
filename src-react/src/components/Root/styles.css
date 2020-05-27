@@ -19,6 +19,31 @@
     float: left;
 }
 
+.history-info span {
+    display: inline-block;
+}
+
+.history-info span:before {
+    content: "";
+    float: left;
+    width: 24px;
+    height: 24px;
+    background: url('/img/alerts/warn.svg') left top;
+    margin: -3px 10px 0 0;
+}
+
+.header .history-info {
+    text-align: center;
+    margin: auto auto auto auto;
+    display: block;
+    padding-top: 22px;
+    padding-left: 250px;
+    padding-right: 250px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    color: white;
+}
+
 .header .actions {
     position: absolute;
     top: 18px;
