@@ -1,29 +1,32 @@
 import React, { Component } from 'react'
-import { renderToString } from 'react-dom/server'
-import $ from 'jquery'
 import AlertTable from './AlertTable'
 
 import './styles.css'
+import { isEmptyArray } from '../../utils/util'
 
 class Alerts extends Component {
     constructor(props) {
         super(props)
 
-        props.state.subscribe("selected_object_alerts", 
-            selected_object_assets => {
-
-            this._renderAlertsTable(selected_object_assets)
-        })
+        this.state = {
+            alerts: []
+        }
     }
 
-    _renderAlertsTable(alerts = []) {
-        var html = renderToString(<AlertTable alerts={alerts}/>)
-        $('#alerts').html(html)
+    componentDidMount() {
+        this.props.state.subscribe('selected_object_alerts',
+            selected_object_assets => {
+                this.setState({ alerts: selected_object_assets })
+            })
     }
 
     render() {
+        const { alerts } = this.state
+
         return (
-            <div id="alerts"/>
+            <div id="alerts">
+                {!isEmptyArray(alerts) && <AlertTable alerts={alerts}/>}
+            </div>
         )
     }
 }
