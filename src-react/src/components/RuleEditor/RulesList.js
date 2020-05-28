@@ -16,6 +16,22 @@ const RulesList = ({ rules, selectedRule, selectRule, createNewRule, setVisibleO
         })
     }
 
+    function ruleIndicatorClass(x)
+    {
+        var indicatorClass = '';
+        if (!x.enabled) {
+            indicatorClass = 'disabled';
+        }
+        else if (x.error_count)
+        {
+            indicatorClass = 'invalid';
+        } else {
+            indicatorClass = 'enabled';
+        }
+        return indicatorClass;
+    }
+
+
     return (
         <div id="rule-list">
             <div className="rule-header">
@@ -41,8 +57,11 @@ const RulesList = ({ rules, selectedRule, selectRule, createNewRule, setVisibleO
                             className={cx('rule-item-button', { 'selected': rule.id === selectedRule.id })}
                             onClick={() => selectRule(rule)}>
                         {rule.name}
+                        {!rule.isCurrent && 
+                            <div class="busy-rule-indicator"></div>
+                        }
                         <div
-                            className={cx('indicator', { 'enabled': rule.enabled }, { 'disabled': !rule.enabled })}/>
+                            className={cx('indicator', ruleIndicatorClass(rule))}/>
                     </button>
                 ))}
             </div>

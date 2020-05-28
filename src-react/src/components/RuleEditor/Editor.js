@@ -78,6 +78,9 @@ const Editor = ({ rules, isNewRule, selectedRule, selectedRuleData, createNewRul
             <>
                 {!isSuccess && <>
                     <div className="editor-title">
+                        {!isNewRule && !selectedRule.isCurrent && 
+                            <div class="busy-rule-indicator"></div>
+                        }
                         {isNewRule && <div className='editor-title'>Create new rule</div>}
                         {!isNewRule && <>
                             <div className={cx('tab rule-tab', { 'selected': selectedTab === 'rule' })}
