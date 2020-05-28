@@ -1,18 +1,25 @@
 import React from 'react'
 import _ from 'lodash'
 import $ from 'jquery'
-import { KIND_TO_USER_MAPPING } from './constants'
-import hljs from 'highlight.js'
+import DocUtils from 'kubevious-helpers/lib/docs'
 import moment from 'moment'
 import Popup from '../components/Popup'
 import { renderToString } from 'react-dom/server'
 
 export const prettyKind = (kind) => {
-    var prettyKind = KIND_TO_USER_MAPPING[kind]
-    if (!prettyKind) {
-        prettyKind = _.upperFirst(kind)
+    var value = DocUtils.prettyKind(kind);
+    if (!value) {
+        value = _.upperFirst(kind);
     }
-    return prettyKind
+    return value;
+}
+
+export const flagTooltip = (name) => {
+    var value = DocUtils.FLAG_TOOLTIPS[name];
+    if (!value) {
+        value = null;
+    }
+    return value;
 }
 
 export function generateDnPathHtml(dnParts, includeLogo) {

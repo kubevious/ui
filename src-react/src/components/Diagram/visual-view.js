@@ -2,9 +2,9 @@ import * as d3 from 'd3'
 import $ from 'jquery'
 import _ from 'lodash'
 import VisualNode from './visual-node'
-import { FLAG_TOOLTIPS } from '../../utils/constants'
 import 'bootstrap/js/dist/tooltip'
 import { parseDn } from '../../utils/naming-utils'
+import { flagTooltip } from '../../utils/ui-utils'
 
 class VisualView {
 
@@ -508,7 +508,7 @@ class VisualView {
     }
 
     _showFlagTooltip(elem, name) {
-        var descr = FLAG_TOOLTIPS[name]
+        var descr = flagTooltip(name);
         if (!descr) {
             return
         }

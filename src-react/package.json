@@ -18,6 +18,7 @@
     "highlight.js": "^10.0.3",
     "jquery": "^3.5.1",
     "js-yaml": "^3.14.0",
+    "kubevious-helpers": "git+https://github.com/kubevious/helpers.git",
     "lodash": "^4.17.15",
     "moment": "^2.26.0",
     "node-sass": "^4.14.1",

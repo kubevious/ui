@@ -14,4 +14,4 @@ cd src-react
 cd src
 rm -rf node_modules/
 npm install
-npm update websocket-subscription-client
+npm update websocket-subscription-client kubevious-helpers

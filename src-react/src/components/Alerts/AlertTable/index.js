@@ -16,7 +16,7 @@ const AlertTable = ({ alerts }) => {
                 {!isEmptyArray(alerts) && alerts.map(alert => (
                     <tr key={alert.id}>
                         <td>
-                            <div className="alert-item warn" />
+                            <div className={"alert-item " + alert.severity} />
                         </td>
                         <td>{formatDate(alert.date)}</td>
                         <td>{alert.msg}</td>

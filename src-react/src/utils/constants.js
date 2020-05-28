@@ -16,26 +16,3 @@ export const MONTSERRAT_14PX_500 = {
     'startCode': 32,
     'widths': [3.77, 3.76, 5.48, 9.84, 8.7, 11.8, 9.6, 2.95, 4.72, 4.74, 5.6, 8.16, 3.19, 5.36, 3.19, 4.94, 9.34, 5.19, 8.04, 8.01, 9.38, 8.04, 8.65, 8.38, 9.02, 8.65, 3.19, 3.19, 8.16, 8.16, 8.16, 8.03, 14.48, 10.25, 10.6, 10.13, 11.57, 9.39, 8.9, 10.81, 11.38, 4.34, 7.19, 10.07, 8.32, 13.38, 11.38, 11.76, 10.11, 11.76, 10.19, 8.7, 8.22, 11.08, 9.97, 15.77, 9.43, 9.06, 9.21, 4.67, 4.94, 4.67, 8.17, 7, 8.41, 8.38, 9.55, 8, 9.55, 8.57, 4.95, 9.67, 9.54, 3.91, 3.98, 8.63, 3.91, 14.8, 9.54, 8.9, 9.55, 9.55, 5.75, 7.02, 5.8, 9.48, 7.83, 12.59, 7.73, 7.83, 7.3, 4.92, 4.19, 4.92, 8.16]
 }
-
-export const FLAG_TOOLTIPS = {
-    'radioactive': '<strong>Radiactive</strong>. This object, or its descendents are using excessive permissions like priviledged containers, host network, etc. See <strong>"Radiactivity"</strong> properties on affected <strong>Containers</strong> and <strong>Launchers</strong>.',
-    'xnamespace': '<strong>Spy</strong>. This object, or its descendents have access to Kubernetes APIs beyond the namespace. See <strong>"Resource Role Matrix"</strong> properties on affected <strong>Service Accounts</strong> and <strong>Role Bindings</strong>.',
-    'shared': '<strong>Shared</strong>. This object is shared and any changes would cascadate to dependents. See <strong>"Shared With"</strong> properties for list of dependents.',
-}
-
-export const KIND_TO_USER_MAPPING = {
-    'ns': 'Namespace',
-    'app': 'Application',
-    'cont': 'Container',
-    'initcont': 'Init Container',
-    'sidecont': 'Sidecar Container',
-    'vol': 'Volume',
-    'configMap': 'Config Map',
-    'replicaSet': 'Replica Set',
-    'hpa': 'Horizontal Pod AutoScaler',
-    'svcaccnt': 'Service Account',
-    'rlbndg': 'Role Binding',
-    'crlbndg': 'Cluster Role Binding',
-    'rl': 'Role',
-    'crl': 'Cluster Role'
-}
