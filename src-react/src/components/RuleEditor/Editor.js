@@ -3,8 +3,6 @@ import { isEmptyArray, isEmptyObject } from '../../utils/util'
 import { UnControlled as CodeMirror } from 'react-codemirror2'
 import cx from 'classnames'
 import DnShortcutComponent from '../DnShortcutComponent'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck } from '@fortawesome/free-solid-svg-icons'
 
 const Editor = ({ rules, isNewRule, selectedRule, selectedRuleData, createNewRule, saveRule, deleteRule, createRule, openSummary, state, isSuccess }) => {
     const [selectedTab, setSelectedTab] = useState('rule')
@@ -64,44 +62,31 @@ const Editor = ({ rules, isNewRule, selectedRule, selectedRuleData, createNewRul
         )
     }
 
-    const renderSuccessPage = () => {
-        return (
-            <div className="success-page">
-                <FontAwesomeIcon icon={faCheck} className="check-icon"/>
-                Rule successfully saved
-            </div>
-        )
-    }
-
     const renderEditor = () => {
         return (
             <>
-                {!isSuccess && <>
-                    <div className="editor-title">
-                        {!isNewRule && selectedRuleData && !selectedRuleData.status.isCurrent && 
-                            <div class="busy-rule-indicator"></div>
-                        }
-                        {isNewRule && <div className='editor-title'>Create new rule</div>}
-                        {!isNewRule && <>
-                            <div className={cx('tab rule-tab', { 'selected': selectedTab === 'rule' })}
-                                 onClick={() => setSelectedTab('rule')}>Editor rule
-                            </div>
-                            <div
-                                className={cx('tab object-tab', { 'selected': selectedTab === 'object' })}
-                                onClick={() => setSelectedTab('object')}
-                            >
-                                Affected object ({selectedRuleData.items.length})
-                            </div>
-                        </>}
+                <div className="editor-title">
+                    {!isNewRule && selectedRuleData && !selectedRuleData.status.isCurrent &&
+                    <div className="busy-rule-indicator"/>
+                    }
+                    {isNewRule && <div className='editor-title'>Create new rule</div>}
+                    {!isNewRule && <>
+                        <div className={cx('tab rule-tab', { 'selected': selectedTab === 'rule' })}
+                             onClick={() => setSelectedTab('rule')}>Editor rule
+                        </div>
+                        <div
+                            className={cx('tab object-tab', { 'selected': selectedTab === 'object' })}
+                            onClick={() => setSelectedTab('object')}
+                        >
+                            Affected object ({selectedRuleData.items.length})
+                        </div>
+                    </>}
 
-                    </div>
+                </div>
 
-                    {selectedTab === 'rule' && renderRuleEditor()}
+                {selectedTab === 'rule' && renderRuleEditor()}
 
-                    {selectedTab === 'object' && !isEmptyArray(selectedRuleData.items) && renderAffectedObjects()}
-                </>}
-
-                {isSuccess && renderSuccessPage()}
+                {selectedTab === 'object' && !isEmptyArray(selectedRuleData.items) && renderAffectedObjects()}
             </>
         )
     }
@@ -178,10 +163,13 @@ const Editor = ({ rules, isNewRule, selectedRule, selectedRuleData, createNewRul
                     {selectedRule.id && <>
                         <button className="button" onClick={() => deleteRule(rule)}>Delete</button>
                         <button className="button" onClick={() => openSummary()}>Cancel</button>
-                        <button className="button success" onClick={() => saveRule(rule)}>Save</button>
+                        <button className="button success" onClick={() => saveRule(rule)} disabled={validation}>Save
+                        </button>
+                        {isSuccess && <span>Saved!</span>}
                     </>}
-                    {!selectedRule.id &&
-                    <button className="button success" onClick={() => createRule(rule)}>Create</button>}
+
+                    {!selectedRule.id && <button className="button success" onClick={() => createRule(rule)}
+                                                 disabled={validation}>Create</button>}
 
                 </div>
             </>

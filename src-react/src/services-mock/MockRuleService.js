@@ -219,7 +219,7 @@ class MockRuleService {
     }
 
     backendCreateRule(rule, cb) {
-        rule = _.clone(rule);
+        rule = _.clone({ ...rule, items: [], logs: [] });
         rule.id = _.max(_.values(MOCK_RULES).map(x => x.id)) + 1;
         MOCK_RULES[rule.id] = rule;
         cb(rule);

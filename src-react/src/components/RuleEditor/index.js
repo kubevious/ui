@@ -50,8 +50,8 @@ class RuleEditor extends PureComponent {
 
     componentDidMount() {
         this.sharedState.subscribe('rule_editor_items', (value) => {
-            this.setState({ 
-                rules: value 
+            this.setState({
+                rules: value
             });
         });
 
@@ -66,16 +66,15 @@ class RuleEditor extends PureComponent {
     }
 
     selectRule(rule) {
-        this.setState({ 
+        this.setState({
             isNewRule: false,
             isSuccess: false,
             selectedRuleId: rule.id
         })
 
         this.service.backendFetchRule(rule.id, data => {
-            if (data.id == this.state.selectedRuleId)
-            {
-                this.setState({ 
+            if (data.id == this.state.selectedRuleId) {
+                this.setState({
                     selectedRule: data
                 })
             }
@@ -87,8 +86,11 @@ class RuleEditor extends PureComponent {
 
     saveRule(data) {
         this.service.backendUpdateRule(data.id, data, () => {
-            this.setState({ isSuccess: true, selectedRuleId: null })
-            this.sharedState.set('rule_editor_selected_rule_id', null);
+            this.setState({ isSuccess: true })
+
+            setTimeout(() => {
+                this.setState({ isSuccess: false })
+            }, 2000)
         })
     }
 
@@ -105,9 +107,9 @@ class RuleEditor extends PureComponent {
     }
 
     createRule(data) {
-        this.service.backendCreateRule(data, () => {
+        this.service.backendCreateRule(data, (rule) => {
             this.setState({ isSuccess: true })
-            this.sharedState.set('rule_editor_selected_rule_id', null);
+            this.selectRule(rule)
         })
     }
 
@@ -162,15 +164,15 @@ class RuleEditor extends PureComponent {
 
         return (
             <div className="RuleEditor-container">
-                <RulesList 
+                <RulesList
                     rules={this.state.rules}
                     selectedRuleId={this.state.selectedRuleId}
                     selectRule={this.selectRule}
                     createNewRule={this.createNewRule}
                     setVisibleOptions={this.setVisibleOptions}
-                    service={this.service} />
+                    service={this.service}/>
 
-                <Editor rules={this.state.rules} 
+                <Editor rules={this.state.rules}
                         isNewRule={this.state.isNewRule}
                         selectedRule={this.state.selectedRule}
                         selectedRuleData={this.state.selectedRuleData}

@@ -16,19 +16,16 @@ const RulesList = ({ rules, selectedRuleId, selectedRule, selectRule, createNewR
         })
     }
 
-    function ruleIndicatorClass(x)
-    {
-        var indicatorClass = '';
+    const ruleIndicatorClass = (x) => {
+        let indicatorClass
         if (!x.enabled) {
-            indicatorClass = 'disabled';
-        }
-        else if (x.error_count)
-        {
-            indicatorClass = 'invalid';
+            indicatorClass = 'disabled'
+        } else if (x.error_count) {
+            indicatorClass = 'invalid'
         } else {
-            indicatorClass = 'enabled';
+            indicatorClass = 'enabled'
         }
-        return indicatorClass;
+        return indicatorClass
     }
 
 
@@ -57,8 +54,8 @@ const RulesList = ({ rules, selectedRuleId, selectedRule, selectRule, createNewR
                             className={cx('rule-item-button', { 'selected': rule.id === selectedRuleId })}
                             onClick={() => selectRule(rule)}>
                         {rule.name}
-                        {!rule.isCurrent && 
-                            <div class="busy-rule-indicator"></div>
+                        {!rule.isCurrent &&
+                        <div className="busy-rule-indicator"/>
                         }
                         <div
                             className={cx('indicator', ruleIndicatorClass(rule))}/>
