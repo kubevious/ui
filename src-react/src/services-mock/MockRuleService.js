@@ -88,6 +88,8 @@ const MOCK_RULE_EDITOR_ITEMS = [
 MOCK_RULES = _.makeDict(MOCK_RULES, x => x.id);
 for(var x of _.values(MOCK_RULES))
 {
+    x.items = [];
+    x.logs = [];
     x.isCurrent = (x.id % 2 == 0);
 }
 
@@ -102,8 +104,38 @@ class MockRuleService {
             for(var x of _.values(MOCK_RULES))
             {
                 x.isCurrent = true;
+                x.items = [];
+                x.logs = [];
             }
+
+            for(var rule of _.values(MOCK_RULES))
+            {
+                if (rule.enabled)
+                {
+                    var hasError = (Math.random() * 100 > 60);
+                    if (hasError)
+                    {
+                        rule.logs = [];
+                        for (var i = 0; i < rule.id % 3; i++) {
+                            rule.logs.push({
+                                kind: 'error',
+                                msg: {
+                                    source: (i % 2 === 0) ? ['target'] : ['script'],
+                                    msg: 'This is error number ' + i
+                                }
+                            });
+                        }
+                    }
+                    else
+                    {
+                        var count = Math.floor(Math.random() * _.values(MOCK_RULE_EDITOR_ITEMS).length);
+                        rule.items = _.take(MOCK_RULE_EDITOR_ITEMS, count);
+                    }
+                }
+            }
+
             this._notifyRules();
+            
         }, 5000);
 
         this._state.subscribe('rule_editor_selected_rule_id',
@@ -133,21 +165,12 @@ class MockRuleService {
                 id: id,
                 status: {
                     isCurrent: rule.isCurrent,
-                    error_count: rule.error_count,
-                    item_count: rule.item_count
+                    error_count: rule.logs.length,
+                    item_count: rule.items.length
                 }
             }
-            data.items = _.take(MOCK_RULE_EDITOR_ITEMS, id % 5);
-            data.logs = [];
-            for (var i = 0; i < id % 3; i++) {
-                data.logs.push({
-                    kind: 'error',
-                    msg: {
-                        source: (i % 2 === 0) ? ['target'] : ['script'],
-                        msg: 'This is error number ' + i
-                    }
-                });
-            }
+            data.items = rule.items; 
+            data.logs = rule.logs;
         }
         this._state.set('rule_editor_selected_rule_status', data);
     }
@@ -161,7 +184,8 @@ class MockRuleService {
             id: x.id,
             name: x.name,
             enabled: x.enabled,
-            error_count: x.id % 3,
+            item_count: x.items.length,
+            error_count: x.logs.length,
             isCurrent : x.isCurrent
         }
     }
