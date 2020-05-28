@@ -200,3 +200,51 @@ pre {
 .mobile-wrapper {
     display: none;
 }
+
+
+/*** SCROLL ***/
+
+.scrollbar {
+    width: 100%;
+    border: 0 solid #35373E;
+    overflow-y: scroll;
+    max-height: 300px;
+}
+
+.expander {
+    padding: 10px 10px 7px;
+    transition: none;
+}
+
+.expander.active {
+    padding: 10px 10px 9px;
+    transition: none;
+}
+
+.scrollbar.dark::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #666;
+}
+
+.scrollbar.dark::-webkit-scrollbar {
+    width: 6px;
+    background-color: #F5F5F5;
+}
+
+.scrollbar.dark::-webkit-scrollbar-thumb {
+    background-color: #333;
+}
+
+.expander-open::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #666;
+}
+
+.expander-open::-webkit-scrollbar {
+    height: 6px;
+    background-color: #F5F5F5;
+}
+
+.expander-open::-webkit-scrollbar-thumb {
+    background-color: #333;
+}
