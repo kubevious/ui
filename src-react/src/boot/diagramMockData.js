@@ -19650,25 +19650,34 @@ export const ALERTS_DATA = [
 
 export const SEARCH_DATA = [
     {
-        dn: 'root/ns-berlioz/app-gprod-berlioz-main-ctlr'
+        dn: "root/ns-[kubevious]/app-[kubevious-ui]/cont-[kubevious-ui]/configmap-[kubevious-mysql-client]",
     },
     {
-        dn: 'root/ns-kubevious/app-kubevious/cont-kubevious/port-http (TCP-4000)'
+        dn: "root/ns-[kube-system]/app-[calico-node]/launcher-[Deployment]",
     },
     {
-        dn: 'root/ns-kube-system/app-heapster/launcher-Deployment/replicaset-5b66d5bd56/pod-d74sp'
+        dn: "root/ns-[kube-system]/app-[calico-node]/volume-[Volumes]",
     },
     {
-        dn: 'root/ns-kubevious/app-kubevious/ingress-kubevious'
+        dn: 'root/ns-[berlioz]/app-[gprod-berlioz-main-ctlr]'
     },
     {
-        dn: 'root/ns-kube-system/app-kube-dns/cont-dnsmasq/vol-kube-dns-config/configmap-kube-dns'
+        dn: 'root/ns-[kubevious]/app-[kubevious]/cont-[kubevious]/port-[http (TCP-4000)]'
     },
     {
-        dn: 'root/ns-kube-system/app-kube-dns-autoscaler/launcher-Deployment/replicaset-bb58c6784/pod-dpfv7'
+        dn: 'root/ns-[kube-system]/app-[heapster]/launcher-[Deployment]/replicaset-[5b66d5bd56]/pod-[d74sp]'
     },
     {
-        dn: 'root/ns-addr/app-gprod-addr-main-web/cont-gprod-addr-main-web/port-default (TCP-3000)/service-Service'
+        dn: 'root/ns-[kubevious]/app-[kubevious]/ingress-[kubevious]'
+    },
+    {
+        dn: 'root/ns-[kube-system]/app-[kube-dns]/cont-[dnsmasq]/vol-[kube-dns-config]/configmap-[kube-dns]'
+    },
+    {
+        dn: 'root/ns-[kube-system]/app-[kube-dns-autoscaler]/launcher-[Deployment]/replicaset-[bb58c6784]/pod-[dpfv7]'
+    },
+    {
+        dn: 'root/ns-[addr]/app-[gprod-addr-main-web]/cont-[gprod-addr-main-web]/port-[default (TCP-3000)]/service-[Service]'
     },
     {
         dn: 'root/ns-addr/app-gprod-addr-main-web/ingress-gprod-addr-web'
@@ -19689,7 +19698,7 @@ export const SEARCH_DATA = [
         dn: 'root/ns-kube-system/app-heapster/cont-heapster-nanny/vol-heapster-config-volume'
     },
     {
-        dn: 'root/ns-kube-system/app-heapster/cont-prom-to-sd'
+        dn: 'root/ns-[kube-system]/app-[heapster]/cont-[prom-to-sd]'
     }
 ]
 
