@@ -3,7 +3,8 @@ import { isEmptyArray, isEmptyObject } from '../../utils/util'
 import { UnControlled as CodeMirrorEditor } from 'react-codemirror2'
 import cx from 'classnames'
 import Codemirror from 'codemirror'
-import DnShortcutComponent from '../DnShortcutComponent'
+import AffectedObjects from './AffectedObjects'
+import StartPage from './StartPage'
 
 import 'codemirror/addon/hint/javascript-hint'
 import 'codemirror/addon/hint/show-hint';
@@ -60,41 +61,14 @@ const Editor = ({ rules, isNewRule, selectedRule, selectedRuleData, selectedRule
 
     const validation = useMemo(() => Object.values(rule).some(item => item === ''), [rule])
 
-    const renderStartPage = () => {
-        return (
-            <div className="start-rule-container">
-                <div className="start-wrapper">
-                    <div className="start-text">You have no rules defined. Time to create your new rule:</div>
-                    <div className="start-btn-wrapper">
-                        <button className="button success new-rule-btn" onClick={() => createNewRule()}>
-                            <div className="plus">+</div>
-                            New rule
-                        </button>
-                    </div>
-                    <div className="start-text">Learn more about Kubevious rule here</div>
-                </div>
-            </div>
-        )
-    }
-
-    const renderAffectedObjects = () => {
-        return (
-            <>
-                {selectedRuleData.items.map((item, index) => (
-                    <DnShortcutComponent key={index} dn={item.dn} state={state}/>
-                ))}
-            </>
-        )
-    }
-
     const renderEditor = () => {
         return (
             <>
                 <div className="editor-title">
-                    {!isNewRule && selectedRuleData && !selectedRuleData.status.isCurrent &&
-                    <div className="busy-rule-indicator"/>
-                    }
+                    {!isNewRule && selectedRuleData && !selectedRuleData.status.isCurrent && <div className="busy-rule-indicator"/>}
+
                     {isNewRule && <div className='editor-title'>Create new rule</div>}
+
                     {!isNewRule && <>
                         <div className={cx('tab rule-tab', { 'selected': selectedTab === 'rule' })}
                              onClick={() => setSelectedTab('rule')}>Editor rule
@@ -111,7 +85,7 @@ const Editor = ({ rules, isNewRule, selectedRule, selectedRuleData, selectedRule
 
                 {selectedTab === 'rule' && renderRuleEditor()}
 
-                {selectedTab === 'object' && !isEmptyArray(selectedRuleData.items) && renderAffectedObjects()}
+                {selectedTab === 'object' && !isEmptyArray(selectedRuleData.items) && <AffectedObjects selectedRuleData={selectedRuleData} state={state}/>}
             </>
         )
     }
@@ -244,7 +218,7 @@ const Editor = ({ rules, isNewRule, selectedRule, selectedRuleData, selectedRule
     return (
         <div id="rule-editor">
             <div className="rule-container">
-                {isEmptyObject(rules) && isEmptyObject(selectedRule) && renderStartPage()}
+                {isEmptyObject(rules) && isEmptyObject(selectedRule) && <StartPage createNewRule={createNewRule}/>}
                 {!isEmptyObject(selectedRule) && renderEditor()}
                 {!isEmptyObject(rules) && isEmptyObject(selectedRule) &&
                 <div className="no-rule">No selected rule</div>}
