@@ -14,6 +14,9 @@ import Search from '../Search'
 
 const Root = () => {
     const [showSearch, setShowSearch] = useState(false)
+    const [showSettings, setShowSettings] = useState(false)
+    const [layout, setLayout] = useState(null)
+    const [windows, setWindows] = useState([])
 
     const state = new SharedState()
 
@@ -21,6 +24,13 @@ const Root = () => {
     const service = rootService.kubevious();
 
     const stateHandler = new StateHandler(state, rootService);
+
+    const handleLayout = (value) => {
+        setLayout(value)
+        setWindows(value._components
+            .filter(item => !item.skipClose)
+            .map(component => ({ ...component, isVisible: true })))
+    }
 
     const openAbout = () => {
         service.fetchAbout((result) => {
@@ -36,6 +46,40 @@ const Root = () => {
     const openSearch = () => setShowSearch(!showSearch)
 
     const hideSearch = () => setShowSearch(false)
+
+    const handleChangeWindow = (e) => {
+        const windowId = e.target.getAttribute('tool-window-id');
+        const isVisible = e.target.checked;
+
+        setWindows(windows.map(component => component.id === windowId ? {
+            ...component,
+            isVisible: isVisible
+        } : component))
+
+        if (!isVisible) {
+            layout.hideComponent(windowId);
+        } else {
+            layout.showComponent(windowId);
+        }
+    }
+
+    const renderSettings = () => {
+        return (
+            <div id="tool-windows-menu" className="settings-menu" onMouseEnter={() => setShowSettings(true)}
+                 onMouseLeave={() => setShowSettings(false)}>
+                {windows.map(item => (
+                    <span className="s-menu-item" key={item.name}>
+                        <label className="ccheck" id={`toolWindowShowHideLabel${item.name}Component`}>
+                            {item.isVisible ? 'Hide' : 'Show'} {item.name}
+                            <input type="checkbox" tool-window-id={item.id} defaultChecked={true}
+                                   onChange={(e) => handleChangeWindow(e)}/>
+                            <span className="checkmark"/>
+                        </label>
+                    </span>
+                ))}
+            </div>
+        )
+    }
 
     return (
         <div className="wrapper">
@@ -56,14 +100,13 @@ const Root = () => {
                     </a>
                     <button id="btnHeaderAbout" type="button" className="btn btn-about" onClick={openAbout}/>
                     <button id="btnHeaderSearch" type="button" className="btn btn-search" onClick={openSearch}/>
-                    <button className="btn btn-settings">
-                        <span id="tool-windows-menu" className="settings-menu">
-                        </span>
-                    </button>
+                    <button className="btn btn-settings" onMouseEnter={() => setShowSettings(true)}
+                            onMouseLeave={() => setShowSettings(false)}/>
+                    {showSettings && renderSettings()}
                 </div>
             </div>
 
-            <GoldenLayoutComponent service={service} state={state}/>
+            <GoldenLayoutComponent service={service} state={state} handleLayout={handleLayout}/>
 
             {showSearch && <Search service={service} hideSearch={hideSearch} state={state}/>}
         </div>

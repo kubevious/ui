@@ -113,8 +113,12 @@ class GoldenLayoutComponent extends PureComponent {
             this._setupContent(component.id, component.component)
         }
 
-        this._layout.on('componentCreated', function (component) {
+        this._layout.on('componentCreated', (component) => {
             self._triggerComponentResizeEvent(component);
+
+            let info = this._getComponent(component.config.component);
+            info.goldenComponent = component;
+            info.goldenContainer = component.container;
 
             component.container.on('resize', function () {
                 self._triggerComponentResizeEvent(component);
@@ -123,11 +127,12 @@ class GoldenLayoutComponent extends PureComponent {
 
         this._layout.init()
 
+        this.props.handleLayout(this)
+
         window.addEventListener('resize', () => {
             this._layout.updateSize();
         });
     }
-
 
     _register(info) {
         var id = info.name
@@ -135,6 +140,21 @@ class GoldenLayoutComponent extends PureComponent {
         id = id + 'Component'
         info.id = id
         this._components.push(info)
+    }
+
+    _getComponent(id) {
+        return _.filter(this._components, x => x.id === id)[0];
+    }
+
+    hideComponent(id) {
+        const info = this._getComponent(id);
+        info.goldenContainer.close();
+    }
+
+    showComponent(id) {
+        const info = this._getComponent(id);
+        const componentLayout = this._getComponentLayout(info);
+        this._layout.root.contentItems[0].addChild(componentLayout);
     }
 
     _getLocationComponents(location) {
