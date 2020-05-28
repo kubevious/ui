@@ -176,6 +176,7 @@ class RuleEditor extends PureComponent {
                         isNewRule={this.state.isNewRule}
                         selectedRule={this.state.selectedRule}
                         selectedRuleData={this.state.selectedRuleData}
+                        selectedRuleId={this.state.selectedRuleId}
                         createNewRule={this.createNewRule}
                         saveRule={this.saveRule}
                         deleteRule={this.deleteRule}

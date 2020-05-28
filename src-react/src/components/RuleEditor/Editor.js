@@ -4,13 +4,18 @@ import { UnControlled as CodeMirror } from 'react-codemirror2'
 import cx from 'classnames'
 import DnShortcutComponent from '../DnShortcutComponent'
 
-const Editor = ({ rules, isNewRule, selectedRule, selectedRuleData, createNewRule, saveRule, deleteRule, createRule, openSummary, state, isSuccess }) => {
+const Editor = ({ rules, isNewRule, selectedRule, selectedRuleData, selectedRuleId, createNewRule, saveRule, deleteRule, createRule, openSummary, state, isSuccess }) => {
     const [selectedTab, setSelectedTab] = useState('rule')
-    const [rule, setRule] = useState({ name: '' })
+    const [rule, setRule] = useState({})
+    const [ruleId, setRuleId] = useState(null)
 
     useEffect(() => {
-        setRule({ ...selectedRule })
-    }, [selectedRule, selectedRuleData])
+        if (selectedRuleId !== ruleId) {
+            setRuleId(ruleId)
+            setRule({...selectedRule})
+            setSelectedTab('rule')
+        }
+    }, [selectedRuleId, selectedRule])
 
     const setErrorEditor = (field) => {
         return selectedRuleData.logs.find(item => item.msg.source.includes(field)) &&
