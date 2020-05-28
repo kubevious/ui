@@ -78,7 +78,7 @@ const Editor = ({ rules, isNewRule, selectedRule, selectedRuleData, createNewRul
             <>
                 {!isSuccess && <>
                     <div className="editor-title">
-                        {!isNewRule && !selectedRule.isCurrent && 
+                        {!isNewRule && selectedRuleData && !selectedRuleData.status.isCurrent && 
                             <div class="busy-rule-indicator"></div>
                         }
                         {isNewRule && <div className='editor-title'>Create new rule</div>}

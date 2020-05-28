@@ -54,15 +54,6 @@ class RuleEditor extends PureComponent {
                 rules: value 
             });
         });
-        
-        this.sharedState.subscribe('rule_editor_selected_rule_config', (value) => {
-            if (!value) {
-                value = {};
-            }
-            this.setState({
-                selectedRule: value
-            });
-        });
 
         this.sharedState.subscribe('rule_editor_selected_rule_status', (value) => {
             if (!value) {
@@ -77,29 +68,39 @@ class RuleEditor extends PureComponent {
     selectRule(rule) {
         this.setState({ 
             isNewRule: false,
-            isSuccess: false
+            isSuccess: false,
+            selectedRuleId: rule.id
         })
 
+        this.service.backendFetchRule(rule.id, data => {
+            if (data.id == this.state.selectedRuleId)
+            {
+                this.setState({ 
+                    selectedRule: data
+                })
+            }
+        })
+
+
         this.sharedState.set('rule_editor_selected_rule_id', rule.id);
-        // this.sharedState.set('rule_editor_selected_rule_id', null);
     }
 
     saveRule(data) {
         this.service.backendUpdateRule(data.id, data, () => {
-            this.setState({ isSuccess: true })
+            this.setState({ isSuccess: true, selectedRuleId: null })
             this.sharedState.set('rule_editor_selected_rule_id', null);
         })
     }
 
     deleteRule(data) {
         this.service.backendDeleteRule(data.id, () => {
-            this.setState({ selectedRule: selectedRuleInit })
+            this.setState({ selectedRule: selectedRuleInit, selectedRuleId: null })
             this.sharedState.set('rule_editor_selected_rule_id', null);
         })
     }
 
     openSummary() {
-        this.setState({ selectedRule: selectedRuleInit })
+        this.setState({ selectedRule: selectedRuleInit, selectedRuleId: null })
         this.sharedState.set('rule_editor_selected_rule_id', null);
     }
 
@@ -111,7 +112,7 @@ class RuleEditor extends PureComponent {
     }
 
     createNewRule() {
-        // this.sharedState.set('rule_editor_selected_rule_id', null);
+        this.sharedState.set('rule_editor_selected_rule_id', null);
 
         this.setState(prevState => ({
             isNewRule: true,
@@ -161,8 +162,13 @@ class RuleEditor extends PureComponent {
 
         return (
             <div className="RuleEditor-container">
-                <RulesList rules={this.state.rules} selectRule={this.selectRule} createNewRule={this.createNewRule}
-                           setVisibleOptions={this.setVisibleOptions} service={this.service} selectedRule={this.state.selectedRule}/>
+                <RulesList 
+                    rules={this.state.rules}
+                    selectedRuleId={this.state.selectedRuleId}
+                    selectRule={this.selectRule}
+                    createNewRule={this.createNewRule}
+                    setVisibleOptions={this.setVisibleOptions}
+                    service={this.service} />
 
                 <Editor rules={this.state.rules} 
                         isNewRule={this.state.isNewRule}

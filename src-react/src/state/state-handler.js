@@ -17,7 +17,6 @@ class StateHandler {
         this._handleSelectedObjectChange()
         this._handleSelectedObjectAssetsChange()
         this._handleTimelineDataChange()
-        this._handleSelectedRuleChange()
     }
 
     _handleDiagramChange() {
@@ -102,23 +101,6 @@ class StateHandler {
 
             }
         )
-    }
-
-    _handleSelectedRuleChange()
-    {
-        this._state.subscribe('rule_editor_selected_rule_id',
-            (rule_editor_selected_rule_id) => {
-                if (rule_editor_selected_rule_id) {
-                    this._service.rules().backendFetchRule(rule_editor_selected_rule_id, data => {
-                        if (this._state.get('rule_editor_selected_rule_id') == rule_editor_selected_rule_id)
-                        {
-                            this._state.set('rule_editor_selected_rule_config', data);
-                        }
-                    })
-                } else {
-                    this._state.set('rule_editor_selected_rule_config', null);
-                }
-            })
     }
 
 }
