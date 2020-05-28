@@ -1,18 +1,38 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { isEmptyArray, isEmptyObject } from '../../utils/util'
-import { UnControlled as CodeMirror } from 'react-codemirror2'
+import { UnControlled as CodeMirrorEditor } from 'react-codemirror2'
 import cx from 'classnames'
+import Codemirror from 'codemirror'
 import DnShortcutComponent from '../DnShortcutComponent'
+
+import 'codemirror/addon/hint/javascript-hint'
+import 'codemirror/addon/hint/show-hint';
+import 'codemirror/addon/hint/show-hint.css';
+import 'codemirror/theme/darcula.css'
+import 'codemirror/lib/codemirror.css'
+import 'codemirror/mode/javascript/javascript'
 
 const Editor = ({ rules, isNewRule, selectedRule, selectedRuleData, selectedRuleId, createNewRule, saveRule, deleteRule, createRule, openSummary, state, isSuccess }) => {
     const [selectedTab, setSelectedTab] = useState('rule')
     const [rule, setRule] = useState({})
     const [ruleId, setRuleId] = useState(null)
 
+    const snippets = [
+        { text: 'select', displayText: 'select' },
+        { text: 'resource', displayText: 'resource' },
+        { text: 'child', displayText: 'child' },
+        { text: 'descendant', displayText: 'descendant' },
+        { text: 'filter', displayText: 'filter' },
+        { text: 'labels', displayText: 'labels' },
+        { text: 'label', displayText: 'label' },
+        { text: 'name', displayText: 'name' },
+        { text: 'debugOutput', displayText: 'debugOutput' }
+    ]
+
     useEffect(() => {
         if (selectedRuleId !== ruleId) {
             setRuleId(ruleId)
-            setRule({...selectedRule})
+            setRule({ ...selectedRule })
             setSelectedTab('rule')
         }
     }, [selectedRuleId, selectedRule])
@@ -96,6 +116,39 @@ const Editor = ({ rules, isNewRule, selectedRule, selectedRuleData, selectedRule
         )
     }
 
+    const handleScriptKeyUp = ({ editor, data, value }) => {
+        if (data.keyCode > 64 && data.keyCode < 91) {
+            Codemirror.commands.autocomplete(editor, null, { completeSingle: false })
+        }
+    }
+
+    const handleTargetKeyUp = ({ editor, data, value }) => {
+        if (data.keyCode > 64 && data.keyCode < 91) {
+            showSnippets(editor)
+        }
+    }
+
+    const showSnippets = (editor) => {
+        Codemirror.showHint(editor, function () {
+            const cursor = editor.getCursor()
+            const token = editor.getTokenAt(cursor)
+            const start = token.start
+            const end = cursor.ch
+            const line = cursor.line
+            const currentWord = token.string
+
+            const list = snippets.filter(function (item) {
+                return item.text.indexOf(currentWord) >= 0
+            })
+
+            return {
+                list: list.length ? list : snippets,
+                from: Codemirror.Pos(line, start),
+                to: Codemirror.Pos(line, end)
+            }
+        }, { completeSingle: false })
+    }
+
     const renderRuleEditor = () => {
         const { name, enabled, target, script } = rule
 
@@ -108,7 +161,7 @@ const Editor = ({ rules, isNewRule, selectedRule, selectedRuleData, selectedRule
                     <input
                         type="text"
                         className="field-input name"
-                        value={name}
+                        value={name || ''}
                         name="name"
                         onChange={(e) => handleChange(e)}
                     />
@@ -118,15 +171,19 @@ const Editor = ({ rules, isNewRule, selectedRule, selectedRuleData, selectedRule
                     <div className="label-wrapper">
                         <label>Target</label>
                     </div>
-                    <CodeMirror
+                    <CodeMirrorEditor
                         value={target}
                         name="target"
                         options={{
                             mode: 'javascript',
                             theme: 'darcula',
-                            lineNumbers: true
+                            lineNumbers: true,
+                            extraKeys: {
+                                'Ctrl-Space': 'autocomplete'
+                            }
                         }}
                         className={cx({ 'required-field': setErrorEditor('target') })}
+                        onKeyUp={(editor, data, value) => handleTargetKeyUp({ editor, data, value })}
                         onChange={(editor, data, value) => handleChangeTarget({ editor, data, value })}
                     />
                 </div>
@@ -135,15 +192,18 @@ const Editor = ({ rules, isNewRule, selectedRule, selectedRuleData, selectedRule
                     <div className="label-wrapper">
                         <label>Script</label>
                     </div>
-                    <CodeMirror
+                    <CodeMirrorEditor
                         value={script}
                         options={{
                             mode: 'javascript',
                             theme: 'darcula',
-                            lineNumbers: true
-
+                            smartIndent: true,
+                            extraKeys: {
+                                'Ctrl-Space': 'autocomplete'
+                            }
                         }}
                         className={cx({ 'required-field': setErrorEditor('script') })}
+                        onKeyUp={(editor, data, value) => handleScriptKeyUp({ editor, data, value })}
                         onChange={(editor, data, value) => handleChangeScript({ editor, data, value })}
                     />
                 </div>
@@ -159,7 +219,7 @@ const Editor = ({ rules, isNewRule, selectedRule, selectedRuleData, selectedRule
 
                 <label className="checkbox-container">
                     Enable/Disable
-                    <input type="checkbox" className="enable-checkbox" checked={enabled}
+                    <input type="checkbox" className="enable-checkbox" checked={enabled || false}
                            onChange={(event) => changeEnable(event)}/>
                     <span className="checkmark"/>
                 </label>
