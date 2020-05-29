@@ -59,7 +59,7 @@ const Editor = ({ rules, isNewRule, selectedRule, selectedRuleData, selectedRule
         setRule({ ...rule, enabled: !rule.enabled })
     }
 
-    const validation = useMemo(() => Object.values(rule).some(item => item === ''), [rule])
+    const validation = useMemo(() => rule.name === '', [rule])
 
     const renderEditor = () => {
         return (
