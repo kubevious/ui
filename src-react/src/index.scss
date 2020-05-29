@@ -1,8 +1,13 @@
-html, body {
-  height: 100%;
+@import "styles/fonts";
+
+* {
   font-family: 'Roboto', sans-serif;
   font-size: 14px;
   font-weight: 400;
+}
+
+html, body {
+  height: 100%;
   background: #1E1E1E;
   color: #FFF;
   margin: 0;

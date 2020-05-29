@@ -81,11 +81,6 @@
     font-size: 11px;
 }
 
-pre {
-    color: #FFF;
-    margin: 0;
-}
-
 .expander-open {
     display: block;
     margin: -2px 0 0;
@@ -192,7 +187,6 @@ div {
 pre {
     color: #FFF;
     margin: 0;
-    font-size: 10px;
 }
 
 /*** COMMON DN SHORTCUT ***/

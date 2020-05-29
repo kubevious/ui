@@ -9,8 +9,8 @@ const EnvironmentVariables = ({ group, options }) => {
                 <div className="env-variable" key={index}>
                     <div className="name">
                         {item[0]}:
-                        <div className="value" dangerouslySetInnerHTML={{ __html: item[1] }}/>
                     </div>
+                    <div className="value" dangerouslySetInnerHTML={{ __html: item[1] }}/>
                 </div>
             ))}
         </div>
