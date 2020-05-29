@@ -1,5 +1,6 @@
 import BackendClient  from './BackendClient'
 import RuleService from './RuleService'
+import MarkerService from './MarkerService'
 
 class KubeviousService {
     fetchDiagram(cb) {
@@ -85,6 +86,10 @@ class KubeviousService {
 
     rules() {
         return new RuleService()
+    }
+
+    markers() {
+        return this._markerService
     }
 
 }

@@ -32,12 +32,12 @@ const MOCK_RULE_EDITOR_ITEMS = [
     {
         'dn': 'root/ns-[gitlab]/app-[gitlab-gitlab-shell]/initcont-[configure]/image-[busybox]',
         'has_error': 1,
-        'has_warning': 0
+        'has_warning': 1
     },
     {
         'dn': 'root/ns-[gitlab]/app-[gitlab-minio]/initcont-[configure]/image-[busybox]',
-        'has_error': 1,
-        'has_warning': 0
+        'has_error': 0,
+        'has_warning': 1
     },
     {
         'dn': 'root/ns-[gitlab]/app-[gitlab-registry]/initcont-[configure]/image-[busybox]',
@@ -47,12 +47,12 @@ const MOCK_RULE_EDITOR_ITEMS = [
     {
         'dn': 'root/ns-[gitlab]/app-[gitlab-sidekiq-all-in-1]/initcont-[configure]/image-[busybox]',
         'has_error': 1,
-        'has_warning': 0
+        'has_warning': 1
     },
     {
         'dn': 'root/ns-[gitlab]/app-[gitlab-task-runner]/initcont-[configure]/image-[busybox]',
-        'has_error': 1,
-        'has_warning': 0
+        'has_error': 0,
+        'has_warning': 1
     },
     {
         'dn': 'root/ns-[gitlab]/app-[gitlab-unicorn]/initcont-[configure]/image-[busybox]',
