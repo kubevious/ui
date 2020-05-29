@@ -2,13 +2,14 @@ import React from 'react'
 import DnComponent from '../DnComponent'
 
 const Popup = ({ header, contents }) => {
-    let { title, dn } = header
+    let { title, dn, content } = header
 
     return (
         <div id="popup" className="popup">
             <div className="popup-header">
+                {content && content()}
                 {dn && <DnComponent dn={dn} />}
-                <h3>{title}</h3>
+                {title && <h3>{title}</h3>}
             </div>
             <div className="popup-contents">
                 {contents}

@@ -1,37 +1,32 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { renderToString } from 'react-dom/server'
+import $ from 'jquery'
 import { isEmptyArray } from '../../utils/util'
 import DnShortcutComponent from '../DnShortcutComponent'
 
 import './styles.scss'
 
-const Search = ({ service, hideSearch, state }) => {
-    const [data, setData] = useState([])
-
-    const performSearch = (e) => {
-        const value = e.target.value
-        service.fetchSearchResults(value, result => {
-            setData(result)
+const Search = ({ service, state }) => {
+    setTimeout(() => {
+        $('.search-input').on('input', (e) => {
+            service.fetchSearchResults(e.target.value, result => {
+                renderSearchResult(result)
+            })
         })
+    }, 0)
+
+    const renderSearchResult = (result) => {
+        const html = renderToString(<>
+            {!isEmptyArray(result) && result.map((item, index) => (
+                <DnShortcutComponent key={index} dn={item.dn} state={state}/>
+            ))}
+        </>)
+
+        $('.search-results').append(html)
     }
 
     return (
-        <div id="popup" className="popup search-popup">
-            <div className="form-group has-success">
-                <input
-                    type="text"
-                    className="form-control search-input"
-                    placeholder="Search"
-                    onChange={(e) => performSearch(e)}
-                />
-            </div>
-            <div className="search-results">
-                {!isEmptyArray(data) && data.map((item, index) => (
-                    <DnShortcutComponent key={index} dn={item.dn} state={state} hidePopup={hideSearch}/>
-                ))}
-            </div>
-
-            <button className="close" onClick={hideSearch}/>
-        </div>
+        <div className="search-results"/>
     )
 }
 
