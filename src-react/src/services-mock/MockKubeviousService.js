@@ -8,6 +8,7 @@ import {
     SEARCH_DATA,
 } from '../boot/diagramMockData'
 import MockRuleService from './MockRuleService'
+import MockMarkerService from './MockMarkerService'
 
 class MockKubeviousService {
     constructor(clusterId, state) {
@@ -15,6 +16,7 @@ class MockKubeviousService {
         this._state = state;
 
         this._ruleService = new MockRuleService(state);
+        this._markerService = new MockMarkerService(state)
 
         this._state.subscribe(['selected_dn', 'time_machine_enabled'],
             ({ selected_dn, time_machine_enabled }) => {
@@ -68,6 +70,10 @@ class MockKubeviousService {
 
     rules() {
         return this._ruleService;
+    }
+
+    markers() {
+        return this._markerService
     }
 }
 

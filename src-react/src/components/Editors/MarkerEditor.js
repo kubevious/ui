@@ -1,41 +1,39 @@
 import React, { PureComponent } from 'react'
-import $ from 'jquery'
-import RulesList from './RulesList'
-import Editor from './Editor'
-import './styles.scss'
 import { getRandomInt } from '../../utils/util'
+import $ from 'jquery'
+import Editor from './Editor'
+import ItemsList from './ItemsList'
 
-const selectedRuleInit = {}
-const selectedRuleDataInit = {
+const selectedItemInit = {}
+const selectedItemDataInit = {
     status: {},
     logs: [],
     items: []
 }
 
-class RuleEditor extends PureComponent {
+class MarkerEditor extends PureComponent {
     constructor(props) {
         super(props);
 
         this.state = {
-            selectedTab: 'rule',
-            rules: [],
-            selectedRule: selectedRuleInit,
-            selectedRuleData: selectedRuleDataInit,
+            items: [],
+            selectedItem: selectedItemInit,
+            selectedItemData: selectedItemDataInit,
             isSuccess: false,
             deleteExtra: false,
             isMergeOptionsVisible: false
         }
 
-        this.service = this.props.service.rules()
+        this.service = this.props.service.markers()
 
         this.openSummary = this.openSummary.bind(this)
-        this.saveRule = this.saveRule.bind(this)
-        this.deleteRule = this.deleteRule.bind(this)
+        this.saveItem = this.saveItem.bind(this)
+        this.deleteItem = this.deleteItem.bind(this)
         this.uploadFile = this.uploadFile.bind(this)
-        this.createRule = this.createRule.bind(this)
+        this.createItem = this.createItem.bind(this)
         this.setVisibleOptions = this.setVisibleOptions.bind(this)
-        this.selectRule = this.selectRule.bind(this)
-        this.createNewRule = this.createNewRule.bind(this)
+        this.selectItem = this.selectItem.bind(this)
+        this.createNewItem = this.createNewItem.bind(this)
     }
 
     get sharedState() {
@@ -43,43 +41,43 @@ class RuleEditor extends PureComponent {
     }
 
     componentDidMount() {
-        this.sharedState.subscribe('rule_editor_items', (value) => {
+        this.sharedState.subscribe('marker_editor_items', (value) => {
             this.setState({
-                rules: value
+                items: value
             });
         });
 
-        this.sharedState.subscribe('rule_editor_selected_rule_status', (value) => {
+        this.sharedState.subscribe('marker_editor_selected_marker_status', (value) => {
             if (!value) {
-                value = selectedRuleDataInit;
+                value = selectedItemDataInit;
             }
             this.setState({
-                selectedRuleData: value
+                selectedItemData: value
             });
         });
     }
 
-    selectRule(rule) {
+    selectItem(marker) {
         this.setState({
-            isNewRule: false,
+            isNewItem: false,
             isSuccess: false,
-            selectedRuleId: rule.id
+            selectedItemId: marker.id
         })
 
-        this.service.backendFetchRule(rule.id, data => {
-            if (data.id == this.state.selectedRuleId) {
+        this.service.backendFetchMarker(marker.id, data => {
+            if (data.id == this.state.selectedItemId) {
                 this.setState({
-                    selectedRule: data
+                    selectedItem: data
                 })
             }
         })
 
 
-        this.sharedState.set('rule_editor_selected_rule_id', rule.id);
+        this.sharedState.set('marker_editor_selected_marker_id', marker.id);
     }
 
-    saveRule(data) {
-        this.service.backendUpdateRule(data.id, data, () => {
+    saveItem(data) {
+        this.service.backendUpdateMarker(data.id, data, () => {
             this.setState({ isSuccess: true })
 
             setTimeout(() => {
@@ -88,38 +86,37 @@ class RuleEditor extends PureComponent {
         })
     }
 
-    deleteRule(data) {
-        this.service.backendDeleteRule(data.id, () => {
-            this.setState({ selectedRule: selectedRuleInit, selectedRuleId: null })
-            this.sharedState.set('rule_editor_selected_rule_id', null);
+    deleteItem(data) {
+        this.service.backendDeleteMarker(data.id, () => {
+            this.setState({ selectedItem: selectedItemInit, selectedItemId: null })
+            this.sharedState.set('marker_editor_selected_marker_id', null);
         })
     }
 
     openSummary() {
-        this.setState({ selectedRule: selectedRuleInit, selectedRuleId: null })
-        this.sharedState.set('rule_editor_selected_rule_id', null);
+        this.setState({ selectedItem: selectedItemInit, selectedItemId: null })
+        this.sharedState.set('marker_editor_selected_marker_id', null);
     }
 
-    createRule(data) {
-        this.service.backendCreateRule(data, (rule) => {
+    createItem(data) {
+        this.service.backendCreateMarker(data, (marker) => {
             this.setState({ isSuccess: true })
-            this.selectRule(rule)
+            this.selectItem(marker)
         })
     }
 
-    createNewRule() {
-        this.sharedState.set('rule_editor_selected_rule_id', null);
+    createNewItem() {
+        this.sharedState.set('marker_editor_selected_marker_id', null);
 
         this.setState(prevState => ({
-            isNewRule: true,
-            selectedRule: {
+            isNewItem: true,
+            selectedItem: {
                 name: '',
-                enabled: true,
-                script: '',
-                target: ''
+                color: '#fff',
+                shape: 'check'
             },
             isSuccess: false,
-            selectedRuleData: selectedRuleDataInit
+            selectedItemData: selectedItemDataInit
         }))
     }
 
@@ -137,7 +134,7 @@ class RuleEditor extends PureComponent {
                 data: JSON.parse(reader.result).map((item) => ({ ...item, id: getRandomInt() })),
                 deleteExtra: this.state.deleteExtra
             };
-            this.service.backendImportRules(importData, () => {
+            this.service.backendImportMarkers(importData, () => {
 
             })
         };
@@ -158,23 +155,25 @@ class RuleEditor extends PureComponent {
 
         return (
             <div className="RuleEditor-container">
-                <RulesList
-                    rules={this.state.rules}
-                    selectedRuleId={this.state.selectedRuleId}
-                    selectRule={this.selectRule}
-                    createNewRule={this.createNewRule}
+                <ItemsList
+                    type='marker'
+                    items={this.state.items}
+                    selectedItemId={this.state.selectedItemId}
+                    selectItem={this.selectItem}
+                    createNewItem={this.createNewItem}
                     setVisibleOptions={this.setVisibleOptions}
                     service={this.service}/>
 
-                <Editor rules={this.state.rules}
-                        isNewRule={this.state.isNewRule}
-                        selectedRule={this.state.selectedRule}
-                        selectedRuleData={this.state.selectedRuleData}
-                        selectedRuleId={this.state.selectedRuleId}
-                        createNewRule={this.createNewRule}
-                        saveRule={this.saveRule}
-                        deleteRule={this.deleteRule}
-                        createRule={this.createRule}
+                <Editor type='marker'
+                        items={this.state.items}
+                        isNewItem={this.state.isNewItem}
+                        selectedItem={this.state.selectedItem}
+                        selectedItemData={this.state.selectedItemData}
+                        selectedItemId={this.state.selectedItemId}
+                        createNewItem={this.createNewItem}
+                        saveItem={this.saveItem}
+                        deleteItem={this.deleteItem}
+                        createItem={this.createItem}
                         openSummary={this.openSummary}
                         state={this.props.state}
                         isSuccess={this.state.isSuccess}
@@ -194,7 +193,7 @@ class RuleEditor extends PureComponent {
                         <div className="option">
                             <label htmlFor="upload-rule" className="option-desc"
                                    onClick={() => this.setState({ deleteExtra: false })}>
-                                <b>Merge</b> from backup preserving existing roles
+                                <b>Merge</b> from backup preserving existing {this.state.type}s
                             </label>
                         </div>
 
@@ -204,7 +203,6 @@ class RuleEditor extends PureComponent {
             </div>
         );
     }
-
 }
 
-export default RuleEditor
+export default MarkerEditor

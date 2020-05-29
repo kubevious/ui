@@ -245,7 +245,7 @@ class MockRuleService {
         this._notifyRules();
     }
 
-    backendExportRules(cb) {
+    backendExportItems(cb) {
         var data = _.cloneDeep(_.values(MOCK_RULES));
         for (var x of data) {
             delete x.id;
@@ -255,9 +255,11 @@ class MockRuleService {
 
     backendImportRules(rules, cb) {
         MOCK_RULES = {};
-        for(var x of rules)
+        for(var x of rules.data)
         {
             x.id = _.max(_.values(MOCK_RULES).map(x => x.id)) + 1;;
+            x.items = []
+            x.logs = []
             MOCK_RULES[x.id] = x;
         }
         cb();

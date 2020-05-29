@@ -12,7 +12,7 @@
 }
 
 #rule-list {
-  width: 300px;
+  width: 345px;
   background: #35373E;
   position: relative;
   height: 100%;
@@ -49,12 +49,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 120px;
+  width: unset !important;
   padding: 5px 10px !important;
 }
 
 .plus {
   font-size: 20px;
+  margin-right: 5px;
 }
 
 .circle-btn {
@@ -71,21 +72,27 @@
 .rules {
   display: flex;
   flex-direction: column;
+
+  .rule-item-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: none;
+    background: none;
+    color: white;
+    padding: 10px 15px;
+    border-bottom: 1px solid #4E515B;
+    text-align: left;
+
+    &:focus {
+      outline: none;
+    }
+  }
 }
 
-.rule-item-button {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border: none;
-  background: none;
-  color: white;
-  padding: 10px 15px;
-  border-bottom: 1px solid #4E515B;
-  text-align: left;
-
-  &:focus {
-    outline: none;
+.rules.markers {
+  .rule-item-button {
+    justify-content: unset;
   }
 }
 
@@ -102,9 +109,11 @@
 .indicator.enabled {
   background: #4ECD77;
 }
+
 .indicator.disabled {
   background: #4E515B;
 }
+
 .indicator.invalid {
   background: rgb(197, 6, 6);
 }
@@ -201,6 +210,7 @@
 input[type="file"] {
   display: none;
 }
+
 .file-upload {
   margin-bottom: 0;
   display: flex;
@@ -386,4 +396,135 @@ input[type="file"] {
   background-size: contain;
   background-repeat: no-repeat no-repeat;
   background-image: url("/img/busy.svg");
+}
+
+.marker-area {
+  background: #35373E;
+  border: 1px solid #4E515B;
+  display: flex;
+  flex-wrap: wrap;
+
+  .marker-shape {
+    margin: 5px;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.custom-color {
+  border: none;
+  background: none;
+  width: 100px;
+  margin-top: 10px;
+  color: white;
+}
+
+.marker-shape {
+  background-size: contain;
+  background-repeat: no-repeat no-repeat;
+  width: 25px;
+  height: 25px;
+  margin-right: 15px;
+
+  &.check {
+    mask: url("/img/markers/check.svg") no-repeat center / contain;
+    -webkit-mask: url("/img/markers/check.svg") no-repeat center / contain;
+  }
+
+  &.dislike {
+    mask: url("/img/markers/dislike.svg") no-repeat center / contain;
+    -webkit-mask: url("/img/markers/dislike.svg") no-repeat center / contain;
+  }
+
+  &.envelope {
+    mask: url("/img/markers/envelope.svg") no-repeat center / contain;
+    -webkit-mask: url("/img/markers/envelope.svg") no-repeat center / contain;
+  }
+
+  &.essay {
+    mask: url("/img/markers/essay.svg") no-repeat center / contain;
+    -webkit-mask: url("/img/markers/essay.svg") no-repeat center / contain;
+  }
+
+  &.gift {
+    mask: url("/img/markers/gift.svg") no-repeat center / contain;
+    -webkit-mask: url("/img/markers/gift.svg") no-repeat center / contain;
+  }
+
+  &.hand {
+    mask: url("/img/markers/hand.svg") no-repeat center / contain;
+    -webkit-mask: url("/img/markers/hand.svg") no-repeat center / contain;
+  }
+
+  &.heart {
+    mask: url("/img/markers/heart.svg") no-repeat center / contain;
+    -webkit-mask: url("/img/markers/heart.svg") no-repeat center / contain;
+  }
+
+  &.like {
+    mask: url("/img/markers/like.svg") no-repeat center / contain;
+    -webkit-mask: url("/img/markers/like.svg") no-repeat center / contain;
+  }
+
+  &.megaphone {
+    mask: url("/img/markers/megaphone.svg") no-repeat center / contain;
+    -webkit-mask: url("/img/markers/megaphone.svg") no-repeat center / contain;
+  }
+
+  &.monitor {
+    mask: url("/img/markers/monitor.svg") no-repeat center / contain;
+    -webkit-mask: url("/img/markers/monitor.svg") no-repeat center / contain;
+  }
+
+  &.notification {
+    mask: url("/img/markers/notification.svg") no-repeat center / contain;
+    -webkit-mask: url("/img/markers/notification.svg") no-repeat center / contain;
+  }
+
+  &.paper-plane {
+    mask: url("/img/markers/paper-plane.svg") no-repeat center / contain;
+    -webkit-mask: url("/img/markers/paper-plane.svg") no-repeat center / contain;
+  }
+
+  &.plus {
+    mask: url("/img/markers/plus.svg") no-repeat center / contain;
+    -webkit-mask: url("/img/markers/plus.svg") no-repeat center / contain;
+  }
+
+  &.rating {
+    mask: url("/img/markers/rating.svg") no-repeat center / contain;
+    -webkit-mask: url("/img/markers/rating.svg") no-repeat center / contain;
+  }
+
+  &.rectangle {
+    mask: url("/img/markers/rectangle.svg") no-repeat center / contain;
+    -webkit-mask: url("/img/markers/rectangle.svg") no-repeat center / contain;
+
+  }
+
+  &.share {
+    mask: url("/img/markers/share.svg") no-repeat center / contain;
+    -webkit-mask: url("/img/markers/share.svg") no-repeat center / contain;
+  }
+
+  &.shopping-cart {
+    mask: url("/img/markers/shopping-cart.svg") no-repeat center / contain;
+    -webkit-mask: url("/img/markers/shopping-cart.svg") no-repeat center / contain;
+  }
+
+  &.star {
+    mask: url("/img/markers/star.svg") no-repeat center / contain;
+    -webkit-mask: url("/img/markers/star.svg") no-repeat center / contain;
+  }
+
+  &.triangle {
+    mask: url("/img/markers/triangle.svg") no-repeat center / contain;
+    -webkit-mask: url("/img/markers/triangle.svg") no-repeat center / contain;
+  }
+  &.user {
+    mask: url("/img/markers/user.svg") no-repeat center / contain;
+    -webkit-mask: url("/img/markers/user.svg") no-repeat center / contain;
+  }
 }

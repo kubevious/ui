@@ -1,13 +1,13 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDownload, faUndo } from '@fortawesome/free-solid-svg-icons'
 import { isEmptyArray } from '../../utils/util'
 import cx from 'classnames'
 
-const RulesList = ({ rules, selectedRuleId, selectedRule, selectRule, createNewRule, setVisibleOptions, service }) => {
+const ItemsList = ({ type, items, selectedItemId, selectedItem, selectItem, createNewItem, setVisibleOptions, service }) => {
 
-    const exportRules = () => {
-        service.backendExportRules(response => {
+    const exportItems = () => {
+        service.backendExportItems(response => {
             const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(response))
             const exportElem = document.getElementById('exportAnchor')
             exportElem.setAttribute('href', dataStr)
@@ -28,16 +28,15 @@ const RulesList = ({ rules, selectedRuleId, selectedRule, selectRule, createNewR
         return indicatorClass
     }
 
-
     return (
         <div id="rule-list">
             <div className="rule-header">
                 <div className="btn-group">
-                    <button className="button success new-rule-btn" onClick={() => createNewRule()}>
+                    <button className="button success new-rule-btn" onClick={() => createNewItem()}>
                         <div className="plus">+</div>
-                        New rule
+                        New {type}
                     </button>
-                    <button className="button square light export" onClick={exportRules}>
+                    <button className="button square light export" onClick={exportItems}>
                         <FontAwesomeIcon icon={faDownload}/>
                     </button>
                     <a id='exportAnchor' style={{ display: 'none' }}/>
@@ -48,17 +47,15 @@ const RulesList = ({ rules, selectedRuleId, selectedRule, selectRule, createNewR
                 </div>
             </div>
 
-            <div className="rules">
-                {!isEmptyArray(rules) && rules.map(rule => (
-                    <button key={rule.id}
-                            className={cx('rule-item-button', { 'selected': rule.id === selectedRuleId })}
-                            onClick={() => selectRule(rule)}>
-                        {rule.name}
-                        {!rule.isCurrent &&
-                        <div className="busy-rule-indicator"/>
-                        }
-                        <div
-                            className={cx('indicator', ruleIndicatorClass(rule))}/>
+            <div className={cx('rules', { 'markers': type === 'marker' })}>
+                {!isEmptyArray(items) && items.map(item => (
+                    <button key={item.id}
+                            className={cx('rule-item-button', { 'selected': item.id === selectedItemId })}
+                            onClick={() => selectItem(item)}>
+                        {type === 'marker' && <div className={`marker-shape ${item.shape}`} style={{ backgroundColor: item.color }}/>}
+                        {item.name}
+                        {!item.isCurrent && <div className="busy-rule-indicator"/>}
+                        {type === 'rule' && <div className={cx('indicator', ruleIndicatorClass(item))}/>}
                     </button>
                 ))}
             </div>
@@ -66,4 +63,4 @@ const RulesList = ({ rules, selectedRuleId, selectedRule, selectRule, createNewR
     )
 }
 
-export default RulesList
+export default ItemsList

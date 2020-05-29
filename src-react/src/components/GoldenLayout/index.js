@@ -9,12 +9,13 @@ import Diagram from '../Diagram'
 import Properties from '../Properties'
 import Alerts from '../Alerts'
 import Timeline from '../Timeline'
-import RuleEditor from '../RuleEditor'
+import RuleEditor from '../Editors/RuleEditor'
 import Logs from '../Logs'
 import UiLogs from '../UiLogs'
 import Events from '../Events'
 
 import './styles.scss'
+import MarkerEditor from '../Editors/MarkerEditor'
 
 class GoldenLayoutComponent extends PureComponent {
     constructor(props) {
@@ -35,6 +36,12 @@ class GoldenLayoutComponent extends PureComponent {
             component: RuleEditor,
             location: 'main',
             title: 'Rule Editor'
+        })
+        this._register({
+            name: 'Marker Editor',
+            component: MarkerEditor,
+            location: 'main',
+            title: 'Marker Editor'
         })
         this._register({
             name: 'Properties',

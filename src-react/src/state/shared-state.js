@@ -79,7 +79,7 @@ class SharedState
         if (str.length > 80) {
             str = str.substring(0, 80) + '...';
         }
-        console.log("[SharedState] SET " + name + " = " + str);
+        // console.log("[SharedState] SET " + name + " = " + str);
 
         if (_.isNullOrUndefined(value)) {
             delete this._values[name];

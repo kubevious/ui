@@ -22,7 +22,7 @@ class RuleService {
             });
     }
 
-    backendDeleteRule(id, cb) {
+    backendDeleteItem(id, cb) {
         return BackendClient.delete('/api/v1/rule/' + id)
             .then(result => {
                 cb(result.data);

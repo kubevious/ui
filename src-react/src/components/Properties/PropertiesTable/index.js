@@ -3,6 +3,8 @@ import _ from 'lodash'
 import cx from 'classnames'
 import DnShortcutComponent from '../../DnShortcutComponent'
 
+import './styles.scss'
+
 const PropertiesTable = ({ group, options, state }) => {
     const tableData = group.config
 
