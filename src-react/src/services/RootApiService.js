@@ -5,7 +5,7 @@ class RootApiService {
 
     constructor(state)
     {
-        this._kubevious = new KubeviousService();
+        this._kubevious = new KubeviousService(state);
         this._socket = new WebSocketService(state);
     }
 

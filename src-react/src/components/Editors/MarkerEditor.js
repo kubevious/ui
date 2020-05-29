@@ -3,6 +3,7 @@ import { getRandomInt } from '../../utils/util'
 import $ from 'jquery'
 import Editor from './Editor'
 import ItemsList from './ItemsList'
+import { COLORS, SHAPES } from '../../boot/markerData'
 
 const selectedItemInit = {}
 const selectedItemDataInit = {
@@ -112,8 +113,8 @@ class MarkerEditor extends PureComponent {
             isNewItem: true,
             selectedItem: {
                 name: '',
-                color: '#fff',
-                shape: 'check'
+                color: COLORS[0],
+                shape: SHAPES[0]
             },
             isSuccess: false,
             selectedItemData: selectedItemDataInit

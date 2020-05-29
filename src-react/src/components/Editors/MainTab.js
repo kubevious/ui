@@ -182,6 +182,7 @@ const MainTab = ({ type, selectedItemId, selectedItem, selectedItemData, isSucce
                     <div className="label-wrapper">
                         <label>Name</label>
                     </div>
+                    <div className={`marker-shape ${shape}`} style={{ backgroundColor: color }} />
                     <input
                         type="text"
                         className="field-input name"
@@ -189,6 +190,18 @@ const MainTab = ({ type, selectedItemId, selectedItem, selectedItemData, isSucce
                         name="name"
                         onChange={(e) => handleChange(e)}
                     />
+                </div>
+
+                <div className="field">
+                    <div className="label-wrapper">
+                        <label>Shape</label>
+                    </div>
+                    <div className="marker-area">
+                        {SHAPES.map(item => (
+                            <div key={item} className={`marker-shape ${item}`} style={{ backgroundColor: color }}
+                                 onClick={() => handleChangeShape(item)}/>
+                        ))}
+                    </div>
                 </div>
 
                 <div className="field">
@@ -211,17 +224,6 @@ const MainTab = ({ type, selectedItemId, selectedItem, selectedItemData, isSucce
                     </div>}
                 </div>
 
-                <div className="field">
-                    <div className="label-wrapper">
-                        <label>Shape</label>
-                    </div>
-                    <div className="marker-area">
-                        {SHAPES.map(item => (
-                            <div key={item} className={`marker-shape ${item}`} style={{ backgroundColor: color }}
-                                 onClick={() => handleChangeShape(item)}/>
-                        ))}
-                    </div>
-                </div>
             </>
         )
     }

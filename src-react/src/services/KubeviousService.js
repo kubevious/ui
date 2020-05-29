@@ -3,6 +3,12 @@ import RuleService from './RuleService'
 import MarkerService from './MarkerService'
 
 class KubeviousService {
+    constructor(state)
+    {
+        this._ruleService = new RuleService(state);
+        this._markerService = new MarkerService(state);
+    }
+
     fetchDiagram(cb) {
         return BackendClient.get('/api/tree')
             .then(result => {
@@ -85,11 +91,11 @@ class KubeviousService {
     }
 
     rules() {
-        return new RuleService()
+        return this._ruleService;
     }
 
     markers() {
-        return this._markerService
+        return this._markerService;
     }
 
 }

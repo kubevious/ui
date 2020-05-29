@@ -36,7 +36,7 @@ const Editor = ({ type, items, isNewItem, selectedItem, selectedItemData, select
                             className={cx('tab object-tab', { 'selected': selectedTab === 'object' })}
                             onClick={() => setSelectedTab('object')}
                         >
-                            Affected object <div className="object-error-count">{selectedItemData.items.length}</div>
+                            Affected objects <div className="object-error-count">{selectedItemData.items.length}</div>
                         </div>
                     </>}
 
