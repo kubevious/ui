@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { isEmptyArray, isEmptyObject } from '../../utils/util'
-import { UnControlled as CodeMirrorEditor } from 'react-codemirror2'
+import { Controlled as CodeMirrorEditor } from 'react-codemirror2'
 import cx from 'classnames'
 import Codemirror from 'codemirror'
 import AffectedObjects from './AffectedObjects'
@@ -91,7 +91,7 @@ const Editor = ({ rules, isNewRule, selectedRule, selectedRuleData, selectedRule
     }
 
     const handleScriptKeyUp = ({ editor, data, value }) => {
-        if (data.keyCode > 64 && data.keyCode < 91) {
+        if (!editor.state.completionActive && data.keyCode > 64 && data.keyCode < 91) {
             Codemirror.commands.autocomplete(editor, null, { completeSingle: false })
         }
     }
@@ -158,7 +158,7 @@ const Editor = ({ rules, isNewRule, selectedRule, selectedRuleData, selectedRule
                         }}
                         className={cx({ 'required-field': setErrorEditor('target') })}
                         onKeyUp={(editor, data, value) => handleTargetKeyUp({ editor, data, value })}
-                        onChange={(editor, data, value) => handleChangeTarget({ editor, data, value })}
+                        onBeforeChange={(editor, data, value) => handleChangeTarget({ editor, data, value })}
                     />
                 </div>
 
@@ -178,7 +178,7 @@ const Editor = ({ rules, isNewRule, selectedRule, selectedRuleData, selectedRule
                         }}
                         className={cx({ 'required-field': setErrorEditor('script') })}
                         onKeyUp={(editor, data, value) => handleScriptKeyUp({ editor, data, value })}
-                        onChange={(editor, data, value) => handleChangeScript({ editor, data, value })}
+                        onBeforeChange={(editor, data, value) => handleChangeScript({ editor, data, value })}
                     />
                 </div>
 
