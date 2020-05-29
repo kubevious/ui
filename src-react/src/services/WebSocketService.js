@@ -14,6 +14,39 @@ class WebSocketService
 
     _setup()
     {
+        this._setupDiagram();
+        this._setupRuleEditor();
+    }
+
+    _setupDiagram()
+    {
+        var sockerScope = this._socket.scope((value, target) => {
+            if (!this._state.get('time_machine_enabled'))
+            {
+                if (target.dn == this._state.get('selected_dn'))
+                {
+                    this._state.set('selected_object_assets', value);
+                }
+            }
+        });
+
+        this._state.subscribe(['selected_dn', 'time_machine_enabled'],
+            ({ selected_dn, time_machine_enabled }) => {
+
+                var wsSubscriptions = []
+
+                if (selected_dn) {
+                    if (!time_machine_enabled) {
+                        wsSubscriptions.push({ kind: 'assets', dn: selected_dn });
+                    }
+                }
+
+                sockerScope.replace(wsSubscriptions);
+            })
+    }
+
+    _setupRuleEditor()
+    {
         this._state.set('rule_editor_items', []);
 
         this._subscribe({ kind: 'rules' }, value => {

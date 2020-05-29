@@ -15,6 +15,18 @@ class MockKubeviousService {
         this._state = state;
 
         this._ruleService = new MockRuleService(state);
+
+        this._state.subscribe(['selected_dn', 'time_machine_enabled'],
+            ({ selected_dn, time_machine_enabled }) => {
+
+                if (selected_dn) {
+                    if (!time_machine_enabled) {
+                        this.fetchAssets(selected_dn, (data) => {
+                            this._state.set('selected_object_assets', data);
+                        })
+                    }
+                }
+            });
     }
 
     fetchDiagram(cb) {
@@ -22,10 +34,12 @@ class MockKubeviousService {
     }
 
     fetchAssets(dn, cb) {
-        cb(_.cloneDeep({
-            props: PROPERTIES_DATA,
-            alerts: ALERTS_DATA,
-        }))
+        setTimeout(() => {
+            cb(_.cloneDeep({
+                props: PROPERTIES_DATA,
+                alerts: ALERTS_DATA,
+            }))
+        }, 200);
     }
 
     fetchSearchResults(criteria, cb) {

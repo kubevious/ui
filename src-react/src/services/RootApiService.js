@@ -13,7 +13,7 @@ class RootApiService {
         return this._kubevious;
     }
 
-    socket() {
+    get socket() {
         return this._socket;
     }
 }

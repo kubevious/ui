@@ -37,6 +37,7 @@ class StateHandler {
     }
 
     _handleSelectedObjectChange() {
+
         this._state.subscribe(['selected_dn', 'time_machine_enabled', 'time_machine_date'],
             ({ selected_dn, time_machine_enabled, time_machine_date }) => {
 
@@ -45,16 +46,12 @@ class StateHandler {
                         this._service.fetchHistoryProperties(selected_dn, time_machine_date, (config) => {
                             this._state.set('selected_object_assets', config);
                         })
-                    } else {
-                        this._service.fetchAssets(selected_dn, (config) => {
-                            this._state.set('selected_object_assets', config);
-                        })
                     }
                 } else {
                     this._state.set('selected_object_assets', null);
                 }
+            });
 
-            })
     }
 
     _handleSelectedObjectAssetsChange() {
