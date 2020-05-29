@@ -132,6 +132,11 @@ class GoldenLayoutComponent extends PureComponent {
             });
         });
 
+        this._layout.on('tabCreated', (tab) => {
+            var info = this._getComponent(tab.contentItem.config.component)
+            info.goldenTab = tab;
+        })
+
         this._layout.init()
 
         this.props.handleLayout(this)
@@ -147,6 +152,16 @@ class GoldenLayoutComponent extends PureComponent {
         id = id + 'Component'
         info.id = id
         this._components.push(info)
+    }
+
+    activateComponent(id) {
+        var info = this._getComponent(id);
+
+        var stack = info.goldenTab.contentItem.parent;
+        var stackComponent = _.head(stack.contentItems.filter(x => x.componentName === info.goldenTab.contentItem.componentName));
+        if (stackComponent) {
+            stack.setActiveContentItem(stackComponent);
+        }
     }
 
     _getComponent(id) {

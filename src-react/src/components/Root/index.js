@@ -29,6 +29,12 @@ const Root = () => {
         setWindows(value._components
             .filter(item => !item.skipClose)
             .map(component => ({ ...component, isVisible: true })))
+
+        state.subscribe('selected_dn', (selected_dn) => {
+            if (selected_dn) {
+                value.activateComponent('universeComponent')
+            }
+        })
     }
 
     const openAbout = () => {
