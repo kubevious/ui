@@ -7,7 +7,7 @@ import {
 
 import './styles.scss'
 
-const DnShortcutComponent = ({ dn, options, state, hidePopup }) => {
+const DnShortcutComponent = ({ dn, options, state, hidePopup, error = 0, warning = 0 }) => {
     setTimeout(() => {
         $('.dn-shortcut').on('click', (e) => onPropertyPanelDnClick(e))
     }, 0)
@@ -21,6 +21,11 @@ const DnShortcutComponent = ({ dn, options, state, hidePopup }) => {
     return (
         <div className="dn-shortcut" dn={dn}>
             <DnComponent dn={dn} options={options}/>
+
+            <div className="dn-alert">
+                {error > 0 && <div className="alert-item error"/>}
+                {warning > 0 && <div className="alert-item warn"/>}
+            </div>
         </div>
     )
 }

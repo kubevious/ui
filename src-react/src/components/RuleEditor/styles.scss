@@ -303,6 +303,22 @@ input[type="file"] {
 .editor-title .tab {
   margin-right: 20px;
   color: #737888;
+
+  &.object-tab {
+    display: flex;
+    align-items: center;
+
+    .object-error-count {
+      background: #E24C4B;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      text-align: center;
+      color: white;
+      font-size: 14px;
+      margin-left: 10px;
+    }
+  }
 }
 
 .editor-title .tab:hover {

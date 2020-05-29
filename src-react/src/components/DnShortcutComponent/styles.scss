@@ -1,9 +1,24 @@
 .dn-shortcut {
     margin-bottom: 10px;
-    margin-bottom: 10px;
     padding: 10px;
     border: 1px solid #666;
     cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .dn-alert {
+        display: flex;
+
+        .alert-item {
+            width: 20px;
+            height: 20px;
+
+            &:first-child {
+                margin-right: 10px;
+            }
+        }
+    }
 }
 
 .dn-shortcut:hover {

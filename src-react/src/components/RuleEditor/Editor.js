@@ -77,7 +77,7 @@ const Editor = ({ rules, isNewRule, selectedRule, selectedRuleData, selectedRule
                             className={cx('tab object-tab', { 'selected': selectedTab === 'object' })}
                             onClick={() => setSelectedTab('object')}
                         >
-                            Affected object ({selectedRuleData.items.length})
+                            Affected object <div className="object-error-count">{selectedRuleData.items.length}</div>
                         </div>
                     </>}
 
