@@ -3,6 +3,10 @@ import GrowingPacker from './packer.growing'
 import { prettyKind } from '../../utils/ui-utils'
 import { MONTSERRAT_12PX_500, MONTSERRAT_10PX_500, MONTSERRAT_14PX_500 } from '../../utils/constants'
 
+import {
+    SVG_DATA
+} from '../../boot/marker-icon-data'
+
 class VisualNode {
 
     constructor(view, data, parent) {
@@ -725,6 +729,10 @@ class BaseVisualNodeHeader {
         this._flavor = flavor
     }
 
+    get view() {
+        return this._node.view;
+    }
+
     get node() {
         return this._node
     }
@@ -850,14 +858,20 @@ class VisualNodeHeaderMarker extends BaseVisualNodeHeader {
         return this._marker
     }
 
-    get imgSrc() {
-        var header = this.header
-        if (!header) {
-            // TODO: Error
-            return ''
+    fill() {
+        var marker = this.view._markerData[this.marker];
+        if (marker) {
+            return marker.color;
         }
-        return '/img/favicon.png';
-        // return '/img/flags/' + header.icon + '.svg'
+        return 'white';
+    }
+
+    html() {
+        var marker = this.view._markerData[this.marker];
+        if (marker) {
+            return SVG_DATA[marker.shape];
+        }
+        return '';
     }
 }
 

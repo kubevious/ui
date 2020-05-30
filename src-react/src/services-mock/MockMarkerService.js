@@ -3,19 +3,19 @@ import _ from 'the-lodash'
 var MOCK_MARKERS = [
     {
         id: 1,
-        name: 'Marker 1',
+        name: 'marker-1',
         shape: 'triangle',
         color: '#330033'
     },
     {
         id: 2,
-        name: 'Marker 2',
+        name: 'marker-2',
         shape: 'plus',
         color: '#c79700'
     },
     {
         id: 3,
-        name: 'Marker 3',
+        name: 'marker-3',
         shape: 'check',
         color: '#00ccff'
     }

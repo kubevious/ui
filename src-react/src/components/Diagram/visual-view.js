@@ -28,7 +28,8 @@ class VisualView {
         this._existingNodeIds = {}
         this._expandedNodeIds = {}
         this._selectedNodeIds = {}
-
+        
+        this._markerData = {}
 
         state.subscribe("selected_dn", 
             (selected_dn) => {
@@ -43,7 +44,23 @@ class VisualView {
                 {
                     this._selectNodeByDn(selected_dn);
                 }
-            })
+            });
+
+        state.subscribe('marker_editor_items', 
+            (marker_editor_items) => {
+                this._markerData = {};
+                if (marker_editor_items) {
+                    for(var x of marker_editor_items)
+                    {
+                        this._markerData[x.name] = {
+                            shape: x.shape,
+                            color: x.color
+                        };
+                    }
+                }
+                this.updateAll(true);
+            });
+
     }
 
     _measureText(text, fontSpec) {
@@ -298,6 +315,10 @@ class VisualView {
     }
 
     render() {
+        if (!this._rootElem) {
+            return;
+        }
+
         this._renderItems(this._rootElem, this._flatVisualNodes)
         this._renderSmallItems()
     }
@@ -309,7 +330,7 @@ class VisualView {
     _renderItems(parentNode, items) {
         var self = this
         var node =
-            parentNode.selectAll('g')
+            parentNode.selectAll('.node') //selectAll('g')
                 .data(items, function (d) {
                     return d.id
                 })
@@ -523,23 +544,29 @@ class VisualView {
 
         selection
             .enter()
-            // .append('image')
             .append('g')
             .attr('class', 'node-marker')
-            .attr('fill', 'red')
-            // .attr('xlink:href', x => x.imgSrc)
             .attr('transform', x => x.translateTransform())
             .attr('width', x => x.width())
             .attr('height', x => x.height())
-            // .append('g')
-            .html('<svg id="Bold" enable-background="new 0 0 24 24" height="512" viewBox="0 0 24 24" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m.828 13.336c-.261.304-.388.691-.357 1.091s.215.764.52 1.024l7.403 6.346c.275.235.616.361.974.361.044 0 .089-.002.134-.006.405-.036.77-.229 1.028-.542l12.662-15.411c.254-.31.373-.7.334-1.099-.04-.399-.231-.759-.541-1.014l-2.318-1.904c-.639-.524-1.585-.432-2.111.207l-9.745 11.861-3.916-3.355c-.628-.536-1.576-.465-2.115.163z"/></svg>')
-            // .on('mouseover', function (d) {
-                // self._showFlagTooltip(this, d.flag)
-            // })
+            .attr('fill', x => x.fill())
+            .html(x => x.html())
+            .on('mouseover', function (d) {
+                self._showMarkerTooltip(this, d.marker)
+            })
     }
 
     _showFlagTooltip(elem, name) {
         var descr = flagTooltip(name);
+        this._showTooltip(elem, descr);
+    }
+
+    _showMarkerTooltip(elem, name) {
+        var descr = 'Marker <b>' + name + '</b>';
+        this._showTooltip(elem, descr);
+    }
+
+    _showTooltip(elem, descr) {
         if (!descr) {
             return
         }
@@ -583,13 +610,12 @@ class VisualView {
         d3
             .select(visualNode.node)
             .selectAll('.node-marker')
+            .html(x => x.html())
             .transition()
             .duration(duration)
-            .attr('x', x => {
-                return x.x()
-            })
+            .attr('x', x => x.x())
             .attr('y', x => x.y())
-
+            .attr('fill', x => x.fill())
 
         d3
             .select(visualNode.node)

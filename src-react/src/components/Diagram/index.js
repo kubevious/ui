@@ -101,11 +101,10 @@ class Diagram extends Component {
         if (!diagramScope.view) {
             return
         }
-
         if (this._sourceData) {
             diagramScope.view.acceptSourceData(this._sourceData)
         }
-        diagramScope.view.updateAll(true)
+        diagramScope.view.updateAll(true);
     }
 
     shouldComponentUpdate(nextProps, nextState, nextContext) {
