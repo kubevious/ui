@@ -9,17 +9,17 @@ import { snippets } from '../../boot/targetSnippets'
 
 const MainTab = ({ type, selectedItemId, selectedItem, selectedItemData, isSuccess, deleteItem, openSummary, createItem, saveItem }) => {
     const [displayColorPicker, setDisplayColorPicker] = useState(false)
-    const [data, setData] = useState({})
-    const [dataId, setDataId] = useState(null)
+    const [formData, setFormData] = useState({})
+    const [formDataId, setFormDataId] = useState(null)
 
     useEffect(() => {
-        if (selectedItemId !== dataId) {
-            setDataId(dataId)
-            setData({ ...selectedItem })
+        if (selectedItemId !== formDataId) {
+            setFormDataId(formDataId)
+            setFormData({ ...selectedItem })
         }
     }, [selectedItemId, selectedItem])
 
-    const validation = useMemo(() => data.name === '', [data])
+    const validation = useMemo(() => formData.name === '', [formData])
 
     const setErrorEditor = (field) => {
         return selectedItemData.logs.find(item => item.msg.source.includes(field)) &&
@@ -60,31 +60,31 @@ const MainTab = ({ type, selectedItemId, selectedItem, selectedItemData, isSucce
     }
 
     const handleChange = (e) => {
-        setData({ ...data, [e.target.name]: e.target.value })
+        setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
     const handleChangeTarget = ({ editor, data, value }) => {
-        setData({ ...data, target: value })
+        setFormData({ ...formData, target: value })
     }
 
     const handleChangeScript = ({ editor, data, value }) => {
-        setData({ ...data, script: value })
+        setFormData({ ...formData, script: value })
     }
 
     const changeEnable = (e) => {
-        setData({ ...data, enabled: !data.enabled })
+        setFormData({ ...formData, enabled: !formData.enabled })
     }
 
     const handleChangeShape = (shape) => {
-        setData({ ...data, shape: shape })
+        setFormData({ ...formData, shape: shape })
     }
 
     const handleChangeColor = (color) => {
-        setData({ ...data, color: color })
+        setFormData({ ...formData, color: color })
     }
 
     const renderRuleEditor = () => {
-        const { name, enabled, target, script } = data
+        const { name, enabled, target, script } = formData
 
         return (
             <>
@@ -162,7 +162,7 @@ const MainTab = ({ type, selectedItemId, selectedItem, selectedItemData, isSucce
     }
 
     const renderMarkerEditor = () => {
-        const { name, color, shape } = data
+        const { name, color, shape } = formData
 
         const popover = {
             position: 'absolute',
@@ -233,14 +233,14 @@ const MainTab = ({ type, selectedItemId, selectedItem, selectedItemData, isSucce
             {type === 'rule' ? renderRuleEditor() : renderMarkerEditor()}
             <div className="btn-group">
                 {selectedItem.id && <>
-                    <button className="button" onClick={() => deleteItem(data)}>Delete</button>
+                    <button className="button" onClick={() => deleteItem(formData)}>Delete</button>
                     <button className="button" onClick={() => openSummary()}>Cancel</button>
-                    <button className="button success" onClick={() => saveItem(data)} disabled={validation}>Save
+                    <button className="button success" onClick={() => saveItem(formData)} disabled={validation}>Save
                     </button>
                     {isSuccess && <span>Saved!</span>}
                 </>}
 
-                {!selectedItem.id && <button className="button success" onClick={() => createItem(data)}
+                {!selectedItem.id && <button className="button success" onClick={() => createItem(formData)}
                                              disabled={validation}>Create</button>}
 
             </div>
