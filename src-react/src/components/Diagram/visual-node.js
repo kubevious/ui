@@ -36,6 +36,7 @@ class VisualNode {
 
         this._expanderNodes = []
         this._flagNodes = []
+        this._markerNodes = [];
         this._severityNodes = []
         this._severityTextNodes = []
 
@@ -98,7 +99,17 @@ class VisualNode {
         if (!this.data.flags) {
             return []
         }
-        return _.keys(this.data.flags)
+        if (_.isPlainObject(this.data.flags)) {
+            return _.keys(this.data.flags);
+        }
+        return this.data.flags;
+    }
+
+    get markers() {
+        if (!this.data.markers) {
+            return []
+        }
+        return this.data.markers;
     }
 
     get expanderNodes() {
@@ -107,6 +118,10 @@ class VisualNode {
 
     get flagNodes() {
         return this._flagNodes
+    }
+
+    get markerNodes() {
+        return this._markerNodes;
     }
 
     get severityNodes() {
@@ -303,13 +318,21 @@ class VisualNode {
 
         for (var flag of this.flags) {
             this._addToHeader('flag-' + flag, {
-                kind: 'flag',
+                kind: 'icon',
                 icon: flag,
                 location: 'right'
             })
         }
-
         this._flagNodes = this.flags.map(x => new VisualNodeHeaderFlag(this, x))
+
+        for (var marker of this.markers) {
+            this._addToHeader('marker-' + marker, {
+                kind: 'icon',
+                icon: marker,
+                location: 'right'
+            })
+        }
+        this._markerNodes = this.markers.map(x => new VisualNodeHeaderMarker(this, x))
 
         this._measureHeaders()
     }
@@ -470,7 +493,7 @@ class VisualNode {
                 this._view._measureText(header.text, header.fontSpec)
             header.width = textDimentions.width
             header.height = textDimentions.height
-        } else if (header.kind === 'flag') {
+        } else if (header.kind === 'icon') {
             header.width = 16
             header.height = 16
         }
@@ -722,6 +745,10 @@ class BaseVisualNodeHeader {
         return this.node.getHeaderY(this.headerName, this._flavor)
     }
 
+    translateTransform() {
+        return 'translate(' + this.x() + ',' + this.y() + ')';
+    }
+
     width() {
         var header = this.header
         if (!header) {
@@ -806,6 +833,31 @@ class VisualNodeHeaderFlag extends BaseVisualNodeHeader {
             return ''
         }
         return '/img/flags/' + header.icon + '.svg'
+    }
+}
+
+/*
+ *
+ */
+class VisualNodeHeaderMarker extends BaseVisualNodeHeader {
+    constructor(node, marker) {
+        super(node, 'marker-' + marker, null)
+
+        this._marker = marker
+    }
+
+    get marker() {
+        return this._marker
+    }
+
+    get imgSrc() {
+        var header = this.header
+        if (!header) {
+            // TODO: Error
+            return ''
+        }
+        return '/img/favicon.png';
+        // return '/img/flags/' + header.icon + '.svg'
     }
 }
 
