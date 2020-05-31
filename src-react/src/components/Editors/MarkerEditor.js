@@ -114,7 +114,8 @@ class MarkerEditor extends PureComponent {
             selectedItem: {
                 name: '',
                 color: COLORS[0],
-                shape: SHAPES[0]
+                shape: SHAPES[0],
+                propagate: false
             },
             isSuccess: false,
             selectedItemData: selectedItemDataInit
@@ -122,7 +123,7 @@ class MarkerEditor extends PureComponent {
     }
 
     uploadFile() {
-        const input = document.getElementById('upload-rule')
+        const input = document.getElementById('upload-marker')
 
         if (input.files.length === 0) {
             console.error('No file selected.');
@@ -198,7 +199,7 @@ class MarkerEditor extends PureComponent {
                             </label>
                         </div>
 
-                        <input type='file' id='upload-rule' name='upload-rule' onChange={this.uploadFile}/>
+                        <input type='file' id='upload-marker' name='upload-marker' onChange={this.uploadFile}/>
                     </div>
                 </div>
             </div>

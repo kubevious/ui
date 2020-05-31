@@ -15,8 +15,8 @@ class RuleService {
             });
     }
 
-    backendCreateRule(policy, cb) {
-        return BackendClient.post('/api/v1/rule', policy)
+    backendCreateRule(rule, cb) {
+        return BackendClient.post('/api/v1/rule', rule)
             .then(result => {
                 cb(result.data)
             });
@@ -36,7 +36,7 @@ class RuleService {
             });
     }
 
-    backendExportRules(cb) {
+    backendExportItems(cb) {
         return BackendClient.get('/api/v1/rule/export')
             .then(result => {
                 cb(result.data);

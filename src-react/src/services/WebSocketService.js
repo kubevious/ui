@@ -16,6 +16,7 @@ class WebSocketService
     {
         this._setupDiagram();
         this._setupRuleEditor();
+        this._setupMarkerEditor();
     }
 
     _setupDiagram()
@@ -79,6 +80,18 @@ class WebSocketService
                 ]);
 
             });
+    }
+
+    _setupMarkerEditor()
+    {
+        this._state.set('marker_editor_items', []);
+
+        this._subscribe({ kind: 'markers' }, value => {
+            if (!value) {
+                value = [];
+            }
+            this._state.set('marker_editor_items', value)
+        });
     }
 
     _subscribe(target, cb) 
