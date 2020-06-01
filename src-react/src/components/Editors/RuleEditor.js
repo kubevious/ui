@@ -39,7 +39,7 @@ class RuleEditor extends PureComponent {
     }
 
     get sharedState() {
-        return this.props.state;
+        return this.props.sharedState;
     }
 
     componentDidMount() {
@@ -178,7 +178,7 @@ class RuleEditor extends PureComponent {
                         deleteItem={this.deleteItem}
                         createItem={this.createItem}
                         openSummary={this.openSummary}
-                        state={this.props.state}
+                        sharedState={this.props.sharedState}
                         isSuccess={this.state.isSuccess}
                 />
 

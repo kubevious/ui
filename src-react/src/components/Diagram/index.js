@@ -17,7 +17,7 @@ class Diagram extends Component {
 
         this.view = ''
 
-        props.state.subscribe('diagram_data',
+        props.sharedState.subscribe('diagram_data',
             (diagram_data) => {
                 if (diagram_data) {
                     this._acceptSourceData(diagram_data);
@@ -91,7 +91,7 @@ class Diagram extends Component {
     }
 
     setupView() {
-        diagramScope.view = new VisualView(d3.select('#diagram'), this.props.state);
+        diagramScope.view = new VisualView(d3.select('#diagram'), this.props.sharedState);
         diagramScope.view.skipShowRoot()
         diagramScope.view.setup()
         this._renderData()

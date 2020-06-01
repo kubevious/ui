@@ -1,10 +1,10 @@
 import KubeviousService from './MockKubeviousService'
 
 class MockRootApiService {
-    constructor(state)
+    constructor(sharedState)
     {
-        this._state = state;
-        this._kubevious = new KubeviousService(null, state);
+        this._sharedState = sharedState;
+        this._kubevious = new KubeviousService(null, sharedState);
     }
 
     kubevious(id) {

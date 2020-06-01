@@ -10,7 +10,7 @@ class Timeline extends Component {
     constructor(props) {
         super(props);
 
-        this._state = this.props.state;
+        this.sharedState = this.props.sharedState;
 
         this._parentElem = null;
         this._showAxis = false;
@@ -19,36 +19,36 @@ class Timeline extends Component {
     }
 
     get isTimeMachineEnabled() {
-        return this._state.get('time_machine_enabled');
+        return this.sharedState.get('time_machine_enabled');
     }
 
     get timeMachineDate() {
-        return this._state.get('time_machine_target_date');
+        return this.sharedState.get('time_machine_target_date');
     }
 
     get actualDateFrom() {
-        return this._state.get('time_machine_actual_date_from');
+        return this.sharedState.get('time_machine_actual_date_from');
     }
 
     get actualDateTo() {
-        return this._state.get('time_machine_actual_date_to');
+        return this.sharedState.get('time_machine_actual_date_to');
     }
 
     get dateFrom() {
-        return this._state.get('time_machine_date_from');
+        return this.sharedState.get('time_machine_date_from');
     }
 
     get dateTo() {
-        return this._state.get('time_machine_date_to');
+        return this.sharedState.get('time_machine_date_to');
     }
 
     get durationHrs() {
-        return this._state.get('time_machine_duration');
+        return this.sharedState.get('time_machine_duration');
     }
 
     get timelineData()
     {
-        var data = this._state.get('time_machine_timeline_data');
+        var data = this.sharedState.get('time_machine_timeline_data');
         if (!data) {
             return [];
         }
@@ -56,44 +56,44 @@ class Timeline extends Component {
     }
 
     resetView() {
-        this._state.set('time_machine_date_to', new Date());
-        this._state.set('time_machine_duration', 24);
-        this._state.set('time_machine_enabled', false);
-        this._state.set('time_machine_date', null);
-        this._state.set('time_machine_target_date', null);
+        this.sharedState.set('time_machine_date_to', new Date());
+        this.sharedState.set('time_machine_duration', 24);
+        this.sharedState.set('time_machine_enabled', false);
+        this.sharedState.set('time_machine_date', null);
+        this.sharedState.set('time_machine_target_date', null);
         this._handlePanZoom();
     }
 
     zoomIn() {
-        this._state.set('time_machine_duration', Math.max(1, this.durationHrs / 2));
+        this.sharedState.set('time_machine_duration', Math.max(1, this.durationHrs / 2));
         this._handlePanZoom();
     }
 
     zoomOut() {
-        this._state.set('time_machine_duration', Math.max(1, this.durationHrs * 2));
+        this.sharedState.set('time_machine_duration', Math.max(1, this.durationHrs * 2));
         this._handlePanZoom();
     }
 
     panLeft() {
-        this._state.set('time_machine_date_to', this._calcShiftDate(-this.durationHrs / 2));
+        this.sharedState.set('time_machine_date_to', this._calcShiftDate(-this.durationHrs / 2));
         this._handlePanZoom();
     }
 
     panRight() {
-        this._state.set('time_machine_date_to', this._calcShiftDate(this.durationHrs / 2));
+        this.sharedState.set('time_machine_date_to', this._calcShiftDate(this.durationHrs / 2));
         this._handlePanZoom();
     }
 
     _handlePanZoom()
     {
-        this._state.set('time_machine_date_from', this._calcShiftDate(-this.durationHrs));
+        this.sharedState.set('time_machine_date_from', this._calcShiftDate(-this.durationHrs));
         if (this.isTimeMachineEnabled)
         {
             if (this.timeMachineDate < this.dateFrom) {
-                this._state.set('time_machine_target_date', this.dateFrom);
+                this.sharedState.set('time_machine_target_date', this.dateFrom);
             }
             if (this.timeMachineDate > this.dateTo) {
-                this._state.set('time_machine_target_date', this.dateTo);
+                this.sharedState.set('time_machine_target_date', this.dateTo);
             }
         }
     }
@@ -320,20 +320,20 @@ class Timeline extends Component {
         if (date > this.actualDateTo) {
             date = this.actualDateTo
         }
-        this._state.set('time_machine_target_date', date)
+        this.sharedState.set('time_machine_target_date', date)
     }
 
     toggleTimeMachine() {
-        this._state.set('time_machine_enabled', !this._state.get('time_machine_enabled'));
-        if (this._state.get('time_machine_enabled'))
+        this.sharedState.set('time_machine_enabled', !this.sharedState.get('time_machine_enabled'));
+        if (this.sharedState.get('time_machine_enabled'))
         {
-            this._state.set('time_machine_target_date', this._state.get('time_machine_date_to'));
-            this._state.set('time_machine_date', this._state.get('time_machine_date_to'));
+            this.sharedState.set('time_machine_target_date', this.sharedState.get('time_machine_date_to'));
+            this.sharedState.set('time_machine_date', this.sharedState.get('time_machine_date_to'));
         }
         else
         {
-            this._state.set('time_machine_target_date', null);
-            this._state.set('time_machine_date', null);
+            this.sharedState.set('time_machine_target_date', null);
+            this.sharedState.set('time_machine_date', null);
         }
     }
 
@@ -348,7 +348,7 @@ class Timeline extends Component {
         this._parentElem = d3.select('#timeline')
         this._setup()
 
-        this._state.subscribe('time_machine_enabled',
+        this.sharedState.subscribe('time_machine_enabled',
             ( time_machine_enabled ) => {
 
                 if (time_machine_enabled) {
@@ -358,7 +358,7 @@ class Timeline extends Component {
                 }
             });
 
-        this._state.subscribe(['time_machine_enabled', 'time_machine_target_date'],
+        this.sharedState.subscribe(['time_machine_enabled', 'time_machine_target_date'],
             ({ time_machine_enabled, time_machine_target_date }) => {
                 var html = '';
                 if (time_machine_enabled && time_machine_target_date) {
@@ -367,28 +367,28 @@ class Timeline extends Component {
                 $('.history-info').html(html);
             });
 
-        this._state.subscribe(['time_machine_enabled', 'time_machine_target_date'],
+        this.sharedState.subscribe(['time_machine_enabled', 'time_machine_target_date'],
             () => {
                 this._renderSelector();
             });
 
-        this._state.subscribe(['time_machine_timeline_data', 'time_machine_actual_date_from', 'time_machine_actual_date_to'],
+        this.sharedState.subscribe(['time_machine_timeline_data', 'time_machine_actual_date_from', 'time_machine_actual_date_to'],
             () => {
                 this._renderTimeline();
             });
 
-        this._state.subscribe('time_machine_target_date',
+        this.sharedState.subscribe('time_machine_target_date',
             ( time_machine_target_date ) => {
                 this._cancelPendingTimeouts();
 
                 if (!time_machine_target_date) {
-                    this._state.set('time_machine_date', null);
+                    this.sharedState.set('time_machine_date', null);
                 } else {
 
                     this._dateChangeTimerId = setTimeout(() => {
                         this._cancelPendingTimeouts();
 
-                        this._state.set('time_machine_date', time_machine_target_date);
+                        this.sharedState.set('time_machine_date', time_machine_target_date);
 
                     }, 250);
 

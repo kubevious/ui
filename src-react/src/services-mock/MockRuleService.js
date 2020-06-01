@@ -95,9 +95,9 @@ for(var x of _.values(MOCK_RULES))
 
 class MockRuleService {
 
-    constructor(state)
+    constructor(sharedState)
     {
-        this._state = state;
+        this.sharedState = sharedState;
         this._notifyRules();
 
         setInterval(() => {
@@ -138,7 +138,7 @@ class MockRuleService {
             
         }, 5000);
 
-        this._state.subscribe('rule_editor_selected_rule_id',
+        this.sharedState.subscribe('rule_editor_selected_rule_id',
             (rule_editor_selected_rule_id) => {
                 this._notifyRuleStatus(rule_editor_selected_rule_id);
             })
@@ -147,10 +147,10 @@ class MockRuleService {
     _notifyRules()
     {
         this.backendFetchRuleList((result) => {
-            this._state.set('rule_editor_items', result);
+            this.sharedState.set('rule_editor_items', result);
         })
 
-        var id = this._state.get('rule_editor_selected_rule_id');
+        var id = this.sharedState.get('rule_editor_selected_rule_id');
         if (id) {
             this._notifyRuleStatus(id);
         }
@@ -172,7 +172,7 @@ class MockRuleService {
             data.items = rule.items; 
             data.logs = rule.logs;
         }
-        this._state.set('rule_editor_selected_rule_status', data);
+        this.sharedState.set('rule_editor_selected_rule_status', data);
     }
 
     _makeRuleListItem(x)

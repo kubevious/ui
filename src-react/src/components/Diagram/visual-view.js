@@ -8,9 +8,9 @@ import { flagTooltip } from '../../utils/ui-utils'
 
 class VisualView {
 
-    constructor(parentElem, state) {
+    constructor(parentElem, sharedState) {
         this._parentElem = parentElem;
-        this._state = state;
+        this.sharedState = sharedState;
 
         this._width = 0
         this._height = 0
@@ -31,7 +31,7 @@ class VisualView {
         
         this._markerData = {}
 
-        state.subscribe("selected_dn", 
+        sharedState.subscribe("selected_dn",
             (selected_dn) => {
 
                 for (var node of this._selectedNodes)
@@ -46,7 +46,7 @@ class VisualView {
                 }
             });
 
-        state.subscribe('marker_editor_items', 
+        sharedState.subscribe('marker_editor_items',
             (marker_editor_items) => {
                 this._markerData = {};
                 if (marker_editor_items) {
@@ -811,11 +811,11 @@ class VisualView {
     handleVisualNodeClick(visualNode) {
         if (visualNode.isSelected)
         {
-            this._state.set('selected_dn', null);
+            this.sharedState.set('selected_dn', null);
         }
         else
         {
-            this._state.set('selected_dn', visualNode.id);
+            this.sharedState.set('selected_dn', visualNode.id);
         }
     }
 

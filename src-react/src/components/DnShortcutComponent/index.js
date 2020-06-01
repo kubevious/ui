@@ -7,24 +7,21 @@ import {
 import './styles.scss'
 
 class DnShortcutComponent extends Component {
-    constructor(props)
-    {
+    constructor(props) {
         super(props);
-        this.sharedState = props.state;
 
         this.clickDn = this.clickDn.bind(this);
     }
 
-    clickDn()
-    {
-        this.sharedState.set('selected_dn', this.props.dn);
+    clickDn() {
+        this.props.sharedState.set('selected_dn', this.props.dn);
         popupClose()
     }
 
     render() {
         return (
-            <div className="dn-shortcut" dn={this.props.dn} onClick={this.clickDn} >
-                <DnComponent dn={this.props.dn} options={this.props.options} />
+            <div className="dn-shortcut" dn={this.props.dn} onClick={this.clickDn}>
+                <DnComponent dn={this.props.dn} options={this.props.options}/>
 
                 <div className="dn-alert">
                     {this.props.error > 0 && <div className="alert-item error"/>}

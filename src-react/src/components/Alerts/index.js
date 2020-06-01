@@ -14,7 +14,7 @@ class Alerts extends Component {
     }
 
     componentDidMount() {
-        this.props.state.subscribe('selected_object_alerts',
+        this.props.sharedState.subscribe('selected_object_alerts',
             selected_object_assets => {
                 this.setState({ alerts: selected_object_assets })
             })

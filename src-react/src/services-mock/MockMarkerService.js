@@ -91,8 +91,8 @@ for (var x of _.values(MOCK_MARKERS)) {
 
 class MockMarkerService {
 
-    constructor(state) {
-        this._state = state;
+    constructor(sharedState) {
+        this.sharedState = sharedState;
         this._notifyMarkers();
 
         setInterval(() => {
@@ -111,7 +111,7 @@ class MockMarkerService {
 
         }, 5000);
 
-        this._state.subscribe('marker_editor_selected_marker_id',
+        this.sharedState.subscribe('marker_editor_selected_marker_id',
             (marker_editor_selected_marker_id) => {
                 this._notifyMarkerStatus(marker_editor_selected_marker_id);
             })
@@ -119,10 +119,10 @@ class MockMarkerService {
 
     _notifyMarkers() {
         this.backendFetchMarkerList((result) => {
-            this._state.set('marker_editor_items', result);
+            this.sharedState.set('marker_editor_items', result);
         })
 
-        var id = this._state.get('marker_editor_selected_marker_id');
+        var id = this.sharedState.get('marker_editor_selected_marker_id');
         if (id) {
             this._notifyMarkerStatus(id);
         }
@@ -143,7 +143,7 @@ class MockMarkerService {
             data.items = marker.items;
             data.logs = marker.logs;
         }
-        this._state.set('marker_editor_selected_marker_status', data);
+        this.sharedState.set('marker_editor_selected_marker_status', data);
     }
 
     _makeMarkerListItem(x) {

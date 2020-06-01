@@ -53,7 +53,7 @@ class Properties extends Component {
         if (group.kind === 'key-value') {
             return <EnvironmentVariables group={group}/>
         } else if (group.kind === 'dn-list') {
-            return <DnList group={group} state={this.props.state}/>
+            return <DnList group={group} sharedState={this.props.sharedState}/>
         } else if (group.kind === 'yaml') {
             return <Config group={group}/>
         } else if (group.kind === 'table') {
@@ -93,7 +93,7 @@ class Properties extends Component {
                             dn={item.dn}
                             groupName={item.id}
                             group={item}
-                            state={this.props.state}
+                            sharedState={this.props.sharedState}
                             propertyExpanderHandleClick={this.propertyExpanderHandleClick}
                             onPropertyGroupPopup={this.onPropertyGroupPopup}
                         />
@@ -104,7 +104,7 @@ class Properties extends Component {
     }
 
     componentDidMount() {
-        this.props.state.subscribe(['selected_dn', 'selected_object_props'],
+        this.props.sharedState.subscribe(['selected_dn', 'selected_object_props'],
             ({ selected_dn, selected_object_props }) => {
 
                 this.setState({ selectedDn: selected_dn, selectedObjectProps: selected_object_props })

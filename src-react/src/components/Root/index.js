@@ -17,12 +17,12 @@ const Root = () => {
     const [layout, setLayout] = useState(null)
     const [windows, setWindows] = useState([])
 
-    const state = new SharedState()
+    const sharedState = new SharedState()
 
-    const rootService = process.env.REACT_APP_MOCKED_DATA ? new MockRootApiService(state) : new RootApiService(state);
+    const rootService = process.env.REACT_APP_MOCKED_DATA ? new MockRootApiService(sharedState) : new RootApiService(sharedState);
     const service = rootService.kubevious();
 
-    const stateHandler = new StateHandler(state, rootService);
+    const stateHandler = new StateHandler(sharedState, rootService);
 
     const handleLayout = (value) => {
         setLayout(value)
@@ -30,7 +30,7 @@ const Root = () => {
             .filter(item => !item.skipClose)
             .map(component => ({ ...component, isVisible: true })))
 
-        state.subscribe('selected_dn', (selected_dn) => {
+        sharedState.subscribe('selected_dn', (selected_dn) => {
             if (selected_dn) {
                 value.activateComponent('universeComponent')
             }
@@ -44,12 +44,11 @@ const Root = () => {
                     title: 'About Kubevious'
                 }
             })
-
         })
     }
 
     const openSearch = () => {
-        popupOpen(<Search service={service} state={state}/>, {
+        popupOpen(<Search service={service} sharedState={sharedState}/>, {
             header: {
                 content: () => (
                     <div className="form-group has-success">
@@ -123,7 +122,7 @@ const Root = () => {
                 </div>
             </div>
 
-            <GoldenLayoutComponent service={service} state={state} handleLayout={handleLayout}/>
+            <GoldenLayoutComponent service={service} sharedState={sharedState} handleLayout={handleLayout}/>
         </div>
     )
 }

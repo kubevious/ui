@@ -11,20 +11,20 @@ import MockRuleService from './MockRuleService'
 import MockMarkerService from './MockMarkerService'
 
 class MockKubeviousService {
-    constructor(clusterId, state) {
+    constructor(clusterId, sharedState) {
         this.clusterId = clusterId
-        this._state = state;
+        this.sharedState = sharedState;
 
-        this._ruleService = new MockRuleService(state);
-        this._markerService = new MockMarkerService(state)
+        this._ruleService = new MockRuleService(sharedState);
+        this._markerService = new MockMarkerService(sharedState)
 
-        this._state.subscribe(['selected_dn', 'time_machine_enabled'],
+        this.sharedState.subscribe(['selected_dn', 'time_machine_enabled'],
             ({ selected_dn, time_machine_enabled }) => {
 
                 if (selected_dn) {
                     if (!time_machine_enabled) {
                         this.fetchAssets(selected_dn, (data) => {
-                            this._state.set('selected_object_assets', data);
+                            this.sharedState.set('selected_object_assets', data);
                         })
                     }
                 }

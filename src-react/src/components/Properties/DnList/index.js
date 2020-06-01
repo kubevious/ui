@@ -4,11 +4,11 @@ import { isEmptyArray } from '../../../utils/util'
 
 import './styles.scss'
 
-const DnList = ({ group, options, state }) => {
+const DnList = ({ group, options, sharedState }) => {
     return (
         <div className="DnList-container">
             {!isEmptyArray(group.config) && group.config.map((item, index) => (
-                <DnShortcutComponent key={index} dn={item} options={options} state={state}/>
+                <DnShortcutComponent key={index} dn={item} options={options} sharedState={sharedState}/>
             ))}
         </div>
     )

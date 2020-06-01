@@ -4,7 +4,7 @@ class WebSocketService
 {
     constructor(state)
     {
-        this._state = state;
+        this.sharedState = state;
         this._socket = new WebSocketSubscriptionClient('/socket');
 
         this._socket.run();
@@ -22,16 +22,16 @@ class WebSocketService
     _setupDiagram()
     {
         var sockerScope = this._socket.scope((value, target) => {
-            if (!this._state.get('time_machine_enabled'))
+            if (!this.sharedState.get('time_machine_enabled'))
             {
-                if (target.dn == this._state.get('selected_dn'))
+                if (target.dn == this.sharedState.get('selected_dn'))
                 {
-                    this._state.set('selected_object_assets', value);
+                    this.sharedState.set('selected_object_assets', value);
                 }
             }
         });
 
-        this._state.subscribe(['selected_dn', 'time_machine_enabled'],
+        this.sharedState.subscribe(['selected_dn', 'time_machine_enabled'],
             ({ selected_dn, time_machine_enabled }) => {
 
                 var wsSubscriptions = []
@@ -48,13 +48,13 @@ class WebSocketService
 
     _setupRuleEditor()
     {
-        this._state.set('rule_editor_items', []);
+        this.sharedState.set('rule_editor_items', []);
 
         this._subscribe({ kind: 'rules' }, value => {
             if (!value) {
                 value = [];
             }
-            this._state.set('rule_editor_items', value)
+            this.sharedState.set('rule_editor_items', value)
         });
 
         var selectedRuleScope = this._socket.scope((value, target) => {
@@ -65,11 +65,11 @@ class WebSocketService
                 JSON.stringify(target)
             );
 
-            this._state.set('rule_editor_selected_rule_status', value);
+            this.sharedState.set('rule_editor_selected_rule_status', value);
 
         });
 
-        this._state.subscribe('rule_editor_selected_rule_id',
+        this.sharedState.subscribe('rule_editor_selected_rule_id',
             (rule_editor_selected_rule_id) => {
 
                 selectedRuleScope.replace([
@@ -84,13 +84,13 @@ class WebSocketService
 
     _setupMarkerEditor()
     {
-        this._state.set('marker_editor_items', []);
+        this.sharedState.set('marker_editor_items', []);
 
         this._subscribe({ kind: 'markers' }, value => {
             if (!value) {
                 value = [];
             }
-            this._state.set('marker_editor_items', value)
+            this.sharedState.set('marker_editor_items', value)
         });
     }
 
