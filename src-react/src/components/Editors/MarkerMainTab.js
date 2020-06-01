@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { COLORS, SHAPES } from '../../boot/markerData'
 import { ChromePicker } from 'react-color'
+import cx from 'classnames'
 
 const MarkerMainTab = ({ selectedItemId, selectedItem, selectedItemData, isSuccess, deleteItem, openSummary, createItem, saveItem }) => {
     const [displayColorPicker, setDisplayColorPicker] = useState(false)
@@ -64,8 +65,10 @@ const MarkerMainTab = ({ selectedItemId, selectedItem, selectedItemData, isSucce
                 </div>
                 <div className="marker-area">
                     {SHAPES.map(item => (
-                        <div key={item} className={`marker-shape ${item}`} style={{ backgroundColor: color }}
-                             onClick={() => handleChangeShape(item)}/>
+                        <div className={cx('marker-wrapper', { 'selected': item === shape })} key={item}>
+                            <div key={item} className={`marker-shape ${item}`} style={{ backgroundColor: color }}
+                                 onClick={() => handleChangeShape(item)}/>
+                        </div>
                     ))}
                 </div>
             </div>
@@ -76,8 +79,10 @@ const MarkerMainTab = ({ selectedItemId, selectedItem, selectedItemData, isSucce
                 </div>
                 <div className="marker-area">
                     {COLORS.map(item => (
-                        <div key={item} className={`marker-shape ${shape}`} style={{ backgroundColor: item }}
-                             onClick={() => handleChangeColor(item)}/>
+                        <div className={cx('marker-wrapper', { 'selected': item === color })} key={item}>
+                            <div key={item} className={`marker-shape ${shape}`} style={{ backgroundColor: item }}
+                                 onClick={() => handleChangeColor(item)}/>
+                        </div>
                     ))}
                 </div>
 
