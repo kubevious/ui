@@ -219,9 +219,11 @@ class MockMarkerService {
     }
 
     backendImportMarkers(markers, cb) {
+        let max = _.max(_.values(MOCK_MARKERS).map(x => x.id))
         MOCK_MARKERS = {};
-        for (var x of markers) {
-            x.id = _.max(_.values(MOCK_MARKERS).map(x => x.id)) + 1;
+        for (var x of markers.data) {
+            x.id = max + 1;
+            max = x.id
             x.items = []
             x.logs = []
             MOCK_MARKERS[x.id] = x;

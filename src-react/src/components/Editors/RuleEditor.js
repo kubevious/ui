@@ -196,7 +196,7 @@ class RuleEditor extends PureComponent {
                         <div className="option">
                             <label htmlFor="upload-rule" className="option-desc"
                                    onClick={() => this.setState({ deleteExtra: false })}>
-                                <b>Merge</b> from backup preserving existing roles
+                                <b>Merge</b> from backup preserving existing rules
                             </label>
                         </div>
 

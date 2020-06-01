@@ -254,10 +254,12 @@ class MockRuleService {
     }
 
     backendImportRules(rules, cb) {
+        let max = _.max(_.values(MOCK_RULES).map(x => x.id))
         MOCK_RULES = {};
         for(var x of rules.data)
         {
-            x.id = _.max(_.values(MOCK_RULES).map(x => x.id)) + 1;;
+            x.id = max + 1;
+            max = x.id
             x.items = []
             x.logs = []
             MOCK_RULES[x.id] = x;

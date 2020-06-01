@@ -11,7 +11,7 @@ const ItemsList = ({ type, items, selectedItemId, selectedItem, selectItem, crea
             const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(response))
             const exportElem = document.getElementById('exportAnchor')
             exportElem.setAttribute('href', dataStr)
-            exportElem.setAttribute('download', 'rules.json')
+            exportElem.setAttribute('download', `${type}s.json`)
             exportElem.click()
         })
     }
@@ -54,7 +54,7 @@ const ItemsList = ({ type, items, selectedItemId, selectedItem, selectItem, crea
                             onClick={() => selectItem(item)}>
                         {type === 'marker' && <div className={`marker-shape ${item.shape}`} style={{ backgroundColor: item.color }}/>}
                         {item.name}
-                        {!item.isCurrent && <div className="busy-rule-indicator"/>}
+                        {type === 'rule' && !item.isCurrent && <div className="busy-rule-indicator"/>}
                         {type === 'rule' && <div className={cx('indicator', ruleIndicatorClass(item))}/>}
                     </button>
                 ))}

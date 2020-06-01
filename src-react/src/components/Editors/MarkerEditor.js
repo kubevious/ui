@@ -186,16 +186,16 @@ class MarkerEditor extends PureComponent {
                     <div className="import-caret"/>
                     <div className="import-options">
                         <div className="option">
-                            <label htmlFor="upload-rule" className="option-desc"
+                            <label htmlFor="upload-marker" className="option-desc"
                                    onClick={() => this.setState({ deleteExtra: true })}>
                                 <b>Restore</b> from backup
                             </label>
                         </div>
 
                         <div className="option">
-                            <label htmlFor="upload-rule" className="option-desc"
+                            <label htmlFor="upload-marker" className="option-desc"
                                    onClick={() => this.setState({ deleteExtra: false })}>
-                                <b>Merge</b> from backup preserving existing {this.state.type}s
+                                <b>Merge</b> from backup preserving existing markers
                             </label>
                         </div>
 
