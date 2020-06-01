@@ -3,14 +3,8 @@ import { isEmptyArray, isEmptyObject } from '../../utils/util'
 import cx from 'classnames'
 import AffectedObjects from './AffectedObjects'
 import StartPage from './StartPage'
-import MainTab from './MainTab'
-
-import 'codemirror/addon/hint/javascript-hint'
-import 'codemirror/addon/hint/show-hint';
-import 'codemirror/addon/hint/show-hint.css';
-import 'codemirror/theme/darcula.css'
-import 'codemirror/lib/codemirror.css'
-import 'codemirror/mode/javascript/javascript'
+import RuleMainTab from './RuleMainTab'
+import MarkerMainTab from './MarkerMainTab'
 
 const Editor = ({ type, items, isNewItem, selectedItem, selectedItemData, selectedItemId, createNewItem, saveItem, deleteItem, createItem, openSummary, state, isSuccess }) => {
     const [selectedTab, setSelectedTab] = useState('main')
@@ -18,6 +12,32 @@ const Editor = ({ type, items, isNewItem, selectedItem, selectedItemData, select
     useEffect(() => {
         setSelectedTab('main')
     }, [selectedItemId])
+
+    const detectEditor = () => {
+        return (
+            <>
+                {type === 'rule' ?
+                    <RuleMainTab
+                        selectedItemId={selectedItemId}
+                        selectedItem={selectedItem}
+                        selectedItemData={selectedItemData}
+                        deleteItem={deleteItem}
+                        openSummary={openSummary}
+                        saveItem={saveItem}
+                        createItem={createItem}
+                        isSuccess={isSuccess}/> :
+                    <MarkerMainTab
+                        selectedItemId={selectedItemId}
+                        selectedItem={selectedItem}
+                        selectedItemData={selectedItemData}
+                        deleteItem={deleteItem}
+                        openSummary={openSummary}
+                        saveItem={saveItem}
+                        createItem={createItem}
+                        isSuccess={isSuccess}/>}
+            </>
+        )
+    }
 
     const renderEditor = () => {
         return (
@@ -42,17 +62,7 @@ const Editor = ({ type, items, isNewItem, selectedItem, selectedItemData, select
 
                 </div>
 
-                {selectedTab === 'main' && <MainTab
-                    type={type}
-                    selectedItemId={selectedItemId}
-                    selectedItem={selectedItem}
-                    selectedItemData={selectedItemData}
-                    deleteItem={deleteItem}
-                    openSummary={openSummary}
-                    saveItem={saveItem}
-                    createItem={createItem}
-                    isSuccess={isSuccess}
-                />}
+                {selectedTab === 'main' && detectEditor()}
 
                 {selectedTab === 'object' && !isEmptyArray(selectedItemData.items) &&
                 <AffectedObjects selectedItemData={selectedItemData} state={state}/>}
