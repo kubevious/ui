@@ -13,6 +13,10 @@ class Alerts extends Component {
         }
     }
 
+    get service() {
+        return this.props.service
+    }
+
     componentDidMount() {
         this.props.sharedState.subscribe('selected_object_alerts',
             selected_object_assets => {

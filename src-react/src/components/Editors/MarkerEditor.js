@@ -25,8 +25,6 @@ class MarkerEditor extends PureComponent {
             isMergeOptionsVisible: false
         }
 
-        this.service = this.props.service.markers()
-
         this.openSummary = this.openSummary.bind(this)
         this.saveItem = this.saveItem.bind(this)
         this.deleteItem = this.deleteItem.bind(this)
@@ -39,6 +37,10 @@ class MarkerEditor extends PureComponent {
 
     get sharedState() {
         return this.props.sharedState;
+    }
+
+    get service() {
+        return this.props.service.markers()
     }
 
     componentDidMount() {

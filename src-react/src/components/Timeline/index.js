@@ -18,6 +18,10 @@ class Timeline extends Component {
         this.resetView();
     }
 
+    get service() {
+        return this.props.service
+    }
+
     get isTimeMachineEnabled() {
         return this.sharedState.get('time_machine_enabled');
     }

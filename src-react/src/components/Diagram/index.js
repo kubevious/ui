@@ -25,6 +25,10 @@ class Diagram extends Component {
             })
     }
 
+    get service() {
+        return this.props.service
+    }
+
     componentDidMount() {
         this.setupView()
 

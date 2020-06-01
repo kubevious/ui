@@ -26,8 +26,6 @@ class RuleEditor extends PureComponent {
             isMergeOptionsVisible: false
         }
 
-        this.service = this.props.service.rules()
-
         this.openSummary = this.openSummary.bind(this)
         this.saveItem = this.saveItem.bind(this)
         this.deleteItem = this.deleteItem.bind(this)
@@ -40,6 +38,10 @@ class RuleEditor extends PureComponent {
 
     get sharedState() {
         return this.props.sharedState;
+    }
+
+    get service() {
+        return this.props.service.rules()
     }
 
     componentDidMount() {

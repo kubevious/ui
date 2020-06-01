@@ -28,6 +28,10 @@ class Properties extends Component {
         this.onPropertyGroupPopup = this.onPropertyGroupPopup.bind(this)
     }
 
+    get service() {
+        return this.props.service
+    }
+
     propertyExpanderHandleClick(event) {
         var target = event.currentTarget
         target.classList.toggle('active')
