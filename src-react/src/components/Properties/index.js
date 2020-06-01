@@ -21,7 +21,7 @@ class Properties extends PureComponent {
 
         this.state = {
             selectedDn: null,
-            selectedObjectProps: null
+            selectedObjectProps: []
         }
 
         this._renderContent = this._renderContent.bind(this)

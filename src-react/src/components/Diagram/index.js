@@ -6,16 +6,11 @@ import $ from 'jquery'
 import './styles.css'
 import '../Popup/styles.css'
 
-export var diagramScope = {
-    client: null,
-    view: null
-}
-
 class Diagram extends PureComponent {
     constructor(props) {
         super(props)
 
-        this.view = ''
+        this.view = null
 
         props.sharedState.subscribe('diagram_data',
             (diagram_data) => {
@@ -40,7 +35,7 @@ class Diagram extends PureComponent {
     }
 
     selectDiagramItem(dn) {
-        diagramScope.view.selectNodeByDn(dn);
+        this.view.selectNodeByDn(dn);
     }
 
     _acceptSourceData(sourceData) {
@@ -72,7 +67,6 @@ class Diagram extends PureComponent {
         if (node.children) {
             for (var child of node.children) {
                 this.massageSourceDataNode(child, node)
-                // eslint-disable-next-line no-redeclare
                 for (var severity of ALERT_SEVERITIES) {
                     node.alerts[severity] += child.alerts[severity]
                 }
@@ -95,20 +89,20 @@ class Diagram extends PureComponent {
     }
 
     setupView() {
-        diagramScope.view = new VisualView(d3.select('#diagram'), this.props.sharedState);
-        diagramScope.view.skipShowRoot()
-        diagramScope.view.setup()
+        this.view = new VisualView(d3.select('#diagram'), this.props.sharedState);
+        this.view.skipShowRoot()
+        this.view.setup()
         this._renderData()
     }
 
     _renderData() {
-        if (!diagramScope.view) {
+        if (!this.view) {
             return
         }
         if (this._sourceData) {
-            diagramScope.view.acceptSourceData(this._sourceData)
+            this.view.acceptSourceData(this._sourceData)
         }
-        diagramScope.view.updateAll(true);
+        this.view.updateAll(true);
     }
 
     render() {
