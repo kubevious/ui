@@ -14,6 +14,7 @@ import Search from '../Search'
 
 const Root = () => {
     const [showSettings, setShowSettings] = useState(false)
+    const [showSearch, setShowSearch] = useState(false)
     const [layout, setLayout] = useState(null)
     const [windows, setWindows] = useState([])
 
@@ -47,21 +48,9 @@ const Root = () => {
         })
     }
 
-    const openSearch = () => {
-        popupOpen(<Search service={service} sharedState={sharedState}/>, {
-            header: {
-                content: () => (
-                    <div className="form-group has-success">
-                        <input
-                            type="text"
-                            className="form-control search-input"
-                            placeholder="Search"
-                        />
-                    </div>
-                )
-            }
-        })
-    }
+    const openSearch = () => setShowSearch(true)
+
+    const closePopup = () => setShowSearch(false)
 
     const handleChangeWindow = (e) => {
         const windowId = e.target.getAttribute('tool-window-id');
@@ -123,6 +112,10 @@ const Root = () => {
             </div>
 
             <GoldenLayoutComponent service={service} sharedState={sharedState} handleLayout={handleLayout}/>
+
+            {showSearch && <div className="popup" id="popup">
+                <Search service={service} sharedState={sharedState} closePopup={closePopup}/>
+            </div>}
         </div>
     )
 }

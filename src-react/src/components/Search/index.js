@@ -1,32 +1,38 @@
-import React from 'react'
-import { renderToString } from 'react-dom/server'
-import $ from 'jquery'
+import React, { useState } from 'react'
 import { isEmptyArray } from '../../utils/util'
 import DnShortcutComponent from '../DnShortcutComponent'
 
 import './styles.scss'
 
-const Search = ({ service, state }) => {
-    setTimeout(() => {
-        $('.search-input').on('input', (e) => {
-            service.fetchSearchResults(e.target.value, result => {
-                renderSearchResult(result)
-            })
+const Search = ({ service, sharedState, closePopup }) => {
+    const [value, setValue] = useState('')
+    const [result, setResult] = useState([])
+
+    const handleChange = (e) => {
+        setValue(e.target.value)
+        service.fetchSearchResults(e.target.value, result => {
+            setResult(result)
         })
-    }, 0)
-
-    const renderSearchResult = (result) => {
-        const html = renderToString(<>
-            {!isEmptyArray(result) && result.map((item, index) => (
-                <DnShortcutComponent key={index} dn={item.dn} state={state}/>
-            ))}
-        </>)
-
-        $('.search-results').append(html)
     }
 
     return (
-        <div className="search-results"/>
+        <>
+            <div className="form-group has-success">
+                <input
+                    type="text"
+                    className="form-control search-input"
+                    placeholder="Search"
+                    value={value}
+                    onChange={(e) => handleChange(e)}
+                />
+            </div>
+            <div className="search-results">
+                {!isEmptyArray(result) && result.map((item, index) => (
+                    <DnShortcutComponent key={index} dn={item.dn} sharedState={sharedState}/>
+                ))}
+            </div>
+            <button className="close" onClick={() => closePopup()}/>
+        </>
     )
 }
 
