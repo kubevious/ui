@@ -39,12 +39,20 @@ const Editor = ({ type, items, isNewItem, selectedItem, selectedItemData, select
         )
     }
 
+    const renderLoading = () => {
+        return (
+            !isNewItem &&
+            !selectedItemData.status.isCurrent &&
+            type === 'rule' &&
+            <div className="busy-rule-indicator"/>
+        )
+    }
+
     const renderEditor = () => {
         return (
             <>
                 <div className="editor-title">
-                    {!isNewItem && selectedItemData && !selectedItemData.status.isCurrent &&
-                    <div className="busy-rule-indicator"/>}
+                    {renderLoading()}
 
                     {isNewItem && <div className='editor-title'>Create new {type}</div>}
 

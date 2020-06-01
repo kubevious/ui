@@ -34,7 +34,7 @@ const ItemsList = ({ type, items, selectedItemId, selectedItem, selectItem, crea
                 <div className="btn-group">
                     <button className="button success new-rule-btn" onClick={() => createNewItem()}>
                         <div className="plus">+</div>
-                        New {type}
+                        <span className="button-text">New {type}</span>
                     </button>
                     <button className="button square light export" onClick={exportItems}>
                         <FontAwesomeIcon icon={faDownload}/>

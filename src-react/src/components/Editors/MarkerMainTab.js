@@ -19,18 +19,6 @@ const MarkerMainTab = ({ selectedItemId, selectedItem, selectedItemData, isSucce
 
     const validation = useMemo(() => formData.name === '', [formData])
 
-    const popover = {
-        position: 'absolute',
-        zIndex: '100'
-    }
-    const cover = {
-        position: 'fixed',
-        top: '0px',
-        right: '0px',
-        bottom: '0px',
-        left: '0px'
-    }
-
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
@@ -89,8 +77,8 @@ const MarkerMainTab = ({ selectedItemId, selectedItem, selectedItemData, isSucce
                 <button className="custom-color" onClick={() => setDisplayColorPicker(!displayColorPicker)}>Pick
                     Color
                 </button>
-                {displayColorPicker && <div style={popover}>
-                    <div style={cover} onClick={() => setDisplayColorPicker(false)}/>
+                {displayColorPicker && <div className="color-popover">
+                    <div className="cover" onClick={() => setDisplayColorPicker(false)}/>
                     <ChromePicker onChange={(color, event) => handleChangeColor(color.hex)} color={color}/>
                 </div>}
             </div>
