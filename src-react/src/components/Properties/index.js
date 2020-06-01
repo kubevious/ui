@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import $ from 'jquery'
 import _ from 'lodash'
 import {
@@ -15,7 +15,7 @@ import PropertiesTable from './PropertiesTable'
 import './styles.css'
 import './obsidian.css'
 
-class Properties extends Component {
+class Properties extends PureComponent {
     constructor(props) {
         super(props)
 

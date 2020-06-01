@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Fragment, PureComponent } from 'react'
 import * as d3 from 'd3'
 import $ from 'jquery'
 import { formatDate } from '../../utils/ui-utils'
@@ -6,7 +6,7 @@ import moment from 'moment'
 
 import './styles.css'
 
-class Timeline extends Component {
+class Timeline extends PureComponent {
     constructor(props) {
         super(props);
 

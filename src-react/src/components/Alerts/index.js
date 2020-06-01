@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import AlertTable from './AlertTable'
-
-import './styles.css'
 import { isEmptyArray } from '../../utils/util'
 
-class Alerts extends Component {
+import './styles.css'
+
+class Alerts extends PureComponent {
     constructor(props) {
         super(props)
 

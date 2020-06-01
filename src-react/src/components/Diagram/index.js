@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import VisualView from './visual-view'
 import * as d3 from 'd3'
 import $ from 'jquery'
@@ -11,7 +11,7 @@ export var diagramScope = {
     view: null
 }
 
-class Diagram extends Component {
+class Diagram extends PureComponent {
     constructor(props) {
         super(props)
 
@@ -109,10 +109,6 @@ class Diagram extends Component {
             diagramScope.view.acceptSourceData(this._sourceData)
         }
         diagramScope.view.updateAll(true);
-    }
-
-    shouldComponentUpdate(nextProps, nextState, nextContext) {
-        return nextProps !== this.props;
     }
 
     render() {
