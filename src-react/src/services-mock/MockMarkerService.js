@@ -23,71 +23,42 @@ var MOCK_MARKERS = [
 const MOCK_MARKER_EDITOR_ITEMS = [
     {
         'dn': 'root/ns-[gitlab]/app-[gitlab-gitlab-exporter]/initcont-[configure]/image-[busybox]',
-        'has_error': 1,
-        'has_warning': 0
     },
     {
         'dn': 'root/ns-[gitlab]/app-[gitlab-gitlab-shell]/initcont-[configure]/image-[busybox]',
-        'has_error': 1,
-        'has_warning': 0
     },
     {
         'dn': 'root/ns-[gitlab]/app-[gitlab-minio]/initcont-[configure]/image-[busybox]',
-        'has_error': 1,
-        'has_warning': 0
     },
     {
         'dn': 'root/ns-[gitlab]/app-[gitlab-registry]/initcont-[configure]/image-[busybox]',
-        'has_error': 1,
-        'has_warning': 0
     },
     {
         'dn': 'root/ns-[gitlab]/app-[gitlab-sidekiq-all-in-1]/initcont-[configure]/image-[busybox]',
-        'has_error': 1,
-        'has_warning': 0
     },
     {
         'dn': 'root/ns-[gitlab]/app-[gitlab-task-runner]/initcont-[configure]/image-[busybox]',
-        'has_error': 1,
-        'has_warning': 0
     },
     {
         'dn': 'root/ns-[gitlab]/app-[gitlab-unicorn]/initcont-[configure]/image-[busybox]',
-        'has_error': 1,
-        'has_warning': 0
     },
     {
         'dn': 'root/ns-[gitlab]/app-[gitlab-gitaly]/initcont-[configure]/image-[busybox]',
-        'has_error': 1,
-        'has_warning': 0
     },
     {
         'dn': 'root/ns-[gitlab]/app-[gitlab-redis-server]/initcont-[configure]/image-[busybox]',
-        'has_error': 1,
-        'has_warning': 0
     },
     {
         'dn': 'root/ns-[gitlab]/app-[gitlab-migrations.1]/initcont-[configure]/image-[busybox]',
-        'has_error': 1,
-        'has_warning': 0
     },
     {
         'dn': 'root/ns-[sock-shop]/app-[carts-db]/cont-[carts-db]/image-[mongo]',
-        'has_error': 1,
-        'has_warning': 0
     },
     {
         'dn': 'root/ns-[sock-shop]/app-[orders-db]/cont-[orders-db]/image-[mongo]',
-        'has_error': 1,
-        'has_warning': 0
     }
 ];
 MOCK_MARKERS = _.makeDict(MOCK_MARKERS, x => x.id);
-for (var x of _.values(MOCK_MARKERS)) {
-    x.items = [];
-    x.logs = [];
-    x.isCurrent = (x.id % 2 === 0);
-}
 
 class MockMarkerService {
 
@@ -96,11 +67,6 @@ class MockMarkerService {
         this._notifyMarkers();
 
         setInterval(() => {
-            for (var x of _.values(MOCK_MARKERS)) {
-                x.isCurrent = true;
-                x.items = [];
-                x.logs = [];
-            }
 
             for (var marker of _.values(MOCK_MARKERS)) {
                 var count = Math.floor(Math.random() * _.values(MOCK_MARKER_EDITOR_ITEMS).length);
@@ -129,21 +95,18 @@ class MockMarkerService {
     }
 
     _notifyMarkerStatus(id) {
-        var marker = MOCK_MARKERS[id];
-        var data = null;
-        if (marker) {
-            data = {
-                id: id,
-                status: {
-                    isCurrent: marker.isCurrent,
-                    error_count: marker.logs.length,
-                    item_count: marker.items.length
-                }
-            }
-            data.items = marker.items;
-            data.logs = marker.logs;
-        }
-        this.sharedState.set('marker_editor_selected_marker_status', data);
+        // var marker = MOCK_MARKERS[id];
+        // var data = null;
+        // if (marker) {
+        //     data = {
+        //         id: id,
+        //         status: {
+        //             item_count: marker.items.length
+        //         }
+        //     }
+        //     data.items = marker.items;
+        // }
+        // this.sharedState.set('marker_editor_selected_marker_status', data);
     }
 
     _makeMarkerListItem(x) {
@@ -154,10 +117,7 @@ class MockMarkerService {
             id: x.id,
             name: x.name,
             shape: x.shape,
-            color: x.color,
-            item_count: x.items.length,
-            error_count: x.logs.length,
-            isCurrent: x.isCurrent
+            color: x.color
         }
     }
 
@@ -186,8 +146,8 @@ class MockMarkerService {
     }
 
     backendCreateMarker(marker, cb) {
-        marker = _.clone({ ...marker, items: [], logs: [] });
-        marker.id = _.max(_.values(MOCK_MARKERS).map(x => x.id)) + 1;
+        marker = _.clone({ ...marker });
+        marker.id = this._newID();
         MOCK_MARKERS[marker.id] = marker;
         cb(marker);
         this._notifyMarkers();
@@ -212,24 +172,50 @@ class MockMarkerService {
 
     backendExportItems(cb) {
         var data = _.cloneDeep(_.values(MOCK_MARKERS));
-        for (var x of data) {
-            delete x.id;
-        }
+        data = data.map(x => ({
+            name: x.name,
+            shape: x.shape,
+            color: x.color
+        }));
         cb(data);
     }
 
     backendImportMarkers(markers, cb) {
-        let max = _.max(_.values(MOCK_MARKERS).map(x => x.id))
-        MOCK_MARKERS = {};
-        for (var x of markers.data) {
-            x.id = max + 1;
-            max = x.id
-            x.items = []
-            x.logs = []
-            MOCK_MARKERS[x.id] = x;
+        if (markers.deleteExtra)
+        {
+            MOCK_MARKERS = {};
         }
+        for (var marker of markers.data) {
+            var newMarker = this._findByName(marker.name);
+            if (!newMarker) {
+                var id = this._newID();
+                newMarker = {
+                    id: id
+                }
+                MOCK_MARKERS[id] = newMarker;
+            }
+            newMarker.name = marker.name;
+            newMarker.shape = marker.shape;
+            newMarker.color = marker.color;
+        }
+        console.log(MOCK_MARKERS);
         cb();
         this._notifyMarkers();
+    }
+
+    _findByName(name)
+    {
+        return _.head(_.values(MOCK_MARKERS).filter(x => x.name == name));
+
+    }
+
+    _newID()
+    {
+        if (!_.values(MOCK_MARKERS).length) {
+            return 1;
+        }
+        var id = _.max(_.values(MOCK_MARKERS).map(x => x.id)) + 1;
+        return id;
     }
 }
 
