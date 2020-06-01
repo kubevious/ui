@@ -59,12 +59,6 @@ class WebSocketService
 
         var selectedRuleScope = this._socket.scope((value, target) => {
 
-            console.log("SCOPE UPDATE. VALUE: " + 
-                JSON.stringify(value) + 
-                " :: " + 
-                JSON.stringify(target)
-            );
-
             this.sharedState.set('rule_editor_selected_rule_status', value);
 
         });
@@ -92,6 +86,30 @@ class WebSocketService
             }
             this.sharedState.set('marker_editor_items', value)
         });
+
+        var selectedMarkerScope = this._socket.scope((value, target) => {
+
+            this.sharedState.set('marker_editor_selected_items', {
+                marker_id: target.id,
+                items: value
+            });
+
+        });
+
+        this.sharedState.subscribe('marker_editor_selected_marker_id',
+            (marker_editor_selected_marker_id) => {
+
+                if (marker_editor_selected_marker_id)
+                {
+                    selectedMarkerScope.replace([
+                        { 
+                            kind: 'marker-items',
+                            id: marker_editor_selected_marker_id
+                        }
+                    ]);
+                }
+
+            });
     }
 
     _subscribe(target, cb) 

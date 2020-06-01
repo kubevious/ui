@@ -19635,6 +19635,24 @@ export const PROPERTIES_DATA = [
     ]
 ;
 
+export const DN_LIST = [];
+function traverseTree(parentDn, node)
+{
+    var dn;
+    if (parentDn) {
+        dn = parentDn + '/' + node.rn;
+    } else {
+        dn = node.rn;
+    }
+    DN_LIST.push(dn);
+
+    for(var x of node.children)
+    {
+        traverseTree(dn, x);
+    }
+}
+traverseTree(null, GRAPH_DATA);
+
 export const ALERTS_DATA = [
     {
         'id': 'Initialized-2019-12-27T19:47:53Z',
@@ -19644,7 +19662,7 @@ export const ALERTS_DATA = [
     },
     {
         'id': 'Ready-2019-12-27T19:47:59Z',
-        'severity': 'warn',
+        'severity': 'error',
         'msg': 'something happened',
         'date': '2019-12-27T19:47:59Z'
     },
@@ -19662,59 +19680,6 @@ export const ALERTS_DATA = [
     }
 ]
 
-export const SEARCH_DATA = [
-    {
-        dn: "root/ns-[kubevious]/app-[kubevious-ui]/cont-[kubevious-ui]/configmap-[kubevious-mysql-client]",
-    },
-    {
-        dn: "root/ns-[kube-system]/app-[calico-node]/launcher-[Deployment]",
-    },
-    {
-        dn: "root/ns-[kube-system]/app-[calico-node]/volume-[Volumes]",
-    },
-    {
-        dn: 'root/ns-[berlioz]/app-[gprod-berlioz-main-ctlr]'
-    },
-    {
-        dn: 'root/ns-[kubevious]/app-[kubevious]/cont-[kubevious]/port-[http (TCP-4000)]'
-    },
-    {
-        dn: 'root/ns-[kube-system]/app-[heapster]/launcher-[Deployment]/replicaset-[5b66d5bd56]/pod-[d74sp]'
-    },
-    {
-        dn: 'root/ns-[kubevious]/app-[kubevious]/ingress-[kubevious]'
-    },
-    {
-        dn: 'root/ns-[kube-system]/app-[kube-dns]/cont-[dnsmasq]/vol-[kube-dns-config]/configmap-[kube-dns]'
-    },
-    {
-        dn: 'root/ns-[kube-system]/app-[kube-dns-autoscaler]/launcher-[Deployment]/replicaset-[bb58c6784]/pod-[dpfv7]'
-    },
-    {
-        dn: 'root/ns-[addr]/app-[gprod-addr-main-web]/cont-[gprod-addr-main-web]/port-[default (TCP-3000)]/service-[Service]'
-    },
-    {
-        dn: 'root/ns-addr/app-gprod-addr-main-web/ingress-gprod-addr-web'
-    },
-    {
-        dn: 'root/ns-sprt/app-gprod-sprt-main-prmts/cont-gprod-sprt-main-prmts/vol-google-cloud-key'
-    },
-    {
-        dn: 'root/ns-sprt/app-gprod-sprt-main-prmts/cont-gprod-sprt-main-prmts/vol-google-cloud-key'
-    },
-    {
-        dn: 'root/ns-kube-system/app-metrics-server-v0.3.1/cont-metrics-server-nanny/vol-metrics-server-config-volume/configmap-metrics-server-config'
-    },
-    {
-        dn: 'root/ns-berlioz/app-gprod-berlioz-main-ctlr/launcher-Deployment'
-    },
-    {
-        dn: 'root/ns-kube-system/app-heapster/cont-heapster-nanny/vol-heapster-config-volume'
-    },
-    {
-        dn: 'root/ns-[kube-system]/app-[heapster]/cont-[prom-to-sd]'
-    }
-]
 
 export const ABOUT_DATA = {
     'version': 'v4.5.6',

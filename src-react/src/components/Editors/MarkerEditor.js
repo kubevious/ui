@@ -8,7 +8,6 @@ import { COLORS, SHAPES } from '../../boot/markerData'
 const selectedItemInit = {}
 const selectedItemDataInit = {
     status: {},
-    logs: [],
     items: []
 }
 
@@ -50,13 +49,31 @@ class MarkerEditor extends PureComponent {
             });
         });
 
-        this.sharedState.subscribe('marker_editor_selected_marker_status', (value) => {
-            if (!value) {
-                value = selectedItemDataInit;
+        this.sharedState.subscribe('marker_editor_selected_items', (value) => {
+            if (value)
+            {
+                if (value.marker_id == this.state.selectedItemId)
+                {
+                    var items = [];
+                    if (value.items) {
+                        items = value.items;
+                    }
+                    this.setState({
+                        selectedItemData: {
+                            status: {
+                                item_count: items.length
+                            },
+                            items: items
+                        }
+                    });
+                }
             }
-            this.setState({
-                selectedItemData: value
-            });
+            // if (!value) {
+            //     value = selectedItemDataInit;
+            // }
+            // this.setState({
+            //     selectedItemData: value
+            // });
         });
     }
 
@@ -74,7 +91,6 @@ class MarkerEditor extends PureComponent {
                 })
             }
         })
-
 
         this.sharedState.set('marker_editor_selected_marker_id', marker.id);
     }

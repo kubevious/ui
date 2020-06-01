@@ -2,6 +2,7 @@ import React from 'react'
 import DnShortcutComponent from '../DnShortcutComponent'
 
 const AffectedObjects = ({ selectedItemData, sharedState }) => {
+    console.log(selectedItemData);
     return(
         <>
             {selectedItemData.items.map((item, index) => (

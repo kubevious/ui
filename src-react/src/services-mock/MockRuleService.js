@@ -23,68 +23,6 @@ var MOCK_RULES = [
         script: 'script-3'
     },
 ];
-const MOCK_RULE_EDITOR_ITEMS = [
-    {
-        'dn': 'root/ns-[gitlab]/app-[gitlab-gitlab-exporter]/initcont-[configure]/image-[busybox]',
-        'has_error': 1,
-        'has_warning': 0
-    },
-    {
-        'dn': 'root/ns-[gitlab]/app-[gitlab-gitlab-shell]/initcont-[configure]/image-[busybox]',
-        'has_error': 1,
-        'has_warning': 1
-    },
-    {
-        'dn': 'root/ns-[gitlab]/app-[gitlab-minio]/initcont-[configure]/image-[busybox]',
-        'has_error': 0,
-        'has_warning': 1
-    },
-    {
-        'dn': 'root/ns-[gitlab]/app-[gitlab-registry]/initcont-[configure]/image-[busybox]',
-        'has_error': 1,
-        'has_warning': 0
-    },
-    {
-        'dn': 'root/ns-[gitlab]/app-[gitlab-sidekiq-all-in-1]/initcont-[configure]/image-[busybox]',
-        'has_error': 1,
-        'has_warning': 1
-    },
-    {
-        'dn': 'root/ns-[gitlab]/app-[gitlab-task-runner]/initcont-[configure]/image-[busybox]',
-        'has_error': 0,
-        'has_warning': 1
-    },
-    {
-        'dn': 'root/ns-[gitlab]/app-[gitlab-unicorn]/initcont-[configure]/image-[busybox]',
-        'has_error': 1,
-        'has_warning': 0
-    },
-    {
-        'dn': 'root/ns-[gitlab]/app-[gitlab-gitaly]/initcont-[configure]/image-[busybox]',
-        'has_error': 1,
-        'has_warning': 0
-    },
-    {
-        'dn': 'root/ns-[gitlab]/app-[gitlab-redis-server]/initcont-[configure]/image-[busybox]',
-        'has_error': 1,
-        'has_warning': 0
-    },
-    {
-        'dn': 'root/ns-[gitlab]/app-[gitlab-migrations.1]/initcont-[configure]/image-[busybox]',
-        'has_error': 1,
-        'has_warning': 0
-    },
-    {
-        'dn': 'root/ns-[sock-shop]/app-[carts-db]/cont-[carts-db]/image-[mongo]',
-        'has_error': 1,
-        'has_warning': 0
-    },
-    {
-        'dn': 'root/ns-[sock-shop]/app-[orders-db]/cont-[orders-db]/image-[mongo]',
-        'has_error': 1,
-        'has_warning': 0
-    }
-];
 MOCK_RULES = _.makeDict(MOCK_RULES, x => x.id);
 for(var x of _.values(MOCK_RULES))
 {
@@ -95,8 +33,9 @@ for(var x of _.values(MOCK_RULES))
 
 class MockRuleService {
 
-    constructor(sharedState)
+    constructor(parent, sharedState)
     {
+        this._parent = parent;
         this.sharedState = sharedState;
         this._notifyRules();
 
@@ -128,8 +67,12 @@ class MockRuleService {
                     }
                     else
                     {
-                        var count = Math.floor(Math.random() * _.values(MOCK_RULE_EDITOR_ITEMS).length);
-                        rule.items = _.take(MOCK_RULE_EDITOR_ITEMS, count);
+                        var dnList = this._parent.getRandomDnList();
+                        rule.items = dnList.map(x => ({
+                            dn: x,
+                            has_error: (Math.random() * 10 > 4),
+                            has_warning: (Math.random() * 10 > 2)
+                        }));
                     }
                 }
             }

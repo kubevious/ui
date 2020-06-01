@@ -20,57 +20,22 @@ var MOCK_MARKERS = [
         color: '#00ccff'
     }
 ];
-const MOCK_MARKER_EDITOR_ITEMS = [
-    {
-        'dn': 'root/ns-[gitlab]/app-[gitlab-gitlab-exporter]/initcont-[configure]/image-[busybox]',
-    },
-    {
-        'dn': 'root/ns-[gitlab]/app-[gitlab-gitlab-shell]/initcont-[configure]/image-[busybox]',
-    },
-    {
-        'dn': 'root/ns-[gitlab]/app-[gitlab-minio]/initcont-[configure]/image-[busybox]',
-    },
-    {
-        'dn': 'root/ns-[gitlab]/app-[gitlab-registry]/initcont-[configure]/image-[busybox]',
-    },
-    {
-        'dn': 'root/ns-[gitlab]/app-[gitlab-sidekiq-all-in-1]/initcont-[configure]/image-[busybox]',
-    },
-    {
-        'dn': 'root/ns-[gitlab]/app-[gitlab-task-runner]/initcont-[configure]/image-[busybox]',
-    },
-    {
-        'dn': 'root/ns-[gitlab]/app-[gitlab-unicorn]/initcont-[configure]/image-[busybox]',
-    },
-    {
-        'dn': 'root/ns-[gitlab]/app-[gitlab-gitaly]/initcont-[configure]/image-[busybox]',
-    },
-    {
-        'dn': 'root/ns-[gitlab]/app-[gitlab-redis-server]/initcont-[configure]/image-[busybox]',
-    },
-    {
-        'dn': 'root/ns-[gitlab]/app-[gitlab-migrations.1]/initcont-[configure]/image-[busybox]',
-    },
-    {
-        'dn': 'root/ns-[sock-shop]/app-[carts-db]/cont-[carts-db]/image-[mongo]',
-    },
-    {
-        'dn': 'root/ns-[sock-shop]/app-[orders-db]/cont-[orders-db]/image-[mongo]',
-    }
-];
 MOCK_MARKERS = _.makeDict(MOCK_MARKERS, x => x.id);
 
 class MockMarkerService {
 
-    constructor(sharedState) {
+    constructor(parent, sharedState) {
+        this._parent = parent;
         this.sharedState = sharedState;
         this._notifyMarkers();
 
         setInterval(() => {
 
             for (var marker of _.values(MOCK_MARKERS)) {
-                var count = Math.floor(Math.random() * _.values(MOCK_MARKER_EDITOR_ITEMS).length);
-                marker.items = _.take(MOCK_MARKER_EDITOR_ITEMS, count);
+                var dnList = this._parent.getRandomDnList();
+                marker.items = dnList.map(x => ({
+                    dn: x
+                }));
             }
 
             this._notifyMarkers();
@@ -95,18 +60,22 @@ class MockMarkerService {
     }
 
     _notifyMarkerStatus(id) {
-        // var marker = MOCK_MARKERS[id];
-        // var data = null;
-        // if (marker) {
-        //     data = {
-        //         id: id,
-        //         status: {
-        //             item_count: marker.items.length
-        //         }
-        //     }
-        //     data.items = marker.items;
-        // }
-        // this.sharedState.set('marker_editor_selected_marker_status', data);
+        var marker = MOCK_MARKERS[id];
+        var data = null;
+        if (marker) {
+            var count = 0;
+            if (marker.items) {
+                count = marker.items.length;
+            }
+            data = {
+                id: id,
+                status: {
+                    item_count: count
+                }
+            }
+            data.items = marker.items;
+        }
+        this.sharedState.set('marker_editor_selected_marker_status', data);
     }
 
     _makeMarkerListItem(x) {

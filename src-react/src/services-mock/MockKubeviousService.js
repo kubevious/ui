@@ -5,7 +5,7 @@ import {
     GRAPH_DATA, HISTORY_GRAPH_DATA, HISTORY_PROPERTIES,
     HISTORY_RANGE, HISTORY_TIMELINE,
     PROPERTIES_DATA,
-    SEARCH_DATA,
+    DN_LIST
 } from '../boot/diagramMockData'
 import MockRuleService from './MockRuleService'
 import MockMarkerService from './MockMarkerService'
@@ -15,8 +15,8 @@ class MockKubeviousService {
         this.clusterId = clusterId
         this.sharedState = sharedState;
 
-        this._ruleService = new MockRuleService(sharedState);
-        this._markerService = new MockMarkerService(sharedState)
+        this._ruleService = new MockRuleService(this, sharedState);
+        this._markerService = new MockMarkerService(this, sharedState)
 
         this.sharedState.subscribe(['selected_dn', 'time_machine_enabled'],
             ({ selected_dn, time_machine_enabled }) => {
@@ -44,8 +44,30 @@ class MockKubeviousService {
         }, 200);
     }
 
+    getRandomDnList()
+    {
+        const count = this._randomInt(10) + 3;
+        var res = [];
+
+        for(var i = 0; i < count; i++)
+        {
+            var dn = DN_LIST[this._randomInt(DN_LIST.length)];
+            res.push(dn)
+        }
+        return res;
+    }
+
     fetchSearchResults(criteria, cb) {
-        cb(SEARCH_DATA)
+        var res = this.getRandomDnList();
+        res = res.map(x => ({
+            dn: x
+        }));
+        cb(res);
+    }
+
+    _randomInt(x)
+    {
+        return Math.floor(Math.random() * x); 
     }
 
     fetchAbout(cb) {
