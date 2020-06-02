@@ -1,25 +1,17 @@
 import _ from 'the-lodash'
 
-var MOCK_MARKERS = [
-    {
-        id: 1,
-        name: 'marker-1',
-        shape: 'triangle',
-        color: '#330033'
-    },
-    {
-        id: 2,
-        name: 'marker-2',
-        shape: 'plus',
-        color: '#c79700'
-    },
-    {
-        id: 3,
-        name: 'marker-3',
-        shape: 'check',
-        color: '#00ccff'
-    }
-];
+import { COLORS, SHAPES } from '../boot/markerData'
+
+var MOCK_MARKERS = []
+
+for(var i = 0; i < 30; i++) {
+    MOCK_MARKERS.push({
+        id: i + 1,
+        name: 'marker-' + (i+1).toString(),
+        shape: SHAPES[i % SHAPES.length],
+        color: COLORS[i % COLORS.length],
+    })
+};
 MOCK_MARKERS = _.makeDict(MOCK_MARKERS, x => x.id);
 
 class MockMarkerService {
