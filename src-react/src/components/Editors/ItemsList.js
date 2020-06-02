@@ -52,7 +52,7 @@ const ItemsList = ({ type, items, selectedItemId, selectedItem, selectItem, crea
                     <button key={item.id}
                             className={cx('rule-item-button', { 'selected': item.id === selectedItemId })}
                             onClick={() => selectItem(item)}>
-                        {type === 'marker' && <div className={`marker-shape ${item.shape}`} style={{ backgroundColor: item.color }}/>}
+                        {type === 'marker' && <i class="fa" style={{ color: item.color }} dangerouslySetInnerHTML={{ __html: "&#x" + item.shape + ";" }}></i> }
                         {item.name}
                         {type === 'rule' && !item.isCurrent && <div className="busy-rule-indicator"/>}
                         {type === 'rule' && <div className={cx('indicator', ruleIndicatorClass(item))}/>}

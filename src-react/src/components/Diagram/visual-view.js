@@ -542,13 +542,28 @@ class VisualView {
             .exit()
             .remove()
 
+        // selection
+        //     .enter()
+        //     .append('g')
+        //     .attr('class', 'node-marker')
+        //     .attr('transform', x => x.translateTransform())
+        //     .attr('width', x => x.width())
+        //     .attr('height', x => x.height())
+        //     .attr('fill', x => x.fill())
+        //     .html(x => x.html())
+        //     .on('mouseover', function (d) {
+        //         self._showMarkerTooltip(this, d.marker)
+        //     })
+
+
         selection
             .enter()
-            .append('g')
+            .append('text')
             .attr('class', 'node-marker')
-            .attr('transform', x => x.translateTransform())
-            .attr('width', x => x.width())
-            .attr('height', x => x.height())
+            .attr('transform', x => x.transform())
+            // .attr('transform', x => x.translateTransform())
+            // .attr('width', x => x.width())
+            // .attr('height', x => x.height())
             .attr('fill', x => x.fill())
             .html(x => x.html())
             .on('mouseover', function (d) {
@@ -613,8 +628,7 @@ class VisualView {
             .html(x => x.html())
             .transition()
             .duration(duration)
-            .attr('x', x => x.x())
-            .attr('y', x => x.y())
+            .attr('transform', x => x.transform())
             .attr('fill', x => x.fill())
 
         d3

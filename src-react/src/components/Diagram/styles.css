@@ -24,6 +24,12 @@
     fill: #FFFFFF;
 }
 
+.node .node-marker {
+    font-family: 'Font Awesome 5 Pro';
+    font-size: 16px;
+    font-weight:900;
+}
+
 .selected .node-title-kind {
     fill: #222222;
 }

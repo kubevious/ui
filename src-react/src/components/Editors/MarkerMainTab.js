@@ -37,7 +37,7 @@ const MarkerMainTab = ({ selectedItemId, selectedItem, selectedItemData, isSucce
                 <div className="label-wrapper">
                     <label>Name</label>
                 </div>
-                <div className={`marker-shape ${shape}`} style={{ backgroundColor: color }}/>
+                <i class="fa" style={{ color: color }} dangerouslySetInnerHTML={{ __html: "&#x" + shape + ";" }}></i>
                 <input
                     type="text"
                     className="field-input name"
@@ -54,8 +54,12 @@ const MarkerMainTab = ({ selectedItemId, selectedItem, selectedItemData, isSucce
                 <div className="marker-area">
                     {SHAPES.map(item => (
                         <div className={cx('marker-wrapper', { 'selected': item === shape })} key={item}>
-                            <div key={item} className={`marker-shape ${item}`} style={{ backgroundColor: color }}
-                                 onClick={() => handleChangeShape(item)}/>
+                            <div key={item} 
+                                 style={{ color: color }}
+                                 onClick={() => handleChangeShape(item)}
+                                 >
+                                <i class="fa" style={{ color: color }} dangerouslySetInnerHTML={{ __html: "&#x" + item + ";" }}></i>
+                            </div>
                         </div>
                     ))}
                 </div>
@@ -67,9 +71,10 @@ const MarkerMainTab = ({ selectedItemId, selectedItem, selectedItemData, isSucce
                 </div>
                 <div className="marker-area">
                     {COLORS.map(item => (
-                        <div className={cx('marker-wrapper', { 'selected': item === color })} key={item}>
-                            <div key={item} className={`marker-shape ${shape}`} style={{ backgroundColor: item }}
-                                 onClick={() => handleChangeColor(item)}/>
+                        <div className={cx('marker-wrapper', { 'selected': item === color })} 
+                             key={item}
+                             onClick={() => handleChangeColor(item)}>
+                            <i class="fa" style={{ color: item }} dangerouslySetInnerHTML={{ __html: "&#x" + shape + ";" }}></i>
                         </div>
                     ))}
                 </div>

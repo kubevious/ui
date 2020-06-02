@@ -39,24 +39,9 @@ export const COLORS = [
 ]
 
 export const SHAPES = [
-    "check", 
-    "hand", 
-    "notification", 
-    "share",
-    "dislike", 
-    "heart", 
-    "paper-plane", 
-    "shopping-cart",
-    "envelope", 
-    "like", 
-    "plus", 
-    "star", 
-    "essay", 
-    "megaphone", 
-    "rating", 
-    "triangle", 
-    "gift", 
-    "monitor", 
-    "rectangle", 
-    "user"
+    "f5d0", 
+    "f2b9", 
+    "f2bb", 
+    "f556", 
+    "f0f9", 
 ]

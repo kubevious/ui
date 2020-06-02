@@ -3,10 +3,6 @@ import GrowingPacker from './packer.growing'
 import { prettyKind } from '../../utils/ui-utils'
 import { MONTSERRAT_12PX_500, MONTSERRAT_10PX_500, MONTSERRAT_14PX_500 } from '../../utils/constants'
 
-import {
-    SVG_DATA
-} from '../../boot/marker-icon-data'
-
 class VisualNode {
 
     constructor(view, data, parent) {
@@ -331,9 +327,10 @@ class VisualNode {
 
         for (var marker of this.markers) {
             this._addToHeader('marker-' + marker, {
-                kind: 'icon',
+                kind: 'font-icon',
                 icon: marker,
-                location: 'right'
+                location: 'right',
+                centerY: 26
             })
         }
         this._markerNodes = this.markers.map(x => new VisualNodeHeaderMarker(this, x))
@@ -392,7 +389,9 @@ class VisualNode {
                 }
             }
 
-            header.centerY = (this._headerHeight + header.height) / 2
+            if (!header.centerY) {
+                header.centerY = (this._headerHeight + header.height) / 2
+            }
             header.top = (this._headerHeight - header.height) / 2
 
             if (header.kind === 'column') {
@@ -404,6 +403,10 @@ class VisualNode {
 
                     top += cell.height
                 }
+            }
+
+            if (header.kind == 'font-icon') {
+                console.log(header);
             }
         }
         this._headerWidth = left + right
@@ -455,8 +458,9 @@ class VisualNode {
             // TODO: Error
             return 0
         }
-        if (flavor === 'center') {
-            return header.top + header.height / 2
+        if (flavor === 'center' || flavor == 'font-icon') {
+            return header.centerY;
+            // return header.top + header.height / 2
         }
         if (flavor === 'bounding') {
             return header.bounding.top
@@ -498,6 +502,9 @@ class VisualNode {
             header.width = textDimentions.width
             header.height = textDimentions.height
         } else if (header.kind === 'icon') {
+            header.width = 16
+            header.height = 16
+        } else if (header.kind === 'font-icon') {
             header.width = 16
             header.height = 16
         }
@@ -851,7 +858,8 @@ class VisualNodeHeaderMarker extends BaseVisualNodeHeader {
     constructor(node, marker) {
         super(node, 'marker-' + marker, null)
 
-        this._marker = marker
+        this._marker = marker;
+        this._flavor = 'font-icon';
     }
 
     get marker() {
@@ -867,9 +875,10 @@ class VisualNodeHeaderMarker extends BaseVisualNodeHeader {
     }
 
     html() {
+        // return '&#xf233;';
         var marker = this.view._markerData[this.marker];
         if (marker) {
-            return SVG_DATA[marker.shape];
+            return '&#x' + marker.shape + ';';
         }
         return '';
     }
