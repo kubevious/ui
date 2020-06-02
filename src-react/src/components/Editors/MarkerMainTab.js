@@ -37,14 +37,18 @@ const MarkerMainTab = ({ selectedItemId, selectedItem, selectedItemData, isSucce
                 <div className="label-wrapper">
                     <label>Name</label>
                 </div>
-                <i className={shape.name} style={{ color: color }}/>
-                <input
-                    type="text"
-                    className="field-input name"
-                    value={name || ''}
-                    name="name"
-                    onChange={(e) => handleChange(e)}
-                />
+                <div className="marker-area name-area">
+                    <div className="shape">
+                        <i className={shape.name} style={{ color: color }}/>
+                    </div>
+                    <input
+                        type="text"
+                        className="field-input name"
+                        value={name || ''}
+                        name="name"
+                        onChange={(e) => handleChange(e)}
+                    />
+                </div>
             </div>
 
             <div className="field">
@@ -77,10 +81,10 @@ const MarkerMainTab = ({ selectedItemId, selectedItem, selectedItemData, isSucce
                              key={item}>
                             <div
                                 style={{ color: color }}
-                                 onClick={() => handleChangeColor(item)}
-                                 className="icon-wrapper"
+                                onClick={() => handleChangeColor(item)}
+                                className="icon-wrapper"
                             >
-                            <i className={shape.name} style={{ color: item }}/>
+                                <i className={shape.name} style={{ color: item }}/>
                             </div>
                         </div>
                     ))}

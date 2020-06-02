@@ -414,6 +414,21 @@ input[type="file"] {
   flex-wrap: wrap;
   padding: 15px 20px;
 
+  &.name-area {
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+
+    .field-input {
+      width: calc(100% - 24px);
+      border: none;
+    }
+
+    i {
+      font-size: 24px;
+    }
+  }
+
   .marker-wrapper {
     margin: 10px;
     padding: 5px;
