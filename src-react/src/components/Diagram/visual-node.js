@@ -875,10 +875,11 @@ class VisualNodeHeaderMarker extends BaseVisualNodeHeader {
     }
 
     html() {
-        // return '&#xf233;';
         var marker = this.view._markerData[this.marker];
         if (marker) {
-            return '&#x' + marker.shape.unicode + ';';
+            if (marker.shape && marker.shape.unicode) {
+                return '&#x' + marker.shape.unicode + ';';
+            }
         }
         return '';
     }

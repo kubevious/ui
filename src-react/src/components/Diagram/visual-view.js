@@ -542,28 +542,11 @@ class VisualView {
             .exit()
             .remove()
 
-        // selection
-        //     .enter()
-        //     .append('g')
-        //     .attr('class', 'node-marker')
-        //     .attr('transform', x => x.translateTransform())
-        //     .attr('width', x => x.width())
-        //     .attr('height', x => x.height())
-        //     .attr('fill', x => x.fill())
-        //     .html(x => x.html())
-        //     .on('mouseover', function (d) {
-        //         self._showMarkerTooltip(this, d.marker)
-        //     })
-
-
         selection
             .enter()
             .append('text')
             .attr('class', 'node-marker')
             .attr('transform', x => x.transform())
-            // .attr('transform', x => x.translateTransform())
-            // .attr('width', x => x.width())
-            // .attr('height', x => x.height())
             .attr('fill', x => x.fill())
             .html(x => x.html())
             .on('mouseover', function (d) {
