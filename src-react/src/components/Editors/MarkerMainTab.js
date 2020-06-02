@@ -5,8 +5,8 @@ import cx from 'classnames'
 
 const MarkerMainTab = ({ selectedItemId, selectedItem, selectedItemData, isSuccess, deleteItem, openSummary, createItem, saveItem }) => {
     const [displayColorPicker, setDisplayColorPicker] = useState(false)
-    const [formData, setFormData] = useState({})
-    const [formDataId, setFormDataId] = useState(null)
+    const [formData, setFormData] = useState(selectedItem)
+    const [formDataId, setFormDataId] = useState(selectedItemId)
 
     useEffect(() => {
         if (selectedItemId !== formDataId) {
@@ -23,8 +23,8 @@ const MarkerMainTab = ({ selectedItemId, selectedItem, selectedItemData, isSucce
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
-    const handleChangeShape = (shape) => {
-        setFormData({ ...formData, shape: shape })
+    const handleChangeShape = (name) => {
+        setFormData({ ...formData, shape: { ...shape, name: name } })
     }
 
     const handleChangeColor = (color) => {
@@ -37,7 +37,7 @@ const MarkerMainTab = ({ selectedItemId, selectedItem, selectedItemData, isSucce
                 <div className="label-wrapper">
                     <label>Name</label>
                 </div>
-                <i class="fa" style={{ color: color }} dangerouslySetInnerHTML={{ __html: "&#x" + shape + ";" }}></i>
+                <i className={shape.name} style={{ color: color }}/>
                 <input
                     type="text"
                     className="field-input name"
@@ -53,15 +53,16 @@ const MarkerMainTab = ({ selectedItemId, selectedItem, selectedItemData, isSucce
                 </div>
                 <div className="marker-area">
                     {SHAPES.map(item => (
-                        <div className={cx('marker-wrapper', { 'selected': item === shape })} key={item}>
-                            <div key={item} 
-                                 style={{ color: color }}
-                                 onClick={() => handleChangeShape(item)}
-                                 >
-                                <i class="fa" style={{ color: color }} dangerouslySetInnerHTML={{ __html: "&#x" + item + ";" }}></i>
+                            <div className={cx('marker-wrapper', { 'selected': item.name === shape.name })} key={item.name}>
+                                <div key={item.name}
+                                     style={{ color: color }}
+                                     onClick={() => handleChangeShape(item.name)}
+                                >
+                                    <i className={item.name} style={{ color: color }}/>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        )
+                    )}
                 </div>
             </div>
 
@@ -71,10 +72,10 @@ const MarkerMainTab = ({ selectedItemId, selectedItem, selectedItemData, isSucce
                 </div>
                 <div className="marker-area">
                     {COLORS.map(item => (
-                        <div className={cx('marker-wrapper', { 'selected': item === color })} 
+                        <div className={cx('marker-wrapper', { 'selected': item === color })}
                              key={item}
                              onClick={() => handleChangeColor(item)}>
-                            <i class="fa" style={{ color: item }} dangerouslySetInnerHTML={{ __html: "&#x" + shape + ";" }}></i>
+                            <i className={shape.name} style={{ color: item }}/>
                         </div>
                     ))}
                 </div>
