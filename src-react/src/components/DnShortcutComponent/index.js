@@ -15,7 +15,7 @@ class DnShortcutComponent extends Component {
 
     clickDn() {
         this.props.sharedState.set('selected_dn', this.props.dn);
-        popupClose()
+        this.props.hidePopup ? this.props.hidePopup() : popupClose()
     }
 
     render() {

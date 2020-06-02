@@ -406,7 +406,7 @@ class VisualNode {
             }
 
             if (header.kind == 'font-icon') {
-                console.log(header);
+                // console.log(header);
             }
         }
         this._headerWidth = left + right

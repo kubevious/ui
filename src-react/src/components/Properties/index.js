@@ -1,9 +1,7 @@
 import React, { PureComponent } from 'react'
-import $ from 'jquery'
 import _ from 'lodash'
 import {
     generateDnPathHtml,
-    popupClose, popupOpen
 } from '../../utils/ui-utils'
 import { parseDn } from '../../utils/naming-utils'
 import PropertyGroup from './PropertyGroup'
@@ -12,7 +10,7 @@ import DnList from './DnList'
 import Config from './Config'
 import PropertiesTable from './PropertiesTable'
 
-import './styles.css'
+import './styles.scss'
 import './obsidian.css'
 
 class Properties extends PureComponent {
@@ -40,28 +38,20 @@ class Properties extends PureComponent {
     }
 
     onPropertyGroupPopup(event, group) {
-        var contentHtml = this._detectGroupContent(group)
-
-        popupOpen(contentHtml, {
-            focus: '#searchInput',
-            header: {
-                dn: this.state.selectedDn,
-                title: group.title
-            }
-        })
-
-        $('.popup button.close').on('click', (e) => popupClose(e))
+        const contentHtml = this._detectGroupContent(group)
+        this.props.handleShowPopup()
+        this.props.handlePopupContent(contentHtml)
     }
 
     _detectGroupContent(group) {
         if (group.kind === 'key-value') {
-            return <EnvironmentVariables group={group}/>
+            return <EnvironmentVariables group={group} dn={this.state.selectedDn}/>
         } else if (group.kind === 'dn-list') {
-            return <DnList group={group} sharedState={this.props.sharedState}/>
+            return <DnList group={group} sharedState={this.props.sharedState} hidePopup={this.props.closePopup} dn={this.state.selectedDn}/>
         } else if (group.kind === 'yaml') {
-            return <Config group={group}/>
+            return <Config group={group} dn={this.state.selectedDn}/>
         } else if (group.kind === 'table') {
-            return <PropertiesTable group={group}/>
+            return <PropertiesTable group={group} dn={this.state.selectedDn}/>
         }
 
         return ''

@@ -242,3 +242,20 @@ pre {
 .expander-open::-webkit-scrollbar-thumb {
     background-color: #333;
 }
+
+.container-header {
+    margin-bottom: 20px;
+
+    .dn-path {
+        font-size: 14pt;
+    }
+
+    .dn-path .kind {
+        font-size: 12pt;
+    }
+
+    h3 {
+        font-size: 20px;
+        margin-top: 20px
+    }
+}

@@ -1,20 +1,12 @@
 import React from 'react'
-import DnComponent from '../DnComponent'
 
-const Popup = ({ header, contents }) => {
-    let { title, dn, content } = header
-
+const Popup = ({ children, closePopup }) => {
     return (
         <div id="popup" className="popup">
-            <div className="popup-header">
-                {content && content()}
-                {dn && <DnComponent dn={dn} />}
-                {title && <h3>{title}</h3>}
-            </div>
             <div className="popup-contents">
-                {contents}
+                {children}
             </div>
-            <button className="close"/>
+            <button className="close" onClick={closePopup}/>
         </div>
     )
 }

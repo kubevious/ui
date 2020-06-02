@@ -4,26 +4,21 @@ import slackImg from '../../assets/header-btns/slack.svg'
 import githubImg from '../../assets/header-btns/github.svg'
 import './styles.css'
 import GoldenLayoutComponent from '../GoldenLayout'
-import RootApiService from '../../services/RootApiService'
-import SharedState from '../../state/shared-state'
-import StateHandler from '../../state/state-handler'
-import MockRootApiService from '../../services-mock/MockRootApiService'
 import { popupOpen } from '../../utils/ui-utils'
 import About from '../About'
 import Search from '../Search'
+import Popup from '../Popup'
 
-const Root = () => {
+const Root = ({ service, sharedState }) => {
     const [showSettings, setShowSettings] = useState(false)
-    const [showSearch, setShowSearch] = useState(false)
+    const [showPopup, setShowPopup] = useState(false)
+    const [popupContent, setPopupContent] = useState(null)
     const [layout, setLayout] = useState(null)
     const [windows, setWindows] = useState([])
 
-    const sharedState = new SharedState()
-
-    const rootService = process.env.REACT_APP_MOCKED_DATA ? new MockRootApiService(sharedState) : new RootApiService(sharedState);
-    const service = rootService.kubevious();
-
-    const stateHandler = new StateHandler(sharedState, rootService);
+    const handleShowPopup = () => setShowPopup(true)
+    const handleClosePopup = () => setShowPopup(false)
+    const handlePopupContent = (content) => setPopupContent(content)
 
     const handleLayout = (value) => {
         setLayout(value)
@@ -48,9 +43,10 @@ const Root = () => {
         })
     }
 
-    const openSearch = () => setShowSearch(true)
-
-    const closePopup = () => setShowSearch(false)
+    const openSearch = () => {
+        handleShowPopup()
+        handlePopupContent(<Search service={service} sharedState={sharedState} closePopup={handleClosePopup}/>)
+    }
 
     const handleChangeWindow = (e) => {
         const windowId = e.target.getAttribute('tool-window-id');
@@ -111,11 +107,14 @@ const Root = () => {
                 </div>
             </div>
 
-            <GoldenLayoutComponent service={service} sharedState={sharedState} handleLayout={handleLayout}/>
+            <GoldenLayoutComponent service={service} sharedState={sharedState} handleLayout={handleLayout}
+                                   handleShowPopup={handleShowPopup} handlePopupContent={handlePopupContent}
+                                   closePopup={handleClosePopup}
+            />
 
-            {showSearch && <div className="popup" id="popup">
-                <Search service={service} sharedState={sharedState} closePopup={closePopup}/>
-            </div>}
+            {showPopup && <Popup closePopup={handleClosePopup}>
+                {popupContent}
+            </Popup>}
         </div>
     )
 }

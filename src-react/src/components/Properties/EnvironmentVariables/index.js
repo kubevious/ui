@@ -1,19 +1,26 @@
 import React from 'react'
 
 import './styles.scss'
+import DnComponent from '../../DnComponent'
 
-const EnvironmentVariables = ({ group, options }) => {
+const EnvironmentVariables = ({ group, options, dn }) => {
     return (
-        <div className="EnvironmentVariables-container">
-            {group && Object.entries(group.config).map((item, index) => (
-                <div className="env-variable" key={index}>
-                    <div className="name">
-                        {item[0]}:
+        <>
+            {dn && <div className="container-header">
+                <DnComponent dn={dn}/>
+                <h3>Environment Variables</h3>
+            </div>}
+            <div className="EnvironmentVariables-container">
+                {group && Object.entries(group.config).map((item, index) => (
+                    <div className="env-variable" key={index}>
+                        <div className="name">
+                            {item[0]}:
+                        </div>
+                        <div className="value" dangerouslySetInnerHTML={{ __html: item[1] }}/>
                     </div>
-                    <div className="value" dangerouslySetInnerHTML={{ __html: item[1] }}/>
-                </div>
-            ))}
-        </div>
+                ))}
+            </div>
+        </>
     )
 }
 

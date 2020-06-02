@@ -3,8 +3,9 @@ import jsyaml from 'js-yaml'
 import hljs from 'highlight.js'
 
 import './styles.scss'
+import DnComponent from '../../DnComponent'
 
-const Config = ({ group }) => {
+const Config = ({ group, dn }) => {
     const code = jsyaml.safeDump(group.config)
 
     const renderCode = () => {
@@ -17,9 +18,15 @@ const Config = ({ group }) => {
         )
     }
     return (
-        <div className="Config-container">
+        <>
+            {dn && <div className="container-header">
+                <DnComponent dn={dn}/>
+                <h3>Config</h3>
+            </div>}
+            <div className="Config-container">
                 {renderCode()}
-        </div>
+            </div>
+        </>
     )
 }
 

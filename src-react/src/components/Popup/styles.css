@@ -22,28 +22,13 @@
     background: rgba(0, 0, 0, 0.8);
 }
 
-.popup .popup-header {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    padding: 40px 40px;
-    overflow: hidden;
-    font-size: 16px;
-}
-
 .popup .popup-header h3 {
     font-size: 20px;
     margin-top: 20px;
 }
 
 .popup .popup-contents {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 120px;
-    bottom: 0;
-    padding: 10px 40px 40px;
+    padding: 40px;
     overflow: auto;
 }
 
@@ -55,13 +40,4 @@
     position: absolute;
     top: 15px;
     right: 15px;
-}
-
-/* DN PATH */
-.popup-header .dn-path {
-    font-size: 14pt;
-}
-
-.popup-header .dn-path .kind {
-    font-size: 12pt;
 }

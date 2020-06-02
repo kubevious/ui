@@ -28,10 +28,9 @@ const Search = ({ service, sharedState, closePopup }) => {
             </div>
             <div className="search-results">
                 {!isEmptyArray(result) && result.map((item, index) => (
-                    <DnShortcutComponent key={index} dn={item.dn} sharedState={sharedState}/>
+                    <DnShortcutComponent key={index} dn={item.dn} sharedState={sharedState} hidePopup={closePopup}/>
                 ))}
             </div>
-            <button className="close" onClick={() => closePopup()}/>
         </>
     )
 }

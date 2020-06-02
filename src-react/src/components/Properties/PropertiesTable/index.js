@@ -4,8 +4,9 @@ import cx from 'classnames'
 import DnShortcutComponent from '../../DnShortcutComponent'
 
 import './styles.scss'
+import DnComponent from '../../DnComponent'
 
-const PropertiesTable = ({ group, options, state }) => {
+const PropertiesTable = ({ group, options, state, dn }) => {
     const tableData = group.config
 
     const tableHeaders = () => {
@@ -45,7 +46,7 @@ const PropertiesTable = ({ group, options, state }) => {
 
     const renderColumnFormatter = (formatter, cell) => {
         if (formatter === 'check') return renderRowCheckbox(cell)
-        if (formatter === 'shortcut') return <DnShortcutComponent dn={cell} state={state} />
+        if (formatter === 'shortcut') return <DnShortcutComponent dn={cell} state={state}/>
     }
 
     const renderRowCheckbox = (value) => (
@@ -53,24 +54,30 @@ const PropertiesTable = ({ group, options, state }) => {
     )
 
     return (
-        <div className="PropertiesTable-container">
-            <table className="table table-striped table-dark">
-                <thead>
-                    <tr>
-                        {tableHeaders().map(item => (
-                            <td key={item.name}>{item.label || item.name}</td>
-                        ))}
-                    </tr>
-                </thead>
-                <tbody>
-                    {tableData && tableData.rows.map((row, index) => (
-                        <tr key={index}>
-                            {tableHeaders().map(column => renderRow(row, column))}
+        <>
+            {dn && <div className="container-header">
+                <DnComponent dn={dn} />
+                <h3>Resource Role Matrix</h3>
+            </div>}
+            <div className="PropertiesTable-container">
+                <table className="table table-striped table-dark">
+                    <thead>
+                        <tr>
+                            {tableHeaders().map(item => (
+                                <td key={item.name}>{item.label || item.name}</td>
+                            ))}
                         </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                        {tableData && tableData.rows.map((row, index) => (
+                            <tr key={index}>
+                                {tableHeaders().map(column => renderRow(row, column))}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </>
     )
 }
 
