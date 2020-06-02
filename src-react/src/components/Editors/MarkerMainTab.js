@@ -57,6 +57,7 @@ const MarkerMainTab = ({ selectedItemId, selectedItem, selectedItemData, isSucce
                                 <div key={item.name}
                                      style={{ color: color }}
                                      onClick={() => handleChangeShape(item.name)}
+                                     className="icon-wrapper"
                                 >
                                     <i className={item.name} style={{ color: color }}/>
                                 </div>
@@ -73,9 +74,14 @@ const MarkerMainTab = ({ selectedItemId, selectedItem, selectedItemData, isSucce
                 <div className="marker-area">
                     {COLORS.map(item => (
                         <div className={cx('marker-wrapper', { 'selected': item === color })}
-                             key={item}
-                             onClick={() => handleChangeColor(item)}>
+                             key={item}>
+                            <div
+                                style={{ color: color }}
+                                 onClick={() => handleChangeColor(item)}
+                                 className="icon-wrapper"
+                            >
                             <i className={shape.name} style={{ color: item }}/>
+                            </div>
                         </div>
                     ))}
                 </div>
