@@ -170,7 +170,7 @@ class MockMarkerService {
 
     _findByName(name)
     {
-        return _.head(_.values(MOCK_MARKERS).filter(x => x.name == name));
+        return _.head(_.values(MOCK_MARKERS).filter(x => x.name === name));
 
     }
 

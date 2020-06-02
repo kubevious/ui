@@ -3,17 +3,13 @@ import { COLORS, SHAPES } from '../../boot/markerData'
 import { ChromePicker } from 'react-color'
 import cx from 'classnames'
 
-const MarkerMainTab = ({ selectedItemId, selectedItem, selectedItemData, isSuccess, deleteItem, openSummary, createItem, saveItem }) => {
+const MarkerMainTab = ({ selectedItem, isSuccess, deleteItem, openSummary, createItem, saveItem }) => {
     const [displayColorPicker, setDisplayColorPicker] = useState(false)
     const [formData, setFormData] = useState(selectedItem)
-    const [formDataId, setFormDataId] = useState(selectedItemId)
 
     useEffect(() => {
-        if (selectedItemId !== formDataId) {
-            setFormDataId(formDataId)
-            setFormData({ ...selectedItem })
-        }
-    }, [selectedItemId, selectedItem])
+        setFormData({ ...selectedItem })
+    }, [selectedItem])
 
     const { name, color, shape } = formData
 
@@ -57,10 +53,13 @@ const MarkerMainTab = ({ selectedItemId, selectedItem, selectedItemData, isSucce
                 </div>
                 <div className="marker-area">
                     {SHAPES.map(item => (
-                            <div className={cx('marker-wrapper', { 'selected': item.name === shape.name })} key={item.name}>
+                            <div
+                                className={cx('marker-wrapper', { 'selected': item.name === shape.name })}
+                                key={item.name}
+                                onClick={() => handleChangeShape(item.name)}
+                            >
                                 <div key={item.name}
                                      style={{ color: color }}
-                                     onClick={() => handleChangeShape(item.name)}
                                      className="icon-wrapper"
                                 >
                                     <i className={item.name} style={{ color: color }}/>
@@ -78,10 +77,11 @@ const MarkerMainTab = ({ selectedItemId, selectedItem, selectedItemData, isSucce
                 <div className="marker-area">
                     {COLORS.map(item => (
                         <div className={cx('marker-wrapper', { 'selected': item === color })}
-                             key={item}>
+                             key={item}
+                             onClick={() => handleChangeColor(item)}
+                        >
                             <div
                                 style={{ color: color }}
-                                onClick={() => handleChangeColor(item)}
                                 className="icon-wrapper"
                             >
                                 <i className={shape.name} style={{ color: item }}/>
