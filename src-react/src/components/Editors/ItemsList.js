@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDownload, faUndo } from '@fortawesome/free-solid-svg-icons'
 import { isEmptyArray } from '../../utils/util'
 import cx from 'classnames'
+import MarkerPreview from '../MarkerPreview'
 
 const ItemsList = ({ type, items, selectedItemId, selectedItem, selectItem, createNewItem, setVisibleOptions, service }) => {
 
@@ -53,7 +54,7 @@ const ItemsList = ({ type, items, selectedItemId, selectedItem, selectItem, crea
                             className={cx('rule-item-button', { 'selected': item.id === selectedItemId })}
                             onClick={() => selectItem(item)}>
                         {type === 'marker' && <div className="shape-wrapper">
-                            <i className={item.shape.name} style={{ color: item.color }}/>
+                            <MarkerPreview shape={item.shape} color={item.color} />
                         </div>}
                         {item.name}
                         {type === 'rule' && !item.isCurrent && <div className="busy-rule-indicator"/>}

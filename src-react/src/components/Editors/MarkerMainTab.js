@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { COLORS, SHAPES } from '../../boot/markerData'
 import { ChromePicker } from 'react-color'
 import cx from 'classnames'
+import MarkerPreview from '../MarkerPreview'
 
 const MarkerMainTab = ({ selectedItem, isSuccess, deleteItem, openSummary, createItem, saveItem }) => {
     const [displayColorPicker, setDisplayColorPicker] = useState(false)
@@ -20,7 +21,7 @@ const MarkerMainTab = ({ selectedItem, isSuccess, deleteItem, openSummary, creat
     }
 
     const handleChangeShape = (name) => {
-        setFormData({ ...formData, shape: { ...shape, name: name } })
+        setFormData({ ...formData, shape: name })
     }
 
     const handleChangeColor = (color) => {
@@ -35,7 +36,7 @@ const MarkerMainTab = ({ selectedItem, isSuccess, deleteItem, openSummary, creat
                 </div>
                 <div className="marker-area name-area">
                     <div className="shape">
-                        <i className={shape.name} style={{ color: color }}/>
+                        <MarkerPreview shape={shape} color={color} />
                     </div>
                     <input
                         type="text"
@@ -54,15 +55,15 @@ const MarkerMainTab = ({ selectedItem, isSuccess, deleteItem, openSummary, creat
                 <div className="marker-area">
                     {SHAPES.map(item => (
                             <div
-                                className={cx('marker-wrapper', { 'selected': item.name === shape.name })}
-                                key={item.name}
-                                onClick={() => handleChangeShape(item.name)}
+                                className={cx('marker-wrapper', { 'selected': item === shape })}
+                                key={item}
+                                onClick={() => handleChangeShape(item)}
                             >
-                                <div key={item.name}
+                                <div key={item}
                                      style={{ color: color }}
                                      className="icon-wrapper"
                                 >
-                                    <i className={item.name} style={{ color: color }}/>
+                                    <MarkerPreview shape={item} color={color} />
                                 </div>
                             </div>
                         )
@@ -84,7 +85,7 @@ const MarkerMainTab = ({ selectedItem, isSuccess, deleteItem, openSummary, creat
                                 style={{ color: color }}
                                 className="icon-wrapper"
                             >
-                                <i className={shape.name} style={{ color: item }}/>
+                                <MarkerPreview shape={shape} color={item} />
                             </div>
                         </div>
                     ))}

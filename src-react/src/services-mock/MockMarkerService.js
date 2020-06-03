@@ -8,10 +8,7 @@ for(var i = 0; i < 30; i++) {
     MOCK_MARKERS.push({
         id: i + 1,
         name: 'marker-' + (i+1).toString(),
-        shape: {
-            name: SHAPES[i % SHAPES.length].name,
-            unicode: SHAPES[i % SHAPES.length].unicode,
-        },
+        shape: SHAPES[i % SHAPES.length],
         color: COLORS[i % COLORS.length],
     })
 };
