@@ -28,7 +28,7 @@ class Alerts extends PureComponent {
         const { alerts } = this.state
 
         return (
-            <div id="alerts">
+            <div id="alertsComponent">
                 {!isEmptyArray(alerts) && <AlertTable alerts={alerts}/>}
             </div>
         )

@@ -109,7 +109,7 @@ class Properties extends PureComponent {
         const { selectedDn, selectedObjectProps } = this.state
 
         return (
-            <div id="properties" className="properties">
+            <div id="propertiesComponent" className="properties">
                 {selectedDn && this._renderPropertiesNodeDn()}
                 {selectedObjectProps && this._renderContent()}
             </div>

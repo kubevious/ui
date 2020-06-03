@@ -22,6 +22,10 @@ const Header = ({ service, sharedState, handleShowPopup, handlePopupContent, han
         handlePopupContent(<Search service={service} sharedState={sharedState} closePopup={handleClosePopup}/>)
     }
 
+    const detectIsVisible = (item) => {
+        return  document.getElementById(item.id) !== null;
+    }
+
     const renderSettings = () => {
         return (
             <div id="tool-windows-menu" className="settings-menu" onMouseEnter={() => setShowSettings(true)}
@@ -29,8 +33,8 @@ const Header = ({ service, sharedState, handleShowPopup, handlePopupContent, han
                 {windows.map(item => (
                     <span className="s-menu-item" key={item.name}>
                         <label className="ccheck" id={`toolWindowShowHideLabel${item.name}Component`}>
-                            {item.isVisible ? 'Hide' : 'Show'} {item.name}
-                            <input type="checkbox" tool-window-id={item.id} defaultChecked={true}
+                            {detectIsVisible(item) ? 'Hide' : 'Show'} {item.name}
+                            <input type="checkbox" tool-window-id={item.id} defaultChecked={detectIsVisible(item)}
                                    onChange={(e) => handleChangeWindow(e)}/>
                             <span className="checkmark"/>
                         </label>

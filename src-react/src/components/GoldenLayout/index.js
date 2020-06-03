@@ -135,6 +135,11 @@ class GoldenLayoutComponent extends PureComponent {
         this._layout.on('tabCreated', (tab) => {
             var info = this._getComponent(tab.contentItem.config.component)
             info.goldenTab = tab;
+
+            tab.closeElement.off('click').click((e) => {
+                const id = this._components.find(item => item.name === e.target.parentNode.title).id
+                this.hideComponent(id);
+            });
         })
 
         this._layout.init()
@@ -235,9 +240,7 @@ class GoldenLayoutComponent extends PureComponent {
         window.ReactDOM = ReactDOM
 
         return (
-            <>
-                <div id="layoutContainer"/>
-            </>
+            <div id="layoutContainer"/>
         )
     }
 

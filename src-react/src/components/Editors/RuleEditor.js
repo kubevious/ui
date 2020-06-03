@@ -162,7 +162,7 @@ class RuleEditor extends PureComponent {
         })
 
         return (
-            <div className="RuleEditor-container">
+            <div className="RuleEditor-container" id="ruleEditorComponent">
                 <ItemsList
                     type='rule'
                     items={this.state.items}

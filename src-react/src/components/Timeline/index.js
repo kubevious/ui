@@ -349,7 +349,7 @@ class Timeline extends PureComponent {
     }
 
     componentDidMount() {
-        this._parentElem = d3.select('#timeline')
+        this._parentElem = d3.select('#timelineComponent')
         this._setup()
 
         this.sharedState.subscribe('time_machine_enabled',
@@ -411,7 +411,7 @@ class Timeline extends PureComponent {
     render() {
         return (
             <Fragment>
-                <div id="timeline" className="timeline size-to-parent"/>
+                <div id="timelineComponent" className="timeline size-to-parent"/>
                 <div className="tl-actions">
                     <a role="button" className="reset"/>
                     <a role="button" id="btnTimelineTimeMachine" className="timemachine"/>

@@ -29,14 +29,14 @@ const Root = ({ service, sharedState, diagramSource }) => {
 
     const handleChangeWindow = (e) => {
         const windowId = e.target.getAttribute('tool-window-id');
-        const isVisible = e.target.checked;
+        const isVisible = document.getElementById(windowId) !== null;
 
         setWindows(windows.map(component => component.id === windowId ? {
             ...component,
             isVisible: isVisible
         } : component))
 
-        if (!isVisible) {
+        if (isVisible) {
             layout.hideComponent(windowId);
         } else {
             layout.showComponent(windowId);

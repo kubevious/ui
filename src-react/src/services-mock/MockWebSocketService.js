@@ -71,7 +71,6 @@ class MockWebSocketService
 
     scope(cb)
     {
-        console.log("AAAA")
         return {
             replace: (subscriptions) => {
                 console.log("******** SUBSCRIBE: ", subscriptions);
