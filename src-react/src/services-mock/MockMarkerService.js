@@ -61,14 +61,14 @@ class MockMarkerService {
                 count = marker.items.length;
             }
             data = {
-                id: id,
+                marker_id: id,
                 status: {
                     item_count: count
                 }
             }
             data.items = marker.items;
         }
-        this.sharedState.set('marker_editor_selected_marker_status', data);
+        this.sharedState.set('marker_editor_selected_items', data);
     }
 
     _makeMarkerListItem(x) {
