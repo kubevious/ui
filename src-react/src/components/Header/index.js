@@ -54,7 +54,7 @@ const Header = ({ service, sharedState, handleShowPopup, handlePopupContent, han
                     <img src={bugImg} alt="bug"/>
 
                 </a>
-                <a href="https://kubevious.slack.com" target="_blank" className="btn btn-slack">
+                <a href="https://kubevious.io/slack" target="_blank" className="btn btn-slack">
                     <img src={slackImg} alt="slack"/>
                 </a>
                 <a href="https://github.com/kubevious/kubevious" target="_blank" className="btn btn-github">
