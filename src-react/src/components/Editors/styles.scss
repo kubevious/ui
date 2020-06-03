@@ -452,6 +452,13 @@ input[type="file"] {
       border: none;
     }
 
+    .shape {
+      min-width: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
     i {
       font-size: 24px;
     }
