@@ -8,9 +8,10 @@ import { flagTooltip } from '../../utils/ui-utils'
 
 class VisualView {
 
-    constructor(parentElem, sharedState) {
+    constructor(parentElem, sharedState, source) {
         this._parentElem = parentElem;
         this.sharedState = sharedState;
+        this.source = source;
 
         this._width = 0
         this._height = 0
@@ -26,7 +27,6 @@ class VisualView {
         this._flatVisualNodes = []
 
         this._existingNodeIds = {}
-        this._expandedNodeIds = {}
         this._selectedNodeIds = {}
         
         this._markerData = {}

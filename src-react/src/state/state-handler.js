@@ -20,15 +20,20 @@ class StateHandler {
     }
 
     _handleDiagramChange() {
+        // TODO: .....
         this.sharedState.subscribe(['time_machine_enabled', 'time_machine_date'],
             ({ time_machine_enabled, time_machine_date }) => {
                 if (time_machine_enabled) {
                     this._service.fetchHistorySnapshot(time_machine_date, (sourceData) => {
+                        console.log("HISTORY SNAPSHOT", sourceData);
+
                         this.sharedState.set('diagram_data', sourceData);
                     })
 
                 } else {
                     this._service.fetchDiagram((sourceData) => {
+                        console.log("CURRENT SNAPSHOT", sourceData);
+
                         this.sharedState.set('diagram_data', sourceData);
                     })
                 }

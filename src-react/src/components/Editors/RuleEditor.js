@@ -55,13 +55,9 @@ class RuleEditor extends PureComponent {
         });
 
         this.sharedState.subscribe('rule_editor_selected_rule_status', (value) => {
-            console.log('*********************************');
-            console.log(value);
             if (!value) {
                 value = selectedItemDataInit;
             }
-            console.log('---------------------------------');
-            console.log(value);
             this.setState({
                 selectedItemData: value
             });

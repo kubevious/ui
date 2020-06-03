@@ -3,10 +3,15 @@ import RuleService from './RuleService'
 import MarkerService from './MarkerService'
 
 class KubeviousService {
-    constructor(state)
+    constructor(state, socket)
     {
+        this._socket = socket;
         this._ruleService = new RuleService(state);
         this._markerService = new MarkerService(state);
+    }
+
+    get socket() {
+        return this._socket;
     }
 
     fetchDiagram(cb) {

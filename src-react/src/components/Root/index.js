@@ -9,7 +9,7 @@ import About from '../About'
 import Search from '../Search'
 import Popup from '../Popup'
 
-const Root = ({ service, sharedState }) => {
+const Root = ({ service, sharedState, diagramSource }) => {
     const [showSettings, setShowSettings] = useState(false)
     const [showPopup, setShowPopup] = useState(false)
     const [popupContent, setPopupContent] = useState(null)
@@ -107,9 +107,14 @@ const Root = ({ service, sharedState }) => {
                 </div>
             </div>
 
-            <GoldenLayoutComponent service={service} sharedState={sharedState} handleLayout={handleLayout}
-                                   handleShowPopup={handleShowPopup} handlePopupContent={handlePopupContent}
-                                   closePopup={handleClosePopup}
+            <GoldenLayoutComponent
+                service={service}
+                sharedState={sharedState} 
+                diagramSource={diagramSource}
+                handleLayout={handleLayout}
+                handleShowPopup={handleShowPopup}
+                handlePopupContent={handlePopupContent}
+                closePopup={handleClosePopup}
             />
 
             {showPopup && <Popup closePopup={handleClosePopup}>

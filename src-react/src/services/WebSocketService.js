@@ -118,6 +118,11 @@ class WebSocketService
             cb(value);
         });
     }
+
+    scope(cb)
+    {
+        return this._socket.scope(cb);
+    }
 }
 
 export default WebSocketService;

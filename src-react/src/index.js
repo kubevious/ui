@@ -7,6 +7,7 @@ import MockRootApiService from './services-mock/MockRootApiService'
 import RootApiService from './services/RootApiService'
 import StateHandler from './state/state-handler'
 import SharedState from './state/shared-state'
+import DiagramSource from './state/diagram-source'
 
 const sharedState = new SharedState()
 
@@ -15,7 +16,9 @@ const service = rootService.kubevious();
 
 const stateHandler = new StateHandler(sharedState, rootService);
 
+const diagramSource = new DiagramSource(service);
+
 ReactDOM.render(
-    <Root service={service} sharedState={sharedState}/>,
+    <Root service={service} sharedState={sharedState} diagramSource={diagramSource}/>,
     document.getElementById('root')
 );

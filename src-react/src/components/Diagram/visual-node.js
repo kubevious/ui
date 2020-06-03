@@ -133,18 +133,11 @@ class VisualNode {
     }
 
     get isExpanded() {
-        if (this.view._expandedNodeIds[this.id]) {
-            return true
-        }
-        return false
+        return this.view.source.getExpanded(this.id);
     }
 
     set isExpanded(value) {
-        if (value) {
-            this.view._expandedNodeIds[this.id] = true
-        } else {
-            delete this.view._expandedNodeIds[this.id]
-        }
+        this.view.source.setExpanded(this.id, value);
     }
 
     get isSelected() {
@@ -182,11 +175,19 @@ class VisualNode {
     }
 
     get errorCount() {
-        return this.data.alerts['error']
+        return this._getAlertCount('error');
     }
 
     get warnCount() {
-        return this.data.alerts['warn']
+        return this._getAlertCount('warn');
+    }
+
+    _getAlertCount(severity)
+    {
+        if (this.data.alertCount) {
+            return this.data.alertCount[severity];
+        } 
+        return 0;
     }
 
     get headerFillColor() {

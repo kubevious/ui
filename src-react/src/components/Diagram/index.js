@@ -12,12 +12,20 @@ class Diagram extends PureComponent {
 
         this.view = null
 
-        props.sharedState.subscribe('diagram_data',
-            (diagram_data) => {
-                if (diagram_data) {
-                    this._acceptSourceData(diagram_data);
-                }
-            })
+        this._diagramSource = this.props.diagramSource;
+
+        this._diagramSubscription = this._diagramSource.subscribe(diagram => {
+            console.log('DIAGRAM: ', diagram)
+            this._acceptSourceData(diagram);
+        })
+
+        // TODO: .....
+        // props.sharedState.subscribe('diagram_data',
+        //     (diagram_data) => {
+        //         if (diagram_data) {
+        //             this._acceptSourceData(diagram_data);
+        //         }
+        //     })
     }
 
     get service() {
@@ -34,6 +42,11 @@ class Diagram extends PureComponent {
         })
     }
 
+    componentWillUnmount() {
+        this._diagramSubscription.close();
+        this._diagramSubscription = null;
+    }
+
     selectDiagramItem(dn) {
         this.view.selectNodeByDn(dn);
     }
@@ -46,50 +59,30 @@ class Diagram extends PureComponent {
     }
 
     massageSourceData(data) {
-        this.massageSourceDataNode(data, null)
+        this._massageSourceDataNode(data, null)
     }
 
-    massageSourceDataNode(node, parent) {
-        var dn
-        if (parent) {
-            dn = parent.dn + '/' + node.rn
-        } else {
-            dn = node.rn
-        }
-        node.dn = dn
-
-        node.alerts = {}
-        const ALERT_SEVERITIES = ['error', 'warn']
-        for (var severity of ALERT_SEVERITIES) {
-            node.alerts[severity] = this._getNodeErrorCount(node, severity)
+    _massageSourceDataNode(node, parent) {
+        if (!node.dn)
+        {
+            var dn
+            if (parent) {
+                dn = parent.dn + '/' + node.rn
+            } else {
+                dn = node.rn
+            }
+            node.dn = dn
         }
 
         if (node.children) {
             for (var child of node.children) {
-                this.massageSourceDataNode(child, node)
-                for (var severity of ALERT_SEVERITIES) {
-                    node.alerts[severity] += child.alerts[severity]
-                }
+                this._massageSourceDataNode(child, node)
             }
         }
-    }
-
-    _getNodeErrorCount(node, kind) {
-        if (node.alertCount) {
-            if (node.alertCount[kind]) {
-                return node.alertCount[kind]
-            }
-        } else {
-            var propName = kind + 'Count'
-            if (node[propName]) {
-                return node[propName]
-            }
-        }
-        return 0
     }
 
     setupView() {
-        this.view = new VisualView(d3.select('#diagram'), this.props.sharedState);
+        this.view = new VisualView(d3.select('#diagram'), this.props.sharedState, this._diagramSource);
         this.view.skipShowRoot()
         this.view.setup()
         this._renderData()
