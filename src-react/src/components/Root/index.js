@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import './styles.css'
+import './styles.scss'
 import GoldenLayoutComponent from '../GoldenLayout'
 import Popup from '../Popup'
 import Header from '../Header'
@@ -44,31 +44,41 @@ const Root = ({ service, sharedState, diagramSource }) => {
     }
 
     return (
-        <div className="wrapper">
-            <Header
-                service={service}
-                sharedState={sharedState}
-                handleShowPopup={handleShowPopup}
-                handlePopupContent={handlePopupContent}
-                handleClosePopup={handleClosePopup}
-                handleChangeWindow={handleChangeWindow}
-                windows={windows}
-            />
+        <>
+            <div className="mobile-wrapper">
+                <div className="logo"/>
+                <div className="available-msg">
+                    Sorry!<br/><br/>
+                    Kubevious works with Desktop browsers only.<br/><br/>
+                    <a href="https://kubevious.io/youtube.html" className="link-cta">See Demo in Youtube</a>
+                </div>
+            </div>
+            <div className="wrapper">
+                <Header
+                    service={service}
+                    sharedState={sharedState}
+                    handleShowPopup={handleShowPopup}
+                    handlePopupContent={handlePopupContent}
+                    handleClosePopup={handleClosePopup}
+                    handleChangeWindow={handleChangeWindow}
+                    windows={windows}
+                />
 
-            <GoldenLayoutComponent
-                service={service}
-                sharedState={sharedState} 
-                diagramSource={diagramSource}
-                handleLayout={handleLayout}
-                handleShowPopup={handleShowPopup}
-                handlePopupContent={handlePopupContent}
-                closePopup={handleClosePopup}
-            />
+                <GoldenLayoutComponent
+                    service={service}
+                    sharedState={sharedState}
+                    diagramSource={diagramSource}
+                    handleLayout={handleLayout}
+                    handleShowPopup={handleShowPopup}
+                    handlePopupContent={handlePopupContent}
+                    closePopup={handleClosePopup}
+                />
 
-            {showPopup && <Popup closePopup={handleClosePopup}>
-                {popupContent}
-            </Popup>}
-        </div>
+                {showPopup && <Popup closePopup={handleClosePopup}>
+                    {popupContent}
+                </Popup>}
+            </div>
+        </>
     )
 }
 
