@@ -1,5 +1,4 @@
 import _ from 'lodash'
-import uuid from "uuid";
 
 class DiagramSource
 {
@@ -8,66 +7,29 @@ class DiagramSource
         this._sharedState = sharedState;
         this._service = service;
         this._socket = service.socket;
-        this._diagramChangeHandlers = {};
 
-        this._currentTree = null;
         this._delayedActions = {};
-
-        this._monitoredObjects = {};
-        this._expandedObjects = {};
 
         this._nodeData = {};
         this._nodeChildren = {};
 
-        this._setupSubscriptions();
+        this._setupSocketSubscriptions();
 
-        this.setExpanded('root', true);
+        this._sharedState.set('diagram_expanded_dns', { 'root': true });
 
-        this._handleTreeChange();
-    }
+        this._sharedState.subscribe('diagram_expanded_dns', 
+            (diagram_expanded_dns) => {
+                this._updateSubscriptions();
+                this._handleTreeChange();
+            });
 
-    subscribe(cb)
-    {
-        var id = uuid();
-        this._diagramChangeHandlers[id] = {
-            _handler: cb,
-            close: () => {
-                delete this._diagramChangeHandlers[id];
-            }
-        }
-
-        if (this._currentTree) {
-            cb(this._currentTree);
-        }
-     }
-
-    getExpanded(dn)
-    {
-        if (this._expandedObjects[dn]) {
-            return true
-        }
-        return false
-    }
-
-    setExpanded(dn, value)
-    {
-        console.log("[SET-EXPANDED] " + dn + ' :: ' + value);
-        if (value) {
-            this._expandedObjects[dn] = true;
-        } else {
-            delete this._expandedObjects[dn];
-
-            if (this._nodeChildren[dn])
-            {
-                for(var x of this._nodeChildren[dn])
+        this._sharedState.subscribe('time_machine_enabled', 
+            (time_machine_enabled) => {
+                if (!time_machine_enabled)
                 {
-                    delete this._nodeData[x];
+                    this._handleTreeChange();
                 }
-                delete this._nodeChildren[dn];
-            }
-        }
-        this._updateSubscriptions();
-        this._handleTreeChange();
+            });
     }
 
     getChildren(dn)
@@ -78,7 +40,7 @@ class DiagramSource
         return [];
     }
 
-    _setupSubscriptions()
+    _setupSocketSubscriptions()
     {
         this._nodesScope = this._socket.scope((value, target) => {
 
@@ -94,7 +56,8 @@ class DiagramSource
 
         this._childrenScope = this._socket.scope((value, target) => {
 
-            if (this.getExpanded(target.dn))
+            var expandedObjects = this._sharedState.get('diagram_expanded_dns');
+            if (expandedObjects[target.dn])
             {
                 if (value) {
                     this._nodeChildren[target.dn] = value;
@@ -115,22 +78,13 @@ class DiagramSource
         this._updateChildrenSubscriptions();
     }
 
-    _updateNodeSubscriptions()
-    {
-        this._executeDelayedAction('update-ws-node-subscription', 
-            () => {
-                this._nodesScope.replace(_.keys(this._monitoredObjects).map(x => ({
-                    kind: 'node',
-                    dn: x
-                })));
-            });
-    }
-
     _updateChildrenSubscriptions()
     {
         this._executeDelayedAction('update-ws-children-subscription', 
             () => {
-                this._childrenScope.replace(_.keys(this._expandedObjects).map(x => ({
+                var expandedObjects = this._sharedState.get('diagram_expanded_dns');
+
+                this._childrenScope.replace(_.keys(expandedObjects).map(x => ({
                     kind: 'children',
                     dn: x
                 })));
@@ -139,32 +93,35 @@ class DiagramSource
 
     _updateMonitoredObjects()
     {
-        this._executeDelayedAction('build-monitored-objects', 
+        this._executeDelayedAction('update-monitored-objects', 
             () => {
-                this._buildMonitoredObjects();
+                var monitoredObjects = {};
+        
+                this._traverseTree((dn) => {
+                    monitoredObjects[dn] = true;
+                })
+                
+                this._nodesScope.replace(_.keys(monitoredObjects).map(x => ({
+                    kind: 'node',
+                    dn: x
+                })));
             });
-    }
-
-    _buildMonitoredObjects()
-    {
-        this._monitoredObjects = {};
-        this._traverseTree((dn) => {
-            this._monitoredObjects[dn] = true;
-        })
-        this._updateNodeSubscriptions();
     }
 
     _handleTreeChange()
     {
+        if (this._sharedState.get('time_machine_enabled')) {
+            return;
+        }
+
         this._executeDelayedAction('build-tree', 
             () => {
-                this._currentTree = this._buildTreeData();
-                // console.log(this._currentTree);
-
-                for(var x of _.values(this._diagramChangeHandlers))
-                {
-                    x._handler(this._currentTree);
+                if (this._sharedState.get('time_machine_enabled')) {
+                    return;
                 }
+
+                var tree = this._buildTreeData();
+                this._sharedState.set('diagram_data', tree);
             });
     }
 
@@ -217,10 +174,12 @@ class DiagramSource
 
     _traverseTree(cb)
     {
+        var expandedDns = this._sharedState.get('diagram_expanded_dns');
+
         var traverseNode = (dn, parentDn) => {
             cb(dn, parentDn);
 
-            if (this.getExpanded(dn))
+            if (expandedDns[dn])
             {
                 for(var child of this.getChildren(dn))
                 {

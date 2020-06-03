@@ -6,26 +6,19 @@ import $ from 'jquery'
 import './styles.css'
 import '../Popup/styles.css'
 
-class Diagram extends PureComponent {
+class Diagram extends PureComponent
+{
     constructor(props) {
         super(props)
 
-        this.view = null
+        this.view = null;
 
-        this._diagramSource = this.props.diagramSource;
-
-        this._diagramSubscription = this._diagramSource.subscribe(diagram => {
-            console.log('DIAGRAM: ', diagram)
-            this._acceptSourceData(diagram);
-        })
-
-        // TODO: .....
-        // props.sharedState.subscribe('diagram_data',
-        //     (diagram_data) => {
-        //         if (diagram_data) {
-        //             this._acceptSourceData(diagram_data);
-        //         }
-        //     })
+        props.sharedState.subscribe('diagram_data',
+            (diagram_data) => {
+                if (diagram_data) {
+                    this._acceptSourceData(diagram_data);
+                }
+            })
     }
 
     get service() {
@@ -40,11 +33,6 @@ class Diagram extends PureComponent {
                 $(this).css('overflow', 'hidden')
             }
         })
-    }
-
-    componentWillUnmount() {
-        this._diagramSubscription.close();
-        this._diagramSubscription = null;
     }
 
     selectDiagramItem(dn) {
@@ -82,7 +70,7 @@ class Diagram extends PureComponent {
     }
 
     setupView() {
-        this.view = new VisualView(d3.select('#diagram'), this.props.sharedState, this._diagramSource);
+        this.view = new VisualView(d3.select('#diagram'), this.props.sharedState);
         this.view.skipShowRoot()
         this.view.setup()
         this._renderData()

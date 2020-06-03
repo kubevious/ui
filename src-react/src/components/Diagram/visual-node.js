@@ -133,11 +133,11 @@ class VisualNode {
     }
 
     get isExpanded() {
-        return this.view.source.getExpanded(this.id);
+        return this.view.getExpanded(this.id);
     }
 
     set isExpanded(value) {
-        this.view.source.setExpanded(this.id, value);
+        this.view.setExpanded(this.id, value);
     }
 
     get isSelected() {

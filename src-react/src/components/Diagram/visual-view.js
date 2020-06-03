@@ -60,7 +60,22 @@ class VisualView {
                 }
                 this.updateAll(true);
             });
+    }
 
+    getExpanded(dn)
+    {
+        var dict = this.sharedState.get('diagram_expanded_dns');
+        if (dict[dn]) {
+            return true;
+        }
+        return false;
+    }
+
+    setExpanded(dn, value)
+    {
+        var dict = this.sharedState.get('diagram_expanded_dns');
+        dict[dn] = value;
+        this.sharedState.set('diagram_expanded_dns', dict, { skipCompare: true });
     }
 
     _measureText(text, fontSpec) {

@@ -6,11 +6,8 @@ class SharedState
     constructor()
     {
         console.log("[SharedState] CONSTRUCTOR");
-        if (window.sharedState === this) {
-            console.error("[SharedState] ALREADY PRESENT!!!!");
-        }
-        window.sharedState = this;
 
+        this._debugOutput = true;
         this._isSheduled = false;
         this._lastValues = {};
         this._values = {};
@@ -68,25 +65,32 @@ class SharedState
         return value;
     }
 
-    set(name, value)
+    set(name, value, options)
     {
-        if (_.fastDeepEqual(value, this._values[name]))
+        options = options || {};
+
+        if (!options.skipCompare)
         {
-            return;
+            if (_.fastDeepEqual(value, this._values[name]))
+            {
+                return;
+            }
         }
 
-        var str = JSON.stringify(value);
-        if (str.length > 80) {
-            str = str.substring(0, 80) + '...';
+        if (this._debugOutput)
+        {
+            var str = JSON.stringify(value);
+            if (str.length > 80) {
+                str = str.substring(0, 80) + '...';
+            }
+            console.log("[SharedState] SET " + name + " = " + str);
         }
-        // console.log("[SharedState] SET " + name + " = " + str);
 
         if (_.isNullOrUndefined(value)) {
             delete this._values[name];
         } else {
             this._values[name] = value;
         }
-
 
         this._trigger();
     }
