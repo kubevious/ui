@@ -3,8 +3,9 @@ import uuid from "uuid";
 
 class DiagramSource
 {
-    constructor(service)
+    constructor(sharedState, service)
     {
+        this._sharedState = sharedState;
         this._service = service;
         this._socket = service.socket;
         this._diagramChangeHandlers = {};

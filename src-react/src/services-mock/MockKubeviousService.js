@@ -11,9 +11,10 @@ import MockRuleService from './MockRuleService'
 import MockMarkerService from './MockMarkerService'
 
 class MockKubeviousService {
-    constructor(clusterId, sharedState) {
+    constructor(clusterId, sharedState, socket) {
         this.clusterId = clusterId
         this.sharedState = sharedState;
+        this.socket = socket;
 
         this._ruleService = new MockRuleService(this, sharedState);
         this._markerService = new MockMarkerService(this, sharedState)

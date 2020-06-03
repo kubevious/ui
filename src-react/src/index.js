@@ -16,7 +16,7 @@ const service = rootService.kubevious();
 
 const stateHandler = new StateHandler(sharedState, rootService);
 
-const diagramSource = new DiagramSource(service);
+const diagramSource = new DiagramSource(sharedState, service);
 
 ReactDOM.render(
     <Root service={service} sharedState={sharedState} diagramSource={diagramSource}/>,

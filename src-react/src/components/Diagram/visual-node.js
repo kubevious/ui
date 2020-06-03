@@ -163,7 +163,7 @@ class VisualNode {
     }
 
     get hasChildren() {
-        return this._children.length > 0
+        return this._data.childrenCount > 0
     }
 
     get isExpandable() {

@@ -1,4 +1,5 @@
 import WebSocketSubscriptionClient from 'websocket-subscription-client';
+import _ from 'lodash'
 
 class WebSocketService
 {
@@ -14,12 +15,12 @@ class WebSocketService
 
     _setup()
     {
-        this._setupDiagram();
+        this._setupAssets();
         this._setupRuleEditor();
         this._setupMarkerEditor();
     }
 
-    _setupDiagram()
+    _setupAssets()
     {
         var sockerScope = this._socket.scope((value, target) => {
             if (!this.sharedState.get('time_machine_enabled'))
