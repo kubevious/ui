@@ -36,7 +36,8 @@ class MockWebSocketService
                 name: node.name,
                 order: node.order,
                 alertCount: node.alertCount,
-                flags: node.flags,
+                flags: _.keys(node.flags),
+                markers: node.markers,
                 childrenCount: 0
             };
 
