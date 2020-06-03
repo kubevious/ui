@@ -4,6 +4,9 @@ import { isEmptyArray } from '../../utils/util'
 const About = ({ result }) => {
     return(
         <div className="about">
+            <div className="container-header">
+                <h3>About Kubevious</h3>
+            </div>
             <table className="table table-striped table-dark">
                 <thead>
                 <tr>

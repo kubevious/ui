@@ -1,16 +1,10 @@
 import React, { useState } from 'react'
-import bugImg from '../../assets/header-btns/bug.svg'
-import slackImg from '../../assets/header-btns/slack.svg'
-import githubImg from '../../assets/header-btns/github.svg'
 import './styles.css'
 import GoldenLayoutComponent from '../GoldenLayout'
-import { popupOpen } from '../../utils/ui-utils'
-import About from '../About'
-import Search from '../Search'
 import Popup from '../Popup'
+import Header from '../Header'
 
 const Root = ({ service, sharedState, diagramSource }) => {
-    const [showSettings, setShowSettings] = useState(false)
     const [showPopup, setShowPopup] = useState(false)
     const [popupContent, setPopupContent] = useState(null)
     const [layout, setLayout] = useState(null)
@@ -33,21 +27,6 @@ const Root = ({ service, sharedState, diagramSource }) => {
         })
     }
 
-    const openAbout = () => {
-        service.fetchAbout((result) => {
-            popupOpen(<About result={result}/>, {
-                header: {
-                    title: 'About Kubevious'
-                }
-            })
-        })
-    }
-
-    const openSearch = () => {
-        handleShowPopup()
-        handlePopupContent(<Search service={service} sharedState={sharedState} closePopup={handleClosePopup}/>)
-    }
-
     const handleChangeWindow = (e) => {
         const windowId = e.target.getAttribute('tool-window-id');
         const isVisible = e.target.checked;
@@ -64,48 +43,17 @@ const Root = ({ service, sharedState, diagramSource }) => {
         }
     }
 
-    const renderSettings = () => {
-        return (
-            <div id="tool-windows-menu" className="settings-menu" onMouseEnter={() => setShowSettings(true)}
-                 onMouseLeave={() => setShowSettings(false)}>
-                {windows.map(item => (
-                    <span className="s-menu-item" key={item.name}>
-                        <label className="ccheck" id={`toolWindowShowHideLabel${item.name}Component`}>
-                            {item.isVisible ? 'Hide' : 'Show'} {item.name}
-                            <input type="checkbox" tool-window-id={item.id} defaultChecked={true}
-                                   onChange={(e) => handleChangeWindow(e)}/>
-                            <span className="checkmark"/>
-                        </label>
-                    </span>
-                ))}
-            </div>
-        )
-    }
-
     return (
         <div className="wrapper">
-            <div className="header">
-                <div className="logo"/>
-                <div id="history-info" className="history-info"/>
-                <div className="actions">
-                    <a href="https://github.com/kubevious/kubevious/issues/new/choose" target="_blank"
-                       className="btn btn-bug">
-                        <img src={bugImg} alt="bug"/>
-
-                    </a>
-                    <a href="https://kubevious.slack.com" target="_blank" className="btn btn-slack">
-                        <img src={slackImg} alt="slack"/>
-                    </a>
-                    <a href="https://github.com/kubevious/kubevious" target="_blank" className="btn btn-github">
-                        <img src={githubImg} alt="github"/>
-                    </a>
-                    <button id="btnHeaderAbout" type="button" className="btn btn-about" onClick={openAbout}/>
-                    <button id="btnHeaderSearch" type="button" className="btn btn-search" onClick={openSearch}/>
-                    <button className="btn btn-settings" onMouseEnter={() => setShowSettings(true)}
-                            onMouseLeave={() => setShowSettings(false)}/>
-                    {showSettings && renderSettings()}
-                </div>
-            </div>
+            <Header
+                service={service}
+                sharedState={sharedState}
+                handleShowPopup={handleShowPopup}
+                handlePopupContent={handlePopupContent}
+                handleClosePopup={handleClosePopup}
+                handleChangeWindow={handleChangeWindow}
+                windows={windows}
+            />
 
             <GoldenLayoutComponent
                 service={service}
