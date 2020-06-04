@@ -21,6 +21,7 @@ class BaseComponent extends PureComponent {
         this._service = service
         this._sharedState = sharedState
         this._diagramSource = diagramSource
+        this._subscribers = []
     }
 
     get service() {
@@ -36,11 +37,15 @@ class BaseComponent extends PureComponent {
     }
 
     subscribeToSharedState(subscribers, cb) {
-        this._sharedState.subscribe(subscribers, cb)
+        this._subscribers = this._subscribers.concat(this._sharedState.subscribe(subscribers, cb).subscriber)
     }
 
     unsubscribeFromSharedState() {
-        // this
+        this._sharedState.unsubscribe(this._subscribers)
+    }
+
+    componentWillUnmount() {
+        this.unsubscribeFromSharedState()
     }
 }
 

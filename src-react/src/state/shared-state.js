@@ -56,10 +56,14 @@ class SharedState
         this._notifyToSubscriber(subscriber.id);
         
         return {
-            close: () => {
-                delete this._subscribers[subscriber.id];
-            }
+            subscriber: subscriber.id
         }
+    }
+
+    unsubscribe(values) {
+        values.forEach(key => {
+            delete this._subscribers[key]
+        })
     }
 
     get(name)
@@ -164,6 +168,11 @@ class SharedState
     {
         var subscriber = this._subscribers[id];
         var argsArray = [];
+
+        if (!subscriber)
+        {
+            return;
+        }
 
         if (subscriber.isArray)
         {
