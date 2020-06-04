@@ -29,7 +29,7 @@ class StateHandler {
                     var dict = this.sharedState.get('diagram_expanded_dns');
                     var parts = splitDn(selected_dn);
                     var dn = parts[0];
-                    for(var i = 1; i < parts.length; i++)
+                    for(var i = 1; i < parts.length - 1; i++)
                     {
                         dn = dn + '/' + parts[i];
                         dict[dn] = true;
