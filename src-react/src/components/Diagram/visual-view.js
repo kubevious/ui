@@ -1,9 +1,9 @@
 import * as d3 from 'd3'
 import $ from 'jquery'
 import _ from 'lodash'
-import VisualNode from './visual-node'
 import 'bootstrap/js/dist/tooltip'
-import { parseDn } from '../../utils/naming-utils'
+
+import VisualNode from './visual-node'
 import { flagTooltip } from '../../utils/ui-utils'
 
 class VisualView {
@@ -35,18 +35,8 @@ class VisualView {
         sharedState.subscribe("selected_dn",
             (selected_dn) => {
 
-                this._updateSelection();
+                this._updateSelection(selected_dn);
 
-                // for (var node of this._selectedNodes)
-                // {
-                //     node.isSelected = false;
-                //     this._updateNode(node);
-                // }
-                
-                // if (selected_dn)
-                // {
-                //     this._selectNodeByDn(selected_dn);
-                // }
             });
 
         sharedState.subscribe('marker_editor_items',
@@ -278,8 +268,34 @@ class VisualView {
         }
     }
 
+    _activatePanning()
+    {
+        if (!this.sharedState.get('auto_pan_to_selected_dn')) {
+            return;
+        }
+
+        var visualNode = this._nodeDict[this.sharedState.get('selected_dn')];
+        if (!visualNode) {
+            return;
+        }
+        this.sharedState.set('auto_pan_to_selected_dn', false)
+
+        this._viewX =
+            visualNode.absX
+            - Math.max(this._width / 2 - visualNode.width / 2, 10)
+
+        this._viewY =
+            visualNode.absY
+            - Math.max(this._height / 2 - visualNode.height / 2, 10)
+
+        this._applyPanTransform();
+    }
+
     _applyPanTransform() {
         if (!this._rootElem) {
+            return
+        }
+        if (!this._visualRoot) {
             return
         }
 
@@ -814,11 +830,11 @@ class VisualView {
         }
     }
 
-    _updateSelection()
+    _updateSelection(selected_dn)
     {
         if (this._currentSelectedNodeDn)
         {
-            if (this._currentSelectedNodeDn != this.sharedState.get('selected_dn'))
+            if (this._currentSelectedNodeDn != selected_dn)
             {
                 var node = this._nodeDict[this._currentSelectedNodeDn];
                 this._currentSelectedNodeDn = null;
@@ -827,21 +843,22 @@ class VisualView {
                 }
             }
         }
-        if (this._currentSelectedNodeDn != this.sharedState.get('selected_dn'))
+
+        if (this._currentSelectedNodeDn != selected_dn)
         {
-            this._currentSelectedNodeDn = this.sharedState.get('selected_dn');
+            this._currentSelectedNodeDn = selected_dn;
             var node = this._nodeDict[this._currentSelectedNodeDn];
             if (node) {
                 this._updateNode(node);
             }
         }
 
+        this._activatePanning();
+
         console.log("[_updateSelection] ", this._currentSelectedNodeDn)
     }
 
     updateAll(isFullUpdate) {
-
-        // this._currentSelectedNodeDn = this.sharedState.get('selected_dn');
 
         this._massageSourceData()
         this._applyPanTransform()
@@ -851,9 +868,12 @@ class VisualView {
             this._updateNodeR(this._visualRoot, isFullUpdate)
         }
         this._setupControl()
+        this._activatePanning();
     }
 
     handleVisualNodeClick(visualNode) {
+        this.sharedState.set('auto_pan_to_selected_dn', false)
+
         if (visualNode.isSelected)
         {
             this.sharedState.set('selected_dn', null);
@@ -864,53 +884,6 @@ class VisualView {
         }
     }
 
-    // _selectNodeByDn(dn) {
-    //     if (!this._visualRoot) {
-    //         return
-    //     }
-    //     var dnParts = parseDn(dn)
-    //     var topPart = _.head(dnParts)
-    //     if (topPart.rn !== this._visualRoot.data.rn) {
-    //         return
-    //     }
-    //     this._selectAndExpandNode(this._visualRoot, dnParts.slice(1))
-    // }
-
-    // _selectAndExpandNode(visualNode, childParts) {
-
-    //     if (childParts.length === 0) {
-    //         // this._selectedNodes.push(visualNode);
-    //         // visualNode.isSelected = true;
-    //         this._updateNode(visualNode);
-    //         this.updateAll()
-
-    //         this._viewX =
-    //             visualNode.absX
-    //             - Math.max(this._width / 2 - visualNode.width / 2, 10)
-
-
-    //         this._viewY =
-    //             visualNode.absY
-    //             - Math.max(this._height / 2 - visualNode.height / 2, 10)
-
-    //         this._applyPanTransform()
-    //         return;
-    //     } 
-
-    //     if (!visualNode.isExpanded) {
-    //         visualNode.isExpanded = true
-    //         this.updateAll()
-    //     }
-
-    //     var topPart = _.head(childParts)
-    //     var childVisualNode = visualNode.findChildByRn(topPart.rn)
-    //     if (!childVisualNode) {
-    //         this._selectAndExpandNode(visualNode, [])
-    //         return
-    //     }
-
-    //     this._selectAndExpandNode(childVisualNode, childParts.slice(1))
-    // }
 }
 
 function nodePerformExpandCollapse(d) {

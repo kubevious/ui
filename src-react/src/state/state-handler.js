@@ -1,4 +1,5 @@
 import _ from 'the-lodash'
+import { splitDn } from '../utils/naming-utils'
 
 class StateHandler {
     constructor(state, rootService) {
@@ -13,10 +14,29 @@ class StateHandler {
     }
 
     _setup() {
+        this._handleSelectedDnAutoExpandChange()
         this._handleTimeMachineChange()
         this._handleSelectedObjectChange()
         this._handleSelectedObjectAssetsChange()
         this._handleTimelineDataChange()
+    }
+
+    _handleSelectedDnAutoExpandChange()
+    {
+        this.sharedState.subscribe('selected_dn',
+            ( selected_dn ) => {
+                if (selected_dn) {
+                    var dict = this.sharedState.get('diagram_expanded_dns');
+                    var parts = splitDn(selected_dn);
+                    var dn = parts[0];
+                    for(var i = 1; i < parts.length; i++)
+                    {
+                        dn = dn + '/' + parts[i];
+                        dict[dn] = true;
+                    }
+                    this.sharedState.set('diagram_expanded_dns', dict, { skipCompare: true });
+                }
+            });
     }
 
     _handleTimeMachineChange() {
