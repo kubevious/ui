@@ -1,4 +1,5 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
+import BaseComponent from '../BaseComponent'
 import _ from 'lodash'
 import {
     generateDnPathHtml,
@@ -13,7 +14,7 @@ import PropertiesTable from './PropertiesTable'
 import './styles.scss'
 import './obsidian.css'
 
-class Properties extends PureComponent {
+class Properties extends BaseComponent {
     constructor(props) {
         super(props)
 
@@ -24,10 +25,6 @@ class Properties extends PureComponent {
 
         this._renderContent = this._renderContent.bind(this)
         this.onPropertyGroupPopup = this.onPropertyGroupPopup.bind(this)
-    }
-
-    get service() {
-        return this.props.service
     }
 
     propertyExpanderHandleClick(event) {
@@ -47,7 +44,7 @@ class Properties extends PureComponent {
         if (group.kind === 'key-value') {
             return <EnvironmentVariables group={group} dn={this.state.selectedDn}/>
         } else if (group.kind === 'dn-list') {
-            return <DnList group={group} sharedState={this.props.sharedState} hidePopup={this.props.closePopup} dn={this.state.selectedDn}/>
+            return <DnList group={group} sharedState={this.sharedState} hidePopup={this.props.closePopup} dn={this.state.selectedDn}/>
         } else if (group.kind === 'yaml') {
             return <Config group={group} dn={this.state.selectedDn}/>
         } else if (group.kind === 'table') {
@@ -87,7 +84,7 @@ class Properties extends PureComponent {
                             dn={item.dn}
                             groupName={item.id}
                             group={item}
-                            sharedState={this.props.sharedState}
+                            sharedState={this.sharedState}
                             propertyExpanderHandleClick={this.propertyExpanderHandleClick}
                             onPropertyGroupPopup={this.onPropertyGroupPopup}
                         />
@@ -98,7 +95,7 @@ class Properties extends PureComponent {
     }
 
     componentDidMount() {
-        this.props.sharedState.subscribe(['selected_dn', 'selected_object_props'],
+        this.sharedState.subscribe(['selected_dn', 'selected_object_props'],
             ({ selected_dn, selected_object_props }) => {
 
                 this.setState({ selectedDn: selected_dn, selectedObjectProps: selected_object_props })

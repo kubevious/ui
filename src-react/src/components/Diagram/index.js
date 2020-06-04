@@ -1,4 +1,5 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
+import BaseComponent from '../BaseComponent'
 import VisualView from './visual-view'
 import * as d3 from 'd3'
 import $ from 'jquery'
@@ -6,23 +7,18 @@ import $ from 'jquery'
 import './styles.css'
 import '../Popup/styles.css'
 
-class Diagram extends PureComponent
-{
+class Diagram extends BaseComponent {
     constructor(props) {
         super(props)
 
         this.view = null;
 
-        props.sharedState.subscribe('diagram_data',
+        this.sharedState.subscribe('diagram_data',
             (diagram_data) => {
                 if (diagram_data) {
                     this._acceptSourceData(diagram_data);
                 }
             })
-    }
-
-    get service() {
-        return this.props.service
     }
 
     componentDidMount() {
@@ -51,8 +47,7 @@ class Diagram extends PureComponent
     }
 
     _massageSourceDataNode(node, parent) {
-        if (!node.dn)
-        {
+        if (!node.dn) {
             var dn
             if (parent) {
                 dn = parent.dn + '/' + node.rn
@@ -70,7 +65,7 @@ class Diagram extends PureComponent
     }
 
     _setupView() {
-        this.view = new VisualView(d3.select('#diagram'), this.props.sharedState);
+        this.view = new VisualView(d3.select('#diagram'), this.sharedState);
         this.view.skipShowRoot()
         this.view.setup()
         this._renderData()

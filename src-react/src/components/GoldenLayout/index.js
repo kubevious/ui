@@ -1,4 +1,5 @@
-import React, { Component, PureComponent } from 'react'
+import React from 'react'
+import BaseComponent from '../BaseComponent'
 import ReactDOM from 'react-dom'
 import $ from 'jquery'
 import _ from 'lodash'
@@ -17,7 +18,7 @@ import Events from '../Events'
 import './styles.scss'
 import MarkerEditor from '../Editors/MarkerEditor'
 
-class GoldenLayoutComponent extends PureComponent {
+class GoldenLayoutComponent extends BaseComponent {
     constructor(props) {
         super(props)
         this._components = []

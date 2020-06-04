@@ -1,10 +1,11 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
+import BaseComponent from '../BaseComponent'
 import AlertTable from './AlertTable'
 import { isEmptyArray } from '../../utils/util'
 
 import './styles.css'
 
-class Alerts extends PureComponent {
+class Alerts extends BaseComponent {
     constructor(props) {
         super(props)
 
@@ -13,12 +14,8 @@ class Alerts extends PureComponent {
         }
     }
 
-    get service() {
-        return this.props.service
-    }
-
     componentDidMount() {
-        this.props.sharedState.subscribe('selected_object_alerts',
+        this.sharedState.subscribe('selected_object_alerts',
             selected_object_assets => {
                 this.setState({ alerts: selected_object_assets })
             })

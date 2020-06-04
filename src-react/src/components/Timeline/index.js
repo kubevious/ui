@@ -1,4 +1,5 @@
-import React, { Fragment, PureComponent } from 'react'
+import React, { Fragment } from 'react'
+import BaseComponent from '../BaseComponent'
 import * as d3 from 'd3'
 import $ from 'jquery'
 import { formatDate } from '../../utils/ui-utils'
@@ -6,20 +7,14 @@ import moment from 'moment'
 
 import './styles.css'
 
-class Timeline extends PureComponent {
+class Timeline extends BaseComponent {
     constructor(props) {
         super(props);
-
-        this.sharedState = this.props.sharedState;
 
         this._parentElem = null;
         this._showAxis = false;
 
         this.resetView();
-    }
-
-    get service() {
-        return this.props.service
     }
 
     get isTimeMachineEnabled() {

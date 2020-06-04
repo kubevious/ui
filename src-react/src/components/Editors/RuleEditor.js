@@ -1,4 +1,5 @@
-import React, { PureComponent } from 'react'
+import React  from 'react'
+import BaseComponent from '../BaseComponent'
 import $ from 'jquery'
 import Editor from './Editor'
 import './styles.scss'
@@ -15,7 +16,7 @@ const selectedItemDataInit = {
     items: []
 }
 
-class RuleEditor extends PureComponent {
+class RuleEditor extends BaseComponent {
     constructor(props) {
         super(props);
 
@@ -39,12 +40,8 @@ class RuleEditor extends PureComponent {
         this.createNewItem = this.createNewItem.bind(this)
     }
 
-    get sharedState() {
-        return this.props.sharedState;
-    }
-
     get service() {
-        return this.props.service.rules()
+        return this._service._ruleService
     }
 
     componentDidMount() {
@@ -183,7 +180,7 @@ class RuleEditor extends PureComponent {
                         deleteItem={this.deleteItem}
                         createItem={this.createItem}
                         openSummary={this.openSummary}
-                        sharedState={this.props.sharedState}
+                        sharedState={this.sharedState}
                         isSuccess={this.state.isSuccess}
                 />
 

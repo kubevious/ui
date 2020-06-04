@@ -92,8 +92,6 @@ class Root extends BaseComponent {
                     />
 
                     <GoldenLayoutComponent
-                        service={this.service}
-                        sharedState={this.sharedState}
                         diagramSource={this.diagramSource}
                         handleLayout={this.handleLayout}
                         handleShowPopup={this.handleShowPopup}

@@ -1,4 +1,5 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
+import BaseComponent from '../BaseComponent'
 import { getRandomInt } from '../../utils/util'
 import $ from 'jquery'
 import Editor from './Editor'
@@ -11,7 +12,7 @@ const selectedItemDataInit = {
     items: []
 }
 
-class MarkerEditor extends PureComponent {
+class MarkerEditor extends BaseComponent {
     constructor(props) {
         super(props);
 
@@ -34,12 +35,8 @@ class MarkerEditor extends PureComponent {
         this.createNewItem = this.createNewItem.bind(this)
     }
 
-    get sharedState() {
-        return this.props.sharedState;
-    }
-
     get service() {
-        return this.props.service.markers()
+        return this._service._markerService
     }
 
     componentDidMount() {
@@ -50,10 +47,8 @@ class MarkerEditor extends PureComponent {
         });
 
         this.sharedState.subscribe('marker_editor_selected_items', (value) => {
-            if (value)
-            {
-                if (value.marker_id == this.state.selectedItemId)
-                {
+            if (value) {
+                if (value.marker_id === this.state.selectedItemId) {
                     var items = [];
                     if (value.items) {
                         items = value.items;
