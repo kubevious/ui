@@ -16,8 +16,7 @@ class VisualView {
         this._width = 0
         this._height = 0
 
-        this._viewX = 0
-        this._viewY = 0
+        this._viewPos = { x: 0, y: 0 };
 
         this._showRoot = true
         this._nodeDict = {};
@@ -157,15 +156,18 @@ class VisualView {
                 pt.y = d3.event.clientY
                 var target = self._controlInfo.previewFullRectElem._groups[0][0]
                 var cursorpt = pt.matrixTransform(target.getScreenCTM().inverse())
-                this._viewX = cursorpt.x / self._controlInfo.scale - this._width / 2
-                this._viewY = cursorpt.y / self._controlInfo.scale - this._height / 2
-                this._applyPanTransform()
+
+                this._panTo(
+                    cursorpt.x / self._controlInfo.scale - this._width / 2, 
+                    cursorpt.y / self._controlInfo.scale - this._height / 2);
             })
             .call(d3.drag()
                 .on('drag', () => {
-                    this._viewX += d3.event.dx / this._controlInfo.scale
-                    this._viewY += d3.event.dy / this._controlInfo.scale
-                    this._applyPanTransform()
+
+                    this._panTo(
+                        this._viewPos.x + d3.event.dx / this._controlInfo.scale, 
+                        this._viewPos.y + d3.event.dy / this._controlInfo.scale,
+                        true);
                 }))
     }
 
@@ -225,8 +227,8 @@ class VisualView {
 
         if (this._controlInfo.previewVisibleRectElem) {
             this._controlInfo.previewVisibleRectElem
-                .attr('x', this._viewX * this._controlInfo.scale)
-                .attr('y', this._viewY * this._controlInfo.scale)
+                .attr('x', this._viewPos.x * this._controlInfo.scale)
+                .attr('y', this._viewPos.y * this._controlInfo.scale)
                 .attr('width', this._width * this._controlInfo.scale)
                 .attr('height', this._height * this._controlInfo.scale)
 
@@ -244,10 +246,10 @@ class VisualView {
     _setupPanningByMouseDrag() {
         var drag = d3.drag()
             .on('drag', () => {
-                this._viewX -= d3.event.dx
-                this._viewY -= d3.event.dy
-
-                this._applyPanTransform()
+                this._panTo(
+                    this._viewPos.x - d3.event.dx,
+                    this._viewPos.y - d3.event.dy,
+                    true);
             })
 
         this._svgElem.call(drag)
@@ -255,10 +257,10 @@ class VisualView {
 
     _setupPanningByWheel() {
         var doScroll = (e) => {
-            this._viewX += e.deltaX
-            this._viewY += e.deltaY
-            this._applyPanTransform()
-
+            this._panTo(
+                this._viewPos.x + e.deltaX,
+                this._viewPos.y + e.deltaY,
+                true);
             e.preventDefault()
         }
 
@@ -280,37 +282,103 @@ class VisualView {
         }
         this.sharedState.set('auto_pan_to_selected_dn', false)
 
-        this._viewX =
-            visualNode.absX
-            - Math.max(this._width / 2 - visualNode.width / 2, 10)
+        this._panTo(
+            visualNode.absX - Math.max(this._width / 2 - visualNode.width / 2, 10), 
+            visualNode.absY - Math.max(this._height / 2 - visualNode.height / 2, 10))
+    }
 
-        this._viewY =
-            visualNode.absY
-            - Math.max(this._height / 2 - visualNode.height / 2, 10)
+    _panTo(x, y, skipAnimate)
+    {
+        var targetViewPos = this._fixViewPos({ x: x, y: y });
 
-        this._applyPanTransform();
+        if (skipAnimate) {
+            this._stopPanAnimation();
+            this._viewPos = targetViewPos;
+            this._applyPanTransform();
+        } else {
+            this._panInterpolator = d3.interpolate(
+                this._viewPos,
+                targetViewPos
+            );
+    
+            this._panAnimationDuration = 200;
+            this._panInterpolatorStartTime = new Date();
+            this._animatePanTransform();
+        }
+
+    }
+
+    _animatePanTransform()
+    {
+        if (this._panAnimationTimer) {
+            return;
+        }
+
+        this._panAnimationTimer = setTimeout(() => {
+            this._panAnimationTimer = null;
+            var date = new Date();
+            var diff = date - this._panInterpolatorStartTime;
+            if (!this._panAnimationDuration) {
+                return;
+            }
+
+            var t = diff / this._panAnimationDuration;
+            this._viewPos = this._panInterpolator(t);
+            this._applyPanTransform();
+
+            if (t < 1.0) {
+                this._animatePanTransform();
+            } else {
+                this._stopPanAnimation();
+            }
+        }, 10)
+    }
+
+    _stopPanAnimation()
+    {
+        this._panInterpolator = null;
+        this._panInterpolatorStartTime = null;
+        this._panAnimationDuration = null;
+        if (this._panAnimationTimer) {
+            clearTimeout(this._panAnimationTimer);
+            this._panAnimationTimer = null;
+        }
     }
 
     _applyPanTransform() {
         if (!this._rootElem) {
             return
         }
-        if (!this._visualRoot) {
-            return
-        }
 
-        if (this._visualRoot) {
-            this._viewX = Math.min(this._visualRoot.width - this._width, this._viewX)
-            this._viewY = Math.min(this._visualRoot.height - this._height, this._viewY)
-        }
-        this._viewX = Math.max(0, this._viewX)
-        this._viewY = Math.max(0, this._viewY)
+        var pos = this._viewPos;
+        // var pos = this._fixViewPos(this._viewPos);
 
         this._rootElem.attr('transform', () => {
-            return 'translate(' + (-this._viewX) + ',' + (-this._viewY) + ')'
+            return 'translate(' + (-pos.x) + ',' + (-pos.y) + ')'
         })
 
+        // const interpolator = d3.interpolate(
+        //     [0, "0.5 mile", [12]],
+        //     [10, "28 miles", [36]]
+        //   );
+        // console.log(interpolator(0.5));
+          
         this._setupControl()
+    }
+
+    _fixViewPos(pos)
+    {
+        var newPos = { x: pos.x, y : pos.y };
+
+        if (this._visualRoot) {
+            newPos.x = Math.min(this._visualRoot.width - this._width, newPos.x)
+            newPos.y = Math.min(this._visualRoot.height - this._height, newPos.y)
+        }
+
+        newPos.x = Math.max(0, newPos.x)
+        newPos.y = Math.max(0, newPos.y)
+
+        return newPos;
     }
 
     acceptSourceData(sourceData) {
@@ -854,8 +922,6 @@ class VisualView {
         }
 
         this._activatePanning();
-
-        console.log("[_updateSelection] ", this._currentSelectedNodeDn)
     }
 
     updateAll(isFullUpdate) {

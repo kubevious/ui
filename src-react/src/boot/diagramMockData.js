@@ -19201,8 +19201,8 @@ export const PROPERTIES_DATA = [
             "order": 5,
             "config": [
                 "root/ns-[kubevious]/app-[kubevious-ui]/cont-[kubevious-ui]/configmap-[kubevious-mysql-client]",
-                "root/ns-[kube-system]/app-[calico-node]/launcher-[Deployment]",
-                "root/ns-[kube-system]/app-[calico-node]/volume-[Volumes]",
+                "root/ns-[kube-system]/app-[calico-node]/launcher-[DaemonSet]",
+                "root/ns-[kube-system]/app-[calico-node]/vol-[Volumes]",
             ],
             "tooltip": "Other objects that also use this configuration."
         },

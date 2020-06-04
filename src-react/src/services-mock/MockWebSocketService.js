@@ -84,7 +84,6 @@ class MockWebSocketService
     {
         return {
             replace: (subscriptions) => {
-                console.log("******** SUBSCRIBE: ", subscriptions);
                 this._handleSubscriptions(subscriptions, cb);
             }
         }
