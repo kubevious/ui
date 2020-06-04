@@ -64,7 +64,7 @@ const PropertiesTable = ({ group, options, state, dn }) => {
                     <thead>
                         <tr>
                             {tableHeaders().map(item => (
-                                <td key={item.name}>{item.label || item.name}</td>
+                                <th key={item.name}>{item.label || item.name}</th>
                             ))}
                         </tr>
                     </thead>
