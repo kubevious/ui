@@ -20,30 +20,33 @@ class VisualView {
         this._viewY = 0
 
         this._showRoot = true
+        this._nodeDict = {};
         this._selectedNodes = []
+        this._currentSelectedNodeDn = null;
 
         this._controlInfo = {}
 
         this._flatVisualNodes = []
 
         this._existingNodeIds = {}
-        this._selectedNodeIds = {}
         
         this._markerData = {}
 
         sharedState.subscribe("selected_dn",
             (selected_dn) => {
 
-                for (var node of this._selectedNodes)
-                {
-                    node.isSelected = false;
-                    this._updateNode(node);
-                }
+                this._updateSelection();
+
+                // for (var node of this._selectedNodes)
+                // {
+                //     node.isSelected = false;
+                //     this._updateNode(node);
+                // }
                 
-                if (selected_dn)
-                {
-                    this._selectNodeByDn(selected_dn);
-                }
+                // if (selected_dn)
+                // {
+                //     this._selectNodeByDn(selected_dn);
+                // }
             });
 
         sharedState.subscribe('marker_editor_items',
@@ -295,6 +298,7 @@ class VisualView {
     }
 
     acceptSourceData(sourceData) {
+        this._nodeDict = {};
         this._visualRoot = this._packSourceData(sourceData)
         this._massageSourceData()
         this._setupControl()
@@ -310,6 +314,7 @@ class VisualView {
                 recurse(child, visualNode)
             }
             visualNode.prepare()
+            this._nodeDict[visualNode.id] = visualNode;
             return visualNode
         }
 
@@ -809,7 +814,35 @@ class VisualView {
         }
     }
 
+    _updateSelection()
+    {
+        if (this._currentSelectedNodeDn)
+        {
+            if (this._currentSelectedNodeDn != this.sharedState.get('selected_dn'))
+            {
+                var node = this._nodeDict[this._currentSelectedNodeDn];
+                this._currentSelectedNodeDn = null;
+                if (node) {
+                    this._updateNode(node);
+                }
+            }
+        }
+        if (this._currentSelectedNodeDn != this.sharedState.get('selected_dn'))
+        {
+            this._currentSelectedNodeDn = this.sharedState.get('selected_dn');
+            var node = this._nodeDict[this._currentSelectedNodeDn];
+            if (node) {
+                this._updateNode(node);
+            }
+        }
+
+        console.log("[_updateSelection] ", this._currentSelectedNodeDn)
+    }
+
     updateAll(isFullUpdate) {
+
+        // this._currentSelectedNodeDn = this.sharedState.get('selected_dn');
+
         this._massageSourceData()
         this._applyPanTransform()
         this._setupControl()
@@ -831,53 +864,53 @@ class VisualView {
         }
     }
 
-    _selectNodeByDn(dn) {
-        if (!this._visualRoot) {
-            return
-        }
-        var dnParts = parseDn(dn)
-        var topPart = _.head(dnParts)
-        if (topPart.rn !== this._visualRoot.data.rn) {
-            return
-        }
-        this._selectAndExpandNode(this._visualRoot, dnParts.slice(1))
-    }
+    // _selectNodeByDn(dn) {
+    //     if (!this._visualRoot) {
+    //         return
+    //     }
+    //     var dnParts = parseDn(dn)
+    //     var topPart = _.head(dnParts)
+    //     if (topPart.rn !== this._visualRoot.data.rn) {
+    //         return
+    //     }
+    //     this._selectAndExpandNode(this._visualRoot, dnParts.slice(1))
+    // }
 
-    _selectAndExpandNode(visualNode, childParts) {
+    // _selectAndExpandNode(visualNode, childParts) {
 
-        if (childParts.length === 0) {
-            this._selectedNodes.push(visualNode);
-            visualNode.isSelected = true;
-            this._updateNode(visualNode);
-            this.updateAll()
+    //     if (childParts.length === 0) {
+    //         // this._selectedNodes.push(visualNode);
+    //         // visualNode.isSelected = true;
+    //         this._updateNode(visualNode);
+    //         this.updateAll()
 
-            this._viewX =
-                visualNode.absX
-                - Math.max(this._width / 2 - visualNode.width / 2, 10)
+    //         this._viewX =
+    //             visualNode.absX
+    //             - Math.max(this._width / 2 - visualNode.width / 2, 10)
 
 
-            this._viewY =
-                visualNode.absY
-                - Math.max(this._height / 2 - visualNode.height / 2, 10)
+    //         this._viewY =
+    //             visualNode.absY
+    //             - Math.max(this._height / 2 - visualNode.height / 2, 10)
 
-            this._applyPanTransform()
-            return;
-        } 
+    //         this._applyPanTransform()
+    //         return;
+    //     } 
 
-        if (!visualNode.isExpanded) {
-            visualNode.isExpanded = true
-            this.updateAll()
-        }
+    //     if (!visualNode.isExpanded) {
+    //         visualNode.isExpanded = true
+    //         this.updateAll()
+    //     }
 
-        var topPart = _.head(childParts)
-        var childVisualNode = visualNode.findChildByRn(topPart.rn)
-        if (!childVisualNode) {
-            this._selectAndExpandNode(visualNode, [])
-            return
-        }
+    //     var topPart = _.head(childParts)
+    //     var childVisualNode = visualNode.findChildByRn(topPart.rn)
+    //     if (!childVisualNode) {
+    //         this._selectAndExpandNode(visualNode, [])
+    //         return
+    //     }
 
-        this._selectAndExpandNode(childVisualNode, childParts.slice(1))
-    }
+    //     this._selectAndExpandNode(childVisualNode, childParts.slice(1))
+    // }
 }
 
 function nodePerformExpandCollapse(d) {

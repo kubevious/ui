@@ -141,18 +141,7 @@ class VisualNode {
     }
 
     get isSelected() {
-        if (this.view._selectedNodeIds[this.id]) {
-            return true
-        }
-        return false
-    }
-
-    set isSelected(value) {
-        if (value) {
-            this.view._selectedNodeIds[this.id] = true
-        } else {
-            delete this.view._selectedNodeIds[this.id]
-        }
+        return this.id == this.view._currentSelectedNodeDn;
     }
 
     get visibleChildren() {

@@ -26,7 +26,7 @@ class Diagram extends PureComponent
     }
 
     componentDidMount() {
-        this.setupView()
+        this._setupView()
 
         $('.lm_content').each(function () {
             if ($(this).children().hasClass('diagram')) {
@@ -69,7 +69,7 @@ class Diagram extends PureComponent
         }
     }
 
-    setupView() {
+    _setupView() {
         this.view = new VisualView(d3.select('#diagram'), this.props.sharedState);
         this.view.skipShowRoot()
         this.view.setup()
