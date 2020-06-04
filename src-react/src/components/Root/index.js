@@ -3,38 +3,64 @@ import './styles.scss'
 import GoldenLayoutComponent from '../GoldenLayout'
 import Popup from '../Popup'
 import Header from '../Header'
+import BaseComponent from '../BaseComponent'
 
-const Root = ({ service, sharedState, diagramSource }) => {
-    const [showPopup, setShowPopup] = useState(false)
-    const [popupContent, setPopupContent] = useState(null)
-    const [layout, setLayout] = useState(null)
-    const [windows, setWindows] = useState([])
+class Root extends BaseComponent {
+    constructor(props) {
+        super(props);
 
-    const handleShowPopup = () => setShowPopup(true)
-    const handleClosePopup = () => setShowPopup(false)
-    const handlePopupContent = (content) => setPopupContent(content)
+        this.state = {
+            showPopup: false,
+            popupContent: null,
+            layout: null,
+            windows: []
+        }
 
-    const handleLayout = (value) => {
-        setLayout(value)
-        setWindows(value._components
-            .filter(item => !item.skipClose)
-            .map(component => ({ ...component, isVisible: true })))
+        this.handleShowPopup = this.handleShowPopup.bind(this)
+        this.handleClosePopup = this.handleClosePopup.bind(this)
+        this.handlePopupContent = this.handlePopupContent.bind(this)
+        this.handleLayout = this.handleLayout.bind(this)
+        this.handleChangeWindow = this.handleChangeWindow.bind(this)
+    }
 
-        sharedState.subscribe('selected_dn', (selected_dn) => {
+    handleShowPopup() {
+        this.setState({ showPopup: true })
+    }
+
+    handleClosePopup() {
+        this.setState({ showPopup: false })
+    }
+
+    handlePopupContent(content) {
+        this.setState({ popupContent: content })
+    }
+
+    handleLayout(value) {
+        this.setState({
+            layout: value, windows: value._components
+                .filter(item => !item.skipClose)
+                .map(component => ({ ...component, isVisible: true }))
+        })
+
+        this.sharedState.subscribe('selected_dn', (selected_dn) => {
             if (selected_dn) {
                 value.activateComponent('universeComponent')
             }
         })
     }
 
-    const handleChangeWindow = (e) => {
+    handleChangeWindow(e) {
+        const { windows, layout } = this.state
+
         const windowId = e.target.getAttribute('tool-window-id');
         const isVisible = document.getElementById(windowId) !== null;
 
-        setWindows(windows.map(component => component.id === windowId ? {
-            ...component,
-            isVisible: isVisible
-        } : component))
+        this.setState({
+            windows: windows.map(component => component.id === windowId ? {
+                ...component,
+                isVisible: isVisible
+            } : component)
+        })
 
         if (isVisible) {
             layout.hideComponent(windowId);
@@ -43,43 +69,45 @@ const Root = ({ service, sharedState, diagramSource }) => {
         }
     }
 
-    return (
-        <>
-            <div className="mobile-wrapper">
-                <div className="logo"/>
-                <div className="available-msg">
-                    Sorry!<br/><br/>
-                    Kubevious works with Desktop browsers only.<br/><br/>
-                    <a href="https://kubevious.io/youtube.html" className="link-cta">See Demo in Youtube</a>
+    render() {
+        const { showPopup, popupContent, windows } = this.state
+
+        return (
+            <>
+                <div className="mobile-wrapper">
+                    <div className="logo"/>
+                    <div className="available-msg">
+                        Sorry!<br/><br/>
+                        Kubevious works with Desktop browsers only.<br/><br/>
+                        <a href="https://kubevious.io/youtube.html" className="link-cta">See Demo in Youtube</a>
+                    </div>
                 </div>
-            </div>
-            <div className="wrapper">
-                <Header
-                    service={service}
-                    sharedState={sharedState}
-                    handleShowPopup={handleShowPopup}
-                    handlePopupContent={handlePopupContent}
-                    handleClosePopup={handleClosePopup}
-                    handleChangeWindow={handleChangeWindow}
-                    windows={windows}
-                />
+                <div className="wrapper">
+                    <Header
+                        handleShowPopup={this.handleShowPopup}
+                        handlePopupContent={this.handlePopupContent}
+                        handleClosePopup={this.handleClosePopup}
+                        handleChangeWindow={this.handleChangeWindow}
+                        windows={windows}
+                    />
 
-                <GoldenLayoutComponent
-                    service={service}
-                    sharedState={sharedState}
-                    diagramSource={diagramSource}
-                    handleLayout={handleLayout}
-                    handleShowPopup={handleShowPopup}
-                    handlePopupContent={handlePopupContent}
-                    closePopup={handleClosePopup}
-                />
+                    <GoldenLayoutComponent
+                        service={this.service}
+                        sharedState={this.sharedState}
+                        diagramSource={this.diagramSource}
+                        handleLayout={this.handleLayout}
+                        handleShowPopup={this.handleShowPopup}
+                        handlePopupContent={this.handlePopupContent}
+                        closePopup={this.handleClosePopup}
+                    />
 
-                {showPopup && <Popup closePopup={handleClosePopup}>
-                    {popupContent}
-                </Popup>}
-            </div>
-        </>
-    )
+                    {showPopup && <Popup closePopup={this.handleClosePopup}>
+                        {popupContent}
+                    </Popup>}
+                </div>
+            </>
+        )
+    }
 }
 
 export default Root

@@ -3,10 +3,11 @@ import DnComponent from '../DnComponent'
 import {
     popupClose
 } from '../../utils/ui-utils'
+import BaseComponent from '../BaseComponent'
 
 import './styles.scss'
 
-class DnShortcutComponent extends Component {
+class DnShortcutComponent extends BaseComponent {
     constructor(props) {
         super(props);
 
@@ -14,18 +15,20 @@ class DnShortcutComponent extends Component {
     }
 
     clickDn() {
-        this.props.sharedState.set('selected_dn', this.props.dn);
+        this.sharedState.set('selected_dn', this.props.dn);
         this.props.hidePopup ? this.props.hidePopup() : popupClose()
     }
 
     render() {
+        const { dn, options, error, warning } = this.props
+
         return (
-            <div className="dn-shortcut" dn={this.props.dn} onClick={this.clickDn}>
-                <DnComponent dn={this.props.dn} options={this.props.options}/>
+            <div className="dn-shortcut" dn={dn} onClick={this.clickDn}>
+                <DnComponent dn={dn} options={options}/>
 
                 <div className="dn-alert">
-                    {this.props.error > 0 && <div className="alert-item error"/>}
-                    {this.props.warning > 0 && <div className="alert-item warn"/>}
+                    {error > 0 && <div className="alert-item error"/>}
+                    {warning > 0 && <div className="alert-item warn"/>}
                 </div>
             </div>
         );
