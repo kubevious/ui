@@ -30,7 +30,8 @@ class MockWebSocketService
                 dn = node.rn;
             }
 
-            this._nodeData[dn] = {
+            var graphNode = {
+                dn: dn,
                 rn: node.rn,
                 kind: node.kind,
                 name: node.name,
@@ -41,17 +42,27 @@ class MockWebSocketService
                 childrenCount: 0
             };
 
+            this._nodeData[dn] = graphNode;
             this._nodeChildren[dn] = [];
 
             if (node.children) {
-                this._nodeData[dn].childrenCount = node.children.length;
+                graphNode.childrenCount = node.children.length;
                 for(var childNode of node.children)
                 {
-                    var childDn = traverse(dn, childNode);
-                    this._nodeChildren[dn].push(childDn);
+                    var childNode = traverse(dn, childNode);
+                    for(var severity of _.keys(childNode.alertCount))
+                    {
+                        if (graphNode.alertCount[severity]) {
+                            graphNode.alertCount[severity] += childNode.alertCount[severity];
+                        } else {
+                            graphNode.alertCount[severity] = childNode.alertCount[severity];
+                        }
+                    }
+                    
+                    this._nodeChildren[dn].push(childNode.dn);
                 }
             }
-            return dn;
+            return graphNode;
         };
         traverse(null, GRAPH_DATA);
 
