@@ -3,7 +3,7 @@ import { isEmptyArray } from '../../utils/util'
 import DnShortcutComponent from '../DnShortcutComponent'
 
 import './styles.scss'
-import BaseComponent from '../BaseComponent'
+import BaseComponent from '../../HOC/BaseComponent'
 
 class Search extends BaseComponent {
     constructor(props) {

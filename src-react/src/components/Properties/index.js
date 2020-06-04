@@ -1,5 +1,5 @@
 import React from 'react'
-import BaseComponent from '../BaseComponent'
+import BaseComponent from '../../HOC/BaseComponent'
 import _ from 'lodash'
 import {
     generateDnPathHtml,

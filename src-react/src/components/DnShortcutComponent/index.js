@@ -3,7 +3,7 @@ import DnComponent from '../DnComponent'
 import {
     popupClose
 } from '../../utils/ui-utils'
-import BaseComponent from '../BaseComponent'
+import BaseComponent from '../../HOC/BaseComponent'
 
 import './styles.scss'
 

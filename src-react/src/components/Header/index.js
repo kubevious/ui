@@ -4,7 +4,7 @@ import slackImg from '../../assets/header-btns/slack.svg'
 import githubImg from '../../assets/header-btns/github.svg'
 import About from '../About'
 import Search from '../Search'
-import BaseComponent from '../BaseComponent'
+import BaseComponent from '../../HOC/BaseComponent'
 
 import './styles.scss'
 

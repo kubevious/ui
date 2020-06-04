@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import BaseComponent from '../BaseComponent'
+import BaseComponent from '../../HOC/BaseComponent'
 import * as d3 from 'd3'
 import $ from 'jquery'
 import { formatDate } from '../../utils/ui-utils'

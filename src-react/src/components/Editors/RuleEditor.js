@@ -1,5 +1,5 @@
 import React  from 'react'
-import BaseComponent from '../BaseComponent'
+import BaseComponent from '../../HOC/BaseComponent'
 import $ from 'jquery'
 import Editor from './Editor'
 import './styles.scss'

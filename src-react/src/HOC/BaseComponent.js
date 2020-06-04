@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react'
-import SharedState from '../../state/shared-state'
-import MockRootApiService from '../../services-mock/MockRootApiService'
-import RootApiService from '../../services/RootApiService'
-import StateHandler from '../../state/state-handler'
-import DiagramSource from '../../state/diagram-source'
+import SharedState from '../state/shared-state'
+import MockRootApiService from '../services-mock/MockRootApiService'
+import RootApiService from '../services/RootApiService'
+import StateHandler from '../state/state-handler'
+import DiagramSource from '../state/diagram-source'
 
 const sharedState = new SharedState()
 
