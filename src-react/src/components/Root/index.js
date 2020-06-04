@@ -42,7 +42,7 @@ class Root extends BaseComponent {
                 .map(component => ({ ...component, isVisible: true }))
         })
 
-        this.sharedState.subscribe('selected_dn', (selected_dn) => {
+        this.subscribeToSharedState('selected_dn', (selected_dn) => {
             if (selected_dn) {
                 value.activateComponent('universeComponent')
             }

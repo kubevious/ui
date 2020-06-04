@@ -45,13 +45,13 @@ class RuleEditor extends BaseComponent {
     }
 
     componentDidMount() {
-        this.sharedState.subscribe('rule_editor_items', (value) => {
+        this.subscribeToSharedState('rule_editor_items', (value) => {
             this.setState({
                 items: value
             });
         });
 
-        this.sharedState.subscribe('rule_editor_selected_rule_status', (value) => {
+        this.subscribeToSharedState('rule_editor_selected_rule_status', (value) => {
             if (!value) {
                 value = selectedItemDataInit;
             }

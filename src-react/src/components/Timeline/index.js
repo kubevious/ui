@@ -347,7 +347,7 @@ class Timeline extends BaseComponent {
         this._parentElem = d3.select('#timelineComponent')
         this._setup()
 
-        this.sharedState.subscribe('time_machine_enabled',
+        this.subscribeToSharedState('time_machine_enabled',
             ( time_machine_enabled ) => {
 
                 if (time_machine_enabled) {
@@ -357,7 +357,7 @@ class Timeline extends BaseComponent {
                 }
             });
 
-        this.sharedState.subscribe(['time_machine_enabled', 'time_machine_target_date'],
+        this.subscribeToSharedState(['time_machine_enabled', 'time_machine_target_date'],
             ({ time_machine_enabled, time_machine_target_date }) => {
                 var html = '';
                 if (time_machine_enabled && time_machine_target_date) {
@@ -366,17 +366,17 @@ class Timeline extends BaseComponent {
                 $('.history-info').html(html);
             });
 
-        this.sharedState.subscribe(['time_machine_enabled', 'time_machine_target_date'],
+        this.subscribeToSharedState(['time_machine_enabled', 'time_machine_target_date'],
             () => {
                 this._renderSelector();
             });
 
-        this.sharedState.subscribe(['time_machine_timeline_data', 'time_machine_actual_date_from', 'time_machine_actual_date_to'],
+        this.subscribeToSharedState(['time_machine_timeline_data', 'time_machine_actual_date_from', 'time_machine_actual_date_to'],
             () => {
                 this._renderTimeline();
             });
 
-        this.sharedState.subscribe('time_machine_target_date',
+        this.subscribeToSharedState('time_machine_target_date',
             ( time_machine_target_date ) => {
                 this._cancelPendingTimeouts();
 

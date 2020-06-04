@@ -21,8 +21,6 @@ class BaseComponent extends PureComponent {
         this._service = service
         this._sharedState = sharedState
         this._diagramSource = diagramSource
-
-        console.log('here??', service)
     }
 
     get service() {
@@ -35,6 +33,14 @@ class BaseComponent extends PureComponent {
 
     get diagramSource() {
         return this._diagramSource
+    }
+
+    subscribeToSharedState(subscribers, cb) {
+        this._sharedState.subscribe(subscribers, cb)
+    }
+
+    unsubscribeFromSharedState() {
+        // this
     }
 }
 

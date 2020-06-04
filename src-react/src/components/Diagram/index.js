@@ -13,7 +13,7 @@ class Diagram extends BaseComponent {
 
         this.view = null;
 
-        this.sharedState.subscribe('diagram_data',
+        this.subscribeToSharedState('diagram_data',
             (diagram_data) => {
                 if (diagram_data) {
                     this._acceptSourceData(diagram_data);

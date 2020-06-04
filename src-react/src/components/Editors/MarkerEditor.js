@@ -40,13 +40,13 @@ class MarkerEditor extends BaseComponent {
     }
 
     componentDidMount() {
-        this.sharedState.subscribe('marker_editor_items', (value) => {
+        this.subscribeToSharedState('marker_editor_items', (value) => {
             this.setState({
                 items: value
             });
         });
 
-        this.sharedState.subscribe('marker_editor_selected_items', (value) => {
+        this.subscribeToSharedState('marker_editor_selected_items', (value) => {
             if (value) {
                 if (value.marker_id === this.state.selectedItemId) {
                     var items = [];

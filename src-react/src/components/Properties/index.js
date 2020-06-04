@@ -94,7 +94,7 @@ class Properties extends BaseComponent {
     }
 
     componentDidMount() {
-        this.sharedState.subscribe(['selected_dn', 'selected_object_props'],
+        this.subscribeToSharedState(['selected_dn', 'selected_object_props'],
             ({ selected_dn, selected_object_props }) => {
 
                 this.setState({ selectedDn: selected_dn, selectedObjectProps: selected_object_props })
