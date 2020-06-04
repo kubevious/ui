@@ -54,6 +54,12 @@ class SharedState
         }
 
         this._notifyToSubscriber(subscriber.id);
+        
+        return {
+            close: () => {
+                delete this._subscribers[subscriber.id];
+            }
+        }
     }
 
     get(name)
