@@ -69,7 +69,7 @@ class RuleEditor extends BaseComponent {
         })
 
         this.service.backendFetchRule(rule.id, data => {
-            if (data.id == this.state.selectedItemId) {
+            if (data.id === this.state.selectedItemId) {
                 this.setState({
                     selectedItem: data
                 })
@@ -152,6 +152,8 @@ class RuleEditor extends BaseComponent {
     }
 
     render() {
+        const { items, isNewItem, selectedItem, selectedItemData, selectedItemId, isSuccess, isMergeOptionsVisible } = this.state
+
         $('body').click((e) => {
             if (!$(e.target).closest('.rule-header').length) {
                 this.setVisibleOptions(false)
@@ -162,30 +164,30 @@ class RuleEditor extends BaseComponent {
             <div className="RuleEditor-container" id="ruleEditorComponent">
                 <ItemsList
                     type='rule'
-                    items={this.state.items}
-                    selectedItemId={this.state.selectedItemId}
+                    items={items}
+                    selectedItemId={selectedItemId}
                     selectItem={this.selectItem}
                     createNewItem={this.createNewItem}
                     setVisibleOptions={this.setVisibleOptions}
-                    service={this.service}/>
+                    service={this.service} // need to pass service, because it's different for markers and rules editors
+                />
 
                 <Editor type='rule'
-                        items={this.state.items}
-                        isNewItem={this.state.isNewItem}
-                        selectedItem={this.state.selectedItem}
-                        selectedItemData={this.state.selectedItemData}
-                        selectedItemId={this.state.selectedItemId}
+                        items={items}
+                        isNewItem={isNewItem}
+                        selectedItem={selectedItem}
+                        selectedItemData={selectedItemData}
+                        selectedItemId={selectedItemId}
                         createNewItem={this.createNewItem}
                         saveItem={this.saveItem}
                         deleteItem={this.deleteItem}
                         createItem={this.createItem}
                         openSummary={this.openSummary}
-                        sharedState={this.sharedState}
-                        isSuccess={this.state.isSuccess}
+                        isSuccess={isSuccess}
                 />
 
                 <div id="import-container"
-                     style={{ display: this.state.isMergeOptionsVisible ? 'initial' : 'none' }}>
+                     style={{ display: isMergeOptionsVisible ? 'initial' : 'none' }}>
                     <div className="import-caret"/>
                     <div className="import-options">
                         <div className="option">

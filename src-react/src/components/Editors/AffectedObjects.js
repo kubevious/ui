@@ -1,12 +1,11 @@
 import React from 'react'
 import DnShortcutComponent from '../DnShortcutComponent'
 
-const AffectedObjects = ({ selectedItemData, sharedState }) => {
-    console.log(selectedItemData);
+const AffectedObjects = ({ selectedItemData }) => {
     return(
         <>
             {selectedItemData.items.map((item, index) => (
-                <DnShortcutComponent key={index} dn={item.dn} sharedState={sharedState} error={item.has_error} warning={item.has_warning}/>
+                <DnShortcutComponent key={index} dn={item.dn} error={item.has_error} warning={item.has_warning}/>
             ))}
         </>
     )

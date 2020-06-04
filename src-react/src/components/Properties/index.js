@@ -44,7 +44,7 @@ class Properties extends BaseComponent {
         if (group.kind === 'key-value') {
             return <EnvironmentVariables group={group} dn={this.state.selectedDn}/>
         } else if (group.kind === 'dn-list') {
-            return <DnList group={group} sharedState={this.sharedState} hidePopup={this.props.closePopup} dn={this.state.selectedDn}/>
+            return <DnList group={group} hidePopup={this.props.closePopup} dn={this.state.selectedDn}/>
         } else if (group.kind === 'yaml') {
             return <Config group={group} dn={this.state.selectedDn}/>
         } else if (group.kind === 'table') {
@@ -84,7 +84,6 @@ class Properties extends BaseComponent {
                             dn={item.dn}
                             groupName={item.id}
                             group={item}
-                            sharedState={this.sharedState}
                             propertyExpanderHandleClick={this.propertyExpanderHandleClick}
                             onPropertyGroupPopup={this.onPropertyGroupPopup}
                         />

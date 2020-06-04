@@ -6,7 +6,6 @@ import cx from 'classnames'
 import MarkerPreview from '../MarkerPreview'
 
 const ItemsList = ({ type, items, selectedItemId, selectedItem, selectItem, createNewItem, setVisibleOptions, service }) => {
-
     const exportItems = () => {
         service.backendExportItems(response => {
             const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(response))
@@ -54,7 +53,7 @@ const ItemsList = ({ type, items, selectedItemId, selectedItem, selectItem, crea
                             className={cx('rule-item-button', { 'selected': item.id === selectedItemId })}
                             onClick={() => selectItem(item)}>
                         {type === 'marker' && <div className="shape-wrapper">
-                            <MarkerPreview shape={item.shape} color={item.color} />
+                            <MarkerPreview shape={item.shape} color={item.color}/>
                         </div>}
                         {item.name}
                         {type === 'rule' && !item.isCurrent && <div className="busy-rule-indicator"/>}

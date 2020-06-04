@@ -6,7 +6,7 @@ import StartPage from './StartPage'
 import RuleMainTab from './RuleMainTab'
 import MarkerMainTab from './MarkerMainTab'
 
-const Editor = ({ type, items, isNewItem, selectedItem, selectedItemData, selectedItemId, createNewItem, saveItem, deleteItem, createItem, openSummary, sharedState, isSuccess }) => {
+const Editor = ({ type, items, isNewItem, selectedItem, selectedItemData, selectedItemId, createNewItem, saveItem, deleteItem, createItem, openSummary, isSuccess }) => {
     const [selectedTab, setSelectedTab] = useState('main')
 
     useEffect(() => {
@@ -73,7 +73,7 @@ const Editor = ({ type, items, isNewItem, selectedItem, selectedItemData, select
                 {selectedTab === 'main' && detectEditor()}
 
                 {selectedTab === 'object' && !isEmptyArray(selectedItemData.items) &&
-                <AffectedObjects selectedItemData={selectedItemData} sharedState={sharedState}/>}
+                <AffectedObjects selectedItemData={selectedItemData} />}
             </>
         )
     }
