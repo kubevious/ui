@@ -1,0 +1,18 @@
+version: 2
+jobs:
+ build:
+   machine: true
+   steps:
+     - checkout
+
+     # start proprietary DB using private Docker image
+     # with credentials stored in the UI
+    #  - run: |
+        #  echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
+        #  docker run -d --name db company/proprietary-db:1.2.3
+
+     # build the application image
+     - run: docker build -t kubevious/ui-react .
+
+     # deploy the image
+    #  - run: docker push company/app:$CIRCLE_BRANCH
