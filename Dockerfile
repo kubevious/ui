@@ -8,8 +8,8 @@ COPY src-react/package.json ./
 COPY src-react/package-lock.json ./
 RUN npm ci
 COPY src-react/ ./
-#RUN npm run build
-RUN node --expose-gc --max-old-space-size=700 node_modules/react-scripts/scripts/build.js
+RUN npm run build
+# RUN node --expose-gc --max-old-space-size=700 node_modules/react-scripts/scripts/build.js
 
 ###############################################################################
 # Step 2 : Runner image
