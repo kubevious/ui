@@ -3,7 +3,8 @@ MY_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$(basename "${BASH_SOURCE
 MY_DIR="$(dirname $MY_PATH)"
 cd $MY_DIR
 
-export BACKEND_URL=http://localhost:4001
+cd src-legacy
 
-cd src
-npm start
+rm -rf node_modules/
+npm install
+npm update kubevious-helpers

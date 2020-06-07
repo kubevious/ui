@@ -3,7 +3,7 @@ MY_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$(basename "${BASH_SOURCE
 MY_DIR="$(dirname $MY_PATH)"
 cd $MY_DIR
 
-export BACKEND_URL=http://localhost:4000
+export REACT_APP_MOCKED_DATA=true
 
-cd src-react
+cd src
 npm start

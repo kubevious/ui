@@ -3,6 +3,5 @@ MY_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$(basename "${BASH_SOURCE
 MY_DIR="$(dirname $MY_PATH)"
 cd $MY_DIR
 
-export NODE_ENV=production
-export BACKEND_URL=http://localhost:4000
-node src/.
+export MOCK_BACKEND=true
+node src-legacy/.
