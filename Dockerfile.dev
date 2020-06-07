@@ -1,8 +1,7 @@
 # https://mherman.org/blog/dockerizing-a-react-app/
-FROM node:12-alpine
+FROM kubevious/react-builder:12
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
-RUN npm install react-scripts@3.4.1 -g
 COPY src-react/package.json ./
 COPY src-react/package-lock.json ./
 RUN npm install

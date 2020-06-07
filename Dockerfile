@@ -1,9 +1,8 @@
 ###############################################################################
 # Step 1 : Builder image
-FROM kubevious/node-builder:12 as build
+FROM kubevious/react-builder:12 as build
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
-RUN npm install react-scripts@3.4.1 -g
 COPY src-react/package.json ./
 COPY src-react/package-lock.json ./
 RUN npm ci
@@ -13,8 +12,6 @@ RUN npm run build
 
 ###############################################################################
 # Step 2 : Runner image
-FROM nginx:stable-alpine
+FROM kubevious/nginx:1.8
+COPY nginx/default.conf /etc/nginx/conf.d/
 COPY --from=build /app/build /usr/share/nginx/html
-COPY nginx/* /etc/nginx/conf.d/
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]

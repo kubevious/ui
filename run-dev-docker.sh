@@ -9,5 +9,6 @@ docker run \
     --name 'kubevious-ui' \
     -p 4000:80 \
     --network kubevious \
-    -v ${MY_DIR}/nginx:/etc/nginx/conf.d \
-    kubevious-ui-react:prod
+    -e BACKEND_URL=http://kubevious-backend:4000 \
+    kubevious-ui-react:dev
+    

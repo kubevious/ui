@@ -7,4 +7,7 @@ cd $MY_DIR
 
 # docker build -t kubevious-ui-react:prod .
 
-docker build -m 2000m -t kubevious-ui-react:prod .
+docker build --no-cache \
+    -m 2000m \
+    -t kubevious-ui-react:dev \
+    .
