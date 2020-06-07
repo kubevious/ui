@@ -1,16 +1,17 @@
 ###############################################################################
 # Step 1 : Builder image
-FROM node:12-alpine
-RUN apk update && apk upgrade && \
-    apk add --no-cache bash git openssh
+FROM kubevious/react-builder:12 as build
 WORKDIR /app
-COPY src/package*.json ./
-RUN npm install --production
+ENV PATH /app/node_modules/.bin:$PATH
+COPY src/package.json ./
+COPY src/package-lock.json ./
+RUN npm ci
+COPY src/ ./
+RUN npm run build
+# RUN node --expose-gc --max-old-space-size=700 node_modules/react-scripts/scripts/build.js
 
 ###############################################################################
 # Step 2 : Runner image
-FROM node:12-alpine
-WORKDIR /app
-COPY --from=0 /app .
-COPY src/ ./
-CMD [ "node", "." ]
+FROM kubevious/nginx:1.8
+COPY nginx/default.conf /etc/nginx/conf.d/
+COPY --from=build /app/build /usr/share/nginx/html
