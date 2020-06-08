@@ -1,21 +1,16 @@
-import KubeviousService from './KubeviousService'
-import WebSocketService from './WebSocketService'
+import DiagramRootApiService from './DiagramRootApiService'
 
 class RootApiService {
 
     constructor(state)
     {
-        this._socket = new WebSocketService(state);
-        this._kubevious = new KubeviousService(state, this._socket);
+        this._diagram = new DiagramRootApiService(state);
     }
 
-    kubevious() {
-        return this._kubevious;
+    diagram() {
+        return this._diagram;
     }
 
-    get socket() {
-        return this._socket;
-    }
 }
 
 export default RootApiService

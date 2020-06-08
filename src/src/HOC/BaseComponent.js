@@ -2,14 +2,15 @@ import { PureComponent } from 'react'
 import SharedState from '../state/shared-state'
 import StateHandler from '../state/state-handler'
 import DiagramSource from '../state/diagram-source'
-import { api } from '../configureService'
+import { apiFactory } from '../configureService'
 
 const sharedState = new SharedState()
 
-const rootService = api.diagram(sharedState)
-const service = rootService.kubevious()
+const rootService = apiFactory(sharedState);
+const rootDiagramService = rootService.diagram()
+const service = rootDiagramService.kubevious()
 
-new StateHandler(sharedState, rootService);
+new StateHandler(sharedState, rootDiagramService);
 
 const diagramSource = new DiagramSource(sharedState, service);
 
