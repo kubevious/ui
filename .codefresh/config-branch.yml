@@ -2,8 +2,7 @@ version: "1.0"
 stages:
   - "clone"
   - "build"
-  - versioning
-  - "push"
+  - "docker"
 steps:
   
   clone_init:
@@ -24,19 +23,38 @@ steps:
     revision: "${{CF_BRANCH}}"
     stage: clone
 
-  inject_version:
-    title: Inject Version
+  prepare_repo:
+    title: Prepare Repo
     stage: build
-    image: codefresh/cli
+    image: kubevious/react-builder:12
+    working_directory: ${{main_clone}}/src
     shell: bash
     commands:
-      - echo "module.exports = \"v1.2.3\";" > /codefresh/volume/${PRODUCT_NAME}/src/src/version.js
-      - cat /codefresh/volume/${PRODUCT_NAME}/src/src/version.js
-      - cf_export PRODUCT_VERSION="${PRODUCT_VERSION}"
-      - cf_export DOCKER_TAG="${CF_BRANCH}-${PRODUCT_VERSION}"
+      - npm install
 
-  build:
+  build_mock_service:
+    title: Prepare Repo
+    stage: build
+    image: kubevious/react-builder:12
+    working_directory: ${{main_clone}}/src
+    shell: bash
+    commands:
+      - export REACT_APP_MOCKED_DATA=true
+      - echo $REACT_APP_MOCKED_DATA
+      - npm run build
+
+  build_real_service:
+    title: Prepare Repo
+    stage: build
+    image: kubevious/react-builder:12
+    working_directory: ${{main_clone}}/src
+    shell: bash
+    commands:
+      - echo $REACT_APP_MOCKED_DATA
+      - npm run build
+
+  build_docker:
     title: "Building Docker Image"
     type: build
     image_name: "kubevious/${{PRODUCT_NAME}}"
-    stage: build
+    stage: docker
