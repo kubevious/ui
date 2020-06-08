@@ -39,11 +39,8 @@ steps:
     working_directory: ${{main_clone}}/src
     shell: bash
     commands:
-      - env
       - unset CI
       - export REACT_APP_MOCKED_DATA=true
-      - echo $REACT_APP_MOCKED_DATA
-      - env
       - npm run build
 
   build_real_service:
@@ -53,10 +50,8 @@ steps:
     working_directory: ${{main_clone}}/src
     shell: bash
     commands:
-      - env
       - unset CI
       - echo $REACT_APP_MOCKED_DATA
-      - env
       - npm run build
 
   build_docker:
