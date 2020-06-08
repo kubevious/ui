@@ -11,9 +11,9 @@ import Properties from '../Properties'
 import Alerts from '../Alerts'
 import Timeline from '../Timeline'
 import RuleEditor from '../Editors/RuleEditor'
+import MarkerEditor from '../Editors/MarkerEditor'
 
 import './styles.scss'
-import MarkerEditor from '../Editors/MarkerEditor'
 
 class GoldenLayoutComponent extends BaseComponent {
     constructor(props) {

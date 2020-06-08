@@ -1,20 +1,13 @@
-import KubeviousService from './MockKubeviousService'
-import WebSocketService from './MockWebSocketService'
+import MockDiagramRootApiService from './MockDiagramRootApiService'
 
 class MockRootApiService {
     constructor(sharedState)
     {
-        this._sharedState = sharedState;
-        this._socket = new WebSocketService(sharedState);
-        this._kubevious = new KubeviousService(null, sharedState, this._socket);
+        this._diagram = new MockDiagramRootApiService(sharedState);
     }
 
-    get socket() {
-        return this._socket;
-    }
-
-    kubevious(id) {
-        return this._kubevious;
+    diagram() {
+        return this._diagram;
     }
 }
 

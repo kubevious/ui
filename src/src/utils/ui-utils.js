@@ -1,10 +1,7 @@
-import React from 'react'
 import _ from 'lodash'
 import $ from 'jquery'
 import DocUtils from 'kubevious-helpers/lib/docs'
 import moment from 'moment'
-import Popup from '../components/Popup'
-import { renderToString } from 'react-dom/server'
 
 export const prettyKind = (kind) => {
     var value = DocUtils.prettyKind(kind);
@@ -73,27 +70,4 @@ export function formatDate(date) {
     } else {
         return dayStr + ' ' + timeStr
     }
-}
-
-export function popupOpen(contents, params) {
-    params = params || {}
-    var header = null
-    if (params.header) {
-        header = params.header
-    }
-
-    var html = renderToString(<Popup header={header} contents={contents} />)
-
-    $('body').append(html)
-
-    $('#popup').on('click', (event) => popupClose(event))
-    $('button.close').on('click', (event) => popupClose(event))
-
-    if (params.focus) {
-        $(params.focus).focus()
-    }
-}
-
-export function activateTooltips() {
-    $('.property-group-info').tooltip()
 }

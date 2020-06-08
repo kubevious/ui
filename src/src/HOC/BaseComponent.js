@@ -1,16 +1,13 @@
-import React, { PureComponent } from 'react'
-import SharedState from '../state/shared-state'
-import MockRootApiService from '../services-mock/MockRootApiService'
-import RootApiService from '../services/RootApiService'
+import { PureComponent } from 'react'
 import StateHandler from '../state/state-handler'
 import DiagramSource from '../state/diagram-source'
+import { api, sharedState } from '../configureService'
 
-const sharedState = new SharedState()
+const rootService = api;
+const rootDiagramService = rootService.diagram()
+const service = rootDiagramService.kubevious()
 
-const rootService = process.env.REACT_APP_MOCKED_DATA ? new MockRootApiService(sharedState) : new RootApiService(sharedState);
-const service = rootService.kubevious();
-
-const stateHandler = new StateHandler(sharedState, rootService);
+new StateHandler(sharedState, rootDiagramService);
 
 const diagramSource = new DiagramSource(sharedState, service);
 
@@ -18,7 +15,6 @@ class BaseComponent extends PureComponent {
     constructor(props) {
         super(props);
 
-        this._service = service
         this._sharedState = sharedState
         this._diagramSource = diagramSource
         this._subscribers = []
@@ -34,6 +30,23 @@ class BaseComponent extends PureComponent {
 
     get diagramSource() {
         return this._diagramSource
+    }
+
+    registerService({ kind }) {
+        switch (kind) {
+            case 'kubevious':
+                this._service = service
+                break
+            case 'marker':
+                this._service = service._markerService
+                break
+            case 'rule':
+                this._service = service._ruleService
+                break
+            default:
+                this._service = service
+                break
+        }
     }
 
     subscribeToSharedState(subscribers, cb) {

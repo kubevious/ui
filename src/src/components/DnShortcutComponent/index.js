@@ -1,8 +1,6 @@
-import React, { Component } from 'react'
+import React from 'react'
 import DnComponent from '../DnComponent'
-import {
-    popupClose
-} from '../../utils/ui-utils'
+import { popupClose } from '../../utils/ui-utils'
 import BaseComponent from '../../HOC/BaseComponent'
 
 import './styles.scss'

@@ -16,6 +16,8 @@ class MarkerEditor extends BaseComponent {
     constructor(props) {
         super(props);
 
+        this.registerService({ kind: 'marker' })
+
         this.state = {
             items: [],
             selectedItem: selectedItemInit,
@@ -33,10 +35,6 @@ class MarkerEditor extends BaseComponent {
         this.setVisibleOptions = this.setVisibleOptions.bind(this)
         this.selectItem = this.selectItem.bind(this)
         this.createNewItem = this.createNewItem.bind(this)
-    }
-
-    get service() {
-        return this._service._markerService
     }
 
     componentDidMount() {
