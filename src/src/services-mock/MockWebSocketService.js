@@ -1,13 +1,6 @@
 import _ from 'lodash'
 
-import {
-    ABOUT_DATA,
-    ALERTS_DATA,
-    GRAPH_DATA, HISTORY_GRAPH_DATA, HISTORY_PROPERTIES,
-    HISTORY_RANGE, HISTORY_TIMELINE,
-    PROPERTIES_DATA,
-    DN_LIST
-} from '../boot/diagramMockData'
+import { GRAPH_DATA } from '../boot/diagramMockData'
 
 class MockWebSocketService
 {

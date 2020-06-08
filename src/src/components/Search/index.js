@@ -1,13 +1,15 @@
 import React  from 'react'
 import { isEmptyArray } from '../../utils/util'
 import DnShortcutComponent from '../DnShortcutComponent'
+import BaseComponent from '../../HOC/BaseComponent'
 
 import './styles.scss'
-import BaseComponent from '../../HOC/BaseComponent'
 
 class Search extends BaseComponent {
     constructor(props) {
         super(props);
+
+        this.registerService({ kind: 'kubevious' })
 
         this.state = {
             value: '',

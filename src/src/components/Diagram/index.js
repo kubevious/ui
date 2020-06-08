@@ -4,14 +4,15 @@ import VisualView from './visual-view'
 import * as d3 from 'd3'
 import $ from 'jquery'
 
-import './styles.css'
-import '../Popup/styles.css'
+import './styles.scss'
 
 class Diagram extends BaseComponent {
     constructor(props) {
         super(props)
 
         this.view = null;
+
+        this.registerService({ kind: 'kubevious' })
 
         this.subscribeToSharedState('diagram_data',
             (diagram_data) => {

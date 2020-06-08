@@ -5,7 +5,7 @@ import $ from 'jquery'
 import { formatDate } from '../../utils/ui-utils'
 import moment from 'moment'
 
-import './styles.css'
+import './styles.scss'
 
 class Timeline extends BaseComponent {
     constructor(props) {

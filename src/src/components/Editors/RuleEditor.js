@@ -20,6 +20,8 @@ class RuleEditor extends BaseComponent {
     constructor(props) {
         super(props);
 
+        this.registerService({ kind: 'rule' })
+
         this.state = {
             selectedTab: 'main',
             items: [],
@@ -38,10 +40,6 @@ class RuleEditor extends BaseComponent {
         this.setVisibleOptions = this.setVisibleOptions.bind(this)
         this.selectItem = this.selectItem.bind(this)
         this.createNewItem = this.createNewItem.bind(this)
-    }
-
-    get service() {
-        return this._service._ruleService
     }
 
     componentDidMount() {

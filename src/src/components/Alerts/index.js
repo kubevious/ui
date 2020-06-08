@@ -3,7 +3,7 @@ import BaseComponent from '../../HOC/BaseComponent'
 import AlertTable from './AlertTable'
 import { isEmptyArray } from '../../utils/util'
 
-import './styles.css'
+import './styles.scss'
 
 class Alerts extends BaseComponent {
     constructor(props) {
