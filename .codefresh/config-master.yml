@@ -53,7 +53,6 @@ steps:
       - cat /codefresh/volume/${PRODUCT_NAME}/src/src/version.js
       - cf_export PRODUCT_VERSION="${PRODUCT_VERSION}"
       - cf_export DOCKER_TAG="${PRODUCT_VERSION}"
-      - cf_export DOCKER_TAG="dev"
 
   build:
     title: "Building Docker Image"
