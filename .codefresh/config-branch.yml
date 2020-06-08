@@ -24,33 +24,39 @@ steps:
     stage: clone
 
   prepare_repo:
-    title: Prepare Repo
+    title: Prepare Repository
     stage: build
     image: kubevious/react-builder:12
     working_directory: ${{main_clone}}/src
     shell: bash
     commands:
-      - npm install
+      - npm ci
 
   build_mock_service:
-    title: Prepare Repo
+    title: Build with Mock Services
     stage: build
     image: kubevious/react-builder:12
     working_directory: ${{main_clone}}/src
     shell: bash
     commands:
+      - env
+      - unset CI
       - export REACT_APP_MOCKED_DATA=true
       - echo $REACT_APP_MOCKED_DATA
+      - env
       - npm run build
 
   build_real_service:
-    title: Prepare Repo
+    title: Build with Real Services
     stage: build
     image: kubevious/react-builder:12
     working_directory: ${{main_clone}}/src
     shell: bash
     commands:
+      - env
+      - unset CI
       - echo $REACT_APP_MOCKED_DATA
+      - env
       - npm run build
 
   build_docker:
