@@ -52,7 +52,12 @@ steps:
       # - ls -la /codefresh/volume/Cypress/4.8.0/Cypress/Cypress
       - npm install
       - npm install --only=dev
-      - npm run ci
+      - echo ${CYPRESS_CACHE_FOLDER} 
+      - ls -la ~
+      - ls -la /root
+      - ls -la /root/.cache/Cypress/4.8.0/Cypress/Cypress
+      # - npm run ci
+      - npm run cy:run-ci
 
   # build_mock_service:
   #   title: Build with Mock Services
