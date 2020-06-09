@@ -65,14 +65,22 @@ steps:
     title: "Run Tests"
     stage: "mock-server"
     type: parallel
-    steps:
+    steps:      
       run_server:
         title: "Run Server"
         stage: "mock-server"
         image: kubevious/react-builder:12
         working_directory: ${{main_clone}}/src
         commands:
+          - ifconfig
           - npm start
+      address_test:
+        title: "Address Test"
+        stage: "mock-server"
+        image: kubevious/react-builder:12
+        working_directory: ${{main_clone}}/src
+        commands:
+          - ifconfig
       run_cypress:
         title: "Run Cypress"
         stage: "mock-server"
