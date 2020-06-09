@@ -52,10 +52,11 @@ steps:
       # - ls -la /codefresh/volume/Cypress/4.8.0/Cypress/Cypress
       - npm install
       - npm install --only=dev
-      - echo ${CYPRESS_CACHE_FOLDER} 
+      - env
       - ls -la ~
-      - ls -la /root
-      - ls -la /root/.cache/Cypress/4.8.0/Cypress/Cypress
+      - ls -la ~/.cache
+      # - ls -la /root
+      # - ls -la /root/.cache/Cypress/4.8.0/Cypress/Cypress
       # - npm run ci
       - npm run cy:run-ci
 
