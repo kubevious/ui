@@ -67,7 +67,7 @@ class MockRuleService {
                     }
                     else
                     {
-                        var dnList = this._parent.getRandomDnList();
+                        var dnList = this._parent.diagramService().getRandomDnList();
                         rule.items = dnList.map(x => ({
                             dn: x,
                             has_error: (Math.random() * 10 > 4),

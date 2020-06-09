@@ -25,7 +25,7 @@ class MockMarkerService {
         setInterval(() => {
 
             for (var marker of _.values(MOCK_MARKERS)) {
-                var dnList = this._parent.getRandomDnList();
+                var dnList = this._parent.diagramService().getRandomDnList();
                 marker.items = dnList.map(x => ({
                     dn: x
                 }));

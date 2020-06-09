@@ -7,17 +7,10 @@ import {
     PROPERTIES_DATA,
     DN_LIST
 } from '../boot/diagramMockData'
-import MockRuleService from './MockRuleService'
-import MockMarkerService from './MockMarkerService'
 
 class MockKubeviousService {
-    constructor(clusterId, sharedState, socket) {
-        this.clusterId = clusterId
+    constructor(sharedState) {
         this.sharedState = sharedState;
-        this.socket = socket;
-
-        this._ruleService = new MockRuleService(this, sharedState);
-        this._markerService = new MockMarkerService(this, sharedState)
 
         this.sharedState.subscribe(['selected_dn', 'time_machine_enabled'],
             ({ selected_dn, time_machine_enabled }) => {
@@ -89,14 +82,6 @@ class MockKubeviousService {
 
     fetchHistoryProperties(dn, date, cb) {
         cb(_.cloneDeep(HISTORY_PROPERTIES))
-    }
-
-    rules() {
-        return this._ruleService;
-    }
-
-    markers() {
-        return this._markerService
     }
 }
 
