@@ -32,9 +32,9 @@ steps:
     working_directory: ${{main_clone}}/src
     shell: bash
     commands:
+      - export CYPRESS_CACHE_FOLDER=/codefresh/volume/Cypress
+      - cf_export CYPRESS_CACHE_FOLDER=${CYPRESS_CACHE_FOLDER}
       - npm ci
-      # - npm install --only=dev
-      - cp -rf /root/.cache/Cypress /codefresh/volume/Cypress
 
   run_mock_e2e_tests:
     title: "Running Mock Server E2E Tests"
@@ -44,10 +44,7 @@ steps:
     commands:
       - export REACT_APP_MOCKED_DATA=true
       - export CYPRESS_VIDEO=false
-      - ls -la /codefresh/volume/Cypress
-      - mkdir -p /root/.cache/
-      - ls -la /root/.cache/
-      - cp -rf /codefresh/volume/Cypress /root/.cache/
+      - echo ${CYPRESS_CACHE_FOLDER}
       - npm run ci
 
   build_mock_service:
