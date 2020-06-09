@@ -33,7 +33,8 @@ steps:
     shell: bash
     commands:
       - npm ci
-      - npm install --only=dev
+      # - npm install --only=dev
+      - cp -rf /root/.cache/Cypress /codefresh/volume/CypressCache
 
   run_mock_e2e_tests:
     title: "Running Mock Server E2E Tests"
@@ -43,6 +44,7 @@ steps:
     commands:
       - export REACT_APP_MOCKED_DATA=true
       - export CYPRESS_VIDEO=false
+      - cp -rf /codefresh/volume/CypressCache /root/.cache/Cypress
       - npm run ci
 
   build_mock_service:
