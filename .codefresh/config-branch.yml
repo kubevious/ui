@@ -36,6 +36,7 @@ steps:
       - cf_export CYPRESS_CACHE_FOLDER=${CYPRESS_CACHE_FOLDER}
       - npm ci
       - ls -la /codefresh/volume/Cypress/
+      - ls -la /codefresh/volume/Cypress/4.8.0/Cypress/Cypress
 
   run_mock_e2e_tests:
     title: "Running Mock Server E2E Tests"
@@ -47,7 +48,8 @@ steps:
       - export CYPRESS_VIDEO=false
       - echo ${CYPRESS_CACHE_FOLDER}
       - ls -la /codefresh/volume/Cypress/
-      - npm run ci
+      - ls -la /codefresh/volume/Cypress/4.8.0/Cypress/Cypress
+      # - npm run ci
 
   build_mock_service:
     title: Build with Mock Services
