@@ -2,10 +2,10 @@ import _ from 'the-lodash'
 
 import BaseRootApiService from '../BaseRootApiService'
 
-import KubeviousService from './MockKubeviousService'
+import DiagramService from './MockDiagramService'
 import WebSocketService from './MockWebSocketService'
-import MockRuleService from './MockRuleService'
-import MockMarkerService from './MockMarkerService'
+import RuleService from './MockRuleService'
+import MarkerService from './MockMarkerService'
 
 class MockRootApiService extends BaseRootApiService
 {
@@ -14,11 +14,11 @@ class MockRootApiService extends BaseRootApiService
         super(sharedState);
 
         this.registerService({kind: 'rule'}, () => {
-            return new MockRuleService(this, sharedState);
+            return new RuleService(this, sharedState);
         });
 
         this.registerService({kind: 'marker'}, () => {
-            return new MockMarkerService(this, sharedState);
+            return new MarkerService(this, sharedState);
         });
 
         this.registerService({kind: 'socket'}, () => {
@@ -26,7 +26,7 @@ class MockRootApiService extends BaseRootApiService
         });
 
         this.registerService({kind: 'diagram'}, ({info}) => {
-            return new KubeviousService(sharedState);
+            return new DiagramService(sharedState);
         });
     }
     

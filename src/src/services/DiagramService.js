@@ -1,4 +1,4 @@
-class KubeviousService {
+class DiagramService {
 
     constructor(client)
     {
@@ -88,4 +88,4 @@ class KubeviousService {
 
 }
 
-export default KubeviousService
+export default DiagramService

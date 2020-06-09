@@ -8,7 +8,7 @@ import {
     DN_LIST
 } from '../boot/diagramMockData'
 
-class MockKubeviousService {
+class MockDiagramService {
     constructor(sharedState) {
         this.sharedState = sharedState;
 
@@ -85,4 +85,4 @@ class MockKubeviousService {
     }
 }
 
-export default MockKubeviousService
+export default MockDiagramService;

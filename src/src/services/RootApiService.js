@@ -4,7 +4,7 @@ import BaseRootApiService from '../BaseRootApiService'
 import BackendClient from './BackendClient'
 
 import WebSocketService from './WebSocketService'
-import KubeviousService from './KubeviousService'
+import DiagramService from './DiagramService'
 import RuleService from './RuleService'
 import MarkerService from './MarkerService'
 
@@ -30,7 +30,7 @@ class RootApiService extends BaseRootApiService
 
         this.registerService({kind: 'diagram'}, ({info}) => {
             var client = new BackendClient('/api');
-            return new KubeviousService(client);
+            return new DiagramService(client);
         });
     }
 
