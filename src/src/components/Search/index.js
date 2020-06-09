@@ -9,7 +9,7 @@ class Search extends BaseComponent {
     constructor(props) {
         super(props);
 
-        this.registerService({ kind: 'kubevious' })
+        this.registerService({ kind: 'diagram' })
 
         this.state = {
             value: '',

@@ -2,10 +2,9 @@ import _ from 'the-lodash'
 import { splitDn } from '../utils/naming-utils'
 
 class StateHandler {
-    constructor(state, rootService) {
+    constructor(state, diagramService) {
         this.sharedState = state;
-        this._rootService = rootService;
-        this._service = rootService.kubevious();
+        this._service = diagramService;
         this._setup();
     }
 

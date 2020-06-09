@@ -3,20 +3,18 @@ import StateHandler from '../state/state-handler'
 import DiagramSource from '../state/diagram-source'
 import { api, sharedState } from '../configureService'
 
-const rootService = api;
-const rootDiagramService = rootService.diagram()
-const service = rootDiagramService.kubevious()
-
-new StateHandler(sharedState, rootDiagramService);
-
-const diagramSource = new DiagramSource(sharedState, service);
+// const rootDiagramService = api.diagram()
+// const service = rootDiagramService.kubevious()
+// new StateHandler(sharedState, rootDiagramService);
+// const diagramSource = new DiagramSource(sharedState, service);
 
 class BaseComponent extends PureComponent {
     constructor(props) {
         super(props);
 
+        this._service = null;
         this._sharedState = sharedState
-        this._diagramSource = diagramSource
+        // this._diagramSource = diagramSource
         this._subscribers = []
     }
 
@@ -28,25 +26,26 @@ class BaseComponent extends PureComponent {
         return this._sharedState
     }
 
-    get diagramSource() {
-        return this._diagramSource
-    }
+    // get diagramSource() {
+    //     return this._diagramSource
+    // }
 
-    registerService({ kind }) {
-        switch (kind) {
-            case 'kubevious':
-                this._service = service
-                break
-            case 'marker':
-                this._service = service._markerService
-                break
-            case 'rule':
-                this._service = service._ruleService
-                break
-            default:
-                this._service = service
-                break
-        }
+    registerService(info) {
+        this._service = api.resolveService(info);
+        // switch (kind) {
+        //     case 'kubevious':
+        //         this._service = service
+        //         break
+        //     case 'marker':
+        //         this._service = service._markerService
+        //         break
+        //     case 'rule':
+        //         this._service = service._ruleService
+        //         break
+        //     default:
+        //         this._service = service
+        //         break
+        // }
     }
 
     subscribeToSharedState(subscribers, cb) {

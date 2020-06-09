@@ -1,6 +1,7 @@
 import MockRootApiService from './services-mock/MockRootApiService'
 import RootApiService from './services/RootApiService'
 import SharedState from './state/shared-state'
+import KubeviousHandler from './state/kubevious-handler'
 
 export const sharedState = new SharedState();
 
@@ -10,3 +11,5 @@ function apiFactory() {
 }
 
 export const api = apiFactory();
+
+new KubeviousHandler(api, { kind: 'diagram' });
