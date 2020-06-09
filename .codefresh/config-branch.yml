@@ -45,6 +45,7 @@ steps:
       - export REACT_APP_MOCKED_DATA=true
       - export CYPRESS_VIDEO=false
       - ls -la /codefresh/volume/Cypress
+      - mkdir -p /root/.cache/
       - ls -la /root/.cache/
       - cp -rf /codefresh/volume/Cypress /root/.cache/
       - npm run ci
