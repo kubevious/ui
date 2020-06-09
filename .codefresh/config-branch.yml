@@ -34,8 +34,9 @@ steps:
     commands:
       # - export CYPRESS_CACHE_FOLDER=/codefresh/volume/Cypress
       # - cf_export CYPRESS_CACHE_FOLDER=${CYPRESS_CACHE_FOLDER}
-      # - npm ci
-      - echo "test..."
+      - npm ci
+      - ls -la /root
+      - ls -la /root/.cache
       # - ls -la /codefresh/volume/Cypress/
       # - ls -la /codefresh/volume/Cypress/4.8.0/Cypress/Cypress
 
@@ -53,12 +54,18 @@ steps:
       - npm install
       - npm install --only=dev
       - env
-      - ls -la ~
-      - ls -la ~/.cache
+      # - ls -la ~
+      # - ls -la ~/.cache
       # - ls -la /root
       # - ls -la /root/.cache/Cypress/4.8.0/Cypress/Cypress
       # - npm run ci
-      - npm run cy:run-ci
+      # - npm run cy:run-ci
+
+  run_cypress:
+    title: "Run Cypress"
+    stage: "mock-server"
+    image: cypress/included:4.8.0
+    working_directory: ${{main_clone}}/src
 
   # build_mock_service:
   #   title: Build with Mock Services
