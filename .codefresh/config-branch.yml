@@ -1,6 +1,6 @@
 version: "1.0"
 stages:
-  - "clone"
+  - "clone and prepare"
   - "build"
   - "mock-server"
   - "real-server"
@@ -9,7 +9,7 @@ steps:
   
   clone_init:
     title: Init Clone
-    stage: clone
+    stage: "clone and prepare"
     image: codefresh/cli
     shell: bash
     commands:
@@ -23,11 +23,11 @@ steps:
     description: "Cloning main repository..."
     repo: "kubevious/${{CF_REPO_NAME}}"
     revision: "${{CF_BRANCH}}"
-    stage: clone
+    stage: "clone and prepare"
 
   prepare_repo:
     title: Prepare Repository
-    stage: build
+    stage: "clone and prepare"
     image: kubevious/react-builder:12
     working_directory: ${{main_clone}}/src
     shell: bash
@@ -43,6 +43,7 @@ steps:
     commands:
       - export REACT_APP_MOCKED_DATA=true
       - export CYPRESS_VIDEO=false
+      - npm install cypress -g
       - npm run ci
 
   build_mock_service:
