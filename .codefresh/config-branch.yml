@@ -43,7 +43,6 @@ steps:
     commands:
       - export REACT_APP_MOCKED_DATA=true
       - export CYPRESS_VIDEO=false
-      - npm install cypress -g
       - npm run ci
 
   build_mock_service:
