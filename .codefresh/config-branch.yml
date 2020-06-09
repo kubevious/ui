@@ -3,7 +3,6 @@ stages:
   - "clone"
   - "build"
   - "docker"
-  - "tests"
 steps:
   
   clone_init:
@@ -44,6 +43,17 @@ steps:
       - export REACT_APP_MOCKED_DATA=true
       - npm run build
 
+  run_tests:
+    title: "Running Mock Server E2E Tests"
+    stage: "build"
+    image: kubevious/react-builder:12
+    working_directory: ${{main_clone}}/src
+    commands:
+      - npm install --only=dev
+      - export REACT_APP_MOCKED_DATA=true
+      - export CYPRESS_VIDEO=false
+      - npm run ci
+
   build_real_service:
     title: Build with Real Services
     stage: build
@@ -60,15 +70,3 @@ steps:
     type: build
     image_name: "kubevious/${{PRODUCT_NAME}}"
     stage: docker
-
-  run_tests:
-    title: "Running e2e tests"
-    stage: "tests"
-    image: kubevious/react-builder:12
-    working_directory: ${{main_clone}}/src
-    commands:
-      - npm install --only=dev
-      - export REACT_APP_MOCKED_DATA=true
-      - npm start
-      - export CYPRESS_VIDEO=false
-      - npm run cy:run
