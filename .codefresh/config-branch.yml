@@ -32,11 +32,12 @@ steps:
     working_directory: ${{main_clone}}/src
     shell: bash
     commands:
-      - export CYPRESS_CACHE_FOLDER=/codefresh/volume/Cypress
-      - cf_export CYPRESS_CACHE_FOLDER=${CYPRESS_CACHE_FOLDER}
-      - npm ci
-      - ls -la /codefresh/volume/Cypress/
-      - ls -la /codefresh/volume/Cypress/4.8.0/Cypress/Cypress
+      # - export CYPRESS_CACHE_FOLDER=/codefresh/volume/Cypress
+      # - cf_export CYPRESS_CACHE_FOLDER=${CYPRESS_CACHE_FOLDER}
+      # - npm ci
+      - echo "test..."
+      # - ls -la /codefresh/volume/Cypress/
+      # - ls -la /codefresh/volume/Cypress/4.8.0/Cypress/Cypress
 
   run_mock_e2e_tests:
     title: "Running Mock Server E2E Tests"
@@ -46,46 +47,46 @@ steps:
     commands:
       - export REACT_APP_MOCKED_DATA=true
       - export CYPRESS_VIDEO=false
-      - echo ${CYPRESS_CACHE_FOLDER}
-      - ls -la /codefresh/volume/Cypress/
-      - ls -la /codefresh/volume/Cypress/4.8.0/Cypress/Cypress
+      # - echo ${CYPRESS_CACHE_FOLDER}
+      # - ls -la /codefresh/volume/Cypress/
+      # - ls -la /codefresh/volume/Cypress/4.8.0/Cypress/Cypress
       - npm ci
       - npm run ci
 
-  build_mock_service:
-    title: Build with Mock Services
-    stage: "mock-server"
-    image: kubevious/react-builder:12
-    working_directory: ${{main_clone}}/src
-    shell: bash
-    commands:
-      - unset CI
-      - export REACT_APP_MOCKED_DATA=true
-      - npm run build
+  # build_mock_service:
+  #   title: Build with Mock Services
+  #   stage: "mock-server"
+  #   image: kubevious/react-builder:12
+  #   working_directory: ${{main_clone}}/src
+  #   shell: bash
+  #   commands:
+  #     - unset CI
+  #     - export REACT_APP_MOCKED_DATA=true
+  #     - npm run build
 
-  run_real_e2e_tests:
-    title: "Running Real Server E2E Tests"
-    stage: "real-server"
-    image: kubevious/react-builder:12
-    working_directory: ${{main_clone}}/src
-    commands:
-      - export BACKEND_URL=http://demo.kubevious.io
-      - export CYPRESS_VIDEO=false
-      - npm run ci
+  # run_real_e2e_tests:
+  #   title: "Running Real Server E2E Tests"
+  #   stage: "real-server"
+  #   image: kubevious/react-builder:12
+  #   working_directory: ${{main_clone}}/src
+  #   commands:
+  #     - export BACKEND_URL=http://demo.kubevious.io
+  #     - export CYPRESS_VIDEO=false
+  #     - npm run ci
 
-  build_real_service:
-    title: Build with Real Services
-    stage: "real-server"
-    image: kubevious/react-builder:12
-    working_directory: ${{main_clone}}/src
-    shell: bash
-    commands:
-      - unset CI
-      - echo $REACT_APP_MOCKED_DATA
-      - npm run build
+  # build_real_service:
+  #   title: Build with Real Services
+  #   stage: "real-server"
+  #   image: kubevious/react-builder:12
+  #   working_directory: ${{main_clone}}/src
+  #   shell: bash
+  #   commands:
+  #     - unset CI
+  #     - echo $REACT_APP_MOCKED_DATA
+  #     - npm run build
 
-  build_docker:
-    title: "Building Docker Image"
-    type: build
-    image_name: "kubevious/${{PRODUCT_NAME}}"
-    stage: docker
+  # build_docker:
+  #   title: "Building Docker Image"
+  #   type: build
+  #   image_name: "kubevious/${{PRODUCT_NAME}}"
+  #   stage: docker
