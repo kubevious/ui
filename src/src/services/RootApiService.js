@@ -1,16 +1,61 @@
-import DiagramRootApiService from './DiagramRootApiService'
+import _ from 'the-lodash'
 
-class RootApiService {
+import BaseRootApiService from '../BaseRootApiService'
+import BackendClient from './BackendClient'
 
-    constructor(state)
+import WebSocketService from './WebSocketService'
+import DiagramService from './DiagramService'
+import RuleService from './RuleService'
+import MarkerService from './MarkerService'
+
+class RootApiService extends BaseRootApiService
+{
+    constructor(sharedState)
     {
-        this._diagram = new DiagramRootApiService(state);
+        super(sharedState);
+
+        this.registerService({kind: 'rule'}, () => {
+            var client = new BackendClient('/api/v1');
+            return new RuleService(client);
+        });
+
+        this.registerService({kind: 'marker'}, () => {
+            var client = new BackendClient('/api/v1');
+            return new MarkerService(client);
+        });
+
+        this.registerService({kind: 'socket'}, () => {
+            return new WebSocketService(sharedState);
+        });
+
+        this.registerService({kind: 'diagram'}, ({info}) => {
+            var client = new BackendClient('/api');
+            return new DiagramService(client);
+        });
     }
 
-    diagram() {
-        return this._diagram;
+    socketService() {
+        return this.resolveService({kind: 'socket'});
     }
 
+    ruleService() {
+        return this.resolveService({kind: 'rule'});
+    }
+
+    markerService() {
+        return this.resolveService({kind: 'marker'});
+    }
+
+    diagramService(params) {
+        var info;
+        if (params) {
+            info = _.clone(params);
+        } else {
+            info = {}
+        }
+        info.kind = 'diagram';
+        return this.resolveService(info);
+    }
 }
 
 export default RootApiService

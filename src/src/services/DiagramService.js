@@ -1,35 +1,26 @@
-import BackendClient  from './BackendClient'
-import RuleService from './RuleService'
-import MarkerService from './MarkerService'
+class DiagramService {
 
-class KubeviousService {
-    constructor(state, socket)
+    constructor(client)
     {
-        this._socket = socket;
-        this._ruleService = new RuleService(state);
-        this._markerService = new MarkerService(state);
-    }
-
-    get socket() {
-        return this._socket;
+        this._client = client;
     }
 
     fetchDiagram(cb) {
-        return BackendClient.get('/api/tree')
+        return this._client.get('/tree')
             .then(result => {
                 cb(result.data);
             })
     }
 
     fetchAssets(dn, cb) {
-        return BackendClient.get('/api/assets', { dn: dn })
+        return this._client.get('/assets', { dn: dn })
             .then(result => {
                 cb(result.data);
             })
     }
 
     fetchSearchResults(criteria, cb) {
-        return BackendClient.get('/api/search', { criteria: criteria })
+        return this._client.get('/search', { criteria: criteria })
             .then(result => {
                 cb(result.data);
             })
@@ -42,7 +33,7 @@ class KubeviousService {
                   
         return Promise.resolve()
             .then(() => {
-                return BackendClient.get('/version')
+                return this._client.get('/version')
                     .then(result => {
                         info['backend version'] = result.data.version;
                     })
@@ -57,7 +48,7 @@ class KubeviousService {
     }
 
     fetchHistoryRange(cb) {
-        return BackendClient.get('/api/v1/history/range')
+        return this._client.get('/v1/history/range')
             .then(result => {
                 cb(result.data);
             });
@@ -68,7 +59,7 @@ class KubeviousService {
             from: from,
             to: to
         };
-        return BackendClient.get('/api/v1/history/timeline', params)
+        return this._client.get('/v1/history/timeline', params)
             .then(result => {
                 cb(result.data);
             });
@@ -78,7 +69,7 @@ class KubeviousService {
         var params = {
             date: date
         };
-        return BackendClient.get('/api/v1/history/snapshot', params)
+        return this._client.get('/v1/history/snapshot', params)
             .then(result => {
                 cb(result.data);
             });
@@ -89,20 +80,12 @@ class KubeviousService {
             dn: dn,
             date: date
         };
-        return BackendClient.get('/api/v1/history/assets', params)
+        return this._client.get('/v1/history/assets', params)
             .then(result => {
                 cb(result.data);
             });
     }
 
-    rules() {
-        return this._ruleService;
-    }
-
-    markers() {
-        return this._markerService;
-    }
-
 }
 
-export default KubeviousService
+export default DiagramService

@@ -12,7 +12,7 @@ class Header extends BaseComponent {
     constructor(props) {
         super(props);
 
-        this.registerService({ kind: 'kubevious' })
+        this.registerService({ kind: 'diagram' })
 
         this.state = {
             showSettings: false

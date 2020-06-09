@@ -1,50 +1,54 @@
-import BackendClient from './BackendClient'
 
 class RuleService {
+    constructor(client)
+    {
+        this._client = client;
+    }
+
     backendFetchRuleList(cb) {
-        return BackendClient.get('/api/v1/rule')
+        return this._client.get('/rule')
             .then(result => {
                 cb(result.data);
             });
     }
 
     backendFetchRule(id, cb) {
-        return BackendClient.get('/api/v1/rule/' + id)
+        return this._client.get('/rule/' + id)
             .then(result => {
                 cb(result.data);
             });
     }
 
     backendCreateRule(rule, cb) {
-        return BackendClient.post('/api/v1/rule', rule)
+        return this._client.post('/rule', rule)
             .then(result => {
                 cb(result.data)
             });
     }
 
     backendDeleteRule(id, cb) {
-        return BackendClient.delete('/api/v1/rule/' + id)
+        return this._client.delete('/rule/' + id)
             .then(result => {
                 cb(result.data);
             });
     }
 
     backendUpdateRule(id, config, cb) {
-        return BackendClient.put('/api/v1/rule/' + id, config)
+        return this._client.put('/rule/' + id, config)
             .then(result => {
                 cb(result.data);
             });
     }
 
     backendExportItems(cb) {
-        return BackendClient.get('/api/v1/rule/export')
+        return this._client.get('/rule/export')
             .then(result => {
                 cb(result.data);
             });
     }
 
     backendImportRules(policies, cb) {
-        return BackendClient.post('/api/v1/rule/import', policies)
+        return this._client.post('/rule/import', policies)
             .then(result => {
                 cb(result.data);
             });

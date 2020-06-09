@@ -3,9 +3,9 @@ import _ from 'lodash'
 
 class WebSocketService
 {
-    constructor(state)
+    constructor(sharedState)
     {
-        this.sharedState = state;
+        this.sharedState = sharedState;
         this._socket = new WebSocketSubscriptionClient('/socket');
 
         this._socket.run();

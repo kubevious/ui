@@ -2,11 +2,10 @@ import _ from 'lodash'
 
 class DiagramSource
 {
-    constructor(sharedState, service)
+    constructor(sharedState, socket)
     {
         this._sharedState = sharedState;
-        this._service = service;
-        this._socket = service.socket;
+        this._socket = socket;
 
         this._delayedActions = {};
 

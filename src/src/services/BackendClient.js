@@ -1,7 +1,9 @@
 import axios from 'axios'
 
 class BackendClient {
-    constructor() {
+    constructor(urlBase)
+    {
+        this._urlBase = urlBase;
     }
 
     get(url, params) {
@@ -21,6 +23,10 @@ class BackendClient {
     }
 
     _execute(method, url, params, data) {
+        if (this._urlBase) {
+            url = this._urlBase + url;
+        }
+        
         var options = {
             method: method,
             url: url
@@ -45,4 +51,4 @@ class BackendClient {
     }
 }
 
-export default new BackendClient()
+export default BackendClient;

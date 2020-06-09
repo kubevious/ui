@@ -12,7 +12,7 @@ class Diagram extends BaseComponent {
 
         this.view = null;
 
-        this.registerService({ kind: 'kubevious' })
+        this.registerService({ kind: 'diagram' })
 
         this.subscribeToSharedState('diagram_data',
             (diagram_data) => {
