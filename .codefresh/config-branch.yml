@@ -2,6 +2,7 @@ version: "1.0"
 stages:
   - "clone and prepare"
   - "build"
+  - "test"
   - "mock-server"
   - "real-server"
   - "docker"
@@ -13,12 +14,6 @@ steps:
     image: codefresh/cli
     shell: bash
     commands:
-      - ifconfig
-      - cat /proc/self/cgroup | grep -o  -e "docker-.*.scope" | head -n 1 | sed "s/docker-\(.*\).scope/\\1/"
-      - basename $(cat /proc/1/cpuset)
-      - hostname
-      - uname -n
-      - cat /etc/hosts
       - export PRODUCT_NAME="ui"
       - cf_export PRODUCT_NAME="${PRODUCT_NAME}"
       - cf_export GITHUB_TOKEN=$(codefresh get context github --decrypt -o yaml | yq -y .spec.data.auth.password)
@@ -31,77 +26,109 @@ steps:
     revision: "${{CF_BRANCH}}"
     stage: "clone and prepare"
 
-  prepare_repo:
-    title: Prepare Repository
-    stage: "clone and prepare"
-    image: kubevious/react-builder:12
-    working_directory: ${{main_clone}}/src
+  build_docker:
+    title: "Building Docker Image"
+    type: build
+    image_name: "kubevious/${{PRODUCT_NAME}}"
+    stage: build
+
+  prepare_test_params:
+    title: "Prepare Test Params"
+    stage: test
     shell: bash
+    image: codefresh/cli
+    working_directory: ${{main_clone}}
     commands:
-      # - export CYPRESS_CACHE_FOLDER=/codefresh/volume/Cypress
-      # - cf_export CYPRESS_CACHE_FOLDER=${CYPRESS_CACHE_FOLDER}
-      - npm ci
-      - ls -la /root
-      - ls -la /root/.cache
-      # - ls -la /codefresh/volume/Cypress/
-      # - ls -la /codefresh/volume/Cypress/4.8.0/Cypress/Cypress
+      - "echo '{ \"baseUrl\": \"http://kubevious_ui:80\" }' > src/cypress.json"
+      - cat src/cypress.json
 
-  run_mock_e2e_tests:
-    title: "Running Mock Server E2E Tests"
-    stage: "mock-server"
-    image: kubevious/react-builder:12
+  run_integration_tests:
+    title: Test Backend
+    image: cypress/included:4.8.0
     working_directory: ${{main_clone}}/src
-    commands:
-      - export REACT_APP_MOCKED_DATA=true
-      - export CYPRESS_VIDEO=false
-      # - echo ${CYPRESS_CACHE_FOLDER}
-      # - ls -la /codefresh/volume/Cypress/
-      # - ls -la /codefresh/volume/Cypress/4.8.0/Cypress/Cypress
-      - npm install
-      - npm install --only=dev
-      - env
-      # - ls -la ~
-      # - ls -la ~/.cache
-      # - ls -la /root
-      # - ls -la /root/.cache/Cypress/4.8.0/Cypress/Cypress
-      # - npm run ci
-      # - npm run cy:run-ci
+    services:
+      composition:
+        kubevious_ui:
+          image: 'kubevious/${{PRODUCT_NAME}}'
+          ports:
+            - 80
+      readiness:
+        image: 'byrnedo/alpine-curl'
+        timeoutSeconds: 30
+        commands:
+          - "curl http://kubevious_ui:80" 
 
-  run_tests:
-    title: "Run Tests"
-    stage: "mock-server"
-    type: parallel
-    steps:      
-      run_server:
-        title: "Run Server"
-        stage: "mock-server"
-        image: kubevious/react-builder:12
-        working_directory: ${{main_clone}}/src
-        commands:
-          - ifconfig
-          - cat /proc/self/cgroup | grep -o  -e "docker-.*.scope" | head -n 1 | sed "s/docker-\(.*\).scope/\\1/"
-          - basename $(cat /proc/1/cpuset)
-          - hostname
-          - uname -n
-          - cat /etc/hosts
-          - npm start
-      address_test:
-        title: "Address Test"
-        stage: "mock-server"
-        image: kubevious/react-builder:12
-        working_directory: ${{main_clone}}/src
-        commands:
-          - ifconfig
-          - cat /proc/self/cgroup | grep -o  -e "docker-.*.scope" | head -n 1 | sed "s/docker-\(.*\).scope/\\1/"
-          - basename $(cat /proc/1/cpuset)
-          - hostname
-          - uname -n
-          - cat /etc/hosts
-      run_cypress:
-        title: "Run Cypress"
-        stage: "mock-server"
-        image: cypress/included:4.8.0
-        working_directory: ${{main_clone}}/src
+  # prepare_repo:
+  #   title: Prepare Repository
+  #   stage: "clone and prepare"
+  #   image: kubevious/react-builder:12
+  #   working_directory: ${{main_clone}}/src
+  #   shell: bash
+  #   commands:
+  #     # - export CYPRESS_CACHE_FOLDER=/codefresh/volume/Cypress
+  #     # - cf_export CYPRESS_CACHE_FOLDER=${CYPRESS_CACHE_FOLDER}
+  #     - npm ci
+  #     - ls -la /root
+  #     - ls -la /root/.cache
+  #     # - ls -la /codefresh/volume/Cypress/
+  #     # - ls -la /codefresh/volume/Cypress/4.8.0/Cypress/Cypress
+
+  # run_mock_e2e_tests:
+  #   title: "Running Mock Server E2E Tests"
+  #   stage: "mock-server"
+  #   image: kubevious/react-builder:12
+  #   working_directory: ${{main_clone}}/src
+  #   commands:
+  #     - export REACT_APP_MOCKED_DATA=true
+  #     - export CYPRESS_VIDEO=false
+  #     # - echo ${CYPRESS_CACHE_FOLDER}
+  #     # - ls -la /codefresh/volume/Cypress/
+  #     # - ls -la /codefresh/volume/Cypress/4.8.0/Cypress/Cypress
+  #     - npm install
+  #     - npm install --only=dev
+  #     - env
+  #     # - ls -la ~
+  #     # - ls -la ~/.cache
+  #     # - ls -la /root
+  #     # - ls -la /root/.cache/Cypress/4.8.0/Cypress/Cypress
+  #     # - npm run ci
+  #     # - npm run cy:run-ci
+
+  # run_tests:
+  #   title: "Run Tests"
+  #   stage: "mock-server"
+  #   type: parallel
+  #   steps:      
+  #     run_server:
+  #       title: "Run Server"
+  #       stage: "mock-server"
+  #       image: kubevious/react-builder:12
+  #       working_directory: ${{main_clone}}/src
+  #       commands:
+  #         - ifconfig
+  #         - cat /proc/self/cgroup | grep -o  -e "docker-.*.scope" | head -n 1 | sed "s/docker-\(.*\).scope/\\1/"
+  #         - basename $(cat /proc/1/cpuset)
+  #         - hostname
+  #         - uname -n
+  #         - cat /etc/hosts
+  #         - npm start
+  #     # address_test:
+  #     #   title: "Address Test"
+  #     #   stage: "mock-server"
+  #     #   image: kubevious/react-builder:12
+  #     #   working_directory: ${{main_clone}}/src
+  #     #   commands:
+  #     #     - ifconfig
+  #     #     - cat /proc/self/cgroup | grep -o  -e "docker-.*.scope" | head -n 1 | sed "s/docker-\(.*\).scope/\\1/"
+  #     #     - basename $(cat /proc/1/cpuset)
+  #     #     - hostname
+  #     #     - uname -n
+  #     #     - cat /etc/hosts
+  #     run_cypress:
+  #       title: "Run Cypress"
+  #       stage: "mock-server"
+  #       image: cypress/included:4.8.0
+  #       working_directory: ${{main_clone}}/src
 
   # run_cypress:
   #   title: "Run Cypress"
