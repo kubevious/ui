@@ -7,21 +7,16 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.28",
     "@fortawesome/free-solid-svg-icons": "^5.13.0",
     "@fortawesome/react-fontawesome": "^0.1.9",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
     "axios": "^0.19.2",
     "bootstrap": "^4.5.0",
     "classnames": "^2.2.6",
     "codemirror": "^5.54.0",
-    "cypress": "^4.8.0",
     "d3": "^5.16.0",
     "golden-layout": "^1.5.9",
     "highlight.js": "^10.0.3",
     "jquery": "^3.5.1",
     "js-yaml": "^3.14.0",
     "kubevious-helpers": "git+https://github.com/kubevious/helpers.git",
-    "lodash": "^4.17.15",
     "moment": "^2.26.0",
     "node-sass": "^4.14.1",
     "popper.js": "^1.16.1",
@@ -61,5 +56,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "cypress": "^4.8.0",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1"
   }
 }

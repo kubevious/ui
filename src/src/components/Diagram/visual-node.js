@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import _ from 'the-lodash'
 import GrowingPacker from './packer.growing'
 import { prettyKind } from '../../utils/ui-utils'
 import { MONTSERRAT_12PX_500, MONTSERRAT_10PX_500, MONTSERRAT_14PX_500 } from '../../utils/constants'

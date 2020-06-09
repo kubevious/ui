@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import _ from 'lodash'
+import _ from 'the-lodash'
 import { parseDn } from '../../utils/naming-utils'
 import { getNodeLogoUrl, prettyKind } from '../../utils/ui-utils'
 
