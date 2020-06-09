@@ -61,11 +61,29 @@ steps:
       # - npm run ci
       # - npm run cy:run-ci
 
-  run_cypress:
-    title: "Run Cypress"
+  run_tests:
+    title: "Run Tests"
     stage: "mock-server"
-    image: cypress/included:4.8.0
-    working_directory: ${{main_clone}}/src
+    type: parallel
+    step:
+      run_server:
+        title: "Run Server"
+        stage: "mock-server"
+        image: kubevious/react-builder:12
+        working_directory: ${{main_clone}}/src
+        commands:
+          - npm run ci
+      run_cypress:
+        title: "Run Cypress"
+        stage: "mock-server"
+        image: cypress/included:4.8.0
+        working_directory: ${{main_clone}}/src
+
+  # run_cypress:
+  #   title: "Run Cypress"
+  #   stage: "mock-server"
+  #   image: cypress/included:4.8.0
+  #   working_directory: ${{main_clone}}/src
 
   # build_mock_service:
   #   title: Build with Mock Services
