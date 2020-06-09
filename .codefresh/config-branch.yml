@@ -18,7 +18,7 @@ steps:
       - basename $(cat /proc/1/cpuset)
       - hostname
       - uname -n
-      - cat /etc/host
+      - cat /etc/hosts
       - export PRODUCT_NAME="ui"
       - cf_export PRODUCT_NAME="${PRODUCT_NAME}"
       - cf_export GITHUB_TOKEN=$(codefresh get context github --decrypt -o yaml | yq -y .spec.data.auth.password)
@@ -78,8 +78,12 @@ steps:
         image: kubevious/react-builder:12
         working_directory: ${{main_clone}}/src
         commands:
-          - cat /proc/self/cgroup | grep -o  -e "docker-.*.scope" | head -n 1 | sed "s/docker-\(.*\).scope/\\1/"
           - ifconfig
+          - cat /proc/self/cgroup | grep -o  -e "docker-.*.scope" | head -n 1 | sed "s/docker-\(.*\).scope/\\1/"
+          - basename $(cat /proc/1/cpuset)
+          - hostname
+          - uname -n
+          - cat /etc/hosts
           - npm start
       address_test:
         title: "Address Test"
@@ -87,8 +91,12 @@ steps:
         image: kubevious/react-builder:12
         working_directory: ${{main_clone}}/src
         commands:
-          - cat /proc/self/cgroup | grep -o  -e "docker-.*.scope" | head -n 1 | sed "s/docker-\(.*\).scope/\\1/"
           - ifconfig
+          - cat /proc/self/cgroup | grep -o  -e "docker-.*.scope" | head -n 1 | sed "s/docker-\(.*\).scope/\\1/"
+          - basename $(cat /proc/1/cpuset)
+          - hostname
+          - uname -n
+          - cat /etc/hosts
       run_cypress:
         title: "Run Cypress"
         stage: "mock-server"
