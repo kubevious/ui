@@ -65,7 +65,7 @@ steps:
     title: "Run Tests"
     stage: "mock-server"
     type: parallel
-    step:
+    steps:
       run_server:
         title: "Run Server"
         stage: "mock-server"
