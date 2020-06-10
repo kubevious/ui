@@ -66,7 +66,10 @@ steps:
   #         - ls -la
   #         - cypress run
 
-
+  run_mock:
+    title: "Run Mock"
+    stage: test
+    image: ${{build_mock_docker}}
 
   run_integration_tests:
     title: Test Backend
