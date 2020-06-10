@@ -40,51 +40,51 @@ steps:
     image: codefresh/cli
     working_directory: ${{main_clone}}
     commands:
-      - "echo '{ \"baseUrl\": \"http://kubevious_ui:80\" }' > src/cypress.json"
+      - "echo '{ \"baseUrl\": \"http://ui:80\" }' > src/cypress.json"
       - cat src/cypress.json
 
 
+  # run_integration_tests:
+  #   type: composition
+  #   stage: test
+  #   working_directory: ${{main_clone}}/src
+  #   composition:
+  #     version: '2'
+  #     services:
+  #       ui:
+  #         image: nginx
+  #         ports:
+  #           - 80
+  #   composition_candidates:
+  #     test:
+  #       image: cypress/included:4.8.0
+  #       links:
+  #         - ui
+  #       shell: bash
+  #       commands:
+  #         - pwd
+  #         - ls -la
+  #         - cypress run
+
+
+
   run_integration_tests:
-    type: composition
+    title: Test Backend
     stage: test
+    image: cypress/included:4.8.0
     working_directory: ${{main_clone}}/src
-    composition:
-      version: '2'
-      services:
+    shell: bash
+    commands:
+      - pwd
+      - ls -la
+      - cypress run
+    services:
+      composition:
         ui:
           image: nginx
           ports:
             - 80
-    composition_candidates:
-      test:
-        image: cypress/included:4.8.0
-        links:
-          - ui
-        shell: bash
-        commands:
-          - pwd
-          - ls -la
-          - cypress run
-
-
-
-  # run_integration_tests:
-  #   title: Test Backend
-  #   stage: test
-  #   image: cypress/included:4.8.0
-  #   working_directory: ${{main_clone}}/src
-  #   shell: bash
-  #   commands:
-  #     - pwd
-  #     - ls -la
-  #     - cypress run
-  #   services:
-  #     composition:
-  #       kubevious_ui:
-  #         image: nginx
-  #         ports:
-  #           - 80
-  #           #'${{build_mock_docker}}'
+            #'${{build_mock_docker}}'
       # readiness:
       #   image: 'byrnedo/alpine-curl'
       #   timeoutSeconds: 30
