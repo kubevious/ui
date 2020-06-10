@@ -65,12 +65,12 @@ steps:
   #         - ls -la
   #         - cypress run
 
-  run_mock:
-    title: "Run Mock"
-    stage: test
-    image: ${{build_mock_docker}}
-    environment:
-      - "BACKEND_URL=http://test-host:4001"
+  # run_mock:
+  #   title: "Run Mock"
+  #   stage: test
+  #   image: ${{build_mock_docker}}
+  #   environment:
+  #     - "BACKEND_URL=http://test-host:4001"
 
   run_integration_tests:
     title: Test Backend
@@ -89,7 +89,7 @@ steps:
           ports:
             - 80
           environment:
-            - "BACKEND_URL=http://ui:4001"
+            - "BACKEND_URL=http://localhost:4001"
 
 
             #'${{build_mock_docker}}'
