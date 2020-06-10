@@ -26,12 +26,12 @@ steps:
     revision: "${{CF_BRANCH}}"
     stage: "clone and prepare"
 
-  # build_mock_docker:
-  #   title: "Building Docker Image"
-  #   type: build
-  #   image_name: "kubevious/${{PRODUCT_NAME}}-mock"
-  #   stage: build
-  #   dockerfile: "Dockerfile.mock"
+  build_mock_docker:
+    title: "Building Docker Image"
+    type: build
+    image_name: "kubevious/${{PRODUCT_NAME}}-mock"
+    stage: build
+    dockerfile: "Dockerfile.mock"
 
   prepare_test_params:
     title: "Prepare Test Params"
@@ -78,14 +78,14 @@ steps:
       - pwd
       - ls -la
       - cypress run
-    # services:
-    #   composition:
-    #     ui:
-    #       image: nginx
-    #       ports:
-    #         - 80
+    services:
+      composition:
+        ui:
+          image: ${{build_mock_docker}}
+          ports:
+            - 80
 
-    
+
             #'${{build_mock_docker}}'
       # readiness:
       #   image: 'byrnedo/alpine-curl'
