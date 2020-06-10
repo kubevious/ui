@@ -78,12 +78,14 @@ steps:
       - pwd
       - ls -la
       - cypress run
-    services:
-      composition:
-        ui:
-          image: nginx
-          ports:
-            - 80
+    # services:
+    #   composition:
+    #     ui:
+    #       image: nginx
+    #       ports:
+    #         - 80
+
+    
             #'${{build_mock_docker}}'
       # readiness:
       #   image: 'byrnedo/alpine-curl'
