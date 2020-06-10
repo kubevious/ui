@@ -43,11 +43,6 @@ steps:
     stage: validate-mock
     image: cypress/included:4.8.0
     working_directory: ${{main_clone}}/src
-    shell: bash
-    # commands:
-    #   - pwd
-    #   - ls -la
-    #   - cypress run
     services:
       composition:
         ui:
@@ -56,8 +51,8 @@ steps:
             - 80
           environment:
             - "BACKEND_URL=http://localhost:4001"
-      # readiness:
-      #   image: 'byrnedo/alpine-curl'
-      #   timeoutSeconds: 30
-      #   commands:
-      #     - "curl http://ui:80" 
+      readiness:
+        image: 'curlimages/curl:7.70.0'
+        timeoutSeconds: 30
+        commands:
+          - "curl http://ui:80" 
