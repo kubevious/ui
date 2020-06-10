@@ -70,7 +70,7 @@ steps:
     stage: test
     image: ${{build_mock_docker}}
     environment:
-      - "BACKEND_URL=http://localhost:4001"
+      - "BACKEND_URL=http://test-host:4001"
 
   run_integration_tests:
     title: Test Backend
