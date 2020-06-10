@@ -42,7 +42,6 @@ steps:
     commands:
       - "echo '{ \"baseUrl\": \"http://ui:80\" }' > src/cypress.json"
       - cat src/cypress.json
-      - echo "${{build_mock_docker}}"
 
 
   # run_integration_tests:
