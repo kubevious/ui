@@ -43,7 +43,6 @@ steps:
       - "echo '{ \"baseUrl\": \"http://ui:80\" }' > src/cypress.json"
       - cat src/cypress.json
 
-
   # run_integration_tests:
   #   type: composition
   #   stage: test
@@ -69,10 +68,9 @@ steps:
   run_mock:
     title: "Run Mock"
     stage: test
-    image: r.cfcr.io/kubevious/kubevious/ui-mock
+    image: ${{build_mock_docker}}
     environment:
       - "BACKEND_URL=http://localhost:4001"
-      #${{build_mock_docker}}
 
   run_integration_tests:
     title: Test Backend
