@@ -19,18 +19,17 @@ steps:
       - cf_export GITHUB_TOKEN=$(codefresh get context github --decrypt -o yaml | yq -y .spec.data.auth.password)
 
   main_clone:
-    type: "git-clone"
     title: Clone Main Repo
-    description: "Cloning main repository..."
+    stage: "clone and prepare"
+    type: "git-clone"
     repo: "kubevious/${{CF_REPO_NAME}}"
     revision: "${{CF_BRANCH}}"
-    stage: "clone and prepare"
 
-  build_mock_docker:
-    title: "Building Docker Image"
+  build_mock_ui_docker:
+    title: "Building Mock UI Image"
+    stage: build
     type: build
     image_name: "kubevious/${{PRODUCT_NAME}}-mock"
-    stage: build
     dockerfile: "Dockerfile.mock"
 
   prepare_test_params:
@@ -43,37 +42,8 @@ steps:
       - "echo '{ \"baseUrl\": \"http://ui:80\" }' > src/cypress.json"
       - cat src/cypress.json
 
-  # run_integration_tests:
-  #   type: composition
-  #   stage: test
-  #   working_directory: ${{main_clone}}/src
-  #   composition:
-  #     version: '2'
-  #     services:
-  #       ui:
-  #         image: nginx
-  #         ports:
-  #           - 80
-  #   composition_candidates:
-  #     test:
-  #       image: cypress/included:4.8.0
-  #       links:
-  #         - ui
-  #       shell: bash
-  #       commands:
-  #         - pwd
-  #         - ls -la
-  #         - cypress run
-
-  # run_mock:
-  #   title: "Run Mock"
-  #   stage: test
-  #   image: ${{build_mock_docker}}
-  #   environment:
-  #     - "BACKEND_URL=http://test-host:4001"
-
-  run_integration_tests:
-    title: Test Backend
+  run_ui_mock_test:
+    title: Test Mock UI
     stage: test
     image: cypress/included:4.8.0
     working_directory: ${{main_clone}}/src
@@ -85,132 +55,13 @@ steps:
     services:
       composition:
         ui:
-          image: ${{build_mock_docker}}
+          image: ${{build_mock_ui_docker}}
           ports:
             - 80
           environment:
             - "BACKEND_URL=http://localhost:4001"
-
-
-            #'${{build_mock_docker}}'
-      # readiness:
-      #   image: 'byrnedo/alpine-curl'
-      #   timeoutSeconds: 30
-      #   commands:
-      #     - "curl http://kubevious_ui:80" 
-
-  # prepare_repo:
-  #   title: Prepare Repository
-  #   stage: "clone and prepare"
-  #   image: kubevious/react-builder:12
-  #   working_directory: ${{main_clone}}/src
-  #   shell: bash
-  #   commands:
-  #     # - export CYPRESS_CACHE_FOLDER=/codefresh/volume/Cypress
-  #     # - cf_export CYPRESS_CACHE_FOLDER=${CYPRESS_CACHE_FOLDER}
-  #     - npm ci
-  #     - ls -la /root
-  #     - ls -la /root/.cache
-  #     # - ls -la /codefresh/volume/Cypress/
-  #     # - ls -la /codefresh/volume/Cypress/4.8.0/Cypress/Cypress
-
-  # run_mock_e2e_tests:
-  #   title: "Running Mock Server E2E Tests"
-  #   stage: "mock-server"
-  #   image: kubevious/react-builder:12
-  #   working_directory: ${{main_clone}}/src
-  #   commands:
-  #     - export REACT_APP_MOCKED_DATA=true
-  #     - export CYPRESS_VIDEO=false
-  #     # - echo ${CYPRESS_CACHE_FOLDER}
-  #     # - ls -la /codefresh/volume/Cypress/
-  #     # - ls -la /codefresh/volume/Cypress/4.8.0/Cypress/Cypress
-  #     - npm install
-  #     - npm install --only=dev
-  #     - env
-  #     # - ls -la ~
-  #     # - ls -la ~/.cache
-  #     # - ls -la /root
-  #     # - ls -la /root/.cache/Cypress/4.8.0/Cypress/Cypress
-  #     # - npm run ci
-  #     # - npm run cy:run-ci
-
-  # run_tests:
-  #   title: "Run Tests"
-  #   stage: "mock-server"
-  #   type: parallel
-  #   steps:      
-  #     run_server:
-  #       title: "Run Server"
-  #       stage: "mock-server"
-  #       image: kubevious/react-builder:12
-  #       working_directory: ${{main_clone}}/src
-  #       commands:
-  #         - ifconfig
-  #         - cat /proc/self/cgroup | grep -o  -e "docker-.*.scope" | head -n 1 | sed "s/docker-\(.*\).scope/\\1/"
-  #         - basename $(cat /proc/1/cpuset)
-  #         - hostname
-  #         - uname -n
-  #         - cat /etc/hosts
-  #         - npm start
-  #     # address_test:
-  #     #   title: "Address Test"
-  #     #   stage: "mock-server"
-  #     #   image: kubevious/react-builder:12
-  #     #   working_directory: ${{main_clone}}/src
-  #     #   commands:
-  #     #     - ifconfig
-  #     #     - cat /proc/self/cgroup | grep -o  -e "docker-.*.scope" | head -n 1 | sed "s/docker-\(.*\).scope/\\1/"
-  #     #     - basename $(cat /proc/1/cpuset)
-  #     #     - hostname
-  #     #     - uname -n
-  #     #     - cat /etc/hosts
-  #     run_cypress:
-  #       title: "Run Cypress"
-  #       stage: "mock-server"
-  #       image: cypress/included:4.8.0
-  #       working_directory: ${{main_clone}}/src
-
-  # run_cypress:
-  #   title: "Run Cypress"
-  #   stage: "mock-server"
-  #   image: cypress/included:4.8.0
-  #   working_directory: ${{main_clone}}/src
-
-  # build_mock_service:
-  #   title: Build with Mock Services
-  #   stage: "mock-server"
-  #   image: kubevious/react-builder:12
-  #   working_directory: ${{main_clone}}/src
-  #   shell: bash
-  #   commands:
-  #     - unset CI
-  #     - export REACT_APP_MOCKED_DATA=true
-  #     - npm run build
-
-  # run_real_e2e_tests:
-  #   title: "Running Real Server E2E Tests"
-  #   stage: "real-server"
-  #   image: kubevious/react-builder:12
-  #   working_directory: ${{main_clone}}/src
-  #   commands:
-  #     - export BACKEND_URL=http://demo.kubevious.io
-  #     - export CYPRESS_VIDEO=false
-  #     - npm run ci
-
-  # build_real_service:
-  #   title: Build with Real Services
-  #   stage: "real-server"
-  #   image: kubevious/react-builder:12
-  #   working_directory: ${{main_clone}}/src
-  #   shell: bash
-  #   commands:
-  #     - unset CI
-  #     - echo $REACT_APP_MOCKED_DATA
-  #     - npm run build
-
-  # build_docker:
-  #   title: "Building Docker Image"
-  #   type: build
-  #   image_name: "kubevious/${{PRODUCT_NAME}}"
-  #   stage: docker
+      readiness:
+        image: 'byrnedo/alpine-curl'
+        timeoutSeconds: 30
+        commands:
+          - "curl http://ui:80" 
