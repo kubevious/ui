@@ -43,23 +43,48 @@ steps:
       - "echo '{ \"baseUrl\": \"http://kubevious_ui:80\" }' > src/cypress.json"
       - cat src/cypress.json
 
+
   run_integration_tests:
-    title: Test Backend
+    type: composition
     stage: test
-    image: cypress/included:4.8.0
     working_directory: ${{main_clone}}/src
-    shell: bash
-    commands:
-      - pwd
-      - ls -la
-      - cypress run
-    services:
-      composition:
+    composition:
+      version: '2'
+      services:
         kubevious_ui:
           image: nginx
           ports:
             - 80
-            #'${{build_mock_docker}}'
+    composition_candidates:
+      test:
+        image: cypress/included:4.8.0
+        links:
+          - kubevious_ui
+        shell: bash
+        commands:
+          - pwd
+          - ls -la
+          - cypress run
+
+
+
+  # run_integration_tests:
+  #   title: Test Backend
+  #   stage: test
+  #   image: cypress/included:4.8.0
+  #   working_directory: ${{main_clone}}/src
+  #   shell: bash
+  #   commands:
+  #     - pwd
+  #     - ls -la
+  #     - cypress run
+  #   services:
+  #     composition:
+  #       kubevious_ui:
+  #         image: nginx
+  #         ports:
+  #           - 80
+  #           #'${{build_mock_docker}}'
       # readiness:
       #   image: 'byrnedo/alpine-curl'
       #   timeoutSeconds: 30
