@@ -1,6 +1,6 @@
 import * as d3 from 'd3'
 import $ from 'jquery'
-import _ from 'lodash'
+import _ from 'the-lodash'
 import 'bootstrap/js/dist/tooltip'
 
 import VisualNode from './visual-node'

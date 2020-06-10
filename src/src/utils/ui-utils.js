@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import _ from 'the-lodash'
 import $ from 'jquery'
 import DocUtils from 'kubevious-helpers/lib/docs'
 import moment from 'moment'

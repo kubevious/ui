@@ -1,4 +1,5 @@
 import _ from 'the-lodash'
+import { MOCK_MARKERS } from './MockMarkerService'
 
 var MOCK_RULES = [
     {
@@ -71,7 +72,8 @@ class MockRuleService {
                         rule.items = dnList.map(x => ({
                             dn: x,
                             has_error: (Math.random() * 10 > 4),
-                            has_warning: (Math.random() * 10 > 2)
+                            has_warning: (Math.random() * 10 > 2),
+                            markers: [_.sample(MOCK_MARKERS)]
                         }));
                     }
                 }

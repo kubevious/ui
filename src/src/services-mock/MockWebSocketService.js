@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import _ from 'the-lodash'
 
 import { GRAPH_DATA } from '../boot/diagramMockData'
 

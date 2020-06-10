@@ -2,7 +2,7 @@ import _ from 'the-lodash'
 
 import { COLORS, SHAPES } from '../boot/markerData'
 
-var MOCK_MARKERS = []
+export var MOCK_MARKERS = []
 
 for(var i = 0; i < 30; i++) {
     MOCK_MARKERS.push({

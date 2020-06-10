@@ -1,6 +1,6 @@
 import React from 'react'
 import BaseComponent from '../../HOC/BaseComponent'
-import _ from 'lodash'
+import _ from 'the-lodash'
 import { generateDnPathHtml } from '../../utils/ui-utils'
 import { parseDn } from '../../utils/naming-utils'
 import PropertyGroup from './PropertyGroup'

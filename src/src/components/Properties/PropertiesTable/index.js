@@ -1,5 +1,5 @@
 import React from 'react'
-import _ from 'lodash'
+import _ from 'the-lodash'
 import cx from 'classnames'
 import DnShortcutComponent from '../../DnShortcutComponent'
 

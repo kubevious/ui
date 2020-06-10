@@ -1,5 +1,5 @@
 import WebSocketSubscriptionClient from 'websocket-subscription-client';
-import _ from 'lodash'
+import _ from 'the-lodash'
 
 class WebSocketService
 {

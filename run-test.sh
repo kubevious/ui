@@ -4,10 +4,4 @@ MY_DIR="$(dirname $MY_PATH)"
 cd $MY_DIR
 
 cd src
-
-rm -rf node_modules/
-
-npm install
-npm update websocket-subscription-client kubevious-helpers the-lodash
-
-npm install --only=dev
+npm run cy:run
