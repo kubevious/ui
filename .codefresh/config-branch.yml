@@ -53,17 +53,17 @@ steps:
       - pwd
       - ls -la
       - cypress run
-    services:
-      composition:
-        kubevious_ui:
-          image: '${{build_mock_docker}}'
-          ports:
-            - 80
-      readiness:
-        image: 'byrnedo/alpine-curl'
-        timeoutSeconds: 30
-        commands:
-          - "curl http://kubevious_ui:80" 
+    # services:
+    #   composition:
+    #     kubevious_ui:
+    #       image: '${{build_mock_docker}}'
+    #       ports:
+    #         - 80
+      # readiness:
+      #   image: 'byrnedo/alpine-curl'
+      #   timeoutSeconds: 30
+      #   commands:
+      #     - "curl http://kubevious_ui:80" 
 
   # prepare_repo:
   #   title: Prepare Repository
