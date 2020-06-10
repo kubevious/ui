@@ -1,0 +1,17 @@
+###############################################################################
+# Step 1 : Builder image
+FROM kubevious/react-builder:12 as build
+WORKDIR /app
+ENV PATH /app/node_modules/.bin:$PATH
+COPY src/package.json ./
+COPY src/package-lock.json ./
+RUN npm install
+COPY src/ ./
+ENV REACT_APP_MOCKED_DATA true
+RUN npm run build
+
+###############################################################################
+# Step 2 : Runner image
+FROM kubevious/nginx:1.8
+COPY nginx/default.conf /etc/nginx/conf.d/
+COPY --from=build /app/build /usr/share/nginx/html

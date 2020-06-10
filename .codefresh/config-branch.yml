@@ -26,11 +26,12 @@ steps:
     revision: "${{CF_BRANCH}}"
     stage: "clone and prepare"
 
-  build_docker:
+  build_mock_docker:
     title: "Building Docker Image"
     type: build
-    image_name: "kubevious/${{PRODUCT_NAME}}"
+    image_name: "kubevious/${{PRODUCT_NAME}}-mock"
     stage: build
+    dockerfile: "Dockerfile.mock"
 
   prepare_test_params:
     title: "Prepare Test Params"
@@ -44,12 +45,18 @@ steps:
 
   run_integration_tests:
     title: Test Backend
+    stage: test
     image: cypress/included:4.8.0
     working_directory: ${{main_clone}}/src
+    shell: bash
+    commands:
+      - pwd
+      - ls -la
+      - cypress run
     services:
       composition:
         kubevious_ui:
-          image: 'kubevious/${{PRODUCT_NAME}}'
+          image: '${{build_mock_docker}}'
           ports:
             - 80
       readiness:
