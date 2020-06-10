@@ -51,7 +51,7 @@ steps:
     composition:
       version: '2'
       services:
-        kubevious_ui:
+        ui:
           image: nginx
           ports:
             - 80
@@ -59,7 +59,7 @@ steps:
       test:
         image: cypress/included:4.8.0
         links:
-          - kubevious_ui
+          - ui
         shell: bash
         commands:
           - pwd
