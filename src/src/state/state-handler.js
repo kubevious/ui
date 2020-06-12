@@ -18,6 +18,7 @@ class StateHandler {
         this._handleSelectedObjectChange()
         this._handleSelectedObjectAssetsChange()
         this._handleTimelineDataChange()
+        this._handleMarkerListChange()
     }
 
     _handleSelectedDnAutoExpandChange()
@@ -117,6 +118,25 @@ class StateHandler {
 
             }
         )
+    }
+
+    _handleMarkerListChange()
+    {
+        this.sharedState.subscribe('marker_editor_items',
+            (marker_editor_items) => {
+
+                var markerDict = {};
+                if (marker_editor_items) {
+                    markerDict = _.makeDict(marker_editor_items, 
+                        x => x.name,
+                        x => ({
+                            shape: x.shape,
+                            color: x.color
+                        }))
+                }
+
+                this.sharedState.set('markers_dict', markerDict);
+            });
     }
 
 }

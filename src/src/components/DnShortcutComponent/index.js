@@ -23,12 +23,23 @@ class DnShortcutComponent extends BaseComponent {
     render() {
         const { dn, options, error, warning, markers } = this.props
 
+        var markerDict = this.sharedState.get('markers_dict');
+        if (!markerDict) {
+            markerDict = {};
+        }
+
+        var markerItems = [];
+        if (markers) {
+            markerItems = markers.map(x => markerDict[x]);
+            markerItems = markerItems.filter(x => x);
+        }
+
         return (
             <div className="dn-shortcut" dn={dn} onClick={this.clickDn}>
                 <DnComponent dn={dn} options={options}/>
 
                 <div className="dn-alert">
-                    {!isEmptyArray(markers) && markers.map(({ shape, color }) => (
+                    {!isEmptyArray(markers) && markerItems.map(({ shape, color }) => (
                         <MarkerPreview key={shape} shape={shape} color={color}/>
                     ))}
                     {error > 0 && <div className="alert-item error"/>}

@@ -38,17 +38,11 @@ class VisualView {
 
             });
 
-        sharedState.subscribe('marker_editor_items',
-            (marker_editor_items) => {
-                this._markerData = {};
-                if (marker_editor_items) {
-                    for(var x of marker_editor_items)
-                    {
-                        this._markerData[x.name] = {
-                            shape: x.shape,
-                            color: x.color
-                        };
-                    }
+        sharedState.subscribe('markers_dict',
+            (markers_dict) => {
+                this._markerData = markers_dict;
+                if (!markers_dict) {
+                    this._markerData = {};
                 }
                 this.updateAll(true);
             });

@@ -73,7 +73,7 @@ class MockRuleService {
                             dn: x,
                             has_error: (Math.random() * 10 > 4),
                             has_warning: (Math.random() * 10 > 2),
-                            markers: [_.sample(MOCK_MARKERS)]
+                            markers: [_.sample(_.values(MOCK_MARKERS).map(x => x.name))]
                         }));
                     }
                 }
