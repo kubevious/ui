@@ -84,8 +84,19 @@ steps:
       - latest
       - "${{DOCKER_TAG}}"
 
+  commit_versioning:
+    title: Commit Versioning
+    stage: build
+    image: codefresh/cli
+    shell: bash
+    working_directory: "${{CICD_REPO_PATH}}"
+    commands:
+      - pwd
+      - ls -la
+      - /codefresh/volume/cicd.git/git-commit-push.sh "Version bump for ${PRODUCT_NAME} to ${PRODUCT_VERSION}"
+
   prepare_demo_build:
-    title: Inject Version
+    title: Prepare Demo prepare_demo_build
     stage: build-demo
     image: codefresh/cli
     shell: bash
@@ -110,14 +121,3 @@ steps:
     tags:
       - latest
       - "${{DOCKER_TAG}}"
-
-  process_versioning:
-    title: Process Versioning
-    stage: versioning
-    image: codefresh/cli
-    shell: bash
-    working_directory: "${{CICD_REPO_PATH}}"
-    commands:
-      - pwd
-      - ls -la
-      - /codefresh/volume/cicd.git/git-commit-push.sh "Version bump for ${PRODUCT_NAME} to ${PRODUCT_VERSION}"
