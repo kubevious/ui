@@ -3,7 +3,8 @@ import { Helmet } from 'react-helmet'
 
 const SEO = () => {
     return(
-        <Helmet/>
+        <Helmet>
+        </Helmet>
     )
 }
 

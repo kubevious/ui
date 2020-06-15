@@ -27,8 +27,6 @@ steps:
     type: build
     image_name: "kubevious/${{PRODUCT_NAME}}-mock"
     dockerfile: "Dockerfile.mock"
-    build_arguments:
-      - REACT_APP_DEMO_APP=true
 
   prepare_test_params:
     title: "Prepare Test Params"
