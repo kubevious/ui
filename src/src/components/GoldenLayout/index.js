@@ -161,7 +161,7 @@ class GoldenLayoutComponent extends BaseComponent {
         var info = this._getComponent(id);
 
         var stack = info.goldenTab.contentItem.parent;
-        var stackComponent = _.head(stack.contentItems.filter(x => x.componentName === info.goldenTab.contentItem.componentName));
+        var stackComponent = _.head(stack.contentItems.filter(x => x.config.component === id));
         if (stackComponent) {
             stack.setActiveContentItem(stackComponent);
         }
