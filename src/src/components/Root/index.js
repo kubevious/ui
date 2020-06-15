@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React  from 'react'
 import './styles.scss'
 import GoldenLayoutComponent from '../GoldenLayout'
 import Popup from '../Popup'
 import Header from '../Header'
 import BaseComponent from '../../HOC/BaseComponent'
+import SEO from '../SEO'
 
 class Root extends BaseComponent {
     constructor(props) {
@@ -74,6 +75,7 @@ class Root extends BaseComponent {
 
         return (
             <>
+                <SEO />
                 <div className="mobile-wrapper">
                     <div className="logo"/>
                     <div className="available-msg">

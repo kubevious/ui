@@ -2,8 +2,8 @@ version: "1.0"
 stages:
   - "clone"
   - "build"
-  - versioning
-  - "push"
+  - "build-demo"
+  - "versioning"
 steps:
   
   clone_init:
@@ -38,6 +38,19 @@ steps:
       - ls -la
       - ls -la cicd.git/
 
+  cicd_demo_clone:
+    title: Clone CI/CD Demo Repo
+    stage: clone
+    image: 'alpine/git:latest'
+    working_directory: "${{main_clone}}/.."
+    commands:
+      - pwd
+      - ls -la
+      - rm -rf cicd-demo.git
+      - 'git clone https://${{CF_REPO_OWNER}}:$GITHUB_TOKEN@github.com/${{CF_REPO_OWNER}}/cicd-demo.git cicd-demo.git'
+      - ls -la
+      - ls -la cicd-demo.git/
+
   inject_version:
     title: Inject Version
     stage: build
@@ -63,8 +76,35 @@ steps:
   push:
     title: "Pushing image to DockerHub"
     type: "push"
-    stage: "push"
+    stage: "build"
     image_name: "kubevious/${{PRODUCT_NAME}}"
+    registry: "dockerhub"
+    candidate: "${{build}}"
+    tags:
+      - latest
+      - "${{DOCKER_TAG}}"
+
+  prepare_demo_build:
+    title: Inject Version
+    stage: build-demo
+    image: codefresh/cli
+    shell: bash
+    working_directory: "${{main_clone}}"
+    commands:
+      - cp -f ../cicd-demo.git/src/index.html ./src/public/index.html
+      - git status
+
+  build_demo:
+    title: "Building Demo Docker Image"
+    type: build
+    image_name: "kubevious/${{PRODUCT_NAME}}"
+    stage: build-demo
+
+  push_demo:
+    title: "Pushing Demo image to DockerHub"
+    type: "push"
+    stage: "build-demo"
+    image_name: "kubevious/${{PRODUCT_NAME}}-demo"
     registry: "dockerhub"
     candidate: "${{build}}"
     tags:
