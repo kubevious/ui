@@ -106,7 +106,7 @@ steps:
     stage: "build-demo"
     image_name: "kubevious/${{PRODUCT_NAME}}-demo"
     registry: "dockerhub"
-    candidate: "${{build}}"
+    candidate: "${{build_demo}}"
     tags:
       - latest
       - "${{DOCKER_TAG}}"
