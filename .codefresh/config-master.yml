@@ -84,17 +84,6 @@ steps:
       - latest
       - "${{DOCKER_TAG}}"
 
-  commit_versioning:
-    title: Commit Versioning
-    stage: build
-    image: codefresh/cli
-    shell: bash
-    working_directory: "${{CICD_REPO_PATH}}"
-    commands:
-      - pwd
-      - ls -la
-      - /codefresh/volume/cicd.git/git-commit-push.sh "Version bump for ${PRODUCT_NAME} to ${PRODUCT_VERSION}"
-
   prepare_demo_build:
     title: Prepare Demo prepare_demo_build
     stage: build-demo
@@ -108,7 +97,7 @@ steps:
   build_demo:
     title: "Building Demo Docker Image"
     type: build
-    image_name: "kubevious/${{PRODUCT_NAME}}"
+    image_name: "kubevious/${{PRODUCT_NAME}}-demo"
     stage: build-demo
 
   push_demo:
@@ -121,3 +110,14 @@ steps:
     tags:
       - latest
       - "${{DOCKER_TAG}}"
+
+  commit_versioning:
+    title: Commit Versioning
+    stage: versioning
+    image: codefresh/cli
+    shell: bash
+    working_directory: "${{CICD_REPO_PATH}}"
+    commands:
+      - pwd
+      - ls -la
+      - /codefresh/volume/cicd.git/git-commit-push.sh "Version bump for ${PRODUCT_NAME} to ${PRODUCT_VERSION}"
