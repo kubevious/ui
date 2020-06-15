@@ -113,7 +113,7 @@ steps:
 
   process_versioning:
     title: Process Versioning
-    stage: push
+    stage: versioning
     image: codefresh/cli
     shell: bash
     working_directory: "${{CICD_REPO_PATH}}"
