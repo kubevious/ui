@@ -13,6 +13,8 @@ class StateHandler {
     }
 
     _setup() {
+        this.sharedState.set('diagram_expanded_dns', { 'root': true });
+
         this._handleDefaultParams()
         this._handleSelectedDnAutoExpandChange()
         this._handleTimeMachineChange()
@@ -27,7 +29,6 @@ class StateHandler {
         const tm = params.get('tm')
         const tmd = params.get('tmd') ? atob(params.get('tmd')) : params.get('tmd')
         const dn = params.get('dn') ? atob(params.get('dn')) : params.get('dn')
-        const ded = params.get('ded') ? atob(params.get('ded')) : params.get('ded')
 
         if (tm) {
             this.sharedState.set('time_machine_enabled', tm === 'true')
@@ -37,12 +38,9 @@ class StateHandler {
             this.sharedState.set('time_machine_date', tmd)
         }
 
-        if (ded) {
-            this.sharedState.set('diagram_expanded_dns', JSON.parse(ded))
-        }
-
         if (dn) {
             this.sharedState.set('selected_dn', dn)
+            this.sharedState.set('auto_pan_to_selected_dn', true);
         }
     }
 

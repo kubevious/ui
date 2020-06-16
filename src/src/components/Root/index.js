@@ -23,8 +23,8 @@ class Root extends BaseComponent {
         this.handleLayout = this.handleLayout.bind(this)
         this.handleChangeWindow = this.handleChangeWindow.bind(this)
 
-        this.subscribeToSharedState(['time_machine_enabled', 'time_machine_date', 'selected_dn', 'diagram_expanded_dns'],
-            ({ time_machine_enabled, time_machine_date, selected_dn, diagram_expanded_dns }) => {
+        this.subscribeToSharedState(['time_machine_enabled', 'time_machine_date', 'selected_dn' ],
+            ({ time_machine_enabled, time_machine_date, selected_dn }) => {
                 let params = {}
                 if (selected_dn !== null) {
                     params.dn = btoa(selected_dn)
@@ -34,9 +34,6 @@ class Root extends BaseComponent {
                 }
                 if (time_machine_enabled && time_machine_date) {
                     params.tmd = btoa(time_machine_date)
-                }
-                if (selected_dn && diagram_expanded_dns) {
-                    params.ded = btoa(JSON.stringify(diagram_expanded_dns))
                 }
 
                 const firstKey = Object.keys(params)[0]
