@@ -13,12 +13,37 @@ class StateHandler {
     }
 
     _setup() {
+        this._handleDefaultParams()
         this._handleSelectedDnAutoExpandChange()
         this._handleTimeMachineChange()
         this._handleSelectedObjectChange()
         this._handleSelectedObjectAssetsChange()
         this._handleTimelineDataChange()
         this._handleMarkerListChange()
+    }
+
+    _handleDefaultParams() {
+        const params = new URLSearchParams(window.location.search)
+        const tm = params.get('tm')
+        const tmd = params.get('tmd') ? atob(params.get('tmd')) : params.get('tmd')
+        const dn = params.get('dn') ? atob(params.get('dn')) : params.get('dn')
+        const ded = params.get('ded') ? atob(params.get('ded')) : params.get('ded')
+
+        if (tm) {
+            this.sharedState.set('time_machine_enabled', tm === 'true')
+        }
+
+        if (tmd) {
+            this.sharedState.set('time_machine_date', tmd)
+        }
+
+        if (ded) {
+            this.sharedState.set('diagram_expanded_dns', JSON.parse(ded))
+        }
+
+        if (dn) {
+            this.sharedState.set('selected_dn', dn)
+        }
     }
 
     _handleSelectedDnAutoExpandChange()
@@ -43,11 +68,12 @@ class StateHandler {
         // TODO: .....
         this.sharedState.subscribe(['time_machine_enabled', 'time_machine_date'],
             ({ time_machine_enabled, time_machine_date }) => {
+            console.log('time_machine_enabled', time_machine_enabled)
                 if (time_machine_enabled) {
                     this._service.fetchHistorySnapshot(time_machine_date, (sourceData) => {
 
                         if (this.sharedState.get('time_machine_enabled') &&
-                            (this.sharedState.get('time_machine_date') == time_machine_date ))
+                            (this.sharedState.get('time_machine_date') === time_machine_date ))
                         {
                             this.sharedState.set('diagram_data', sourceData);
                         }
@@ -77,7 +103,6 @@ class StateHandler {
     _handleSelectedObjectAssetsChange() {
         this.sharedState.subscribe('selected_object_assets',
             (selected_object_assets) => {
-                console.log('selected_object_assets', selected_object_assets)
                 if (selected_object_assets) {
                     this.sharedState.set('selected_object_props', selected_object_assets.props);
                     this.sharedState.set('selected_object_alerts', selected_object_assets.alerts);

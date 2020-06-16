@@ -57,9 +57,9 @@ class Timeline extends BaseComponent {
     resetView() {
         this.sharedState.set('time_machine_date_to', new Date());
         this.sharedState.set('time_machine_duration', 24);
-        this.sharedState.set('time_machine_enabled', false);
-        this.sharedState.set('time_machine_date', null);
-        this.sharedState.set('time_machine_target_date', null);
+        this.sharedState.set('time_machine_enabled', this.sharedState.get('time_machine_enabled'));
+        this.sharedState.set('time_machine_date', this.sharedState.get('time_machine_date'));
+        this.sharedState.set('time_machine_target_date', this.sharedState.get('time_machine_date'));
         this._handlePanZoom();
     }
 

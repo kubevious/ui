@@ -1,4 +1,4 @@
-import React  from 'react'
+import React from 'react'
 import './styles.scss'
 import GoldenLayoutComponent from '../GoldenLayout'
 import Popup from '../Popup'
@@ -22,6 +22,32 @@ class Root extends BaseComponent {
         this.handlePopupContent = this.handlePopupContent.bind(this)
         this.handleLayout = this.handleLayout.bind(this)
         this.handleChangeWindow = this.handleChangeWindow.bind(this)
+
+        this.subscribeToSharedState(['time_machine_enabled', 'time_machine_date', 'selected_dn', 'diagram_expanded_dns'],
+            ({ time_machine_enabled, time_machine_date, selected_dn, diagram_expanded_dns }) => {
+                let params = {}
+                if (selected_dn !== null) {
+                    params.dn = btoa(selected_dn)
+                }
+                if (time_machine_enabled) {
+                    params.tm = time_machine_enabled
+                }
+                if (time_machine_enabled && time_machine_date) {
+                    params.tmd = btoa(time_machine_date)
+                }
+                if (selected_dn && diagram_expanded_dns) {
+                    params.ded = btoa(JSON.stringify(diagram_expanded_dns))
+                }
+
+                const firstKey = Object.keys(params)[0]
+
+                let url = '/'
+                for (let key in params) {
+                    url += key === firstKey ? `?${key}=${params[key]}` : `&${key}=${params[key]}`
+                }
+
+                window.history.pushState(params, 'Diagram', url)
+            })
     }
 
     handleShowPopup() {
@@ -75,7 +101,7 @@ class Root extends BaseComponent {
 
         return (
             <>
-                <SEO />
+                <SEO/>
                 <div className="mobile-wrapper">
                     <div className="logo"/>
                     <div className="available-msg">
