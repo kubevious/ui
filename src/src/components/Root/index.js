@@ -5,6 +5,7 @@ import Popup from '../Popup'
 import Header from '../Header'
 import BaseComponent from '../../HOC/BaseComponent'
 import SEO from '../SEO'
+import FieldsSaver from '../../utils/save-fields'
 
 class Root extends BaseComponent {
     constructor(props) {
@@ -17,6 +18,8 @@ class Root extends BaseComponent {
             windows: []
         }
 
+        this._fieldsSaver = new FieldsSaver('Diagram')
+
         this.handleShowPopup = this.handleShowPopup.bind(this)
         this.handleClosePopup = this.handleClosePopup.bind(this)
         this.handlePopupContent = this.handlePopupContent.bind(this)
@@ -25,25 +28,7 @@ class Root extends BaseComponent {
 
         this.subscribeToSharedState(['time_machine_enabled', 'time_machine_date', 'selected_dn' ],
             ({ time_machine_enabled, time_machine_date, selected_dn }) => {
-                let params = {}
-                if (selected_dn !== null) {
-                    params.dn = btoa(selected_dn)
-                }
-                if (time_machine_enabled) {
-                    params.tm = time_machine_enabled
-                }
-                if (time_machine_enabled && time_machine_date) {
-                    params.tmd = btoa(time_machine_date)
-                }
-
-                const firstKey = Object.keys(params)[0]
-
-                let url = '/'
-                for (let key in params) {
-                    url += key === firstKey ? `?${key}=${params[key]}` : `&${key}=${params[key]}`
-                }
-
-                window.history.pushState(params, 'Diagram', url)
+                this._fieldsSaver.setValue({ time_machine_enabled, time_machine_date, selected_dn })
             })
     }
 

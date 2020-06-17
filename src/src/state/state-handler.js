@@ -1,10 +1,12 @@
 import _ from 'the-lodash'
 import { splitDn } from '../utils/naming-utils'
+import FieldsSaver from '../utils/save-fields';
 
 class StateHandler {
     constructor(state, diagramService) {
         this.sharedState = state;
         this._service = diagramService;
+        this._fieldsSaver = new FieldsSaver('Diagram')
         this._setup();
     }
 
@@ -26,20 +28,21 @@ class StateHandler {
 
     _handleDefaultParams() {
         const params = new URLSearchParams(window.location.search)
-        const tm = params.get('tm')
-        const tmd = params.get('tmd') ? atob(params.get('tmd')) : params.get('tmd')
-        const dn = params.get('dn') ? atob(params.get('dn')) : params.get('dn')
 
-        if (tm) {
-            this.sharedState.set('time_machine_enabled', tm === 'true')
+        const fields = this._fieldsSaver.decodeParams(params)
+
+        const { sd, tme, tmd } = fields
+
+        if (tme) {
+            this.sharedState.set('time_machine_enabled', tme === 'true')
         }
 
         if (tmd) {
             this.sharedState.set('time_machine_date', tmd)
         }
 
-        if (dn) {
-            this.sharedState.set('selected_dn', dn)
+        if (sd) {
+            this.sharedState.set('selected_dn', sd)
             this.sharedState.set('auto_pan_to_selected_dn', true);
         }
     }
