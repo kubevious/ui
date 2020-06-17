@@ -31,19 +31,31 @@ class StateHandler {
 
         const fields = this._fieldsSaver.decodeParams(params)
 
-        const { sd, tme, tmd } = fields
+        const { sd, tme, tmdat, tmdt, tmtd, tmdu } = fields
 
         if (tme) {
             this.sharedState.set('time_machine_enabled', tme === 'true')
         }
 
-        if (tmd) {
-            this.sharedState.set('time_machine_date', tmd)
+        if (tmdat) {
+            this.sharedState.set('time_machine_date', tmdat)
+        }
+
+        if (tmdt) {
+            this.sharedState.set('time_machine_date_to', Date.parse(tmdt))
+        }
+
+        if (tmtd) {
+            this.sharedState.set('time_machine_target_date', Date.parse(tmtd))
         }
 
         if (sd) {
             this.sharedState.set('selected_dn', sd)
             this.sharedState.set('auto_pan_to_selected_dn', true);
+        }
+
+        if (tmdu) {
+            this.sharedState.set('time_machine_duration', tmdu)
         }
     }
 

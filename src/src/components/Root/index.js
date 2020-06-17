@@ -26,9 +26,13 @@ class Root extends BaseComponent {
         this.handleLayout = this.handleLayout.bind(this)
         this.handleChangeWindow = this.handleChangeWindow.bind(this)
 
-        this.subscribeToSharedState(['time_machine_enabled', 'time_machine_date', 'selected_dn' ],
-            ({ time_machine_enabled, time_machine_date, selected_dn }) => {
-                this._fieldsSaver.setValue({ time_machine_enabled, time_machine_date, selected_dn })
+        this.subscribeToSharedState(['time_machine_enabled', 'time_machine_date', 'selected_dn', 'time_machine_date_to', 'time_machine_duration'],
+            ({ time_machine_enabled, time_machine_date, selected_dn, time_machine_date_to,
+                time_machine_target_date = this.sharedState.get('time_machine_target_date'), time_machine_duration }) => {
+
+                this._fieldsSaver.setValue({
+                    time_machine_enabled, time_machine_date, selected_dn, time_machine_date_to, time_machine_target_date, time_machine_duration
+                })
             })
     }
 
@@ -83,12 +87,12 @@ class Root extends BaseComponent {
 
         return (
             <>
-                <SEO/>
+                <SEO />
                 <div className="mobile-wrapper">
-                    <div className="logo"/>
+                    <div className="logo" />
                     <div className="available-msg">
-                        Sorry!<br/><br/>
-                        Kubevious works with Desktop browsers only.<br/><br/>
+                        Sorry!<br /><br />
+                        Kubevious works with Desktop browsers only.<br /><br />
                         <a href="https://kubevious.io/youtube.html" className="link-cta">See Demo in Youtube</a>
                     </div>
                 </div>
