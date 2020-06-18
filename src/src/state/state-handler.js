@@ -1,10 +1,12 @@
 import _ from 'the-lodash'
 import { splitDn } from '../utils/naming-utils'
+import FieldsSaver from '../utils/save-fields';
 
 class StateHandler {
     constructor(state, diagramService) {
         this.sharedState = state;
         this._service = diagramService;
+        this._fieldsSaver = new FieldsSaver('Diagram')
         this._setup();
     }
 
@@ -13,12 +15,52 @@ class StateHandler {
     }
 
     _setup() {
+        this.sharedState.set('diagram_expanded_dns', { 'root': true });
+
+        this._handleDefaultParams()
         this._handleSelectedDnAutoExpandChange()
         this._handleTimeMachineChange()
         this._handleSelectedObjectChange()
         this._handleSelectedObjectAssetsChange()
         this._handleTimelineDataChange()
         this._handleMarkerListChange()
+    }
+
+    _handleDefaultParams() {
+        const params = new URLSearchParams(window.location.search)
+
+        const fields = this._fieldsSaver.decodeParams(params)
+
+        const { sd, tme, tmdat, tmdt, tmdf, tmtd, tmdu } = fields
+
+        if (tme) {
+            this.sharedState.set('time_machine_enabled', tme === 'true')
+        }
+
+        if (tmdat) {
+            this.sharedState.set('time_machine_date', tmdat)
+        }
+
+        if (tmdt) {
+            this.sharedState.set('time_machine_date_to', Date.parse(tmdt))
+        }
+        
+        if (tmdf) {
+            this.sharedState.set('time_machine_date_from', Date.parse(tmdf))
+        }
+
+        if (tmtd) {
+            this.sharedState.set('time_machine_target_date', Date.parse(tmtd))
+        }
+
+        if (sd) {
+            this.sharedState.set('selected_dn', sd)
+            this.sharedState.set('auto_pan_to_selected_dn', true);
+        }
+
+        if (tmdu) {
+            this.sharedState.set('time_machine_duration', tmdu)
+        }
     }
 
     _handleSelectedDnAutoExpandChange()
@@ -43,11 +85,12 @@ class StateHandler {
         // TODO: .....
         this.sharedState.subscribe(['time_machine_enabled', 'time_machine_date'],
             ({ time_machine_enabled, time_machine_date }) => {
+            console.log('time_machine_enabled', time_machine_enabled)
                 if (time_machine_enabled) {
                     this._service.fetchHistorySnapshot(time_machine_date, (sourceData) => {
 
                         if (this.sharedState.get('time_machine_enabled') &&
-                            (this.sharedState.get('time_machine_date') == time_machine_date ))
+                            (this.sharedState.get('time_machine_date') === time_machine_date ))
                         {
                             this.sharedState.set('diagram_data', sourceData);
                         }
@@ -77,7 +120,6 @@ class StateHandler {
     _handleSelectedObjectAssetsChange() {
         this.sharedState.subscribe('selected_object_assets',
             (selected_object_assets) => {
-                console.log('selected_object_assets', selected_object_assets)
                 if (selected_object_assets) {
                     this.sharedState.set('selected_object_props', selected_object_assets.props);
                     this.sharedState.set('selected_object_alerts', selected_object_assets.alerts);
@@ -100,8 +142,8 @@ class StateHandler {
                     return;
                 }
 
-                var from = time_machine_date_from.toISOString();
-                var to = time_machine_date_to.toISOString();
+                var from = time_machine_date_from ? new Date(time_machine_date_from) : time_machine_date_from.toISOString()
+                var to = time_machine_date_to ? new Date(time_machine_date_to) : time_machine_date_to.toISOString()
 
                 this._service.fetchHistoryTimeline(from, to, data => {
                     for(var x of data)

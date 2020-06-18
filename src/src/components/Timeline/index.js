@@ -14,7 +14,7 @@ class Timeline extends BaseComponent {
         this._parentElem = null;
         this._showAxis = false;
 
-        this.resetView();
+        this.setupView()
     }
 
     get isTimeMachineEnabled() {
@@ -52,6 +52,21 @@ class Timeline extends BaseComponent {
             return [];
         }
         return data;
+    }
+
+    setupView() {
+        const time_machine_date_to = this.sharedState.get('time_machine_date_to') ? new Date(this.sharedState.get('time_machine_date_to')) : new Date()
+        const time_machine_duration = this.sharedState.get('time_machine_duration') ? Number(this.sharedState.get('time_machine_duration')) : 24
+        const time_machine_enabled = this.sharedState.get('time_machine_enabled') ? this.sharedState.get('time_machine_enabled') : false
+        const time_machine_date = this.sharedState.get('time_machine_date') ? this.sharedState.get('time_machine_date') : null
+        const time_machine_target_date = this.sharedState.get('time_machine_target_date') ? this.sharedState.get('time_machine_target_date') : null
+
+        this.sharedState.set('time_machine_date_to', time_machine_date_to);
+        this.sharedState.set('time_machine_duration', time_machine_duration);
+        this.sharedState.set('time_machine_enabled', time_machine_enabled);
+        this.sharedState.set('time_machine_date', time_machine_date);
+        this.sharedState.set('time_machine_target_date', time_machine_target_date);
+        this._handlePanZoom();
     }
 
     resetView() {

@@ -14,8 +14,6 @@ class DiagramSource
 
         this._setupSocketSubscriptions();
 
-        this._sharedState.set('diagram_expanded_dns', { 'root': true });
-
         this._sharedState.subscribe('diagram_expanded_dns', 
             (diagram_expanded_dns) => {
                 this._updateSubscriptions();

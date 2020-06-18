@@ -1,10 +1,11 @@
-import React  from 'react'
+import React from 'react'
 import './styles.scss'
 import GoldenLayoutComponent from '../GoldenLayout'
 import Popup from '../Popup'
 import Header from '../Header'
 import BaseComponent from '../../HOC/BaseComponent'
 import SEO from '../SEO'
+import FieldsSaver from '../../utils/save-fields'
 
 class Root extends BaseComponent {
     constructor(props) {
@@ -17,11 +18,28 @@ class Root extends BaseComponent {
             windows: []
         }
 
+        this._fieldsSaver = new FieldsSaver('Diagram')
+
         this.handleShowPopup = this.handleShowPopup.bind(this)
         this.handleClosePopup = this.handleClosePopup.bind(this)
         this.handlePopupContent = this.handlePopupContent.bind(this)
         this.handleLayout = this.handleLayout.bind(this)
         this.handleChangeWindow = this.handleChangeWindow.bind(this)
+
+        this.subscribeToSharedState([
+            'time_machine_enabled', 'time_machine_date', 'selected_dn',
+            'time_machine_date_to', 'time_machine_duration', 'time_machine_date_from'
+        ],
+            ({
+                time_machine_enabled, time_machine_date, selected_dn, time_machine_date_to, time_machine_date_from,
+                time_machine_target_date = this.sharedState.get('time_machine_target_date'), time_machine_duration,
+            }) => {
+
+                this._fieldsSaver.setValue({
+                    time_machine_enabled, time_machine_date, selected_dn, time_machine_date_to, 
+                    time_machine_target_date, time_machine_duration, time_machine_date_from
+                })
+            })
     }
 
     handleShowPopup() {
@@ -77,10 +95,10 @@ class Root extends BaseComponent {
             <>
                 <SEO />
                 <div className="mobile-wrapper">
-                    <div className="logo"/>
+                    <div className="logo" />
                     <div className="available-msg">
-                        Sorry!<br/><br/>
-                        Kubevious works with Desktop browsers only.<br/><br/>
+                        Sorry!<br /><br />
+                        Kubevious works with Desktop browsers only.<br /><br />
                         <a href="https://kubevious.io/youtube.html" className="link-cta">See Demo in Youtube</a>
                     </div>
                 </div>
