@@ -31,7 +31,7 @@ class StateHandler {
 
         const fields = this._fieldsSaver.decodeParams(params)
 
-        const { sd, tme, tmdat, tmdt, tmtd, tmdu } = fields
+        const { sd, tme, tmdat, tmdt, tmdf, tmtd, tmdu } = fields
 
         if (tme) {
             this.sharedState.set('time_machine_enabled', tme === 'true')
@@ -43,6 +43,10 @@ class StateHandler {
 
         if (tmdt) {
             this.sharedState.set('time_machine_date_to', Date.parse(tmdt))
+        }
+        
+        if (tmdf) {
+            this.sharedState.set('time_machine_date_from', Date.parse(tmdf))
         }
 
         if (tmtd) {
@@ -138,8 +142,8 @@ class StateHandler {
                     return;
                 }
 
-                var from = time_machine_date_from.toISOString();
-                var to = time_machine_date_to.toISOString();
+                var from = time_machine_date_from ? new Date(time_machine_date_from) : time_machine_date_from.toISOString()
+                var to = time_machine_date_to ? new Date(time_machine_date_to) : time_machine_date_to.toISOString()
 
                 this._service.fetchHistoryTimeline(from, to, data => {
                     for(var x of data)

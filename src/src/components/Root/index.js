@@ -26,12 +26,18 @@ class Root extends BaseComponent {
         this.handleLayout = this.handleLayout.bind(this)
         this.handleChangeWindow = this.handleChangeWindow.bind(this)
 
-        this.subscribeToSharedState(['time_machine_enabled', 'time_machine_date', 'selected_dn', 'time_machine_date_to', 'time_machine_duration'],
-            ({ time_machine_enabled, time_machine_date, selected_dn, time_machine_date_to,
-                time_machine_target_date = this.sharedState.get('time_machine_target_date'), time_machine_duration }) => {
+        this.subscribeToSharedState([
+            'time_machine_enabled', 'time_machine_date', 'selected_dn',
+            'time_machine_date_to', 'time_machine_duration', 'time_machine_date_from'
+        ],
+            ({
+                time_machine_enabled, time_machine_date, selected_dn, time_machine_date_to, time_machine_date_from,
+                time_machine_target_date = this.sharedState.get('time_machine_target_date'), time_machine_duration,
+            }) => {
 
                 this._fieldsSaver.setValue({
-                    time_machine_enabled, time_machine_date, selected_dn, time_machine_date_to, time_machine_target_date, time_machine_duration
+                    time_machine_enabled, time_machine_date, selected_dn, time_machine_date_to, 
+                    time_machine_target_date, time_machine_duration, time_machine_date_from
                 })
             })
     }

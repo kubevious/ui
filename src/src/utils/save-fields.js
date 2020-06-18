@@ -56,8 +56,9 @@ class FieldsSaver {
                 obj.tmdat = params.get('tmdat') ? atob(params.get('tmdat')) : params.get('tmdat')
                 obj.tmdu = params.get('tmdu') ? atob(params.get('tmdu')) : params.get('tmdu')
                 obj.sd = params.get('sd') ? atob(params.get('sd')) : params.get('sd')
-                obj.tmdt = params.get('tmdt') ? atob(params.get('tmdt')) : params.get('tmdt')
                 obj.tmtd = params.get('tmtd') ? atob(params.get('tmtd')) : params.get('tmtd')
+                obj.tmdt = params.get('tmdat') ? atob(params.get('tmdat')) : params.get('tmdat')
+                obj.tmdf = params.get('tmdaf') ? atob(params.get('tmdaf')) : params.get('tmdaf')
         }
 
         return obj
