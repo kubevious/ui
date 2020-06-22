@@ -101,7 +101,7 @@ const MarkerMainTab = ({ selectedItem, isSuccess, deleteItem, openSummary, creat
             </div>
 
             <div className="btn-group">
-                {selectedItem.id && <>
+                {selectedItem.name && <>
                     <button className="button" onClick={() => deleteItem(formData)}>Delete</button>
                     <button className="button" onClick={() => openSummary()}>Cancel</button>
                     <button className="button success" onClick={() => saveItem(formData)} disabled={validation}>Save
@@ -109,7 +109,7 @@ const MarkerMainTab = ({ selectedItem, isSuccess, deleteItem, openSummary, creat
                     {isSuccess && <span>Saved!</span>}
                 </>}
 
-                {!selectedItem.id && <button className="button success" onClick={() => createItem(formData)}
+                {!selectedItem.name && <button className="button success" onClick={() => createItem(formData)}
                                              disabled={validation}>Create</button>}
 
             </div>

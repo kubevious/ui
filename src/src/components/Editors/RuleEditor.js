@@ -63,11 +63,11 @@ class RuleEditor extends BaseComponent {
         this.setState({
             isNewItem: false,
             isSuccess: false,
-            selectedItemId: rule.id
+            selectedItemId: rule.name
         })
 
-        this.service.backendFetchRule(rule.id, data => {
-            if (data.id === this.state.selectedItemId) {
+        this.service.backendFetchRule(rule.name, data => {
+            if (data.name === this.state.selectedItemId) {
                 this.setState({
                     selectedItem: data
                 })
@@ -75,11 +75,11 @@ class RuleEditor extends BaseComponent {
         })
 
 
-        this.sharedState.set('rule_editor_selected_rule_id', rule.id);
+        this.sharedState.set('rule_editor_selected_rule_id', rule.name);
     }
 
     saveItem(data) {
-        this.service.backendUpdateRule(data.id, data, () => {
+        this.service.backendUpdateRule(data.name, data, () => {
             this.setState({ isSuccess: true })
 
             setTimeout(() => {
@@ -89,7 +89,7 @@ class RuleEditor extends BaseComponent {
     }
 
     deleteItem(data) {
-        this.service.backendDeleteRule(data.id, () => {
+        this.service.backendDeleteRule(data.name, () => {
             this.setState({ selectedItem: selectedItemInit, selectedItemId: null })
             this.sharedState.set('rule_editor_selected_rule_id', null);
         })

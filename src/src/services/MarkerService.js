@@ -6,7 +6,7 @@ class MockMarkerService {
     }
 
     backendFetchMarkerList(cb) {
-        return this._client.get('/marker')
+        return this._client.get('/markers')
             .then(result => {
                 cb(result.data);
             });
@@ -19,8 +19,8 @@ class MockMarkerService {
             });
     }
 
-    backendCreateMarker(marker, cb) {
-        return this._client.post('/marker', marker)
+    backendCreateMarker(config, targetName, cb) {
+        return this._client.post('/marker/' + targetName, config)
             .then(result => {
                 cb(result.data)
             });
@@ -33,22 +33,15 @@ class MockMarkerService {
             });
     }
 
-    backendUpdateMarker(id, config, cb) {
-        return this._client.put('/marker/' + id, config)
-            .then(result => {
-                cb(result.data);
-            });
-    }
-
     backendExportItems(cb) {
-        return this._client.get('/marker/export')
+        return this._client.get('/markers/export')
             .then(result => {
                 cb(result.data);
             });
     }
 
     backendImportMarkers(markers, cb) {
-        return this._client.post('/marker/import', markers)
+        return this._client.post('/markers/import', markers)
             .then(result => {
                 cb(result.data);
             });

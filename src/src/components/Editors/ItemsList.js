@@ -49,8 +49,8 @@ const ItemsList = ({ type, items, selectedItemId, selectedItem, selectItem, crea
 
             <div className={cx('rules', { 'markers': type === 'marker' })}>
                 {!isEmptyArray(items) && items.map(item => (
-                    <button key={item.id}
-                            className={cx('rule-item-button', { 'selected': item.id === selectedItemId })}
+                    <button key={item.name}
+                            className={cx('rule-item-button', { 'selected': item.name === selectedItemId })}
                             onClick={() => selectItem(item)}>
                         {type === 'marker' && <div className="shape-wrapper">
                             <MarkerPreview shape={item.shape} color={item.color}/>
