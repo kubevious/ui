@@ -79,7 +79,7 @@ class RuleEditor extends BaseComponent {
     }
 
     saveItem(data) {
-        this.service.backendUpdateRule(data.name, data, () => {
+        this.service.backendCreateRule(data, this.state.selectedItemId, () => {
             this.setState({ isSuccess: true })
 
             setTimeout(() => {
@@ -101,7 +101,7 @@ class RuleEditor extends BaseComponent {
     }
 
     createItem(data) {
-        this.service.backendCreateRule(data, (rule) => {
+        this.service.backendCreateRule(data, null, (rule) => {
             this.setState({ isSuccess: true })
             this.selectItem(rule)
         })
