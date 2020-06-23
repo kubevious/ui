@@ -56,7 +56,7 @@ const ItemsList = ({ type, items, selectedItemId, selectedItem, selectItem, crea
                             <MarkerPreview shape={item.shape} color={item.color}/>
                         </div>}
                         {item.name}
-                        {type === 'rule' && !item.isCurrent && <div className="busy-rule-indicator"/>}
+                        {type === 'rule' && !item.is_current && <div className="busy-rule-indicator"/>}
                         {type === 'rule' && <div className={cx('indicator', ruleIndicatorClass(item))}/>}
                     </button>
                 ))}

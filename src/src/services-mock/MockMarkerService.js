@@ -62,9 +62,7 @@ class MockMarkerService {
             }
             data = {
                 marker_id: id,
-                status: {
-                    item_count: count
-                }
+                item_count: count
             }
             data.items = marker.items;
         }

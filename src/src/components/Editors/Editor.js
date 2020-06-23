@@ -42,7 +42,7 @@ const Editor = ({ type, items, isNewItem, selectedItem, selectedItemData, select
     const renderLoading = () => {
         return (
             !isNewItem &&
-            (selectedItemData.status && !selectedItemData.status.isCurrent) &&
+            (selectedItemData.status && !selectedItemData.status.is_current) &&
             type === 'rule' &&
             <div className="busy-rule-indicator"/>
         )
@@ -64,7 +64,7 @@ const Editor = ({ type, items, isNewItem, selectedItem, selectedItemData, select
                             className={cx('tab object-tab', { 'selected': selectedTab === 'object' })}
                             onClick={() => setSelectedTab('object')}
                         >
-                            Affected objects <div className="object-error-count">{selectedItemData.status.item_count}</div>
+                            Affected objects <div className="object-error-count">{selectedItemData.item_count}</div>
                         </div>
                     </>}
 

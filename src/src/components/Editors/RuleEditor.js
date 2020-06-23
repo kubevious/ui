@@ -8,10 +8,8 @@ import ItemsList from './ItemsList'
 
 const selectedItemInit = {}
 const selectedItemDataInit = {
-    status: {
-        isCurrent: true,
-        item_count: 0
-    },
+    is_current: true,
+    item_count: 0,
     logs: [],
     items: []
 }

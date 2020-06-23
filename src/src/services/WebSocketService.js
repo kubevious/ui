@@ -51,7 +51,7 @@ class WebSocketService
     {
         this.sharedState.set('rule_editor_items', []);
 
-        this._subscribe({ kind: 'rules' }, value => {
+        this._subscribe({ kind: 'rules-statuses' }, value => {
             if (!value) {
                 value = [];
             }
@@ -69,8 +69,8 @@ class WebSocketService
 
                 selectedRuleScope.replace([
                     { 
-                        kind: 'rule-status',
-                        id: rule_editor_selected_rule_id
+                        kind: 'rule-result',
+                        name: rule_editor_selected_rule_id
                     }
                 ]);
 
@@ -90,10 +90,10 @@ class WebSocketService
 
         var selectedMarkerScope = this._socket.scope((value, target) => {
 
-            this.sharedState.set('marker_editor_selected_items', {
-                marker_id: target.id,
-                items: value
-            });
+            if (target.name == this.sharedState.get('marker_editor_selected_marker_id'))
+            {
+                this.sharedState.set('marker_editor_selected_items', value);
+            }
 
         });
 
@@ -104,8 +104,8 @@ class WebSocketService
                 {
                     selectedMarkerScope.replace([
                         { 
-                            kind: 'marker-items',
-                            id: marker_editor_selected_marker_id
+                            kind: 'marker-result',
+                            name: marker_editor_selected_marker_id
                         }
                     ]);
                 }

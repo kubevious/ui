@@ -46,27 +46,19 @@ class MarkerEditor extends BaseComponent {
 
         this.subscribeToSharedState('marker_editor_selected_items', (value) => {
             if (value) {
-                if (value.marker_id === this.state.selectedItemId) {
+                if (value.name === this.state.selectedItemId) {
                     var items = [];
                     if (value.items) {
                         items = value.items;
                     }
                     this.setState({
                         selectedItemData: {
-                            status: {
-                                item_count: items.length
-                            },
+                            item_count: items.length,
                             items: items
                         }
                     });
                 }
             }
-            // if (!value) {
-            //     value = selectedItemDataInit;
-            // }
-            // this.setState({
-            //     selectedItemData: value
-            // });
         });
     }
 
