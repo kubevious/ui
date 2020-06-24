@@ -61,11 +61,13 @@ class Root extends BaseComponent {
                 .map(component => ({ ...component, isVisible: true }))
         })
 
-        this.subscribeToSharedState('selected_dn', (selected_dn) => {
-            if (selected_dn) {
-                value.activateComponent('universeComponent')
+        this.subscribeToSharedState(['selected_dn', 'auto_pan_to_selected_dn'], 
+            ({selected_dn, auto_pan_to_selected_dn}) => {
+                if (selected_dn) {
+                    value.activateComponent('universeComponent')
+                }
             }
-        })
+        );
     }
 
     handleChangeWindow(e) {
