@@ -6,6 +6,7 @@ import Header from '../Header'
 import BaseComponent from '../../HOC/BaseComponent'
 import SEO from '../SEO'
 import FieldsSaver from '../../utils/save-fields'
+import ErrorBox from '../ErrorBox';
 
 class Root extends BaseComponent {
     constructor(props) {
@@ -15,7 +16,9 @@ class Root extends BaseComponent {
             showPopup: false,
             popupContent: null,
             layout: null,
-            windows: []
+            windows: [],
+            isError: false,
+            error: null
         }
 
         this._fieldsSaver = new FieldsSaver('Diagram')
@@ -25,6 +28,7 @@ class Root extends BaseComponent {
         this.handlePopupContent = this.handlePopupContent.bind(this)
         this.handleLayout = this.handleLayout.bind(this)
         this.handleChangeWindow = this.handleChangeWindow.bind(this)
+        this.closeError = this.closeError.bind(this)
 
         this.subscribeToSharedState([
             'time_machine_enabled', 'time_machine_date', 'selected_dn',
@@ -70,6 +74,11 @@ class Root extends BaseComponent {
         );
     }
 
+    closeError() {
+        this.sharedState.set('is_error', false)
+        this.sharedState.set('error', null)
+    }
+
     handleChangeWindow(e) {
         const { windows, layout } = this.state
 
@@ -91,7 +100,11 @@ class Root extends BaseComponent {
     }
 
     render() {
-        const { showPopup, popupContent, windows } = this.state
+        const { showPopup, popupContent, windows, isError, error } = this.state
+
+        this.sharedState.subscribe(['is_error', 'error'], ({ is_error, error }) => {
+            this.setState({ error: error, isError: is_error})
+        })
 
         return (
             <>
@@ -124,6 +137,8 @@ class Root extends BaseComponent {
                     {showPopup && <Popup closePopup={this.handleClosePopup}>
                         {popupContent}
                     </Popup>}
+
+                    {isError && <ErrorBox error={error} closeError={this.closeError}/>}
                 </div>
             </>
         )

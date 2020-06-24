@@ -15,12 +15,12 @@ class RootApiService extends BaseRootApiService
         super(sharedState);
 
         this.registerService({kind: 'rule'}, () => {
-            var client = new BackendClient('/api/v1');
+            var client = new BackendClient('/api/v1', sharedState);
             return new RuleService(client);
         });
 
         this.registerService({kind: 'marker'}, () => {
-            var client = new BackendClient('/api/v1');
+            var client = new BackendClient('/api/v1', sharedState);
             return new MarkerService(client);
         });
 
@@ -29,7 +29,7 @@ class RootApiService extends BaseRootApiService
         });
 
         this.registerService({kind: 'diagram'}, ({info}) => {
-            var client = new BackendClient('/api');
+            var client = new BackendClient('/api', sharedState);
             return new DiagramService(client);
         });
     }

@@ -1,9 +1,10 @@
 import axios from 'axios'
 
 class BackendClient {
-    constructor(urlBase)
+    constructor(urlBase, sharedState)
     {
         this._urlBase = urlBase;
+        this._sharedState = sharedState;
     }
 
     get(url, params) {
@@ -45,7 +46,14 @@ class BackendClient {
                 return result;
             })
             .catch(reason => {
-                // showError(reason, options)
+                this._sharedState.set('is_error', true)
+                this._sharedState.set('error', reason)
+
+                setTimeout(() => {
+                    this._sharedState.set('is_error', false)
+                    this._sharedState.set('error', null)
+                }, 3000)
+
                 throw reason;
             });
     }
