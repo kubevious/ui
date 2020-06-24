@@ -107,6 +107,7 @@ class DiagramSource
 
     _handleTreeChange()
     {
+        this._sharedState.set('is_loading', true)
         if (this._sharedState.get('time_machine_enabled')) {
             return;
         }
@@ -119,6 +120,7 @@ class DiagramSource
 
                 var tree = this._buildTreeData();
                 this._sharedState.set('diagram_data', tree);
+                this._sharedState.set('is_loading', false)
             });
     }
 

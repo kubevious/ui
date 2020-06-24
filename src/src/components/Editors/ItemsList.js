@@ -7,12 +7,14 @@ import MarkerPreview from '../MarkerPreview'
 
 const ItemsList = ({ type, items, selectedItemId, selectedItem, selectItem, createNewItem, setVisibleOptions, service }) => {
     const exportItems = () => {
+        this.sharedState.set('is_loading', true)
         service.backendExportItems(response => {
             const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(response))
             const exportElem = document.getElementById('exportAnchor')
             exportElem.setAttribute('href', dataStr)
             exportElem.setAttribute('download', `${type}s.json`)
             exportElem.click()
+            this.sharedState.set('is_loading', false)
         })
     }
 
@@ -56,8 +58,10 @@ const ItemsList = ({ type, items, selectedItemId, selectedItem, selectItem, crea
                             <MarkerPreview shape={item.shape} color={item.color}/>
                         </div>}
                         {item.name}
-                        {type === 'rule' && !item.is_current && <div className="busy-rule-indicator"/>}
-                        {type === 'rule' && <div className={cx('indicator', ruleIndicatorClass(item))}/>}
+                        <div className="indicators">
+                            {type === 'rule' && !item.is_current && <div className="busy-rule-indicator" />}
+                            {type === 'rule' && <div className={cx('indicator', ruleIndicatorClass(item))} />}
+                        </div>
                     </button>
                 ))}
             </div>

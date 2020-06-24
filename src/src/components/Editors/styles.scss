@@ -123,10 +123,16 @@
   background: #1E1E1E;
 }
 
+.indicators {
+  display: flex;
+  align-items: center;
+}
+
 .indicator {
   width: 7px;
   height: 7px;
   border-radius: 50%;
+  margin-left: 10px;
 }
 
 .indicator.enabled {
