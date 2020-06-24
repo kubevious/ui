@@ -46,27 +46,19 @@ class MarkerEditor extends BaseComponent {
 
         this.subscribeToSharedState('marker_editor_selected_items', (value) => {
             if (value) {
-                if (value.marker_id === this.state.selectedItemId) {
+                if (value.name === this.state.selectedItemId) {
                     var items = [];
                     if (value.items) {
                         items = value.items;
                     }
                     this.setState({
                         selectedItemData: {
-                            status: {
-                                item_count: items.length
-                            },
+                            item_count: items.length,
                             items: items
                         }
                     });
                 }
             }
-            // if (!value) {
-            //     value = selectedItemDataInit;
-            // }
-            // this.setState({
-            //     selectedItemData: value
-            // });
         });
     }
 
@@ -74,22 +66,22 @@ class MarkerEditor extends BaseComponent {
         this.setState({
             isNewItem: false,
             isSuccess: false,
-            selectedItemId: marker.id
+            selectedItemId: marker.name
         })
 
-        this.service.backendFetchMarker(marker.id, data => {
-            if (data.id === this.state.selectedItemId) {
+        this.service.backendFetchMarker(marker.name, data => {
+            if (data.name === this.state.selectedItemId) {
                 this.setState({
                     selectedItem: data
                 })
             }
         })
 
-        this.sharedState.set('marker_editor_selected_marker_id', marker.id);
+        this.sharedState.set('marker_editor_selected_marker_id', marker.name);
     }
 
     saveItem(data) {
-        this.service.backendUpdateMarker(data.id, data, () => {
+        this.service.backendCreateMarker(data, this.state.selectedItemId, () => {
             this.setState({ isSuccess: true })
 
             setTimeout(() => {
@@ -99,7 +91,7 @@ class MarkerEditor extends BaseComponent {
     }
 
     deleteItem(data) {
-        this.service.backendDeleteMarker(data.id, () => {
+        this.service.backendDeleteMarker(data.name, () => {
             this.setState({ selectedItem: selectedItemInit, selectedItemId: null })
             this.sharedState.set('marker_editor_selected_marker_id', null);
         })
@@ -111,7 +103,7 @@ class MarkerEditor extends BaseComponent {
     }
 
     createItem(data) {
-        this.service.backendCreateMarker(data, (marker) => {
+        this.service.backendCreateMarker(data, null, (marker) => {
             this.setState({ isSuccess: true })
             this.selectItem(marker)
         })

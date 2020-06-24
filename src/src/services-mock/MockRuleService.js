@@ -29,7 +29,7 @@ for(var x of _.values(MOCK_RULES))
 {
     x.items = [];
     x.logs = [];
-    x.isCurrent = (x.id % 2 == 0);
+    x.is_current = (x.id % 2 == 0);
 }
 
 class MockRuleService {
@@ -43,7 +43,7 @@ class MockRuleService {
         setInterval(() => {
             for(var x of _.values(MOCK_RULES))
             {
-                x.isCurrent = true;
+                x.is_current = true;
                 x.items = [];
                 x.logs = [];
             }
@@ -108,11 +108,9 @@ class MockRuleService {
         if (rule) {
             data = {
                 id: id,
-                status: {
-                    isCurrent: rule.isCurrent,
-                    error_count: rule.logs.length,
-                    item_count: rule.items.length
-                }
+                is_current: rule.is_current,
+                error_count: rule.logs.length,
+                item_count: rule.items.length
             }
             data.items = rule.items; 
             data.logs = rule.logs;
@@ -131,7 +129,7 @@ class MockRuleService {
             enabled: x.enabled,
             item_count: x.items.length,
             error_count: x.logs.length,
-            isCurrent : x.isCurrent
+            is_current : x.is_current
         }
     }
 
@@ -184,7 +182,7 @@ class MockRuleService {
             rule.enabled = config.enabled;
             rule.target = config.target;
             rule.script = config.script;
-            rule.isCurrent = false;
+            rule.is_current = false;
         }
         cb(rule);
         this._notifyRules();

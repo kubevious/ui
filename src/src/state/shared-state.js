@@ -90,8 +90,10 @@ class SharedState
         if (this._debugOutput)
         {
             var str = JSON.stringify(value);
-            if (str.length > 80) {
-                str = str.substring(0, 80) + '...';
+            if (str) {
+                if (str.length > 80) {
+                    str = str.substring(0, 80) + '...';
+                }
             }
             console.log("[SharedState] SET " + name + " = " + str);
         }

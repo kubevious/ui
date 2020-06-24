@@ -6,7 +6,7 @@ class RuleService {
     }
 
     backendFetchRuleList(cb) {
-        return this._client.get('/rule')
+        return this._client.get('/rules')
             .then(result => {
                 cb(result.data);
             });
@@ -19,8 +19,8 @@ class RuleService {
             });
     }
 
-    backendCreateRule(rule, cb) {
-        return this._client.post('/rule', rule)
+    backendCreateRule(rule, name, cb) {
+        return this._client.post('/rule/' + name, rule)
             .then(result => {
                 cb(result.data)
             });
@@ -33,22 +33,15 @@ class RuleService {
             });
     }
 
-    backendUpdateRule(id, config, cb) {
-        return this._client.put('/rule/' + id, config)
-            .then(result => {
-                cb(result.data);
-            });
-    }
-
     backendExportItems(cb) {
-        return this._client.get('/rule/export')
+        return this._client.get('/rules/export')
             .then(result => {
                 cb(result.data);
             });
     }
 
     backendImportRules(policies, cb) {
-        return this._client.post('/rule/import', policies)
+        return this._client.post('/rules/import', policies)
             .then(result => {
                 cb(result.data);
             });

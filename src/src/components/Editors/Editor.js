@@ -9,6 +9,14 @@ import MarkerMainTab from './MarkerMainTab'
 const Editor = ({ type, items, isNewItem, selectedItem, selectedItemData, selectedItemId, createNewItem, saveItem, deleteItem, createItem, openSummary, isSuccess }) => {
     const [selectedTab, setSelectedTab] = useState('main')
 
+
+    var itemCount = 0;
+    if (selectedItemData.items) {
+        itemCount = selectedItemData.items.length;
+    } else {
+        itemCount = selectedItemData.item_count;
+    }
+    
     useEffect(() => {
         setSelectedTab('main')
     }, [selectedItemId])
@@ -42,7 +50,7 @@ const Editor = ({ type, items, isNewItem, selectedItem, selectedItemData, select
     const renderLoading = () => {
         return (
             !isNewItem &&
-            (selectedItemData.status && !selectedItemData.status.isCurrent) &&
+            (selectedItemData.status && !selectedItemData.status.is_current) &&
             type === 'rule' &&
             <div className="busy-rule-indicator"/>
         )
@@ -64,7 +72,7 @@ const Editor = ({ type, items, isNewItem, selectedItem, selectedItemData, select
                             className={cx('tab object-tab', { 'selected': selectedTab === 'object' })}
                             onClick={() => setSelectedTab('object')}
                         >
-                            Affected objects <div className="object-error-count">{selectedItemData.status.item_count}</div>
+                            Affected objects <div className="object-error-count">{itemCount}</div>
                         </div>
                     </>}
 

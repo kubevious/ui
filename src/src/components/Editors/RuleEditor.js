@@ -8,10 +8,8 @@ import ItemsList from './ItemsList'
 
 const selectedItemInit = {}
 const selectedItemDataInit = {
-    status: {
-        isCurrent: true,
-        item_count: 0
-    },
+    is_current: true,
+    item_count: 0,
     logs: [],
     items: []
 }
@@ -63,11 +61,11 @@ class RuleEditor extends BaseComponent {
         this.setState({
             isNewItem: false,
             isSuccess: false,
-            selectedItemId: rule.id
+            selectedItemId: rule.name
         })
 
-        this.service.backendFetchRule(rule.id, data => {
-            if (data.id === this.state.selectedItemId) {
+        this.service.backendFetchRule(rule.name, data => {
+            if (data.name === this.state.selectedItemId) {
                 this.setState({
                     selectedItem: data
                 })
@@ -75,11 +73,11 @@ class RuleEditor extends BaseComponent {
         })
 
 
-        this.sharedState.set('rule_editor_selected_rule_id', rule.id);
+        this.sharedState.set('rule_editor_selected_rule_id', rule.name);
     }
 
     saveItem(data) {
-        this.service.backendUpdateRule(data.id, data, () => {
+        this.service.backendCreateRule(data, this.state.selectedItemId, () => {
             this.setState({ isSuccess: true })
 
             setTimeout(() => {
@@ -89,7 +87,7 @@ class RuleEditor extends BaseComponent {
     }
 
     deleteItem(data) {
-        this.service.backendDeleteRule(data.id, () => {
+        this.service.backendDeleteRule(data.name, () => {
             this.setState({ selectedItem: selectedItemInit, selectedItemId: null })
             this.sharedState.set('rule_editor_selected_rule_id', null);
         })
@@ -101,7 +99,7 @@ class RuleEditor extends BaseComponent {
     }
 
     createItem(data) {
-        this.service.backendCreateRule(data, (rule) => {
+        this.service.backendCreateRule(data, null, (rule) => {
             this.setState({ isSuccess: true })
             this.selectItem(rule)
         })
