@@ -99,12 +99,14 @@ class Root extends BaseComponent {
         }
     }
 
-    render() {
-        const { showPopup, popupContent, windows, isError, error } = this.state
-
-        this.sharedState.subscribe(['is_error', 'error'], ({ is_error, error }) => {
+    componentDidMount() {
+        this.subscribeToSharedState(['is_error', 'error'], ({ is_error, error }) => {
             this.setState({ error: error, isError: is_error})
         })
+    }
+
+    render() {
+        const { showPopup, popupContent, windows, isError, error } = this.state
 
         return (
             <>

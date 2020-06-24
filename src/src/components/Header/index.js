@@ -5,6 +5,8 @@ import githubImg from '../../assets/header-btns/github.svg'
 import About from '../About'
 import Search from '../Search'
 import BaseComponent from '../../HOC/BaseComponent'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 import './styles.scss'
 
@@ -15,7 +17,8 @@ class Header extends BaseComponent {
         this.registerService({ kind: 'diagram' })
 
         this.state = {
-            showSettings: false
+            showSettings: false,
+            isLoading: false
         }
 
         this.openAbout = this.openAbout.bind(this)
@@ -61,12 +64,22 @@ class Header extends BaseComponent {
         )
     }
 
+    componentDidMount() {
+        this.subscribeToSharedState('is_loading',
+            (is_loading) => {
+                this.setState({ isLoading: is_loading })
+            })
+    }
+
     render() {
-        const { showSettings } = this.state
+        const { showSettings, isLoading } = this.state
 
         return (
             <div className="header">
                 <div className="logo"/>
+                <div className="loading-icon">
+                    {isLoading && <FontAwesomeIcon icon={faSpinner} spin />}
+                </div>
                 <div id="history-info" className="history-info"/>
                 <div className="actions">
                     <a href="https://github.com/kubevious/kubevious/issues/new/choose" target="_blank"

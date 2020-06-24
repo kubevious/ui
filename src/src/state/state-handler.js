@@ -15,6 +15,7 @@ class StateHandler {
     }
 
     _setup() {
+        this.sharedState.set('is_loading', false)
         this.sharedState.set('is_error', false)
         this.sharedState.set('error', null)
         this.sharedState.set('diagram_expanded_dns', { 'root': true });

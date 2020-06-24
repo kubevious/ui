@@ -2,12 +2,21 @@
   height: 60px;
   width: 100%;
   background: #35373E;
+  display: flex;
+  align-items: center;
+
+  .loading-icon {
+    color: white;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
 
   .history-info {
     text-align: center;
-    margin: auto;
+    margin-left: 20%;
     display: block;
-    padding: 22px 250px 0;
     font-family: 'Montserrat', sans-serif;
     font-weight: 400;
     color: white;
