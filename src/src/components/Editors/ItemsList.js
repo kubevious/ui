@@ -11,7 +11,7 @@ const ItemsList = ({ type, items, selectedItemId, selectedItem, selectItem, crea
             const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(response))
             const exportElem = document.getElementById('exportAnchor')
             exportElem.setAttribute('href', dataStr)
-            exportElem.setAttribute('download', `${type}s.json`)
+            exportElem.setAttribute('download', `${response.kind}.json`)
             exportElem.click()
         })
     }

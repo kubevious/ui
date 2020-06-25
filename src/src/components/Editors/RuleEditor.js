@@ -132,7 +132,7 @@ class RuleEditor extends BaseComponent {
         const reader = new FileReader();
         reader.onload = () => {
             var importData = {
-                data: JSON.parse(reader.result).map((item) => ({ ...item, id: getRandomInt() })),
+                data: JSON.parse(reader.result).items.map((item) => ({ ...item, id: getRandomInt() })),
                 deleteExtra: this.state.deleteExtra
             };
             this.service.backendImportRules(importData, () => {
