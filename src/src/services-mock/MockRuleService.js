@@ -165,6 +165,7 @@ class MockRuleService {
 
     backendFetchRule(name, cb) {
         var item = MOCK_RULES[name];
+        console.log('MOCK_RULES', MOCK_RULES, name)
         item = this._makeRuleItem(item);
         setTimeout(() => {
             cb(item);
@@ -186,13 +187,9 @@ class MockRuleService {
     }
 
     backendUpdateRule(rule, name, cb) {
-        MOCK_RULES[name] = _.clone({ ...rule, items: [], logs: [] });
+        MOCK_RULES[rule.name] = _.clone({ ...rule, items: [], logs: [] });
 
-        for (var key in MOCK_RULES) {
-            if (key === name) {
-                key = rule.name
-            }
-        }
+        delete MOCK_RULES[name]
 
         cb(rule)
         this._notifyRules();
