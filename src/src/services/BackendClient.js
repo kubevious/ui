@@ -53,7 +53,7 @@ class BackendClient {
                 return result;
             })
             .catch(reason => {
-                this._remoteTrack.fail(reason)
+                this._remoteTrack.fail(reason.response.data)
                 throw reason;
             });
     }

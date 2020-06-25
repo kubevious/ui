@@ -10,7 +10,7 @@ const ErrorBox = ({ error, closeError }) => {
         <div className="ErrorBox-container">
             <div className="error">
                 <div className="error-text">
-                    {error.message}
+                    Error {error.status}: {error.message}
                 </div>
 
                 <div className="more-text">
@@ -20,7 +20,7 @@ const ErrorBox = ({ error, closeError }) => {
             </div>
 
             {expanded && <div className="full-error-container">
-                <div className="msg">{error.message}</div>
+                <div className="msg">Error occurred: {error.message}</div>
                 <div className="msg">{error.stack}</div>
             </div>}
         </div>
