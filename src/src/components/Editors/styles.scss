@@ -150,7 +150,7 @@
 .rule-container {
   overflow-y: auto;
   height: 100%;
-  padding: 50px;
+  padding: 20px 50px 10px;
 
   &::-webkit-scrollbar-thumb {
     background-color: #333;
@@ -190,7 +190,7 @@
 .field {
   display: flex;
   flex-direction: column;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
 }
 
 .field-input {
@@ -210,6 +210,22 @@
 .CodeMirror.cm-s-darcula {
   background: #35373E;
   border: 1px solid #4E515B;
+}
+
+.CodeMirror-vscrollbar {
+  &::-webkit-scrollbar-thumb {
+    background-color: #333;
+  }
+
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #666;
+  }
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    background-color: #F5F5F5;
+  }
 }
 
 .required-field {
@@ -355,7 +371,7 @@ input[type="file"] {
 .editor-title {
   display: flex;
   font-size: 30px;
-  margin-bottom: 25px;
+  margin-bottom: 15px;
 }
 
 .editor-title .tab {
@@ -409,7 +425,7 @@ input[type="file"] {
 .editor-errors {
   display: flex;
   flex-direction: column;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
 }
 
 .editor-errors:empty {
@@ -513,9 +529,12 @@ input[type="file"] {
 .custom-color {
   border: none;
   background: none;
-  width: 100px;
+  width: 150px;
   margin-top: 10px;
   color: white;
+  text-align: initial;
+  padding: 0;
+  outline: none;
 }
 
 .color-popover {

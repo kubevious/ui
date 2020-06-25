@@ -1,6 +1,7 @@
 import _ from 'the-lodash'
 
 import { COLORS, SHAPES } from '../boot/markerData'
+import RemoteTrack from '../utils/remote-track';
 
 export var MOCK_MARKERS = []
 
@@ -13,13 +14,14 @@ for(var i = 0; i < 30; i++) {
     })
 };
 
-MOCK_MARKERS = _.makeDict(MOCK_MARKERS, x => x.id);
+MOCK_MARKERS = _.makeDict(MOCK_MARKERS, x => x.name);
 
 class MockMarkerService {
 
     constructor(parent, sharedState) {
         this._parent = parent;
         this.sharedState = sharedState;
+        this._remoteTrack = new RemoteTrack(sharedState)
         this._notifyMarkers();
 
         setInterval(() => {
@@ -42,6 +44,10 @@ class MockMarkerService {
     }
 
     _notifyMarkers() {
+        this._remoteTrack.start({
+            action: `notifyMarkers`
+        })
+
         this.backendFetchMarkerList((result) => {
             this.sharedState.set('marker_editor_items', result);
         })
@@ -50,6 +56,10 @@ class MockMarkerService {
         if (id) {
             this._notifyMarkerStatus(id);
         }
+
+        setTimeout(() => {
+            this._remoteTrack.complete()
+        }, 1000)
     }
 
     _notifyMarkerStatus(id) {
@@ -105,28 +115,32 @@ class MockMarkerService {
         }, 500);
     }
 
-    backendCreateMarker(marker, cb) {
+    backendCreateMarker(marker, name, cb) {
         marker = _.clone({ ...marker });
-        marker.id = this._newID();
-        MOCK_MARKERS[marker.id] = marker;
+
+        if (MOCK_MARKERS[name]) {
+            this.backendUpdateMarker(marker, name, cb)
+            return
+        }
+
+        MOCK_MARKERS[marker.name] = marker
+
         cb(marker);
+        this._notifyMarkers();
+    }
+
+    backendUpdateMarker(marker, name, cb) {
+        MOCK_MARKERS[marker.name] = _.clone({ ...marker });
+
+        delete MOCK_MARKERS[name]
+
+        cb(marker)
         this._notifyMarkers();
     }
 
     backendDeleteMarker(id, cb) {
         delete MOCK_MARKERS[id];
         cb();
-        this._notifyMarkers();
-    }
-
-    backendUpdateMarker(id, config, cb) {
-        var marker = MOCK_MARKERS[id];
-        if (marker) {
-            marker.name = config.name
-            marker.shape = config.shape
-            marker.color = config.color
-        }
-        cb(marker);
         this._notifyMarkers();
     }
 
@@ -158,7 +172,7 @@ class MockMarkerService {
             newMarker.shape = marker.shape;
             newMarker.color = marker.color;
         }
-        console.log(MOCK_MARKERS);
+
         cb();
         this._notifyMarkers();
     }

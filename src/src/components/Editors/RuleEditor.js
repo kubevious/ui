@@ -64,13 +64,11 @@ class RuleEditor extends BaseComponent {
             selectedItemId: rule.name
         })
 
-        this.sharedState.set('is_loading', true)
         this.service.backendFetchRule(rule.name, data => {
             if (data.name === this.state.selectedItemId) {
                 this.setState({
                     selectedItem: data
                 })
-                this.sharedState.set('is_loading', false)
             }
         })
 
@@ -79,23 +77,19 @@ class RuleEditor extends BaseComponent {
     }
 
     saveItem(data) {
-        this.sharedState.set('is_loading', true)
         this.service.backendCreateRule(data, this.state.selectedItemId, () => {
-            this.setState({ isSuccess: true })
+            this.setState({ isSuccess: true, selectedItem: data })
 
             setTimeout(() => {
                 this.setState({ isSuccess: false })
             }, 2000)
-            this.sharedState.set('is_loading', false)
         })
     }
 
     deleteItem(data) {
-        this.sharedState.set('is_loading', true)
         this.service.backendDeleteRule(data.name, () => {
             this.setState({ selectedItem: selectedItemInit, selectedItemId: null })
             this.sharedState.set('rule_editor_selected_rule_id', null);
-            this.sharedState.set('is_loading', false)
         })
     }
 
@@ -105,11 +99,9 @@ class RuleEditor extends BaseComponent {
     }
 
     createItem(data) {
-        this.sharedState.set('is_loading', true)
         this.service.backendCreateRule(data, null, (rule) => {
             this.setState({ isSuccess: true })
             this.selectItem(rule)
-            this.sharedState.set('is_loading', false)
         })
     }
 
@@ -130,7 +122,6 @@ class RuleEditor extends BaseComponent {
     }
 
     uploadFile() {
-        this.sharedState.set('is_loading', true)
         const input = document.getElementById('upload-rule')
 
         if (input.files.length === 0) {
@@ -141,11 +132,10 @@ class RuleEditor extends BaseComponent {
         const reader = new FileReader();
         reader.onload = () => {
             var importData = {
-                data: JSON.parse(reader.result).map((item) => ({ ...item, id: getRandomInt() })),
+                data: JSON.parse(reader.result).items.map((item) => ({ ...item, id: getRandomInt() })),
                 deleteExtra: this.state.deleteExtra
             };
             this.service.backendImportRules(importData, () => {
-                this.sharedState.set('is_loading', false)
             })
         };
 
