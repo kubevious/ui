@@ -81,7 +81,7 @@ class RuleEditor extends BaseComponent {
     saveItem(data) {
         this.sharedState.set('is_loading', true)
         this.service.backendCreateRule(data, this.state.selectedItemId, () => {
-            this.setState({ isSuccess: true })
+            this.setState({ isSuccess: true, selectedItem: data })
 
             setTimeout(() => {
                 this.setState({ isSuccess: false })
