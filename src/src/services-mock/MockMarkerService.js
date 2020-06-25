@@ -13,7 +13,7 @@ for(var i = 0; i < 30; i++) {
     })
 };
 
-MOCK_MARKERS = _.makeDict(MOCK_MARKERS, x => x.id);
+MOCK_MARKERS = _.makeDict(MOCK_MARKERS, x => x.name);
 
 class MockMarkerService {
 
@@ -105,28 +105,36 @@ class MockMarkerService {
         }, 500);
     }
 
-    backendCreateMarker(marker, cb) {
+    backendCreateMarker(marker, name, cb) {
         marker = _.clone({ ...marker });
-        marker.id = this._newID();
-        MOCK_MARKERS[marker.id] = marker;
+
+        if (MOCK_MARKERS[name]) {
+            this.backendUpdateMarker(marker, name, cb)
+            return
+        }
+
+        MOCK_MARKERS[marker.name] = marker
+
         cb(marker);
+        this._notifyMarkers();
+    }
+
+    backendUpdateMarker(marker, name, cb) {
+        MOCK_MARKERS[name] = _.clone({ ...marker });
+
+        for (var key in MOCK_MARKERS) {
+            if (key === name) {
+                key = marker.name
+            }
+        }
+
+        cb(marker)
         this._notifyMarkers();
     }
 
     backendDeleteMarker(id, cb) {
         delete MOCK_MARKERS[id];
         cb();
-        this._notifyMarkers();
-    }
-
-    backendUpdateMarker(id, config, cb) {
-        var marker = MOCK_MARKERS[id];
-        if (marker) {
-            marker.name = config.name
-            marker.shape = config.shape
-            marker.color = config.color
-        }
-        cb(marker);
         this._notifyMarkers();
     }
 
@@ -158,7 +166,7 @@ class MockMarkerService {
             newMarker.shape = marker.shape;
             newMarker.color = marker.color;
         }
-        console.log(MOCK_MARKERS);
+
         cb();
         this._notifyMarkers();
     }

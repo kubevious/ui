@@ -24,7 +24,7 @@ var MOCK_RULES = [
         script: 'script-3'
     },
 ];
-MOCK_RULES = _.makeDict(MOCK_RULES, x => x.id);
+MOCK_RULES = _.makeDict(MOCK_RULES, x => x.name);
 for(var x of _.values(MOCK_RULES))
 {
     x.items = [];
@@ -153,38 +153,44 @@ class MockRuleService {
         }, 100);
     }
 
-    backendFetchRule(id, cb) {
-        var item = MOCK_RULES[id];
+    backendFetchRule(name, cb) {
+        var item = MOCK_RULES[name];
         item = this._makeRuleItem(item);
         setTimeout(() => {
             cb(item);
         }, 500);
     }
 
-    backendCreateRule(rule, cb) {
+    backendCreateRule(rule, name, cb) {
         rule = _.clone({ ...rule, items: [], logs: [] });
-        rule.id = _.max(_.values(MOCK_RULES).map(x => x.id)) + 1;
-        MOCK_RULES[rule.id] = rule;
+
+        if (MOCK_RULES[name]) {
+            this.backendUpdateRule(rule, name, cb)
+            return
+        }
+
+        MOCK_RULES[rule.name] = rule
+
         cb(rule);
+        this._notifyRules();
+    }
+
+    backendUpdateRule(rule, name, cb) {
+        MOCK_RULES[name] = _.clone({ ...rule, items: [], logs: [] });
+
+        for (var key in MOCK_RULES) {
+            if (key === name) {
+                key = rule.name
+            }
+        }
+
+        cb(rule)
         this._notifyRules();
     }
 
     backendDeleteRule(id, cb) {
         delete MOCK_RULES[id];
         cb();
-        this._notifyRules();
-    }
-
-    backendUpdateRule(id, config, cb) {
-        var rule = MOCK_RULES[id];
-        if (rule) {
-            rule.name = config.name;
-            rule.enabled = config.enabled;
-            rule.target = config.target;
-            rule.script = config.script;
-            rule.is_current = false;
-        }
-        cb(rule);
         this._notifyRules();
     }
 
