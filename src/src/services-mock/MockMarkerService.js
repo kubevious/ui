@@ -130,13 +130,9 @@ class MockMarkerService {
     }
 
     backendUpdateMarker(marker, name, cb) {
-        MOCK_MARKERS[name] = _.clone({ ...marker });
+        MOCK_MARKERS[marker.name] = _.clone({ ...marker });
 
-        for (var key in MOCK_MARKERS) {
-            if (key === name) {
-                key = marker.name
-            }
-        }
+        delete MOCK_MARKERS[name]
 
         cb(marker)
         this._notifyMarkers();
