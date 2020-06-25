@@ -7,14 +7,12 @@ import MarkerPreview from '../MarkerPreview'
 
 const ItemsList = ({ type, items, selectedItemId, selectedItem, selectItem, createNewItem, setVisibleOptions, service }) => {
     const exportItems = () => {
-        service._client._sharedState.set('is_loading', true)
         service.backendExportItems(response => {
             const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(response))
             const exportElem = document.getElementById('exportAnchor')
             exportElem.setAttribute('href', dataStr)
             exportElem.setAttribute('download', `${type}s.json`)
             exportElem.click()
-            service._client._sharedState.set('is_loading', false)
         })
     }
 

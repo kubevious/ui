@@ -69,13 +69,11 @@ class MarkerEditor extends BaseComponent {
             selectedItemId: marker.name
         })
 
-        this.sharedState.set('is_loading', true)
         this.service.backendFetchMarker(marker.name, data => {
             if (data.name === this.state.selectedItemId) {
                 this.setState({
                     selectedItem: data
                 })
-                this.sharedState.set('is_loading', false)
             }
         })
 
@@ -83,7 +81,6 @@ class MarkerEditor extends BaseComponent {
     }
 
     saveItem(data) {
-        this.sharedState.set('is_loading', true)
         this.service.backendCreateMarker(data, this.state.selectedItemId, () => {
             this.setState({ isSuccess: true })
 
@@ -91,16 +88,13 @@ class MarkerEditor extends BaseComponent {
                 this.setState({ isSuccess: false })
             }, 2000)
 
-            this.sharedState.set('is_loading', false)
         })
     }
 
     deleteItem(data) {
-        this.sharedState.set('is_loading', true)
         this.service.backendDeleteMarker(data.name, () => {
             this.setState({ selectedItem: selectedItemInit, selectedItemId: null })
             this.sharedState.set('marker_editor_selected_marker_id', null);
-            this.sharedState.set('is_loading', false)
         })
     }
 
@@ -110,11 +104,9 @@ class MarkerEditor extends BaseComponent {
     }
 
     createItem(data) {
-        this.sharedState.set('is_loading', true)
         this.service.backendCreateMarker(data, null, (marker) => {
             this.setState({ isSuccess: true })
             this.selectItem(marker)
-            this.sharedState.set('is_loading', false)
         })
     }
 
@@ -135,7 +127,6 @@ class MarkerEditor extends BaseComponent {
     }
 
     uploadFile() {
-        this.sharedState.set('is_loading', true)
         const input = document.getElementById('upload-marker')
 
         if (input.files.length === 0) {
@@ -150,7 +141,6 @@ class MarkerEditor extends BaseComponent {
                 deleteExtra: this.state.deleteExtra
             };
             this.service.backendImportMarkers(importData, () => {
-                this.sharedState.set('is_loading', false)
             })
         };
 

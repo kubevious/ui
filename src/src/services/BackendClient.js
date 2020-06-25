@@ -1,10 +1,12 @@
 import axios from 'axios'
+import RemoteTrack from '../utils/remote-track';
 
 class BackendClient {
     constructor(urlBase, sharedState)
     {
         this._urlBase = urlBase;
         this._sharedState = sharedState;
+        this._remoteTrack = new RemoteTrack(sharedState)
     }
 
     get(url, params) {
@@ -41,19 +43,17 @@ class BackendClient {
             options.data = data;
         }
 
+        this._remoteTrack.start({
+            action: `${options.method.toUpperCase()}::${options.url}`
+        })
+
         return axios(options)
             .then(result => {
+                this._remoteTrack.complete()
                 return result;
             })
             .catch(reason => {
-                this._sharedState.set('is_error', true)
-                this._sharedState.set('error', reason)
-
-                setTimeout(() => {
-                    this._sharedState.set('is_error', false)
-                    this._sharedState.set('error', null)
-                }, 3000)
-
+                this._remoteTrack.fail(reason)
                 throw reason;
             });
     }
