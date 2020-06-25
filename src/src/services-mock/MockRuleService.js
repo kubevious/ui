@@ -1,5 +1,6 @@
 import _ from 'the-lodash'
 import { MOCK_MARKERS } from './MockMarkerService'
+import RemoteTrack from '../utils/remote-track';
 
 var MOCK_RULES = [
     {
@@ -38,6 +39,7 @@ class MockRuleService {
     {
         this._parent = parent;
         this.sharedState = sharedState;
+        this._remoteTrack = new RemoteTrack(sharedState)
         this._notifyRules();
 
         setInterval(() => {
@@ -91,6 +93,10 @@ class MockRuleService {
 
     _notifyRules()
     {
+        this._remoteTrack.start({
+            action: `notifyRules`
+        })
+
         this.backendFetchRuleList((result) => {
             this.sharedState.set('rule_editor_items', result);
         })
@@ -99,6 +105,10 @@ class MockRuleService {
         if (id) {
             this._notifyRuleStatus(id);
         }
+
+        setTimeout(() => {
+            this._remoteTrack.complete()
+        }, 1000)
     }
 
     _notifyRuleStatus(id)

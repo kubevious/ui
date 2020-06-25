@@ -1,6 +1,7 @@
 import _ from 'the-lodash'
 
 import { COLORS, SHAPES } from '../boot/markerData'
+import RemoteTrack from '../utils/remote-track';
 
 export var MOCK_MARKERS = []
 
@@ -20,6 +21,7 @@ class MockMarkerService {
     constructor(parent, sharedState) {
         this._parent = parent;
         this.sharedState = sharedState;
+        this._remoteTrack = new RemoteTrack(sharedState)
         this._notifyMarkers();
 
         setInterval(() => {
@@ -42,6 +44,10 @@ class MockMarkerService {
     }
 
     _notifyMarkers() {
+        this._remoteTrack.start({
+            action: `notifyMarkers`
+        })
+
         this.backendFetchMarkerList((result) => {
             this.sharedState.set('marker_editor_items', result);
         })
@@ -50,6 +56,10 @@ class MockMarkerService {
         if (id) {
             this._notifyMarkerStatus(id);
         }
+
+        setTimeout(() => {
+            this._remoteTrack.complete()
+        }, 1000)
     }
 
     _notifyMarkerStatus(id) {

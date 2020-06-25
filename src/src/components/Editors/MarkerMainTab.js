@@ -91,8 +91,8 @@ const MarkerMainTab = ({ selectedItem, isSuccess, deleteItem, openSummary, creat
                     ))}
                 </div>
 
-                <button className="custom-color" onClick={() => setDisplayColorPicker(!displayColorPicker)}>Pick
-                    Color
+                <button className="custom-color" onClick={() => setDisplayColorPicker(!displayColorPicker)}>
+                    Pick custom color
                 </button>
                 {displayColorPicker && <div className="color-popover">
                     <div className="cover" onClick={() => setDisplayColorPicker(false)}/>
