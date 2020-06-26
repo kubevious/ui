@@ -26,14 +26,11 @@ class RuleEditor extends BaseComponent {
             selectedItem: selectedItemInit,
             selectedItemData: selectedItemDataInit,
             isSuccess: false,
-            deleteExtra: false,
-            isMergeOptionsVisible: false
         }
 
         this.openSummary = this.openSummary.bind(this)
         this.saveItem = this.saveItem.bind(this)
         this.deleteItem = this.deleteItem.bind(this)
-        this.uploadFile = this.uploadFile.bind(this)
         this.createItem = this.createItem.bind(this)
         this.setVisibleOptions = this.setVisibleOptions.bind(this)
         this.selectItem = this.selectItem.bind(this)
@@ -121,39 +118,12 @@ class RuleEditor extends BaseComponent {
         }))
     }
 
-    uploadFile() {
-        const input = document.getElementById('upload-rule')
-
-        if (input.files.length === 0) {
-            console.error('No file selected.');
-            return;
-        }
-
-        const reader = new FileReader();
-        reader.onload = () => {
-            var importData = {
-                data: JSON.parse(reader.result),
-                deleteExtra: this.state.deleteExtra
-            };
-            this.service.backendImportRules(importData, () => {
-            })
-        };
-
-        reader.readAsText(input.files[0]);
-    }
-
     setVisibleOptions(value) {
         this.setState({ isMergeOptionsVisible: value })
     }
 
     render() {
-        const { items, isNewItem, selectedItem, selectedItemData, selectedItemId, isSuccess, isMergeOptionsVisible } = this.state
-
-        $('body').click((e) => {
-            if (!$(e.target).closest('.rule-header').length) {
-                this.setVisibleOptions(false)
-            }
-        })
+        const { items, isNewItem, selectedItem, selectedItemData, selectedItemId, isSuccess } = this.state
 
         return (
             <div className="RuleEditor-container" id="ruleEditorComponent">
@@ -163,7 +133,6 @@ class RuleEditor extends BaseComponent {
                     selectedItemId={selectedItemId}
                     selectItem={this.selectItem}
                     createNewItem={this.createNewItem}
-                    setVisibleOptions={this.setVisibleOptions}
                     service={this.service} // need to pass service, because it's different for markers and rules editors
                 />
 
@@ -180,28 +149,6 @@ class RuleEditor extends BaseComponent {
                         openSummary={this.openSummary}
                         isSuccess={isSuccess}
                 />
-
-                <div id="import-container"
-                     style={{ display: isMergeOptionsVisible ? 'initial' : 'none' }}>
-                    <div className="import-caret"/>
-                    <div className="import-options">
-                        <div className="option">
-                            <label htmlFor="upload-rule" className="option-desc"
-                                   onClick={() => this.setState({ deleteExtra: true })}>
-                                <b>Restore</b> from backup
-                            </label>
-                        </div>
-
-                        <div className="option">
-                            <label htmlFor="upload-rule" className="option-desc"
-                                   onClick={() => this.setState({ deleteExtra: false })}>
-                                <b>Merge</b> from backup preserving existing rules
-                            </label>
-                        </div>
-
-                        <input type='file' id='upload-rule' name='upload-rule' onChange={this.uploadFile}/>
-                    </div>
-                </div>
             </div>
         );
     }

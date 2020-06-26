@@ -1,20 +1,10 @@
 import React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faDownload, faUndo } from '@fortawesome/free-solid-svg-icons'
 import { isEmptyArray } from '../../utils/util'
 import cx from 'classnames'
 import MarkerPreview from '../MarkerPreview'
+import BurgerMenu from '../BurgerMenu';
 
-const ItemsList = ({ type, items, selectedItemId, selectedItem, selectItem, createNewItem, setVisibleOptions, service }) => {
-    const exportItems = () => {
-        service.backendExportItems(response => {
-            const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(response))
-            const exportElem = document.getElementById('exportAnchor')
-            exportElem.setAttribute('href', dataStr)
-            exportElem.setAttribute('download', `${response.kind}.json`)
-            exportElem.click()
-        })
-    }
+const ItemsList = ({ type, items, selectedItemId, selectedItem, selectItem, createNewItem, service }) => {
 
     const ruleIndicatorClass = (x) => {
         let indicatorClass
@@ -36,14 +26,8 @@ const ItemsList = ({ type, items, selectedItemId, selectedItem, selectItem, crea
                         <div className="plus">+</div>
                         <span className="button-text">New {type}</span>
                     </button>
-                    <button className="button square light export" onClick={exportItems}>
-                        <FontAwesomeIcon icon={faDownload}/>
-                    </button>
-                    <a id='exportAnchor' style={{ display: 'none' }}/>
-                    <button className="button square light"
-                            onClick={() => setVisibleOptions(true)}>
-                        <FontAwesomeIcon icon={faUndo}/>
-                    </button>
+
+                    <BurgerMenu type={type} service={service}/>
                 </div>
             </div>
 
@@ -51,15 +35,21 @@ const ItemsList = ({ type, items, selectedItemId, selectedItem, selectItem, crea
                 {!isEmptyArray(items) && items.map(item => (
                     <button key={item.name}
                             className={cx('rule-item-button', { 'selected': item.name === selectedItemId })}
-                            onClick={() => selectItem(item)}>
-                        {type === 'marker' && <div className="shape-wrapper">
-                            <MarkerPreview shape={item.shape} color={item.color}/>
-                        </div>}
-                        {item.name}
-                        <div className="indicators">
-                            {type === 'rule' && !item.is_current && <div className="busy-rule-indicator" />}
-                            {type === 'rule' && <div className={cx('indicator', ruleIndicatorClass(item))} />}
+                            onClick={() => selectItem(item)}
+                    >
+                        <div className="item">
+                            {type === 'marker' && <div className="shape-wrapper">
+                                <MarkerPreview shape={item.shape} color={item.color} />
+                            </div>}
+
+                            <div className="indicators">
+                                {type === 'rule' && <div className={cx('indicator', ruleIndicatorClass(item))} />}
+                                {type === 'rule' && !item.is_current && <div className="busy-rule-indicator" />}
+                            </div>
+
+                            {item.name}
                         </div>
+                        {item.item_count > 0 && `[${item.item_count}]`}
                     </button>
                 ))}
             </div>
