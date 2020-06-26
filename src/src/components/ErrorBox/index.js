@@ -20,7 +20,8 @@ const ErrorBox = ({ error, closeError }) => {
             </div>
 
             {expanded && <div className="full-error-container">
-                <div className="msg">Error occurred: {error.message}</div>
+                {error.status === 500 && <div className="msg retry">Please try refreshing the page</div>}
+                <div className="msg">Error occurred: {error.message ? error.message : error}</div>
                 <div className="msg">{error.stack}</div>
             </div>}
         </div>

@@ -5,7 +5,6 @@ class BackendClient {
     constructor(urlBase, sharedState)
     {
         this._urlBase = urlBase;
-        this._sharedState = sharedState;
         this._remoteTrack = new RemoteTrack(sharedState)
     }
 
@@ -43,17 +42,18 @@ class BackendClient {
             options.data = data;
         }
 
-        this._remoteTrack.start({
-            action: `${options.method.toUpperCase()}::${options.url}`
+        const operation = this._remoteTrack.start({
+            action: `${options.method.toUpperCase()}::${options.url}`,
+            options
         })
 
         return axios(options)
             .then(result => {
-                this._remoteTrack.complete()
+                operation.complete()
                 return result;
             })
             .catch(reason => {
-                this._remoteTrack.fail(reason.response.data)
+                operation.fail({ ...reason.response.data, status: reason.response.status })
                 throw reason;
             });
     }

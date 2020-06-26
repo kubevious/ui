@@ -44,7 +44,7 @@ class MockMarkerService {
     }
 
     _notifyMarkers() {
-        this._remoteTrack.start({
+        const operation = this._remoteTrack.start({
             action: `notifyMarkers`
         })
 
@@ -58,7 +58,7 @@ class MockMarkerService {
         }
 
         setTimeout(() => {
-            this._remoteTrack.complete()
+            operation.complete()
         }, 1000)
     }
 

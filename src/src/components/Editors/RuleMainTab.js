@@ -16,6 +16,7 @@ const RuleMainTab = ({ selectedItemId, selectedItem, selectedItemData, isSuccess
 
     const [formData, setFormData] = useState({})
     const [formDataId, setFormDataId] = useState(null)
+    const [visibleEditor, setVisibleEditor] = useState('target')
 
     useEffect(() => {
         if (selectedItemId !== formDataId) {
@@ -59,7 +60,7 @@ const RuleMainTab = ({ selectedItemId, selectedItem, selectedItemData, isSuccess
             return {
                 list: list.length ? list : snippets,
                 from: Codemirror.Pos(line, start),
-                to: Codemirror.Pos(line, end)
+                to: Codemirror.Pos(line, end),
             }
         }, { completeSingle: false })
     }
@@ -82,6 +83,12 @@ const RuleMainTab = ({ selectedItemId, selectedItem, selectedItemData, isSuccess
 
     const { name, enabled, target, script } = formData
 
+    const countErrors = (type) => selectedItemData.logs.reduce((acc, item) => {
+        if (item.msg.source.includes(type)) {
+            return acc += 1
+        }
+    }, 0)
+
     return (
         <>
             <div className="field">
@@ -97,61 +104,81 @@ const RuleMainTab = ({ selectedItemId, selectedItem, selectedItemData, isSuccess
                 />
             </div>
 
-            <div className="field">
-                <div className="label-wrapper">
-                    <label>Target</label>
-                </div>
-                <CodeMirrorEditor
-                    value={target}
-                    name="target"
-                    options={{
-                        mode: 'javascript',
-                        theme: 'darcula',
-                        lineNumbers: true,
-                        extraKeys: {
-                            'Ctrl-Space': 'autocomplete'
-                        }
-                    }}
-                    className={cx({ 'required-field': setErrorEditor('target') })}
-                    onKeyUp={(editor, data, value) => handleTargetKeyUp({ editor, data, value })}
-                    onBeforeChange={(editor, data, value) => handleChangeTarget({ editor, data, value })}
-                />
-            </div>
+            <div className="editor-container">
+                <div className="tabs">
+                    <div
+                        className={cx('tab', { 'selected': visibleEditor === 'target', 'error': countErrors('target') > 0 })}
+                        onClick={() => setVisibleEditor('target')}
+                    >
+                        Target
+                        {countErrors('target') > 0 && <div className="error-count">
+                            {countErrors('target')}
+                        </div>}
+                    </div>
 
-            <div className="field">
-                <div className="label-wrapper">
-                    <label>Script</label>
+                    <div
+                        className={cx('tab', { 'selected': visibleEditor === 'script', 'error': countErrors('target') > 0 })}
+                        onClick={() => setVisibleEditor('script')}
+                    >
+                        Rule script
+                        {countErrors('script') > 0 && <div className="error-count">
+                            {countErrors('script')}
+                        </div>}
+                    </div>
                 </div>
-                <CodeMirrorEditor
-                    value={script}
-                    options={{
-                        mode: 'javascript',
-                        theme: 'darcula',
-                        smartIndent: true,
-                        extraKeys: {
-                            'Ctrl-Space': 'autocomplete'
-                        }
-                    }}
-                    className={cx({ 'required-field': setErrorEditor('script') })}
-                    onKeyUp={(editor, data, value) => handleScriptKeyUp({ editor, data, value })}
-                    onBeforeChange={(editor, data, value) => handleChangeScript({ editor, data, value })}
-                />
+
+                <div className={cx('editor', { 'required-field': setErrorEditor('target') })}>
+                    {visibleEditor === 'target' &&
+                        <CodeMirrorEditor
+                            value={target}
+                            name="target"
+                            options={{
+                                mode: 'javascript',
+                                theme: 'darcula',
+                                lineNumbers: true,
+                                extraKeys: {
+                                    'Ctrl-Space': 'autocomplete',
+                                },
+                            }}
+                            // className={cx({ 'required-field': setErrorEditor('target') })}
+                            onKeyUp={(editor, data, value) => handleTargetKeyUp({ editor, data, value })}
+                            onBeforeChange={(editor, data, value) => handleChangeTarget({ editor, data, value })}
+                        />}
+
+                    {visibleEditor === 'script' &&
+                        <CodeMirrorEditor
+                            value={script}
+                            options={{
+                                mode: 'javascript',
+                                theme: 'darcula',
+                                smartIndent: true,
+                                extraKeys: {
+                                    'Ctrl-Space': 'autocomplete',
+                                },
+                            }}
+                            className={cx({ 'required-field': setErrorEditor('script') })}
+                            onKeyUp={(editor, data, value) => handleScriptKeyUp({ editor, data, value })}
+                            onBeforeChange={(editor, data, value) => handleChangeScript({ editor, data, value })}
+                        />}
+                </div>
             </div>
 
             <div className="editor-errors">
                 {selectedItemData && !isEmptyArray(selectedItemData.logs) && selectedItemData.logs.map((err, index) => (
-                    <div className="err-box" key={index}>
-                        <div className="alert-item error"/>
-                        {err.msg.msg}
-                    </div>
+                    <>
+                        {err.msg.source.includes(visibleEditor) && <div className="err-box" key={index}>
+                            <div className="alert-item error" />
+                            {err.msg.msg}
+                        </div>}
+                    </>
                 ))}
             </div>
 
             <label className="checkbox-container">
-                Enable/Disable
+                {enabled ? 'Enable' : 'Disable'}
                 <input type="checkbox" className="enable-checkbox" checked={enabled || false}
-                       onChange={(event) => changeEnable(event)}/>
-                <span className="checkmark"/>
+                       onChange={(event) => changeEnable(event)} />
+                <span className="checkmark" />
             </label>
 
             <div className="btn-group">
@@ -164,7 +191,7 @@ const RuleMainTab = ({ selectedItemId, selectedItem, selectedItemData, isSuccess
                 </>}
 
                 {!selectedItem.name && <button className="button success" onClick={() => createItem(formData)}
-                                             disabled={validation}>Create</button>}
+                                               disabled={validation}>Create</button>}
 
             </div>
         </>

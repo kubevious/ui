@@ -9,7 +9,6 @@ import MarkerMainTab from './MarkerMainTab'
 const Editor = ({ type, items, isNewItem, selectedItem, selectedItemData, selectedItemId, createNewItem, saveItem, deleteItem, createItem, openSummary, isSuccess }) => {
     const [selectedTab, setSelectedTab] = useState('main')
 
-
     var itemCount = 0;
     if (selectedItemData.items) {
         itemCount = selectedItemData.items.length;
@@ -72,7 +71,7 @@ const Editor = ({ type, items, isNewItem, selectedItem, selectedItemData, select
                             className={cx('tab object-tab', { 'selected': selectedTab === 'object' })}
                             onClick={() => setSelectedTab('object')}
                         >
-                            Affected objects <div className="object-error-count">{itemCount}</div>
+                            Affected objects [{itemCount}]
                         </div>
                     </>}
 

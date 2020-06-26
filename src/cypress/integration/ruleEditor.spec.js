@@ -14,6 +14,8 @@ describe('Test rule editor', () => {
 
         cy.get('.react-codemirror2').first().type('Rule target')
 
+        cy.contains('Rule script').click()
+
         cy.get('.react-codemirror2').last().type('Rule script')
 
         cy.get('button').contains('Create').click()
@@ -35,7 +37,7 @@ describe('Test rule editor', () => {
 
         cy.wait(1000)
 
-        cy.get('#ruleEditorComponent .rule-item-button').last().should(($r) => {
+        cy.get('#ruleEditorComponent .rule-item-button').first().should(($r) => {
             expect($r).to.contain('Edited super rule')
         })
     })

@@ -93,7 +93,7 @@ class MockRuleService {
 
     _notifyRules()
     {
-        this._remoteTrack.start({
+        const operation = this._remoteTrack.start({
             action: `notifyRules`
         })
 
@@ -107,7 +107,7 @@ class MockRuleService {
         }
 
         setTimeout(() => {
-            this._remoteTrack.complete()
+            operation.complete()
         }, 1000)
     }
 

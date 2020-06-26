@@ -1,0 +1,54 @@
+.BurgerMenu-container {
+  .button-wrapper {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #4E515B;
+    border-radius: 3px;
+    color: #4E515B;
+
+    &.hovered {
+      cursor: pointer;
+      background: #767B8B;
+      color: black;
+    }
+  }
+
+  .menu {
+    position: absolute;
+    right: 0;
+    background: #767B8B;
+    border: 1px solid #4E515B;
+    border-radius: 3px;
+    padding: 0 15px;
+
+    .menu-item {
+      display: flex;
+      border-bottom: 1px solid #4E515B;
+      padding: 10px 0;
+      color: white;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      label {
+        display: flex;
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
+      &:hover {
+        cursor: pointer;
+      }
+
+      .icon {
+        margin-right: 10px;
+      }
+    }
+  }
+}
