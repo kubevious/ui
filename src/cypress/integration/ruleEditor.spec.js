@@ -22,26 +22,25 @@ describe('Test rule editor', () => {
 
         cy.wait(1000)
 
-        cy.get('.rule-item-button.selected').should(($r) => {
+        cy.get('#ruleEditorComponent .rules').should(($r) => {
             expect($r.last()).to.contain('New super rule')
         })
     })
 
-    // TODO: temporarily commented
-    // it('update rule', () => {
-    //     cy.get('.rule-item-button').first().click()
-    //     cy.wait(1000)
+    it('update rule', () => {
+        cy.get('.rule-item-button').first().click()
+        cy.wait(1000)
 
-    //     cy.get('.field-input.name').clear().type('Edited super rule')
+        cy.get('.field-input.name').clear().type('Edited super rule')
 
-    //     cy.get('button').contains('Save').click()
+        cy.get('button').contains('Save').click()
 
-    //     cy.wait(1000)
+        cy.wait(1000)
 
-    //     cy.get('#ruleEditorComponent .rule-item-button').first().should(($r) => {
-    //         expect($r).to.contain('Edited super rule')
-    //     })
-    // })
+        cy.get('#ruleEditorComponent .rules').should(($r) => {
+            expect($r).to.contain('Edited super rule')
+        })
+    })
 
     it('delete rule', () => {
         cy.get('.rule-item-button').first().click()
@@ -50,7 +49,7 @@ describe('Test rule editor', () => {
 
         cy.wait(1000)
 
-        cy.get('.rule-item-button').first().should(($r) => {
+        cy.get('#ruleEditorComponent .rules').should(($r) => {
             expect($r.last()).not.to.contain('Edited super rule')
         })
     })
