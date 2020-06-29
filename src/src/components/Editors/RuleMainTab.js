@@ -164,7 +164,7 @@ const RuleMainTab = ({ selectedItemId, selectedItem, selectedItemData, isSuccess
             <div className="editor-errors">
                 {selectedItemData && !isEmptyArray(selectedItemData.logs) && selectedItemData.logs.map((err, index) => (
                     <>
-                        {err.msg.source.includes(visibleEditor) && <div className="err-box" key={index}>
+                        {<div className="err-box" key={index}>
                             <div className="alert-item error" />
                             {err.msg.msg}
                         </div>}
