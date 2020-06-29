@@ -107,7 +107,7 @@ const RuleMainTab = ({ selectedItemId, selectedItem, selectedItemData, isSuccess
             <div className="editor-container">
                 <div className="tabs">
                     <div
-                        className={cx('tab', { 'selected': visibleEditor === 'target', 'error': countErrors('target') > 0 })}
+                        className={cx('tab', { 'selected': visibleEditor === 'target' })}
                         onClick={() => setVisibleEditor('target')}
                     >
                         Target
@@ -117,7 +117,7 @@ const RuleMainTab = ({ selectedItemId, selectedItem, selectedItemData, isSuccess
                     </div>
 
                     <div
-                        className={cx('tab', { 'selected': visibleEditor === 'script', 'error': countErrors('target') > 0 })}
+                        className={cx('tab', { 'selected': visibleEditor === 'script' })}
                         onClick={() => setVisibleEditor('script')}
                     >
                         Rule script
@@ -127,7 +127,7 @@ const RuleMainTab = ({ selectedItemId, selectedItem, selectedItemData, isSuccess
                     </div>
                 </div>
 
-                <div className={cx('editor', { 'required-field': setErrorEditor('target') })}>
+                <div className="editor">
                     {visibleEditor === 'target' &&
                         <CodeMirrorEditor
                             value={target}
@@ -140,7 +140,6 @@ const RuleMainTab = ({ selectedItemId, selectedItem, selectedItemData, isSuccess
                                     'Ctrl-Space': 'autocomplete',
                                 },
                             }}
-                            // className={cx({ 'required-field': setErrorEditor('target') })}
                             onKeyUp={(editor, data, value) => handleTargetKeyUp({ editor, data, value })}
                             onBeforeChange={(editor, data, value) => handleChangeTarget({ editor, data, value })}
                         />}
@@ -151,12 +150,11 @@ const RuleMainTab = ({ selectedItemId, selectedItem, selectedItemData, isSuccess
                             options={{
                                 mode: 'javascript',
                                 theme: 'darcula',
-                                smartIndent: true,
+                                lineNumbers: true,
                                 extraKeys: {
                                     'Ctrl-Space': 'autocomplete',
                                 },
                             }}
-                            className={cx({ 'required-field': setErrorEditor('script') })}
                             onKeyUp={(editor, data, value) => handleScriptKeyUp({ editor, data, value })}
                             onBeforeChange={(editor, data, value) => handleChangeScript({ editor, data, value })}
                         />}

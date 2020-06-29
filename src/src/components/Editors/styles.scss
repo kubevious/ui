@@ -207,10 +207,6 @@
   }
 }
 
-.required-field {
-  border: 1px solid red;
-}
-
 .btn-group {
   display: flex;
   align-items: center;
@@ -459,12 +455,6 @@ input[type="file"] {
         border-bottom: none;
         color: white;
         z-index: 1;
-      }
-
-      &.selected.error {
-        border: 1px solid #E24C4B;
-        border-bottom: none;
-        margin-bottom: -2px;
       }
 
       &:hover {
