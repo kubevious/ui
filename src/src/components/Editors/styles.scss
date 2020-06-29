@@ -182,8 +182,8 @@
 }
 
 .CodeMirror {
-  height: 40vh;
-  max-height: 45vh;
+  min-height: 200px;
+  max-height: 300px;
 }
 
 .CodeMirror.cm-s-darcula {
