@@ -22,13 +22,12 @@
     background: #767B8B;
     border: 1px solid #4E515B;
     border-radius: 3px;
-    padding: 0 15px;
 
     .menu-item {
       display: flex;
       border-bottom: 1px solid #4E515B;
-      padding: 10px 0;
       color: white;
+      padding: 10px 15px;
 
       &:last-child {
         border-bottom: none;
@@ -36,6 +35,7 @@
 
       label {
         display: flex;
+        margin: 0;
 
         &:hover {
           cursor: pointer;
@@ -44,6 +44,7 @@
 
       &:hover {
         cursor: pointer;
+        background: #676C7D;
       }
 
       .icon {

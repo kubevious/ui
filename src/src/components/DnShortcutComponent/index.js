@@ -36,14 +36,16 @@ class DnShortcutComponent extends BaseComponent {
 
         return (
             <div className="dn-shortcut" dn={dn} onClick={this.clickDn}>
-                <DnComponent dn={dn} options={options}/>
+                <DnComponent dn={dn} options={options} />
 
                 <div className="dn-alert">
                     {!isEmptyArray(markers) && markerItems.map(({ shape, color }) => (
-                        <MarkerPreview key={shape} shape={shape} color={color}/>
+                        <div className="marker">
+                            <MarkerPreview key={shape} shape={shape} color={color} />
+                        </div>
                     ))}
-                    {error > 0 && <div className="alert-item error"/>}
-                    {warning > 0 && <div className="alert-item warn"/>}
+                    {error && <div className="indicator error-object">{error}</div>}
+                    {warning && <div className="indicator warning-object">{warning}</div>}
                 </div>
             </div>
         );

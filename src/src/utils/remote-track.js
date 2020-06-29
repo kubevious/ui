@@ -24,25 +24,20 @@ class RemoteTrack {
             request: request.id,
 
             complete: () => {
-                this._requests[request.id].complete = true
-                this.detectLoading()
+                this.detectLoading(request.id)
             },
 
             fail: (error) => {
                 this._sharedState.set('is_error', true)
                 this._sharedState.set('error', error)
 
-                this.detectLoading()
+                this.detectLoading(request.id)
             },
         }
     }
 
-    detectLoading() {
-        for (let key in this._requests) {
-            if (this._requests[key].complete !== false) {
-                delete this._requests[key]
-            }
-        }
+    detectLoading(id) {
+        delete this._requests[id];
 
         if (isEmptyObject(this._requests)) {
             this._sharedState.set('is_loading', false)

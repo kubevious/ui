@@ -17,20 +17,6 @@
   position: relative;
   height: 100%;
   overflow-y: auto;
-
-  &::-webkit-scrollbar-thumb {
-    background-color: #333;
-  }
-
-  &::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    background-color: #666;
-  }
-
-  &::-webkit-scrollbar {
-    width: 6px;
-    background-color: #F5F5F5;
-  }
 }
 
 #rule-editor {
@@ -158,20 +144,6 @@
   overflow-y: auto;
   height: 100%;
   padding: 20px 50px 10px;
-
-  &::-webkit-scrollbar-thumb {
-    background-color: #333;
-  }
-
-  &::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    background-color: #666;
-  }
-
-  &::-webkit-scrollbar {
-    width: 6px;
-    background-color: #F5F5F5;
-  }
 }
 
 .rule-container.main {
@@ -210,8 +182,8 @@
 }
 
 .CodeMirror {
-  height: 40vh;
-  max-height: 45vh;
+  min-height: 200px;
+  max-height: 300px;
 }
 
 .CodeMirror.cm-s-darcula {
@@ -233,10 +205,6 @@
     width: 6px;
     background-color: #F5F5F5;
   }
-}
-
-.required-field {
-  border: 1px solid red;
 }
 
 .btn-group {
@@ -487,12 +455,6 @@ input[type="file"] {
         border-bottom: none;
         color: white;
         z-index: 1;
-      }
-
-      &.selected.error {
-        border: 1px solid #E24C4B;
-        border-bottom: none;
-        margin-bottom: -2px;
       }
 
       &:hover {

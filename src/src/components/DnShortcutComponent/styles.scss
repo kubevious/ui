@@ -9,15 +9,30 @@
 
     .dn-alert {
         display: flex;
+        align-items: center;
 
-        .alert-item {
+        .marker {
+            margin-right: 10px;
+        }
+
+        .indicator {
             width: 20px;
             height: 20px;
-            margin-left: 10px;
+            border-radius: 50%;
+            margin-right: 10px;
+            color: white;
+
+            &.error-object {
+                background: red;
+            }
+
+            &.warning-object {
+                background: rgb(245, 129, 66);
+            }
         }
     }
-}
 
-.dn-shortcut:hover {
-    background: #35373E;
+    &:hover {
+        background: #35373E;
+    }
 }
