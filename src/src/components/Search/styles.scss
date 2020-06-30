@@ -7,6 +7,7 @@
     border-radius: 0;
     color: #FFF;
     padding: 15px;
+    width: calc(100vw - 160px - 80px);
 
     &:focus {
       border: 1px solid yellow;
@@ -19,6 +20,7 @@
 
 .search-results {
   margin-top: 20px;
+  width: calc(100vw - 160px - 80px);
 }
 
 .search-results .dn-logo {

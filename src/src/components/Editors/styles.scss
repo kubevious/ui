@@ -16,23 +16,17 @@
   background: #35373E;
   position: relative;
   height: 100%;
-  overflow-y: auto;
+  overflow-y: hidden;
+
+  &:hover {
+    overflow-y: auto;
+  }
 }
 
 #rule-editor {
-  //width: 100%;
   min-width: calc(100% - 250px);
   max-width: calc(100% - 255px);
   position: relative;
-}
-
-.rule-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 10px;
-  border-bottom: 1px solid #4E515B;
-  color: black;
 }
 
 .remove-btn {
@@ -74,6 +68,8 @@
 .rules {
   display: flex;
   flex-direction: column;
+  width: 250px;
+  padding: 85px 5px 0;
 
   .rule-item-button {
     display: flex;
@@ -141,9 +137,13 @@
 }
 
 .rule-container {
-  overflow-y: auto;
+  overflow-y: hidden;
   height: 100%;
   padding: 20px 50px 10px;
+
+  &:hover {
+    overflow-y: auto;
+  }
 }
 
 .rule-container.main {
@@ -213,6 +213,17 @@
 }
 
 .rule-header {
+  position: fixed;
+  height: 80px;
+  background: #35373f;
+  width: 250px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+  border-bottom: 1px solid #4E515B;
+  color: black;
+
   .btn-group {
     width: 100%;
     justify-content: space-around;
