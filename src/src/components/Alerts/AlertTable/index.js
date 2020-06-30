@@ -1,6 +1,5 @@
 import React from 'react'
 import { isEmptyArray } from '../../../utils/util'
-import { formatDate } from '../../../utils/ui-utils'
 
 const AlertTable = ({ alerts }) => {
     return (
@@ -8,7 +7,6 @@ const AlertTable = ({ alerts }) => {
             <thead>
                 <tr>
                     <th/>
-                    <th>Date</th>
                     <th>Message</th>
                 </tr>
             </thead>
@@ -18,7 +16,6 @@ const AlertTable = ({ alerts }) => {
                         <td>
                             <div className={"alert-item " + alert.severity} />
                         </td>
-                        <td>{formatDate(alert.date)}</td>
                         <td>{alert.msg}</td>
                     </tr>
                 ))}

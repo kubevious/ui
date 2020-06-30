@@ -4,21 +4,18 @@ import RemoteTrack from '../utils/remote-track';
 
 var MOCK_RULES = [
     {
-        id: 1,
         enabled: true,
         name: 'rule 1',
         target: 'target-1',
         script: 'script-1'
     },
     {
-        id: 2,
         enabled: false,
         name: 'rule 2',
         target: 'target-2',
         script: 'if (item.hasChild("Ingress")) \n { \n \t if (item.config.spec.type == \'ClusterIP\') \n \t{ \n \t\tfail(\'Use ClusterIP for Ingress exposed services\'); \n \t } \n }'
     },
     {
-        id: 3,
         enabled: true,
         name: 'rule 3',
         target: 'target-3',
@@ -30,7 +27,7 @@ for(var x of _.values(MOCK_RULES))
 {
     x.items = [];
     x.logs = [];
-    x.is_current = (x.id % 2 == 0);
+    x.is_current = (Math.random() * 10 % 2 === 0);
 }
 
 class MockRuleService {
@@ -58,7 +55,7 @@ class MockRuleService {
                     if (hasError)
                     {
                         rule.logs = [];
-                        for (var i = 0; i < rule.id % 3; i++) {
+                        for (var i = 0; i < Math.random() * 10 % 3; i++) {
                             rule.logs.push({
                                 kind: 'error',
                                 msg: {
@@ -73,8 +70,9 @@ class MockRuleService {
                         var dnList = this._parent.diagramService().getRandomDnList();
                         rule.items = dnList.map(x => ({
                             dn: x,
-                            has_error: (Math.random() * 10 > 4),
-                            has_warning: (Math.random() * 10 > 2),
+                            id: Math.floor(Math.random() * 10),
+                            errors: Math.floor(Math.random() * 10),
+                            warnings: Math.floor(Math.random() * 10),
                             markers: [_.sample(_.values(MOCK_MARKERS).map(x => x.name))]
                         }));
                     }
@@ -101,9 +99,10 @@ class MockRuleService {
             this.sharedState.set('rule_editor_items', result);
         })
 
-        var id = this.sharedState.get('rule_editor_selected_rule_id');
-        if (id) {
-            this._notifyRuleStatus(id);
+        console.log('rule_editor_selected_rule_id', this.sharedState.get('rule_editor_selected_rule_id'))
+        var name = this.sharedState.get('rule_editor_selected_rule_id');
+        if (name) {
+            this._notifyRuleStatus(name);
         }
 
         setTimeout(() => {
@@ -111,16 +110,15 @@ class MockRuleService {
         }, 1000)
     }
 
-    _notifyRuleStatus(id)
+    _notifyRuleStatus(name)
     {
-        var rule = MOCK_RULES[id];
+        var rule = MOCK_RULES[name];
         var data = null;
         if (rule) {
             data = {
-                id: id,
+                name: rule.name,
                 is_current: rule.is_current,
                 error_count: rule.logs.length,
-                item_count: rule.items.length
             }
             data.items = rule.items; 
             data.logs = rule.logs;
@@ -134,7 +132,6 @@ class MockRuleService {
             return null;
         }
         return {
-            id: x.id,
             name: x.name,
             enabled: x.enabled,
             item_count: x.items.length,
@@ -165,7 +162,6 @@ class MockRuleService {
 
     backendFetchRule(name, cb) {
         var item = MOCK_RULES[name];
-        console.log('MOCK_RULES', MOCK_RULES, name)
         item = this._makeRuleItem(item);
         setTimeout(() => {
             cb(item);
@@ -195,30 +191,27 @@ class MockRuleService {
         this._notifyRules();
     }
 
-    backendDeleteRule(id, cb) {
-        delete MOCK_RULES[id];
+    backendDeleteRule(name, cb) {
+        delete MOCK_RULES[name];
         cb();
         this._notifyRules();
     }
 
     backendExportItems(cb) {
-        var data = _.cloneDeep(_.values(MOCK_RULES));
-        for (var x of data) {
-            delete x.id;
+        var data = {
+            kind: 'rules',
+            items: _.cloneDeep(_.values(MOCK_RULES))
         }
         cb(data);
     }
 
     backendImportRules(rules, cb) {
-        let max = _.max(_.values(MOCK_RULES).map(x => x.id))
         MOCK_RULES = {};
-        for(var x of rules.data)
+        for(var x of rules.data.items)
         {
-            x.id = max + 1;
-            max = x.id
             x.items = []
             x.logs = []
-            MOCK_RULES[x.id] = x;
+            MOCK_RULES[x.name] = x;
         }
         cb();
         this._notifyRules();
