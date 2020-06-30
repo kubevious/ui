@@ -5,7 +5,7 @@ const AffectedObjects = ({ selectedItemData }) => {
     return (
         <>
             {selectedItemData.items.map((item, index) => (
-                <DnShortcutComponent key={index} dn={item.dn} markers={item.markers} error={item.has_error} warning={item.has_warning}/>
+                <DnShortcutComponent key={index} dn={item.dn} markers={item.markers} errors={item.errors} warnings={item.warnings}/>
             ))}
         </>
     )

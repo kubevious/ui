@@ -21,7 +21,7 @@ class DnShortcutComponent extends BaseComponent {
     }
 
     render() {
-        const { dn, options, error, warning, markers } = this.props
+        const { dn, options, errors, warnings, markers } = this.props
 
         var markerDict = this.sharedState.get('markers_dict');
         if (!markerDict) {
@@ -44,8 +44,8 @@ class DnShortcutComponent extends BaseComponent {
                             <MarkerPreview key={shape} shape={shape} color={color} />
                         </div>
                     ))}
-                    {error && <div className="indicator error-object">{error}</div>}
-                    {warning && <div className="indicator warning-object">{warning}</div>}
+                    {errors > 0 && <div className="indicator error-object">{errors > 1 && errors}</div>}
+                    {warnings > 0 && <div className="indicator warning-object">{warnings > 1 && warnings}</div>}
                 </div>
             </div>
         );
