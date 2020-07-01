@@ -6,8 +6,8 @@ cd $MY_DIR
 # docker build -f Dockerfile.dev -t kubevious-saas-frontend:dev .
 
 # docker build -t kubevious-ui-react:prod .
-
+# 
 docker build --no-cache \
-    -m 2000m \
+    -m 4000m \
     -t kubevious-ui-react:dev \
     .

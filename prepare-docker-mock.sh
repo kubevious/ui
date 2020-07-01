@@ -8,7 +8,7 @@ cd $MY_DIR
 # docker build -t kubevious-ui-react:prod .
 
 docker build --no-cache \
-    -m 2000m \
+    -m 4000m \
     -t kubevious-ui-react:mock \
     -f Dockerfile.mock \
     .
