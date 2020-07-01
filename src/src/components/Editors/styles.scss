@@ -182,7 +182,7 @@
 }
 
 .CodeMirror {
-  min-height: 450px;
+  height: 100%;
 }
 
 .CodeMirror.cm-s-darcula {
@@ -428,9 +428,17 @@ input[type="file"] {
 }
 
 .editor-container {
+  height: calc(100% - 210px);
+  min-height: 150px;
+
   .editor {
-    max-height: 45vh;
+    height: calc(100% - 50px);
+    min-height: 100px;
     margin-bottom: 15px;
+
+    .react-codemirror2 {
+      height: 100%;
+    }
   }
 
   .tabs {
