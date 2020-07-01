@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import './styles.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faDownload, faUndo } from '@fortawesome/free-solid-svg-icons';
+import {
+    faBars,
+    faFileDownload,
+    faFileExport,
+    faFileImport,
+} from '@fortawesome/free-solid-svg-icons';
 import cx from 'classnames'
 
 const BurgerMenu = ({ type, service }) => {
@@ -32,8 +37,7 @@ const BurgerMenu = ({ type, service }) => {
                 data: JSON.parse(reader.result),
                 deleteExtra,
             };
-            service.backendImportRules(importData, () => {
-            })
+            service.backendImportItems(importData, () => {})
         };
 
         reader.readAsText(input.files[0]);
@@ -48,17 +52,17 @@ const BurgerMenu = ({ type, service }) => {
 
             {isMenuVisible && <div className="menu">
                 <input type='file' id='upload-rule' name='upload-rule' onChange={() => uploadFile()} />
-                <a id='exportAnchor' style={{ display: 'none' }}/>
+                <a id='exportAnchor' style={{ display: 'none' }} />
                 <div className="menu-item" onClick={() => exportItems()}>
                     <div className="icon">
-                        <FontAwesomeIcon icon={faUndo} />
+                        <FontAwesomeIcon icon={faFileExport} />
                     </div>
                     Export {type}s
                 </div>
                 <div className="menu-item">
                     <label htmlFor="upload-rule" onClick={() => setDeleteExtra(true)}>
                         <div className="icon">
-                            <FontAwesomeIcon icon={faDownload} />
+                            <FontAwesomeIcon icon={faFileImport} />
                         </div>
                         Import {type}s
                     </label>
@@ -66,7 +70,7 @@ const BurgerMenu = ({ type, service }) => {
                 <div className="menu-item">
                     <label htmlFor="upload-rule" onClick={() => setDeleteExtra(false)}>
                         <div className="icon">
-                            <FontAwesomeIcon icon={faDownload} />
+                            <FontAwesomeIcon icon={faFileDownload} />
                         </div>
                         Replace {type}s
                     </label>

@@ -151,20 +151,25 @@ class MockMarkerService {
             shape: x.shape,
             color: x.color
         }));
-        cb(data);
+
+        const response = {
+            kind: 'markers',
+            items: data
+        }
+        cb(response);
     }
 
-    backendImportMarkers(markers, cb) {
-        if (markers.deleteExtra)
-        {
+    backendImportItems(markers, cb) {
+        if (markers.deleteExtra) {
             MOCK_MARKERS = {};
         }
-        for (var marker of markers.data) {
+
+        for (var marker of markers.data.items) {
             var newMarker = this._findByName(marker.name);
             if (!newMarker) {
                 var id = this._newID();
                 newMarker = {
-                    id: id
+                    id: id,
                 }
                 MOCK_MARKERS[id] = newMarker;
             }

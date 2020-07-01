@@ -4,6 +4,7 @@ import cx from 'classnames'
 import { isEmptyArray } from '../../utils/util'
 import Codemirror from 'codemirror'
 import { snippets } from '../../boot/targetSnippets'
+import $ from 'jquery'
 
 import 'codemirror/addon/hint/javascript-hint'
 import 'codemirror/addon/hint/show-hint'
@@ -24,6 +25,10 @@ const RuleMainTab = ({ selectedItemId, selectedItem, selectedItemData, isSuccess
             setFormData({ ...selectedItem })
         }
     }, [selectedItemId, selectedItem])
+
+    useEffect(() => {
+        $('.editor-container').css('height', `calc(100% - 210px - ${selectedItemData.logs.length * 40}px)`)
+    }, [selectedItemData])
 
     const validation = useMemo(() => formData.name === '', [formData])
 

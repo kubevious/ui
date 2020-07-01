@@ -40,7 +40,7 @@ class MockMarkerService {
             });
     }
 
-    backendImportMarkers(markers, cb) {
+    backendImportItems(markers, cb) {
         return this._client.post('/markers/import', markers)
             .then(result => {
                 cb(result.data);

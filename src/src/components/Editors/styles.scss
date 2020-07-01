@@ -17,6 +17,7 @@
   position: relative;
   height: 100%;
   overflow-y: hidden;
+  overflow-x: hidden;
 
   &:hover {
     overflow-y: auto;
@@ -69,7 +70,7 @@
   display: flex;
   flex-direction: column;
   width: 250px;
-  padding: 85px 5px 0;
+  padding: 85px 0 0;
 
   .rule-item-button {
     display: flex;
@@ -182,7 +183,7 @@
 }
 
 .CodeMirror {
-  min-height: 450px;
+  height: 100%;
 }
 
 .CodeMirror.cm-s-darcula {
@@ -428,9 +429,17 @@ input[type="file"] {
 }
 
 .editor-container {
+  height: calc(100% - 210px);
+  min-height: 150px;
+
   .editor {
-    max-height: 45vh;
+    height: calc(100% - 50px);
+    min-height: 100px;
     margin-bottom: 15px;
+
+    .react-codemirror2 {
+      height: 100%;
+    }
   }
 
   .tabs {
