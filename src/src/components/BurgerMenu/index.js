@@ -37,7 +37,7 @@ const BurgerMenu = ({ type, service }) => {
                 data: JSON.parse(reader.result),
                 deleteExtra,
             };
-            service.backendImportRules(importData, () => {})
+            service.backendImportItems(importData, () => {})
         };
 
         reader.readAsText(input.files[0]);

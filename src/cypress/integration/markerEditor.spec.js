@@ -22,7 +22,7 @@ describe('Test marker editor', () => {
     })
 
     it('update marker', () => {
-        cy.get('#markerEditorComponent .markers .rule-item-button').first().click()
+        cy.get('#markerEditorComponent .markers .rule-item-button').last().click()
         cy.wait(1000)
 
         cy.get('.field-input.name').clear().type('Edited super marker')
@@ -36,7 +36,7 @@ describe('Test marker editor', () => {
     })
 
     it('delete marker', () => {
-        cy.get('#markerEditorComponent .rule-item-button').first().click()
+        cy.get('#markerEditorComponent .markers .rule-item-button').last().click()
 
         cy.get('button').contains('Delete').click()
 
@@ -44,6 +44,54 @@ describe('Test marker editor', () => {
 
         cy.get('#markerEditorComponent .rule-item-button').first().should(($r) => {
             expect($r.last()).not.to.contain('Edited super marker')
+        })
+    })
+
+    it('export markers', () => {
+        cy.get('#markerEditorComponent .BurgerMenu-container').trigger('mouseover')
+        cy.get('#markerEditorComponent .BurgerMenu-container .menu').should('be.visible')
+
+        cy.contains('Export markers').click()
+
+        cy.get('#exportAnchor').should('have.attr', 'download', 'markers.json')
+    })
+
+    it('replace markers', () => {
+        cy.fixture('markers.json').then(fileContent => {
+            cy.get('#markerEditorComponent .BurgerMenu-container').trigger('mouseover')
+
+            cy.contains('Replace markers').click()
+
+            const initLength = Cypress.$('.markers .rule-item-button').length
+            const contentLength = fileContent.items.length
+
+            cy.get('#upload-rule').attachFile({
+                fileContent: fileContent,
+                fileName: 'markers.json',
+            })
+
+            cy.wait(1000)
+
+            cy.get('#markerEditorComponent .rule-item-button').should('have.length', initLength + contentLength)
+        })
+    })
+
+    it('import markers', () => {
+        cy.fixture('markers.json').then(fileContent => {
+            cy.get('#markerEditorComponent .BurgerMenu-container').trigger('mouseover')
+
+            cy.contains('Import markers').click()
+
+            const contentLength = fileContent.items.length
+
+            cy.get('#upload-rule').attachFile({
+                fileContent: fileContent,
+                fileName: 'markers.json',
+            })
+
+            cy.wait(1000)
+
+            cy.get('#markerEditorComponent .rule-item-button').should('have.length', contentLength)
         })
     })
 });

@@ -53,4 +53,52 @@ describe('Test rule editor', () => {
             expect($r.last()).not.to.contain('Edited super rule')
         })
     })
+
+    it('export rules', () => {
+        cy.get('#ruleEditorComponent .BurgerMenu-container').trigger('mouseover')
+        cy.get('#ruleEditorComponent .BurgerMenu-container .menu').should('be.visible')
+
+        cy.contains('Export rules').click()
+
+        cy.get('#exportAnchor').should('have.attr', 'download', 'rules.json')
+    })
+
+    it('replace rules', () => {
+        cy.fixture('rules.json').then(fileContent => {
+            cy.get('#ruleEditorComponent .BurgerMenu-container').trigger('mouseover')
+
+            cy.contains('Replace rules').click()
+
+            const initLength = Cypress.$('#ruleEditorComponent .rule-item-button').length
+            const contentLength = fileContent.items.length
+
+            cy.get('#upload-rule').attachFile({
+                fileContent: fileContent,
+                fileName: 'rules.json',
+            })
+
+            cy.wait(1000)
+
+            cy.get('#ruleEditorComponent .rule-item-button').should('have.length', initLength + contentLength)
+        })
+    })
+
+    it('import rules', () => {
+        cy.fixture('rules.json').then(fileContent => {
+            cy.get('#ruleEditorComponent .BurgerMenu-container').trigger('mouseover')
+
+            cy.contains('Import rules').click()
+
+            const contentLength = fileContent.items.length
+
+            cy.get('#upload-rule').attachFile({
+                fileContent: fileContent,
+                fileName: 'rules.json',
+            })
+
+            cy.wait(1000)
+
+            cy.get('#ruleEditorComponent .rule-item-button').should('have.length', contentLength)
+        })
+    })
 });

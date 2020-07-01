@@ -205,14 +205,17 @@ class MockRuleService {
         cb(data);
     }
 
-    backendImportRules(rules, cb) {
-        MOCK_RULES = {};
-        for(var x of rules.data.items)
-        {
+    backendImportItems(rules, cb) {
+        if (rules.deleteExtra) {
+            MOCK_RULES = {};
+        }
+
+        for (var x of rules.data.items) {
             x.items = []
             x.logs = []
             MOCK_RULES[x.name] = x;
         }
+
         cb();
         this._notifyRules();
     }

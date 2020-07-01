@@ -30,7 +30,6 @@ class MarkerEditor extends BaseComponent {
         this.openSummary = this.openSummary.bind(this)
         this.saveItem = this.saveItem.bind(this)
         this.deleteItem = this.deleteItem.bind(this)
-        this.uploadFile = this.uploadFile.bind(this)
         this.createItem = this.createItem.bind(this)
         this.setVisibleOptions = this.setVisibleOptions.bind(this)
         this.selectItem = this.selectItem.bind(this)
@@ -126,27 +125,6 @@ class MarkerEditor extends BaseComponent {
         }))
     }
 
-    uploadFile() {
-        const input = document.getElementById('upload-marker')
-
-        if (input.files.length === 0) {
-            console.error('No file selected.');
-            return;
-        }
-
-        const reader = new FileReader();
-        reader.onload = () => {
-            var importData = {
-                data: JSON.parse(reader.result),
-                deleteExtra: this.state.deleteExtra
-            };
-            this.service.backendImportMarkers(importData, () => {
-            })
-        };
-
-        reader.readAsText(input.files[0]);
-    }
-
     setVisibleOptions(value) {
         this.setState({ isMergeOptionsVisible: value })
     }
@@ -185,28 +163,6 @@ class MarkerEditor extends BaseComponent {
                         openSummary={this.openSummary}
                         isSuccess={isSuccess}
                 />
-
-                <div id="import-container"
-                     style={{ display: isMergeOptionsVisible ? 'initial' : 'none' }}>
-                    <div className="import-caret"/>
-                    <div className="import-options">
-                        <div className="option">
-                            <label htmlFor="upload-marker" className="option-desc"
-                                   onClick={() => this.setState({ deleteExtra: true })}>
-                                <b>Restore</b> from backup
-                            </label>
-                        </div>
-
-                        <div className="option">
-                            <label htmlFor="upload-marker" className="option-desc"
-                                   onClick={() => this.setState({ deleteExtra: false })}>
-                                <b>Merge</b> from backup preserving existing markers
-                            </label>
-                        </div>
-
-                        <input type='file' id='upload-marker' name='upload-marker' onChange={this.uploadFile}/>
-                    </div>
-                </div>
             </div>
         );
     }

@@ -1,4 +1,3 @@
-
 class RuleService {
     constructor(client)
     {
@@ -40,7 +39,7 @@ class RuleService {
             });
     }
 
-    backendImportRules(policies, cb) {
+    backendImportItems(policies, cb) {
         return this._client.post('/rules/import', policies)
             .then(result => {
                 cb(result.data);

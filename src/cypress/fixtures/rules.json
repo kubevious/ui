@@ -1,0 +1,71 @@
+{
+  "kind": "rules",
+  "items": [
+    {
+      "name": "container-memory-usage",
+      "script": "var value = item.getProperties('resources')['memory request'];\nif (value) {\n    if (unit.memory(value).in('mb') >= 500) {\n        mark('high-memory-use');\n    }\n    else if (unit.memory(value).in('mb') >= 210) {\n        mark('medium-memory-use');\n    }\n}",
+      "target": "select('Container')",
+      "enabled": true
+    },
+    {
+      "name": "host-network-pod-security-policy",
+      "script": "if (item.config.spec.hostNetwork) {\n  mark('host-network-user');\n}",
+      "target": "select('Application')\n.descendant('Pod Security Policy')",
+      "enabled": true
+    },
+    {
+      "name": "latest-tag-check",
+      "script": "if (item.props.tag == 'latest') {\n    error(\"You are using latest image. Please dont do that.\");\n}",
+      "target": "select('Image')",
+      "enabled": true
+    },
+    {
+      "name": "namespace-cpu-usage",
+      "script": "var value = item.getProperties('cluster-consumption').cpu;\nif (unit.percentage(value) >= 30) {\n    mark('high-consumption-namespace');\n}",
+      "target": "select('Namespace')",
+      "enabled": true
+    },
+    {
+      "name": "no-memory-request-set",
+      "script": "var value = item.getProperties('resources')['memory request'];\nif (!value) {\n    warning();\n}",
+      "target": "select('Container')",
+      "enabled": true
+    },
+    {
+      "name": "no-pod-security-policy-attached",
+      "script": "if (!item.hasDescendants('Pod Security Policy')) {\n  error(\"As per our company policy, all applications should have a Pod Security Policy attached\");\n}",
+      "target": "select('Namespace')\n\t.name('gitlab')\n.descendant('Application')\n\t.label(\"release\", \"gitlab\")",
+      "enabled": true
+    },
+    {
+      "name": "no-resource-limit-pods",
+      "script": "for(var container of item.config.spec.containers)\n{\n  if (!container.resources.limit)\n  {\n    warning();\n  }\n}",
+      "target": "select('Pod')",
+      "enabled": true
+    },
+    {
+      "name": "public-application",
+      "script": "mark('public-application')",
+      "target": "select('Application')\n.filter(({item}) => {\n  return item.hasDescendants('Ingress');\n})",
+      "enabled": true
+    },
+    {
+      "name": "pvc-outside-of-stateful-set",
+      "script": "error()",
+      "target": "select('Pod')\n    .filter(({item}) => {\n        return (item.parent.name != 'StatefulSet');\n    })\n.child('Persistent Volume Claim')",
+      "enabled": true
+    },
+    {
+      "name": "stateful-application",
+      "script": "mark('stateful-application')",
+      "target": "select('Application')\n.filter(({item}) => {\n  return item.hasDescendants('Persistent Volume Claim') || item.hasDescendants('Persistent Volume');\n})",
+      "enabled": true
+    },
+    {
+      "name": "stateful-public-application",
+      "script": "mark('stateful-public-application')",
+      "target": "select('Application')\n.filter(({item}) => {\n  return item.hasDescendants('Ingress') && item.hasDescendants('Persistent Volume Claim');\n})",
+      "enabled": true
+    }
+  ]
+}

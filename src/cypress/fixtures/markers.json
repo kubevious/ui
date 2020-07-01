@@ -1,0 +1,59 @@
+{
+  "kind": "markers",
+  "items": [
+    {
+      "name": "apps-that-access-podsecuritypolicies",
+      "shape": "f7c9",
+      "color": "#fcf197",
+      "propagate": false
+    },
+    {
+      "name": "high-consumption-namespace",
+      "shape": "f155",
+      "color": "#67d868",
+      "propagate": false
+    },
+    {
+      "name": "high-memory-use",
+      "shape": "f43f",
+      "color": "#ff0099",
+      "propagate": false
+    },
+    {
+      "name": "host-network-user",
+      "shape": "f6ff",
+      "color": "#ff3300",
+      "propagate": false
+    },
+    {
+      "name": "medium-memory-use",
+      "shape": "f445",
+      "color": "#ffc0cb",
+      "propagate": false
+    },
+    {
+      "name": "public-application",
+      "shape": "f57d",
+      "color": "#ff0099",
+      "propagate": false
+    },
+    {
+      "name": "secret-accessors",
+      "shape": "f6d5",
+      "color": "#ff3300",
+      "propagate": false
+    },
+    {
+      "name": "stateful-application",
+      "shape": "f1c0",
+      "color": "#00ccff",
+      "propagate": false
+    },
+    {
+      "name": "stateful-public-application",
+      "shape": "f1c0",
+      "color": "#ff3300",
+      "propagate": false
+    }
+  ]
+}
