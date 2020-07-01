@@ -22,7 +22,7 @@ describe('Test marker editor', () => {
     })
 
     it('update marker', () => {
-        cy.get('#markerEditorComponent .rule-item-button').first().click()
+        cy.get('#markerEditorComponent .markers .rule-item-button').first().click()
         cy.wait(1000)
 
         cy.get('.field-input.name').clear().type('Edited super marker')
