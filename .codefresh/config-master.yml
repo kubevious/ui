@@ -72,6 +72,7 @@ steps:
     type: build
     image_name: "kubevious/${{PRODUCT_NAME}}"
     stage: build
+    disable_push: true
 
   push:
     title: "Pushing image to DockerHub"
@@ -101,6 +102,7 @@ steps:
     type: build
     image_name: "kubevious/${{PRODUCT_NAME}}-demo"
     stage: build-demo
+    disable_push: true
 
   push_demo:
     title: "Pushing Demo image to DockerHub"
