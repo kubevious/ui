@@ -24,7 +24,7 @@ const BurgerMenu = ({ type, service }) => {
     }
 
     const uploadFile = () => {
-        const input = document.getElementById('upload-rule')
+        const input = document.getElementById(`upload-${type}`)
 
         if (input.files.length === 0) {
             console.error('No file selected.');
@@ -47,13 +47,16 @@ const BurgerMenu = ({ type, service }) => {
     return (
         <div className="BurgerMenu-container" onMouseEnter={() => setIsMenuVisible(true)}
              onMouseLeave={() => setIsMenuVisible(false)}>
+
+            <input type='file' id={`upload-${type}`} name={`upload-${type}`} onChange={() => uploadFile(type)} />
+
             <div className={cx('button-wrapper', { 'hovered': isMenuVisible })}>
                 <FontAwesomeIcon icon={faBars} />
             </div>
 
             <div className={cx('menu', { 'hidden': !isMenuVisible })}>
-                <input type='file' id='upload-rule' name='upload-rule' onChange={() => uploadFile()} />
                 <a id='exportAnchor' style={{ display: 'none' }} />
+
                 <div className="menu-item" onClick={() => exportItems()}>
                     <div className="icon">
                         <FontAwesomeIcon icon={faFileExport} />
@@ -61,7 +64,7 @@ const BurgerMenu = ({ type, service }) => {
                     Export {type}s
                 </div>
                 <div className="menu-item">
-                    <label htmlFor="upload-rule" onClick={() => setDeleteExtra(true)}>
+                    <label htmlFor={`upload-${type}`} onClick={() => setDeleteExtra(true)}>
                         <div className="icon">
                             <FontAwesomeIcon icon={faFileImport} />
                         </div>
@@ -69,7 +72,7 @@ const BurgerMenu = ({ type, service }) => {
                     </label>
                 </div>
                 <div className="menu-item">
-                    <label htmlFor="upload-rule" onClick={() => setDeleteExtra(false)}>
+                    <label htmlFor={`upload-${type}`} onClick={() => setDeleteExtra(false)}>
                         <div className="icon">
                             <FontAwesomeIcon icon={faFileDownload} />
                         </div>

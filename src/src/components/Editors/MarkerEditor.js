@@ -1,7 +1,5 @@
 import React from 'react'
 import BaseComponent from '../../HOC/BaseComponent'
-import { getRandomInt } from '../../utils/util'
-import $ from 'jquery'
 import Editor from './Editor'
 import ItemsList from './ItemsList'
 import { COLORS, SHAPES } from '../../boot/markerData'
@@ -22,16 +20,13 @@ class MarkerEditor extends BaseComponent {
             items: [],
             selectedItem: selectedItemInit,
             selectedItemData: selectedItemDataInit,
-            isSuccess: false,
-            deleteExtra: false,
-            isMergeOptionsVisible: false
+            isSuccess: false
         }
 
         this.openSummary = this.openSummary.bind(this)
         this.saveItem = this.saveItem.bind(this)
         this.deleteItem = this.deleteItem.bind(this)
         this.createItem = this.createItem.bind(this)
-        this.setVisibleOptions = this.setVisibleOptions.bind(this)
         this.selectItem = this.selectItem.bind(this)
         this.createNewItem = this.createNewItem.bind(this)
     }
@@ -125,18 +120,8 @@ class MarkerEditor extends BaseComponent {
         }))
     }
 
-    setVisibleOptions(value) {
-        this.setState({ isMergeOptionsVisible: value })
-    }
-
     render() {
-        const { items, isNewItem, selectedItem, selectedItemData, selectedItemId, isSuccess, isMergeOptionsVisible } = this.state
-
-        $('body').click((e) => {
-            if (!$(e.target).closest('.rule-header').length) {
-                this.setVisibleOptions(false)
-            }
-        })
+        const { items, isNewItem, selectedItem, selectedItemData, selectedItemId, isSuccess } = this.state
 
         return (
             <div className="RuleEditor-container" id="markerEditorComponent">
@@ -146,7 +131,6 @@ class MarkerEditor extends BaseComponent {
                     selectedItemId={selectedItemId}
                     selectItem={this.selectItem}
                     createNewItem={this.createNewItem}
-                    setVisibleOptions={this.setVisibleOptions}
                     service={this.service}
                 />
 
