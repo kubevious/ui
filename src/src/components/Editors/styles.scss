@@ -77,8 +77,8 @@
     justify-content: space-between;
     align-items: center;
     border: none;
+    color: #737888;
     background: none;
-    color: white;
     padding: 10px 15px;
     border-bottom: 1px solid #4E515B;
     text-align: left;
@@ -90,6 +90,7 @@
     .item {
       display: flex;
       align-items: center;
+      color: white;
     }
   }
 }
@@ -97,6 +98,7 @@
 .rules.markers {
   .rule-item-button {
     justify-content: space-between;
+    color: #737888;
 
     .shape-wrapper {
       min-width: 30px;
@@ -105,6 +107,10 @@
 
     i {
       font-size: 24px;
+    }
+
+    .item {
+      color: white;
     }
   }
 }
@@ -506,12 +512,12 @@ input[type="file"] {
   border: 1px solid #4E515B;
   display: flex;
   flex-wrap: wrap;
-  padding: 15px 20px;
+  padding: 10px 10px;
 
   &.name-area {
     display: flex;
     align-items: center;
-    padding: 5px 10px;
+    padding: 0px 10px;
 
     .field-input {
       width: calc(100% - 30px);
@@ -531,11 +537,11 @@ input[type="file"] {
   }
 
   .marker-wrapper {
-    margin: 10px;
+    margin: 5px;
     padding: 5px;
     border: 1px solid transparent;
     width: 36px;
-    height: 35px;
+    height: 36px;
 
     &:hover {
       cursor: pointer;

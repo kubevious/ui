@@ -151,14 +151,14 @@ class VisualView {
                 var target = self._controlInfo.previewFullRectElem._groups[0][0]
                 var cursorpt = pt.matrixTransform(target.getScreenCTM().inverse())
 
-                this._panTo(
+                this._userPanTo(
                     cursorpt.x / self._controlInfo.scale - this._width / 2, 
                     cursorpt.y / self._controlInfo.scale - this._height / 2);
             })
             .call(d3.drag()
                 .on('drag', () => {
 
-                    this._panTo(
+                    this._userPanTo(
                         this._viewPos.x + d3.event.dx / this._controlInfo.scale, 
                         this._viewPos.y + d3.event.dy / this._controlInfo.scale,
                         true);
@@ -240,7 +240,7 @@ class VisualView {
     _setupPanningByMouseDrag() {
         var drag = d3.drag()
             .on('drag', () => {
-                this._panTo(
+                this._userPanTo(
                     this._viewPos.x - d3.event.dx,
                     this._viewPos.y - d3.event.dy,
                     true);
@@ -251,7 +251,7 @@ class VisualView {
 
     _setupPanningByWheel() {
         var doScroll = (e) => {
-            this._panTo(
+            this._userPanTo(
                 this._viewPos.x + e.deltaX,
                 this._viewPos.y + e.deltaY,
                 true);
@@ -274,11 +274,16 @@ class VisualView {
         if (!visualNode) {
             return;
         }
-        this.sharedState.set('auto_pan_to_selected_dn', false)
 
         this._panTo(
             visualNode.absX - Math.max(this._width / 2 - visualNode.width / 2, 10), 
             visualNode.absY - Math.max(this._height / 2 - visualNode.height / 2, 10))
+    }
+
+    _userPanTo(x, y, skipAnimate)
+    {
+        this.sharedState.set('auto_pan_to_selected_dn', false)
+        this._panTo(x, y, skipAnimate);
     }
 
     _panTo(x, y, skipAnimate)
