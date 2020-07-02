@@ -92,6 +92,8 @@ steps:
     working_directory: "${{main_clone}}"
     commands:
       - cp -f ../cicd-demo.git/src/index.html ./src/public/index.html
+      - cp -f ../cicd-demo.git/src/site-preview.jpg ./src/public/img/site-preview.jpg
+      - cp -f ../cicd-demo.git/src/seo.js ./src/src/components/SEO/index.js
       - git status
 
   build_demo:
