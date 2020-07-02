@@ -37,7 +37,8 @@ const BurgerMenu = ({ type, service }) => {
                 data: JSON.parse(reader.result),
                 deleteExtra,
             };
-            service.backendImportItems(importData, () => {})
+            service.backendImportItems(importData, () => {
+            })
         };
 
         reader.readAsText(input.files[0]);
@@ -50,7 +51,7 @@ const BurgerMenu = ({ type, service }) => {
                 <FontAwesomeIcon icon={faBars} />
             </div>
 
-            {isMenuVisible && <div className="menu">
+            <div className={cx('menu', { 'hidden': !isMenuVisible })}>
                 <input type='file' id='upload-rule' name='upload-rule' onChange={() => uploadFile()} />
                 <a id='exportAnchor' style={{ display: 'none' }} />
                 <div className="menu-item" onClick={() => exportItems()}>
@@ -75,7 +76,7 @@ const BurgerMenu = ({ type, service }) => {
                         Replace {type}s
                     </label>
                 </div>
-            </div>}
+            </div>
         </div>
     )
 }

@@ -23,6 +23,10 @@
     border: 1px solid #4E515B;
     border-radius: 3px;
 
+    &.hidden {
+      display: none;
+    }
+
     .menu-item {
       display: flex;
       border-bottom: 1px solid #4E515B;
