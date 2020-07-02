@@ -5,14 +5,16 @@ import RemoteTrack from '../utils/remote-track';
 
 export var MOCK_MARKERS = []
 
-for(var i = 0; i < 30; i++) {
+for (var i = 0; i < 30; i++) {
     MOCK_MARKERS.push({
-        id: i + 1,
-        name: 'marker-' + (i+1).toString(),
+        name: 'marker-' + (i + 1).toString(),
         shape: SHAPES[i % SHAPES.length],
         color: COLORS[i % COLORS.length],
+        items: [],
+        logs: [],
+        is_current: (Math.random() * 10 % 2 === 0),
     })
-};
+}
 
 MOCK_MARKERS = _.makeDict(MOCK_MARKERS, x => x.name);
 
@@ -29,7 +31,7 @@ class MockMarkerService {
             for (var marker of _.values(MOCK_MARKERS)) {
                 var dnList = this._parent.diagramService().getRandomDnList();
                 marker.items = dnList.map(x => ({
-                    dn: x
+                    dn: x,
                 }));
             }
 
@@ -45,16 +47,16 @@ class MockMarkerService {
 
     _notifyMarkers() {
         const operation = this._remoteTrack.start({
-            action: `notifyMarkers`
+            action: `notifyMarkers`,
         })
 
         this.backendFetchMarkerList((result) => {
             this.sharedState.set('marker_editor_items', result);
         })
 
-        var id = this.sharedState.get('marker_editor_selected_marker_id');
-        if (id) {
-            this._notifyMarkerStatus(id);
+        var name = this.sharedState.get('marker_editor_selected_marker_id');
+        if (name) {
+            this._notifyMarkerStatus(name);
         }
 
         setTimeout(() => {
@@ -62,21 +64,19 @@ class MockMarkerService {
         }, 1000)
     }
 
-    _notifyMarkerStatus(id) {
-        var marker = MOCK_MARKERS[id];
+    _notifyMarkerStatus(name) {
+        var marker = MOCK_MARKERS[name];
         var data = null;
         if (marker) {
-            var count = 0;
-            if (marker.items) {
-                count = marker.items.length;
-            }
             data = {
-                marker_id: id,
-                item_count: count
+                name: marker.name,
+                is_current: marker.is_current,
+                error_count: marker.logs.length,
             }
             data.items = marker.items;
+            data.logs = marker.logs;
         }
-        this.sharedState.set('marker_editor_selected_items', data);
+        this.sharedState.set('rule_editor_selected_marker_status', data);
     }
 
     _makeMarkerListItem(x) {
@@ -84,10 +84,12 @@ class MockMarkerService {
             return null;
         }
         return {
-            id: x.id,
             name: x.name,
             shape: x.shape,
-            color: x.color
+            color: x.color,
+            item_count: x.items.length,
+            error_count: x.logs.length,
+            is_current: x.is_current,
         }
     }
 
@@ -107,8 +109,8 @@ class MockMarkerService {
         }, 100);
     }
 
-    backendFetchMarker(id, cb) {
-        var item = MOCK_MARKERS[id];
+    backendFetchMarker(name, cb) {
+        var item = MOCK_MARKERS[name];
         item = this._makeMarkerItem(item);
         setTimeout(() => {
             cb(item);
@@ -138,8 +140,8 @@ class MockMarkerService {
         this._notifyMarkers();
     }
 
-    backendDeleteMarker(id, cb) {
-        delete MOCK_MARKERS[id];
+    backendDeleteMarker(name, cb) {
+        delete MOCK_MARKERS[name];
         cb();
         this._notifyMarkers();
     }
@@ -149,12 +151,12 @@ class MockMarkerService {
         data = data.map(x => ({
             name: x.name,
             shape: x.shape,
-            color: x.color
+            color: x.color,
         }));
 
         const response = {
             kind: 'markers',
-            items: data
+            items: data,
         }
         cb(response);
     }
@@ -164,37 +166,14 @@ class MockMarkerService {
             MOCK_MARKERS = {};
         }
 
-        for (var marker of markers.data.items) {
-            var newMarker = this._findByName(marker.name);
-            if (!newMarker) {
-                var id = this._newID();
-                newMarker = {
-                    id: id,
-                }
-                MOCK_MARKERS[id] = newMarker;
-            }
-            newMarker.name = marker.name;
-            newMarker.shape = marker.shape;
-            newMarker.color = marker.color;
+        for (var x of markers.data.items) {
+            x.items = []
+            x.logs = []
+            MOCK_MARKERS[x.name] = x;
         }
 
         cb();
         this._notifyMarkers();
-    }
-
-    _findByName(name)
-    {
-        return _.head(_.values(MOCK_MARKERS).filter(x => x.name === name));
-
-    }
-
-    _newID()
-    {
-        if (!_.values(MOCK_MARKERS).length) {
-            return 1;
-        }
-        var id = _.max(_.values(MOCK_MARKERS).map(x => x.id)) + 1;
-        return id;
     }
 }
 

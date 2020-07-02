@@ -38,21 +38,13 @@ class MarkerEditor extends BaseComponent {
             });
         });
 
-        this.subscribeToSharedState('marker_editor_selected_items', (value) => {
-            if (value) {
-                if (value.name === this.state.selectedItemId) {
-                    var items = [];
-                    if (value.items) {
-                        items = value.items;
-                    }
-                    this.setState({
-                        selectedItemData: {
-                            item_count: items.length,
-                            items: items
-                        }
-                    });
-                }
+        this.subscribeToSharedState('rule_editor_selected_marker_status', (value) => {
+            if (!value) {
+                value = selectedItemDataInit;
             }
+            this.setState({
+                selectedItemData: value
+            });
         });
     }
 
