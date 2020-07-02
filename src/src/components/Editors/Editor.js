@@ -15,6 +15,17 @@ const Editor = ({ type, items, isNewItem, selectedItem, selectedItemData, select
     } else {
         itemCount = selectedItemData.item_count;
     }
+
+    if (type == 'marker')
+    {
+        if (selectedItemData.items)
+        {
+            for(var item of selectedItemData.items)
+            {
+                item.markers = [selectedItem.name];
+            }
+        }
+    }
     
     useEffect(() => {
         setSelectedTab('main')
