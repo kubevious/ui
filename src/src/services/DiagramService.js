@@ -26,27 +26,6 @@ class DiagramService {
             })
     }
 
-    fetchAbout(cb) {
-        var info = {
-            version: require('../version')
-        }
-                  
-        return Promise.resolve()
-            .then(() => {
-                return this._client.get('/version')
-                    .then(result => {
-                        info['backend version'] = result.data.version;
-                    })
-                    .catch(reason => {
-                        info['backend version'] = "unknown";
-                    });
-            })
-            .then(() => {
-                cb(info);
-            });
-  
-    }
-
     fetchHistoryRange(cb) {
         return this._client.get('/v1/history/range')
             .then(result => {

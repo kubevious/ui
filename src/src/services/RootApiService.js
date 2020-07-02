@@ -7,6 +7,7 @@ import WebSocketService from './WebSocketService'
 import DiagramService from './DiagramService'
 import RuleService from './RuleService'
 import MarkerService from './MarkerService'
+import MiscService from './MiscService'
 
 class RootApiService extends BaseRootApiService {
     constructor(sharedState) {
@@ -29,6 +30,11 @@ class RootApiService extends BaseRootApiService {
         this.registerService({ kind: 'diagram' }, ({ info }) => {
             var client = new BackendClient('/api', sharedState);
             return new DiagramService(client);
+        });
+
+        this.registerService({ kind: 'misc' }, () => {
+            var client = new BackendClient(null, sharedState);
+            return new MiscService(client);
         });
     }
 
@@ -54,6 +60,12 @@ class RootApiService extends BaseRootApiService {
         info.kind = 'diagram';
         return this.resolveService(info);
     }
+
+    miscService() {
+        return this.resolveService({ kind: 'misc' });
+    }
+
+    
 }
 
 export default RootApiService
