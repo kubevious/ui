@@ -1,5 +1,4 @@
-
-class MockMarkerService {
+class MarkerService {
     constructor(client)
     {
         this._client = client;
@@ -48,4 +47,4 @@ class MockMarkerService {
     }
 }
 
-export default MockMarkerService
+export default MarkerService

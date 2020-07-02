@@ -27,6 +27,7 @@ steps:
     type: build
     image_name: "kubevious/${{PRODUCT_NAME}}-mock"
     dockerfile: "Dockerfile.mock"
+    disable_push: true
 
   prepare_test_params:
     title: "Prepare Test Params"
@@ -50,7 +51,7 @@ steps:
           ports:
             - 80
           environment:
-            - "BACKEND_URL=http://localhost:4001"
+            - "BACKEND_URL=localhost:4001"
       readiness:
         image: 'curlimages/curl:7.70.0'
         timeoutSeconds: 30

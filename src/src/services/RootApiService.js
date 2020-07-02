@@ -8,42 +8,40 @@ import DiagramService from './DiagramService'
 import RuleService from './RuleService'
 import MarkerService from './MarkerService'
 
-class RootApiService extends BaseRootApiService
-{
-    constructor(sharedState)
-    {
+class RootApiService extends BaseRootApiService {
+    constructor(sharedState) {
         super(sharedState);
 
-        this.registerService({kind: 'rule'}, () => {
+        this.registerService({ kind: 'rule' }, () => {
             var client = new BackendClient('/api/v1', sharedState);
             return new RuleService(client);
         });
 
-        this.registerService({kind: 'marker'}, () => {
+        this.registerService({ kind: 'marker' }, () => {
             var client = new BackendClient('/api/v1', sharedState);
             return new MarkerService(client);
         });
 
-        this.registerService({kind: 'socket'}, () => {
+        this.registerService({ kind: 'socket' }, () => {
             return new WebSocketService(sharedState);
         });
 
-        this.registerService({kind: 'diagram'}, ({info}) => {
+        this.registerService({ kind: 'diagram' }, ({ info }) => {
             var client = new BackendClient('/api', sharedState);
             return new DiagramService(client);
         });
     }
 
     socketService() {
-        return this.resolveService({kind: 'socket'});
+        return this.resolveService({ kind: 'socket' });
     }
 
     ruleService() {
-        return this.resolveService({kind: 'rule'});
+        return this.resolveService({ kind: 'rule' });
     }
 
     markerService() {
-        return this.resolveService({kind: 'marker'});
+        return this.resolveService({ kind: 'marker' });
     }
 
     diagramService(params) {

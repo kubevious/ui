@@ -81,7 +81,7 @@ class WebSocketService
     {
         this.sharedState.set('marker_editor_items', []);
 
-        this._subscribe({ kind: 'markers' }, value => {
+        this._subscribe({ kind: 'markers-statuses' }, value => {
             if (!value) {
                 value = [];
             }
@@ -90,10 +90,7 @@ class WebSocketService
 
         var selectedMarkerScope = this._socket.scope((value, target) => {
 
-            if (target.name == this.sharedState.get('marker_editor_selected_marker_id'))
-            {
-                this.sharedState.set('marker_editor_selected_items', value);
-            }
+            this.sharedState.set('rule_editor_selected_marker_status', value);
 
         });
 

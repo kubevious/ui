@@ -1,9 +1,7 @@
 import React  from 'react'
 import BaseComponent from '../../HOC/BaseComponent'
-import $ from 'jquery'
 import Editor from './Editor'
 import './styles.scss'
-import { getRandomInt } from '../../utils/util'
 import ItemsList from './ItemsList'
 
 const selectedItemInit = {}
@@ -32,7 +30,6 @@ class RuleEditor extends BaseComponent {
         this.saveItem = this.saveItem.bind(this)
         this.deleteItem = this.deleteItem.bind(this)
         this.createItem = this.createItem.bind(this)
-        this.setVisibleOptions = this.setVisibleOptions.bind(this)
         this.selectItem = this.selectItem.bind(this)
         this.createNewItem = this.createNewItem.bind(this)
     }
@@ -116,10 +113,6 @@ class RuleEditor extends BaseComponent {
             isSuccess: false,
             selectedItemData: selectedItemDataInit
         }))
-    }
-
-    setVisibleOptions(value) {
-        this.setState({ isMergeOptionsVisible: value })
     }
 
     render() {
