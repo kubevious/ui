@@ -56,4 +56,6 @@ steps:
         image: 'curlimages/curl:7.70.0'
         timeoutSeconds: 30
         commands:
-          - "curl http://ui:80" 
+          - "curl http://ui:80"
+    commands:
+      - npm run cy:run

@@ -29,7 +29,8 @@
     "the-lodash": "^1.1.1",
     "webpack-jquery-ui": "^2.0.1",
     "websocket-subscription-client": "^1.0.8",
-    "xml-js": "^1.6.11"
+    "xml-js": "^1.6.11",
+    "cypress-file-upload": "^4.0.7"
   },
   "proxy": "http://localhost:4001",
   "scripts": {
@@ -40,7 +41,7 @@
     "build-svg-dict": "node build-marker-image-dict",
     "cypress": "cypress open",
     "cy:run": "cypress run --browser chrome",
-    "cy:run-ci": "cypress run",
+    "cy:run-ci": "cypress run --browser chrome",
     "ci": "start-server-and-test start http://localhost:4000 cy:run-ci"
   },
   "author": "Ruben Hakopian <ruben.hakopian@gmail.com>",
@@ -65,7 +66,6 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "cypress": "^4.8.0",
-    "cypress-file-upload": "^4.0.7",
     "start-server-and-test": "^1.11.0"
   }
 }
