@@ -35,13 +35,13 @@ steps:
     title: Prepare Test
     stage: prepare
     image: 'kubevious/node-builder:12'
-    working_directory: "${{main_clone}}"
+    working_directory: "${{main_clone}}/src"
     shell: bash
     commands:
       - env
       - npm ci
-      - "echo '{ \"baseUrl\": \"http://ui:80\" }' > src/cypress.json"
-      - cat src/cypress.json
+      - "echo '{ \"baseUrl\": \"http://ui:80\" }' > cypress.json"
+      - cat cypress.json
 
   run_ui_mock_test:
     title: Test Mock UI
