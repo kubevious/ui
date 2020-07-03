@@ -38,7 +38,7 @@ steps:
     working_directory: "${{main_clone}}/src"
     shell: bash
     commands:
-      - "echo 'NODE_ENV=$NODE_ENV'"
+      - "echo NODE_ENV=${NODE_ENV}"
       - npm ci
       - "echo '{ \"baseUrl\": \"http://ui:80\" }' > cypress.json"
       - cat cypress.json
