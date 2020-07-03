@@ -59,3 +59,4 @@ steps:
           - "curl http://ui:80"
     commands:
       - npm run cy:run
+
