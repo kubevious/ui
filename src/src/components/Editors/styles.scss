@@ -55,7 +55,7 @@
   flex-direction: column;
   width: 250px;
   margin-top: 80px;
-  height: 100%;
+  height: calc(100% - 80px);
   overflow-y: hidden;
 
   &:hover {
@@ -333,6 +333,10 @@ input[type="file"] {
 
 .label-wrapper {
   margin-bottom: 10px;
+
+  &.color {
+    position: relative;
+  }
 
   label {
     font-size: 14px;
@@ -659,6 +663,7 @@ input[type="file"] {
   position: absolute;
   left: 150px;
   z-index: 100;
+  top: 25px;
 
   .cover {
     position: fixed;

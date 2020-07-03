@@ -78,7 +78,7 @@ const MarkerMainTab = ({ selectedItem, isSuccess, deleteItem, openSummary, creat
                 </div>
 
                 <div className="field">
-                    <div className="label-wrapper">
+                    <div className="label-wrapper color">
                         <label>Color</label>
                         <button className="custom-color" onClick={() => setDisplayColorPicker(!displayColorPicker)}>
                             Pick custom color
