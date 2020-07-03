@@ -169,6 +169,23 @@
   margin-bottom: 15px;
 }
 
+.marker-info-wrapper {
+  height: calc(100% - 175px);
+  min-height: 450px;
+  margin-bottom: 10px;
+
+  .field {
+    height: calc(100% / 2);
+    margin-bottom: 10px;
+  }
+}
+
+#markerEditorComponent {
+  .field-name {
+    margin-bottom: 10px;
+  }
+}
+
 .field-input {
   width: 100%;
   outline: none;
@@ -314,9 +331,14 @@ input[type="file"] {
   align-items: center;
 }
 
-.label-wrapper label {
-  font-size: 14px;
-  color: #737888;
+.label-wrapper {
+  margin-bottom: 10px;
+
+  label {
+    font-size: 14px;
+    color: #737888;
+    margin: 0;
+  }
 }
 
 .label-text {
@@ -541,17 +563,34 @@ input[type="file"] {
   margin-right: 10px;
 }
 
+.name-wrapper {
+  border: 1px solid #4E515B;
+}
+
 .marker-area {
   background: #35373E;
   border: 1px solid #4E515B;
-  display: flex;
-  flex-wrap: wrap;
   padding: 10px 10px;
+  height: calc(100% - 60px);
+  min-height: 150px;
+  overflow: hidden;
+
+  &:hover {
+    overflow-y: auto;
+  }
+
+  .area-wrapper {
+    width: calc(100% - 10px);
+    display: flex;
+    flex-wrap: wrap;
+  }
 
   &.name-area {
     display: flex;
     align-items: center;
-    padding: 0px 10px;
+    padding: 0 10px;
+    border: none;
+    min-height: unset;
 
     .field-input {
       width: calc(100% - 30px);
@@ -609,7 +648,7 @@ input[type="file"] {
   border: none;
   background: none;
   width: 150px;
-  margin-top: 10px;
+  margin-left: 30px;
   color: white;
   text-align: initial;
   padding: 0;
