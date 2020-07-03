@@ -103,8 +103,7 @@ const Editor = ({ type, items, isNewItem, selectedItem, selectedItemData, select
 
                 {!isEmptyObject(selectedItem) && renderEditor()}
 
-                {!isEmptyObject(items) && isEmptyObject(selectedItem) &&
-                <div className="no-rule">No selected {type}</div>}
+                {!isEmptyObject(items) && isEmptyObject(selectedItem) && <StartPage type={type} createNewItem={createNewItem}/>}
             </div>
         </div>
     )
