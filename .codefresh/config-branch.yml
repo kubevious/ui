@@ -15,6 +15,7 @@ steps:
       - export PRODUCT_NAME="ui"
       - cf_export PRODUCT_NAME="${PRODUCT_NAME}"
       - cf_export GITHUB_TOKEN=$(codefresh get context github --decrypt -o yaml | yq -y .spec.data.auth.password)
+      - ls -la /codefresh/volume/
 
   main_clone:
     title: Clone Main Repo
