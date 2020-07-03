@@ -56,40 +56,40 @@ describe('Test marker editor', () => {
         cy.get('#exportAnchor').should('have.attr', 'download', 'markers.json')
     })
 
-    it('replace markers', () => {
-        cy.fixture('markers.json').then(fileContent => {
-            cy.get('#markerEditorComponent .BurgerMenu-container').trigger('mouseover')
-
-            cy.contains('Replace markers').click()
-
-            const initLength = Cypress.$('.markers .rule-item-button').length
-            const contentLength = fileContent.items.length
-
-            cy.get('#upload-rule').attachFile({
-                fileContent: fileContent,
-                fileName: 'markers.json',
-            })
-
-            cy.wait(1000)
-
-            cy.get('#markerEditorComponent .rule-item-button').should('have.length', initLength + contentLength)
-        })
-    })
-
     it('import markers', () => {
         cy.fixture('markers.json').then(fileContent => {
             cy.get('#markerEditorComponent .BurgerMenu-container').trigger('mouseover')
 
             cy.contains('Import markers').click()
 
+            const initLength = Cypress.$('.markers .rule-item-button').length
             const contentLength = fileContent.items.length
 
-            cy.get('#upload-rule').attachFile({
+            cy.get('#upload-marker').attachFile({
                 fileContent: fileContent,
                 fileName: 'markers.json',
             })
 
-            cy.wait(1000)
+            cy.wait(2000)
+
+            cy.get('#markerEditorComponent .rule-item-button').should('have.length', initLength + contentLength)
+        })
+    })
+
+    it('replace markers', () => {
+        cy.fixture('markers.json').then(fileContent => {
+            cy.get('#markerEditorComponent .BurgerMenu-container').trigger('mouseover')
+
+            cy.contains('Replace markers').click()
+
+            const contentLength = fileContent.items.length
+
+            cy.get('#upload-marker').attachFile({
+                fileContent: fileContent,
+                fileName: 'markers.json',
+            })
+
+            cy.wait(2000)
 
             cy.get('#markerEditorComponent .rule-item-button').should('have.length', contentLength)
         })

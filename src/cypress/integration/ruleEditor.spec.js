@@ -63,11 +63,11 @@ describe('Test rule editor', () => {
         cy.get('#exportAnchor').should('have.attr', 'download', 'rules.json')
     })
 
-    it('replace rules', () => {
+    it('import rules', () => {
         cy.fixture('rules.json').then(fileContent => {
             cy.get('#ruleEditorComponent .BurgerMenu-container').trigger('mouseover')
 
-            cy.contains('Replace rules').click()
+            cy.contains('Import rules').click()
 
             const initLength = Cypress.$('#ruleEditorComponent .rule-item-button').length
             const contentLength = fileContent.items.length
@@ -83,12 +83,13 @@ describe('Test rule editor', () => {
         })
     })
 
-    it('import rules', () => {
+    it('replace rules', () => {
         cy.fixture('rules.json').then(fileContent => {
             cy.get('#ruleEditorComponent .BurgerMenu-container').trigger('mouseover')
 
-            cy.contains('Import rules').click()
+            cy.contains('Replace rules').click()
 
+            const initLength = Cypress.$('#ruleEditorComponent .rule-item-button').length
             const contentLength = fileContent.items.length
 
             cy.get('#upload-rule').attachFile({
