@@ -109,8 +109,13 @@ const MarkerMainTab = ({ selectedItem, isSuccess, deleteItem, openSummary, creat
                     {isSuccess && <span>Saved!</span>}
                 </>}
 
-                {!selectedItem.name && <button className="button success" onClick={() => createItem(formData)}
-                                             disabled={validation}>Create</button>}
+                {!selectedItem.name &&
+                <>
+                    <button className="button" onClick={() => openSummary()}>Cancel</button>
+                    <button className="button success" onClick={() => createItem(formData)}
+                            disabled={validation}>Create
+                    </button>
+                </>}
 
             </div>
         </>
