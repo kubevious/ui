@@ -38,6 +38,8 @@ steps:
     commands:
       - "echo '{ \"baseUrl\": \"http://ui:80\" }' > src/cypress.json"
       - cat src/cypress.json
+      - env
+      - npm ci
 
   run_ui_mock_test:
     title: Test Mock UI
