@@ -41,7 +41,6 @@ steps:
       - "echo NODE_ENV=${NODE_ENV}"
       - npm ci
       - "echo '{ \"baseUrl\": \"http://ui:80\" }' > cypress.json"
-      - cat cypress.json
 
   run_ui_mock_test:
     title: Test Mock UI
