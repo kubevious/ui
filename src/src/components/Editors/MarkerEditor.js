@@ -56,6 +56,11 @@ class MarkerEditor extends BaseComponent {
         })
 
         this.service.backendFetchMarker(marker.name, data => {
+            if (data === null) {
+                this.openSummary()
+                return
+            }
+
             if (data.name === this.state.selectedItemId) {
                 this.setState({
                     selectedItem: data

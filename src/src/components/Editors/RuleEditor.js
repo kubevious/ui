@@ -59,6 +59,11 @@ class RuleEditor extends BaseComponent {
         })
 
         this.service.backendFetchRule(rule.name, data => {
+            if (data === null) {
+                this.openSummary()
+                return
+            }
+
             if (data.name === this.state.selectedItemId) {
                 this.setState({
                     selectedItem: data
