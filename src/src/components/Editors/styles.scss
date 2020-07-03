@@ -16,12 +16,7 @@
   background: #35373E;
   position: relative;
   height: 100%;
-  overflow-y: hidden;
-  overflow-x: hidden;
-
-  &:hover {
-    overflow-y: auto;
-  }
+  overflow: hidden;
 }
 
 #rule-editor {
@@ -59,7 +54,13 @@
   display: flex;
   flex-direction: column;
   width: 250px;
-  padding: 85px 0 0;
+  margin-top: 80px;
+  height: 100%;
+  overflow-y: hidden;
+
+  &:hover {
+    overflow-y: auto;
+  }
 
   .rule-item-button {
     display: flex;
@@ -406,8 +407,8 @@ input[type="file"] {
 
 .editor-title {
   display: flex;
-  font-size: 30px;
-  margin-bottom: 15px;
+  font-size: 20px;
+  margin-bottom: 5px;
 }
 
 .editor-title .tab {
