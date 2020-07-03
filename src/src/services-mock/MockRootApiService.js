@@ -6,6 +6,7 @@ import DiagramService from './MockDiagramService'
 import WebSocketService from './MockWebSocketService'
 import RuleService from './MockRuleService'
 import MarkerService from './MockMarkerService'
+import MiscService from './MockMiscService';
 
 class MockRootApiService extends BaseRootApiService
 {
@@ -27,6 +28,10 @@ class MockRootApiService extends BaseRootApiService
 
         this.registerService({kind: 'diagram'}, ({info}) => {
             return new DiagramService(sharedState);
+        });
+
+        this.registerService({ kind: 'misc' }, () => {
+            return new MiscService(this);
         });
     }
     
@@ -51,6 +56,10 @@ class MockRootApiService extends BaseRootApiService
         }
         info.kind = 'diagram';
         return this.resolveService(info);
+    }
+
+    miscService() {
+        return this.registerService({ kind: 'misc' })
     }
 }
 
