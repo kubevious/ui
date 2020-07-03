@@ -16,12 +16,7 @@
   background: #35373E;
   position: relative;
   height: 100%;
-  overflow-y: hidden;
-  overflow-x: hidden;
-
-  &:hover {
-    overflow-y: auto;
-  }
+  overflow: hidden;
 }
 
 #rule-editor {
@@ -30,23 +25,12 @@
   position: relative;
 }
 
-.remove-btn {
-  background: none;
-  border: none;
-}
-
-.start-new-rule-btn {
-  border: none;
-  background: #4ECD77;
-  color: white;
-  padding: 10px 40px;
-}
-
 .new-rule-btn {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: unset !important;
+  min-width: 120px !important;
+  font-weight: bold;
   padding: 5px 10px !important;
 
   .plus {
@@ -70,7 +54,13 @@
   display: flex;
   flex-direction: column;
   width: 250px;
-  padding: 85px 0 0;
+  margin-top: 80px;
+  height: calc(100% - 80px);
+  overflow-y: hidden;
+
+  &:hover {
+    overflow-y: auto;
+  }
 
   .rule-item-button {
     display: flex;
@@ -82,6 +72,7 @@
     padding: 10px 15px;
     border-bottom: 1px solid #4E515B;
     text-align: left;
+    width: 250px;
 
     &:focus {
       outline: none;
@@ -179,6 +170,23 @@
   margin-bottom: 15px;
 }
 
+.marker-info-wrapper {
+  height: calc(100% - 175px);
+  min-height: 450px;
+  margin-bottom: 10px;
+
+  .field {
+    height: calc(100% / 2);
+    margin-bottom: 10px;
+  }
+}
+
+#markerEditorComponent {
+  .field-name {
+    margin-bottom: 10px;
+  }
+}
+
 .field-input {
   width: 100%;
   outline: none;
@@ -246,20 +254,64 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
 
-.start-text {
-  text-align: center;
-  margin: 20px 0;
-}
+  .start-btn-wrapper {
+    display: flex;
+    justify-content: center;
+  }
 
-.start-text:last-child {
-  color: #737888;
-}
+  .links-container {
+    display: flex;
+    flex-direction: column;
 
-.start-btn-wrapper {
-  display: flex;
-  justify-content: center;
+    .start-text {
+      text-align: center;
+      margin-bottom: 15px;
+
+      &:hover {
+        text-decoration: underline;
+        color: #007bff;
+      }
+    }
+  }
+
+  .or-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+    position: relative;
+    height: 38px;
+
+    .line {
+      transform: rotate(90deg);
+      background: #333333;
+      height: 1px;
+      width: 14px;
+      position: absolute;
+
+      &.top {
+        top: 0
+      }
+
+      &.bottom {
+        bottom: 0;
+      }
+    }
+
+    .circle {
+      position: absolute;
+      height: 25px;
+      width: 25px;
+      border: 1px solid #333333;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 12px;
+      color: #666666;
+    }
+  }
 }
 
 .list-btn {
@@ -280,9 +332,18 @@ input[type="file"] {
   align-items: center;
 }
 
-.label-wrapper label {
-  font-size: 14px;
-  color: #737888;
+.label-wrapper {
+  margin-bottom: 10px;
+
+  &.color {
+    position: relative;
+  }
+
+  label {
+    font-size: 14px;
+    color: #737888;
+    margin: 0;
+  }
 }
 
 .label-text {
@@ -373,8 +434,8 @@ input[type="file"] {
 
 .editor-title {
   display: flex;
-  font-size: 30px;
-  margin-bottom: 15px;
+  font-size: 20px;
+  margin-bottom: 5px;
 }
 
 .editor-title .tab {
@@ -489,8 +550,8 @@ input[type="file"] {
   }
 }
 
-.rule-item-button:hover, .new-rule-btn:hover, .start-new-rule-btn:hover, .file-upload:hover,
-.remove-btn:hover, .menu-btn:hover, .title:hover {
+.rule-item-button:hover, .new-rule-btn:hover, .file-upload:hover,
+.menu-btn:hover, .title:hover {
   cursor: pointer;
 }
 
@@ -507,17 +568,34 @@ input[type="file"] {
   margin-right: 10px;
 }
 
+.name-wrapper {
+  border: 1px solid #4E515B;
+}
+
 .marker-area {
   background: #35373E;
   border: 1px solid #4E515B;
-  display: flex;
-  flex-wrap: wrap;
   padding: 10px 10px;
+  height: calc(100% - 60px);
+  min-height: 150px;
+  overflow: hidden;
+
+  &:hover {
+    overflow-y: auto;
+  }
+
+  .area-wrapper {
+    width: calc(100% - 10px);
+    display: flex;
+    flex-wrap: wrap;
+  }
 
   &.name-area {
     display: flex;
     align-items: center;
-    padding: 0px 10px;
+    padding: 0 10px;
+    border: none;
+    min-height: unset;
 
     .field-input {
       width: calc(100% - 30px);
@@ -575,7 +653,7 @@ input[type="file"] {
   border: none;
   background: none;
   width: 150px;
-  margin-top: 10px;
+  margin-left: 30px;
   color: white;
   text-align: initial;
   padding: 0;
@@ -586,6 +664,7 @@ input[type="file"] {
   position: absolute;
   left: 150px;
   z-index: 100;
+  top: 25px;
 
   .cover {
     position: fixed;

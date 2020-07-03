@@ -30,74 +30,82 @@ const MarkerMainTab = ({ selectedItem, isSuccess, deleteItem, openSummary, creat
 
     return (
         <>
-            <div className="field">
+            <div className="field-name">
                 <div className="label-wrapper">
                     <label>Name</label>
                 </div>
-                <div className="marker-area name-area">
-                    <div className="shape">
-                        <MarkerPreview shape={shape} color={color} />
-                    </div>
-                    <input
-                        type="text"
-                        className="field-input name"
-                        value={name || ''}
-                        name="name"
-                        onChange={(e) => handleChange(e)}
-                    />
-                </div>
-            </div>
-
-            <div className="field">
-                <div className="label-wrapper">
-                    <label>Shape</label>
-                </div>
-                <div className="marker-area">
-                    {SHAPES.map(item => (
-                            <div
-                                className={cx('marker-wrapper', { 'selected': item === shape })}
-                                key={item}
-                                onClick={() => handleChangeShape(item)}
-                            >
-                                <div key={item}
-                                     style={{ color: color }}
-                                     className="icon-wrapper"
-                                >
-                                    <MarkerPreview shape={item} color={color} />
-                                </div>
-                            </div>
-                        )
-                    )}
-                </div>
-            </div>
-
-            <div className="field">
-                <div className="label-wrapper">
-                    <label>Color</label>
-                </div>
-                <div className="marker-area">
-                    {COLORS.map(item => (
-                        <div className={cx('marker-wrapper', { 'selected': item === color })}
-                             key={item}
-                             onClick={() => handleChangeColor(item)}
-                        >
-                            <div
-                                style={{ color: color }}
-                                className="icon-wrapper"
-                            >
-                                <MarkerPreview shape={shape} color={item} />
-                            </div>
+                <div className="name-wrapper">
+                    <div className="marker-area name-area">
+                        <div className="shape">
+                            <MarkerPreview shape={shape} color={color} />
                         </div>
-                    ))}
+                        <input
+                            type="text"
+                            className="field-input name"
+                            value={name || ''}
+                            name="name"
+                            onChange={(e) => handleChange(e)}
+                        />
+                    </div>
+                </div>
+            </div>
+
+            <div className="marker-info-wrapper">
+                <div className="field">
+                    <div className="label-wrapper">
+                        <label>Shape</label>
+                    </div>
+                    <div className="marker-area">
+                        <div className="area-wrapper">
+                            {SHAPES.map(item => (
+                                    <div
+                                        className={cx('marker-wrapper', { 'selected': item === shape })}
+                                        key={item}
+                                        onClick={() => handleChangeShape(item)}
+                                    >
+                                        <div key={item}
+                                             style={{ color: color }}
+                                             className="icon-wrapper"
+                                        >
+                                            <MarkerPreview shape={item} color={color} />
+                                        </div>
+                                    </div>
+                                ),
+                            )}
+                            <span className="empty" />
+                        </div>
+                    </div>
                 </div>
 
-                <button className="custom-color" onClick={() => setDisplayColorPicker(!displayColorPicker)}>
-                    Pick custom color
-                </button>
-                {displayColorPicker && <div className="color-popover">
-                    <div className="cover" onClick={() => setDisplayColorPicker(false)}/>
-                    <ChromePicker onChange={(color, event) => handleChangeColor(color.hex)} color={color}/>
-                </div>}
+                <div className="field">
+                    <div className="label-wrapper color">
+                        <label>Color</label>
+                        <button className="custom-color" onClick={() => setDisplayColorPicker(!displayColorPicker)}>
+                            Pick custom color
+                        </button>
+                        {displayColorPicker && <div className="color-popover">
+                            <div className="cover" onClick={() => setDisplayColorPicker(false)} />
+                            <ChromePicker onChange={(color, event) => handleChangeColor(color.hex)} color={color} />
+                        </div>}
+                    </div>
+                    <div className="marker-area">
+                        <div className="area-wrapper">
+                            {COLORS.map(item => (
+                                <div className={cx('marker-wrapper', { 'selected': item === color })}
+                                     key={item}
+                                     onClick={() => handleChangeColor(item)}
+                                >
+                                    <div
+                                        style={{ color: color }}
+                                        className="icon-wrapper"
+                                    >
+                                        <MarkerPreview shape={shape} color={item} />
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div className="btn-group">
@@ -109,8 +117,13 @@ const MarkerMainTab = ({ selectedItem, isSuccess, deleteItem, openSummary, creat
                     {isSuccess && <span>Saved!</span>}
                 </>}
 
-                {!selectedItem.name && <button className="button success" onClick={() => createItem(formData)}
-                                             disabled={validation}>Create</button>}
+                {!selectedItem.name &&
+                <>
+                    <button className="button" onClick={() => openSummary()}>Cancel</button>
+                    <button className="button success" onClick={() => createItem(formData)}
+                            disabled={validation}>Create
+                    </button>
+                </>}
 
             </div>
         </>

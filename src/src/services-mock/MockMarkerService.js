@@ -118,7 +118,7 @@ class MockMarkerService {
     }
 
     backendCreateMarker(marker, name, cb) {
-        marker = _.clone({ ...marker });
+        marker = _.clone({ ...marker, items: [], logs: [] });
 
         if (MOCK_MARKERS[name]) {
             this.backendUpdateMarker(marker, name, cb)

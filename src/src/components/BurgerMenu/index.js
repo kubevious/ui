@@ -64,7 +64,7 @@ const BurgerMenu = ({ type, service }) => {
                     Export {type}s
                 </div>
                 <div className="menu-item">
-                    <label htmlFor={`upload-${type}`} onClick={() => setDeleteExtra(true)}>
+                    <label htmlFor={`upload-${type}`} onClick={() => setDeleteExtra(false)}>
                         <div className="icon">
                             <FontAwesomeIcon icon={faFileImport} />
                         </div>
@@ -72,7 +72,7 @@ const BurgerMenu = ({ type, service }) => {
                     </label>
                 </div>
                 <div className="menu-item">
-                    <label htmlFor={`upload-${type}`} onClick={() => setDeleteExtra(false)}>
+                    <label htmlFor={`upload-${type}`} onClick={() => setDeleteExtra(true)}>
                         <div className="icon">
                             <FontAwesomeIcon icon={faFileDownload} />
                         </div>

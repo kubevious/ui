@@ -11,4 +11,3 @@ docker run \
     --network kubevious \
     -e BACKEND_URL=kubevious-backend:4001 \
     kubevious-ui-react:dev
-    

@@ -32,11 +32,6 @@ const RuleMainTab = ({ selectedItemId, selectedItem, selectedItemData, isSuccess
 
     const validation = useMemo(() => formData.name === '', [formData])
 
-    const setErrorEditor = (field) => {
-        return selectedItemData.logs.find(item => item.msg.source.includes(field)) &&
-            selectedItemData.logs.find(item => item.msg.source.includes(field)).length !== 0
-    }
-
     const handleScriptKeyUp = ({ editor, data, value }) => {
         if (!editor.state.completionActive && data.keyCode > 64 && data.keyCode < 91) {
             Codemirror.commands.autocomplete(editor, null, { completeSingle: false })
@@ -193,8 +188,13 @@ const RuleMainTab = ({ selectedItemId, selectedItem, selectedItemData, isSuccess
                     {isSuccess && <span>Saved!</span>}
                 </>}
 
-                {!selectedItem.name && <button className="button success" onClick={() => createItem(formData)}
-                                               disabled={validation}>Create</button>}
+                {!selectedItem.name &&
+                <>
+                    <button className="button" onClick={() => openSummary()}>Cancel</button>
+                    <button className="button success" onClick={() => createItem(formData)}
+                            disabled={validation}>Create
+                    </button>
+                </>}
 
             </div>
         </>

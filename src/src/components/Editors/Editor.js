@@ -16,17 +16,14 @@ const Editor = ({ type, items, isNewItem, selectedItem, selectedItemData, select
         itemCount = selectedItemData.item_count;
     }
 
-    if (type == 'marker')
-    {
-        if (selectedItemData.items)
-        {
-            for(var item of selectedItemData.items)
-            {
+    if (type === 'marker') {
+        if (selectedItemData.items) {
+            for (var item of selectedItemData.items) {
                 item.markers = [selectedItem.name];
             }
         }
     }
-    
+
     useEffect(() => {
         setSelectedTab('main')
     }, [selectedItemId])
@@ -43,7 +40,7 @@ const Editor = ({ type, items, isNewItem, selectedItem, selectedItemData, select
                         openSummary={openSummary}
                         saveItem={saveItem}
                         createItem={createItem}
-                        isSuccess={isSuccess}/> :
+                        isSuccess={isSuccess} /> :
                     <MarkerMainTab
                         selectedItemId={selectedItemId}
                         selectedItem={selectedItem}
@@ -52,7 +49,7 @@ const Editor = ({ type, items, isNewItem, selectedItem, selectedItemData, select
                         openSummary={openSummary}
                         saveItem={saveItem}
                         createItem={createItem}
-                        isSuccess={isSuccess}/>}
+                        isSuccess={isSuccess} />}
             </>
         )
     }
@@ -62,7 +59,7 @@ const Editor = ({ type, items, isNewItem, selectedItem, selectedItemData, select
             !isNewItem &&
             (selectedItemData.status && !selectedItemData.status.is_current) &&
             type === 'rule' &&
-            <div className="busy-rule-indicator"/>
+            <div className="busy-rule-indicator" />
         )
     }
 
@@ -99,12 +96,11 @@ const Editor = ({ type, items, isNewItem, selectedItem, selectedItemData, select
     return (
         <div id="rule-editor">
             <div className="rule-container">
-                {isEmptyObject(items) && isEmptyObject(selectedItem) && <StartPage type={type} createNewItem={createNewItem}/>}
+                {isEmptyObject(items) && isEmptyObject(selectedItem) && <StartPage type={type} createNewItem={createNewItem} />}
 
                 {!isEmptyObject(selectedItem) && renderEditor()}
 
-                {!isEmptyObject(items) && isEmptyObject(selectedItem) &&
-                <div className="no-rule">No selected {type}</div>}
+                {!isEmptyObject(items) && isEmptyObject(selectedItem) && <StartPage type={type} createNewItem={createNewItem} />}
             </div>
         </div>
     )

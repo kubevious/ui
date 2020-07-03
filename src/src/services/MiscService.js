@@ -25,7 +25,6 @@ class MiscService {
             });
   
     }
-
 }
 
 export default MiscService

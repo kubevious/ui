@@ -1,6 +1,8 @@
 version: "1.0"
 stages:
   - "clone"
+  - "build"
+  - "prepare"
   - "validate-mock"
 steps:
   
@@ -23,21 +25,23 @@ steps:
 
   build_mock_ui_docker:
     title: "Building Mock UI Image"
-    stage: validate-mock
+    stage: build
     type: build
     image_name: "kubevious/${{PRODUCT_NAME}}-mock"
     dockerfile: "Dockerfile.mock"
     disable_push: true
 
-  prepare_test_params:
-    title: "Prepare Test Params"
-    stage: validate-mock
+  prepare:
+    title: Prepare Test
+    stage: prepare
+    image: 'kubevious/node-builder:12'
+    working_directory: "${{main_clone}}/src"
     shell: bash
-    image: codefresh/cli
-    working_directory: ${{main_clone}}
     commands:
-      - "echo '{ \"baseUrl\": \"http://ui:80\" }' > src/cypress.json"
-      - cat src/cypress.json
+      - env
+      - npm ci
+      - "echo '{ \"baseUrl\": \"http://ui:80\" }' > cypress.json"
+      - cat cypress.json
 
   run_ui_mock_test:
     title: Test Mock UI
@@ -56,4 +60,7 @@ steps:
         image: 'curlimages/curl:7.70.0'
         timeoutSeconds: 30
         commands:
-          - "curl http://ui:80" 
+          - "curl http://ui:80"
+    commands:
+      - npm run cy:run
+
