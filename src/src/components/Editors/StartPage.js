@@ -18,9 +18,9 @@ const StartPage = ({ type, createNewItem }) => {
                 </div>
 
                 <div className="links-container">
-                    <a href="https://github.com/kubevious/kubevious/blob/master/docs/rules-engine.md" target="_blank"
+                    <a href="https://github.com/kubevious/kubevious/blob/master/docs/rules-engine.md#rules-engine" target="_blank"
                        className="start-text">Learn more about rules engine</a>
-                    <a href="https://github.com/kubevious/rules-library" target="_blank" className="start-text">Browse rules library</a>
+                    <a href="https://github.com/kubevious/rules-library#kubevious-rules-library" target="_blank" className="start-text">Browse rules library</a>
                     <a href="https://kubevious.io/slack/" target="_blank" className="start-text">Get help in slack channel</a>
                 </div>
             </div>
