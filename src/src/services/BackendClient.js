@@ -53,7 +53,7 @@ class BackendClient {
                 return result;
             })
             .catch(reason => {
-                operation.fail({ ...reason.response.data, status: reason.response.status })
+                operation.fail({ data: reason.response.data, status: reason.response.status })
                 throw reason;
             });
     }
