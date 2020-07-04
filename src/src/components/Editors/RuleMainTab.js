@@ -20,7 +20,7 @@ const RuleMainTab = ({ selectedItemId, selectedItem, selectedItemData, isSuccess
     const [visibleEditor, setVisibleEditor] = useState('target')
 
     useEffect(() => {
-        if (selectedItemId !== formDataId) {
+        if (selectedItemId !== formDataId || selectedItemId === null) {
             setFormDataId(formDataId)
             setFormData({ ...selectedItem })
         }

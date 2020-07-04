@@ -38,6 +38,7 @@ const BurgerMenu = ({ type, service }) => {
                 deleteExtra,
             };
             service.backendImportItems(importData, () => {
+                input.value = null
             })
         };
 
