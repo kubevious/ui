@@ -115,6 +115,7 @@ class RuleEditor extends BaseComponent {
                 script: '',
                 target: ''
             },
+            selectedItemId:  null,
             isSuccess: false,
             selectedItemData: selectedItemDataInit
         }))

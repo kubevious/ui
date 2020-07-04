@@ -4,7 +4,7 @@ import cx from 'classnames'
 import MarkerPreview from '../MarkerPreview'
 import BurgerMenu from '../BurgerMenu';
 
-const ItemsList = ({ type, items, selectedItemId, selectedItem, selectItem, createNewItem, service }) => {
+const ItemsList = ({ type, items, selectedItemId, selectItem, createNewItem, service }) => {
 
     const ruleIndicatorClass = (x) => {
         let indicatorClass
