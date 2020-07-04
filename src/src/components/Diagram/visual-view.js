@@ -645,16 +645,36 @@ class VisualView {
             .exit()
             .remove()
 
-        selection
+        selection = selection
             .enter()
-            .append('text')
+            .append('g')
             .attr('class', 'node-marker')
+            .attr('id', function (d) {
+                return d.id
+            })
             .attr('transform', x => x.transform())
-            .attr('fill', x => x.fill())
-            .html(x => x.html())
             .on('mouseover', function (d) {
                 self._showMarkerTooltip(this, d.marker)
             })
+
+        selection
+            .append('rect')
+            .attr('class', 'marker-bg')
+            .attr('rx', 3)
+            .attr('ry', 3)
+            .attr('width', 20)
+            .attr('height', 20)
+            .style('fill', '#292A2F')
+
+        selection
+            .append('text')
+            .attr('class', 'marker-text')
+            .attr('x', 10)
+            .attr('y', 10)
+            .attr('dominant-baseline', 'middle')
+            .attr('text-anchor', 'middle')
+            .attr('fill', x => x.fill())
+            .html(x => x.html())
     }
 
     _showFlagTooltip(elem, name) {
@@ -711,10 +731,17 @@ class VisualView {
         d3
             .select(visualNode.node)
             .selectAll('.node-marker')
-            .html(x => x.html())
             .transition()
             .duration(duration)
             .attr('transform', x => x.transform())
+
+        d3
+            .select(visualNode.node)
+            .selectAll('.node-marker')
+            .selectAll('.marker-text')
+            .html(x => x.html())
+            .transition()
+            .duration(duration)
             .attr('fill', x => x.fill())
 
         d3

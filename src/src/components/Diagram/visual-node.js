@@ -317,10 +317,9 @@ class VisualNode {
 
         for (var marker of this.markers) {
             this._addToHeader('marker-' + marker, {
-                kind: 'font-icon',
+                kind: 'marker',
                 icon: marker,
-                location: 'right',
-                centerY: 26
+                location: 'right'
             })
         }
         this._markerNodes = this.markers.map(x => new VisualNodeHeaderMarker(this, x))
@@ -394,10 +393,6 @@ class VisualNode {
                     top += cell.height
                 }
             }
-
-            if (header.kind == 'font-icon') {
-                // console.log(header);
-            }
         }
         this._headerWidth = left + right
     }
@@ -448,15 +443,17 @@ class VisualNode {
             // TODO: Error
             return 0
         }
-        if (flavor === 'center' || flavor == 'font-icon') {
+        if (flavor === 'center') {
             return header.centerY;
-            // return header.top + header.height / 2
         }
         if (flavor === 'bounding') {
             return header.bounding.top
         }
         if (header.kind === 'text') {
             return header.top + header.height / 2 + header.height / 4
+        }
+        if (header.kind === 'marker') {
+            return header.top;
         }
         return header.top
     }
@@ -494,9 +491,9 @@ class VisualNode {
         } else if (header.kind === 'icon') {
             header.width = 16
             header.height = 16
-        } else if (header.kind === 'font-icon') {
-            header.width = 16
-            header.height = 16
+        } else if (header.kind === 'marker') {
+            header.width = 20
+            header.height = 20
         }
 
         if (header.bounding) {
@@ -849,7 +846,7 @@ class VisualNodeHeaderMarker extends BaseVisualNodeHeader {
         super(node, 'marker-' + marker, null)
 
         this._marker = marker;
-        this._flavor = 'font-icon';
+        this._flavor = 'marker';
     }
 
     get marker() {
