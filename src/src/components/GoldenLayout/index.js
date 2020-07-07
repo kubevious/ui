@@ -6,12 +6,7 @@ import _ from 'the-lodash'
 import 'golden-layout/src/css/goldenlayout-base.css'
 import 'golden-layout/src/css/goldenlayout-dark-theme.css'
 import GoldenLayout from 'golden-layout'
-import Diagram from '../Diagram'
-import Properties from '../Properties'
-import Alerts from '../Alerts'
-import Timeline from '../Timeline'
-import RuleEditor from '../Editors/RuleEditor'
-import MarkerEditor from '../Editors/MarkerEditor'
+import RegisterComponents from './register-components';
 
 import './styles.scss'
 
@@ -22,69 +17,7 @@ class GoldenLayoutComponent extends BaseComponent {
     }
 
     componentDidMount() {
-        this._register({
-            name: 'Universe',
-            component: Diagram,
-            location: 'main',
-            title: 'Universe',
-            skipClose: true
-        })
-        this._register({
-            name: 'Rule Editor',
-            component: RuleEditor,
-            location: 'main',
-            title: 'Rule Editor'
-        })
-        this._register({
-            name: 'Marker Editor',
-            component: MarkerEditor,
-            location: 'main',
-            title: 'Marker Editor'
-        })
-        this._register({
-            name: 'Properties',
-            component: Properties,
-            location: 'right',
-            title: 'Properties',
-            width: 25,
-            allowVerticalScroll: true
-        })
-        this._register({
-            name: 'Alerts',
-            component: Alerts,
-            location: 'bottom',
-            title: 'Alerts',
-            allowVerticalScroll: true
-        })
-        // this._register({
-        //     name: 'Events',
-        //     component: Events,
-        //     location: 'bottom',
-        //     title: 'Events',
-        //     allowVerticalScroll: true
-        // })
-        // this._register({
-        //     name: 'Logs',
-        //     component: Logs,
-        //     location: 'bottom',
-        //     title: 'Logs',
-        //     allowVerticalScroll: true
-        // })
-        // this._register({
-        //     name: 'UI Logs',
-        //     component: UiLogs,
-        //     location: 'bottom',
-        //     title: 'UI Logs',
-        //     allowVerticalScroll: true
-        // })
-        this._register({
-            name: 'Timeline',
-            component: Timeline,
-            location: 'bottom',
-            title: 'Timeline',
-            allowVerticalScroll: true
-        })
-
+        new RegisterComponents(this)
         this._activateLayout()
     }
 
