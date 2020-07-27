@@ -1,5 +1,73 @@
+.popup-contents {
+  padding: 0 !important;
+}
+
+.close {
+  top: 5px !important;
+}
+
+.Config-header {
+  color: white;
+
+  .cluster {
+    padding: 5px 10px;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: inherit;
+    padding: 20px 25px;
+    border-top: 1px solid #333333;
+    border-bottom: 1px solid #333333;
+
+    h3 {
+      margin: 0;
+      font-weight: bold;
+      font-size: 22px;
+    }
+
+    .buttons-group {
+      .tab-label {
+        margin-right: 10px;
+        color: #666666;
+        font-size: 16px;
+        line-height: 19px;
+      }
+
+      .config-btn {
+        width: 30px;
+        height: 30px;
+        background: #0B0B0C;
+        border: 1px solid #666666;
+        color: white;
+        margin-right: 10px;
+        outline: none;
+
+        &.selected {
+          border: 1px solid #FFFFFF;
+        }
+
+        &.download {
+          background: #4ECD77;
+        }
+
+        &.mr-25 {
+          margin-right: 25px;
+        }
+
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+}
+
 .Config-container {
   font-size: 12px;
+  padding: 20px;
 
   pre {
     font-size: inherit;
