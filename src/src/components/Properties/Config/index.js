@@ -8,6 +8,7 @@ import { parseDn } from '../../../utils/naming-utils';
 import cx from 'classnames'
 import { Controlled as CodeMirrorEditor } from 'react-codemirror2'
 import { faClone as farClone } from '@fortawesome/free-regular-svg-icons'
+import _ from 'the-lodash'
 
 import './styles.scss'
 
@@ -41,6 +42,16 @@ const Config = ({ group, dn }) => {
     useEffect(() => {
         setEditedConfig(jsyaml.safeDump(group.config, { indent }))
     }, [indent])
+
+    const handleEditedMode = () => {
+        setEditMode(!editMode)
+
+        if (!editMode) {
+            _.unset(group.config, ['metadata'])
+            _.unset(group.config, ['status'])
+            setEditedConfig(jsyaml.safeDump(group.config, { indent }))
+        }
+    }
 
     const renderCode = () => {
         const result = hljs.highlight(group.kind, code)
@@ -119,7 +130,7 @@ const Config = ({ group, dn }) => {
 
                         <button
                             className={cx('config-btn mr-25', { 'selected': editMode })}
-                            onClick={() => setEditMode(!editMode)}
+                            onClick={() => handleEditedMode()}
                         >
                             <FontAwesomeIcon icon={faPencilAlt} />
                         </button>
