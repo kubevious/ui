@@ -1,11 +1,35 @@
 .popup-contents {
   padding: 0 !important;
+  overflow: unset !important;
+
+  .Config-container {
+    padding: 20px;
+  }
 }
 
 .close {
   top: 5px !important;
 }
 
+.copy-icon {
+  color: #999999;
+  position: absolute;
+  right: 35px;
+  top: 135px;
+  font-size: 16px;
+  display: none;
+  z-index: 10;
+
+  &:hover {
+    color: white;
+    cursor: pointer;
+  }
+}
+
+.popup-contents .copy-icon {
+  display: block;
+
+}
 .Config-header {
   color: white;
 
@@ -66,15 +90,84 @@
 }
 
 .Config-container {
+  height: calc(100% - 110px);
+  font-family: Montserrat;
   font-size: 12px;
-  padding: 20px;
+  overflow: hidden;
+
+  &.edit-mode {
+    height: calc(100% - 110px - 50px);
+  }
+
+  &:hover {
+    overflow: auto;
+  }
 
   pre {
     font-size: inherit;
     overflow-x: hidden;
   }
 
+  code {
+    font-family: Montserrat, sans-serif;
+    font-weight: bold;
+    line-height: 20px;
+  }
+
   .hljs-attr {
     color: white;
+  }
+
+  .CodeMirror {
+    background: inherit;
+    padding: 15px;
+    position: relative;
+    width: 85vw;
+
+    .CodeMirror-code {
+      font-family: Montserrat;
+      font-weight: bold;
+      line-height: 20px;
+    }
+  }
+}
+
+.footer {
+  border-top: 1px solid #333333;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding: 0 25px;
+
+  .icon-wrapper {
+    margin-left: 10px;
+    color: #999999;
+    position: relative;
+
+    &:hover {
+      color: white;
+      cursor: pointer;
+    }
+
+    .copied-container {
+      position: absolute;
+      top: -35px;
+      left: -70px;
+      width: 160px;
+      display: flex;
+      justify-content: center;
+      background: #4ECD77;
+      border-radius: 3px;
+      color: white;
+
+      .caret {
+        width: 10px;
+        height: 10px;
+        position: absolute;
+        background: #4ECD77;
+        bottom: -5px;
+        transform: rotate(45deg);
+      }
+    }
   }
 }
