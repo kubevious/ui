@@ -35,6 +35,14 @@
 
   .cluster {
     padding: 5px 10px;
+
+    .dn-path {
+      font-size: 18px;
+
+      .kind {
+        font-size: 18px;
+      }
+    }
   }
 
   .header {

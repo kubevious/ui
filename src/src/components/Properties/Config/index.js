@@ -23,12 +23,24 @@ const Config = ({ group, dn }) => {
     const code = jsyaml.safeDump(group.config, { indent })
     const [editedConfig, setEditedConfig] = useState(code)
 
+    const [configCopied, setConfigCopied] = useState(false)
+    const [commandCopied, setCommandCopied] = useState(false)
+
+    const [namespace, setNamespace] = useState(null)
+    const [kubectlCommand, setKubectlCommand] = useState('')
+
+    useEffect(() => {
+        if (dn) {
+            const namespace = parseDn(dn).find(item => item.kind === 'ns').name
+            setNamespace(namespace)
+            const fileName = namespace ? `${namespace}.yaml` : `config.yaml`
+            setKubectlCommand(`kubectl apply -f ${fileName} -n ${namespace}`)
+        }
+    }, [])
+
     useEffect(() => {
         setEditedConfig(jsyaml.safeDump(group.config, { indent }))
     }, [indent])
-
-    const [configCopied, setConfigCopied] = useState(false)
-    const [commandCopied, setCommandCopied] = useState(false)
 
     const renderCode = () => {
         const result = hljs.highlight(group.kind, code)
@@ -41,13 +53,10 @@ const Config = ({ group, dn }) => {
     }
 
     const downloadFile = () => {
-        const namespace = parseDn(dn).find(item => item.kind === 'ns').name
-        const fileName = namespace ? `${namespace}.yaml` : `config.yaml`
-
         const blob = new Blob([editMode ? editedConfig : code], { type: 'application/yaml' })
         const exportElem = document.getElementById('exportAnchor')
         exportElem.setAttribute('href', window.URL.createObjectURL(blob))
-        exportElem.setAttribute('download', fileName)
+        exportElem.setAttribute('download', `${namespace}.yaml`)
         exportElem.click()
     }
 
@@ -55,34 +64,29 @@ const Config = ({ group, dn }) => {
         setEditedConfig(value)
     }
 
-    const copyConfig = () => {
+    const copyText = (type) => {
+        let copiedText = ''
+        switch (type) {
+            case 'config':
+                copiedText = code
+                break
+            case 'command':
+                copiedText = 'kubectl apply -f my-file.yaml -n book'
+                break
+        }
+
         const textField = document.createElement('textarea')
-        textField.innerText = code
+        textField.innerText = copiedText
         document.body.appendChild(textField)
         textField.select()
         document.execCommand('copy')
-        setConfigCopied(true)
+        type === 'config' ? setConfigCopied(true) : setConfigCopied(true)
         textField.remove()
 
         setTimeout(() => {
-            setConfigCopied(false)
+            type === 'config' ? setConfigCopied(false) : setConfigCopied(false)
         }, 3000)
     }
-
-    const copyCommand = () => {
-        const textField = document.createElement('textarea')
-        textField.innerText = 'kubectl apply -f my-file.yaml -n book'
-        document.body.appendChild(textField)
-        textField.select()
-        document.execCommand('copy')
-        setCommandCopied(true)
-        textField.remove()
-
-        setTimeout(() => {
-            setCommandCopied(false)
-        }, 3000)
-    }
-
 
     return (
         <>
@@ -132,7 +136,7 @@ const Config = ({ group, dn }) => {
 
             <div className={cx('Config-container', { 'edit-mode': editMode })}>
                 {configCopied ? <FontAwesomeIcon className="copy-icon" icon={faCheck} /> :
-                    <FontAwesomeIcon className="copy-icon" icon={farClone} onClick={() => copyConfig()} />
+                    <FontAwesomeIcon className="copy-icon" icon={farClone} onClick={() => copyText('config')} />
                 }
 
                 {!editMode && renderCode()}
@@ -149,14 +153,14 @@ const Config = ({ group, dn }) => {
             </div>
 
             {editMode && <div className="footer">
-                $ kubectl apply -f my-file.yaml -n book
+                $ {kubectlCommand}
 
                 <div className="icon-wrapper">
                     {commandCopied && <div className="copied-container">
                         Copied to clipboard
                         <div className="caret" />
                     </div>}
-                    <FontAwesomeIcon icon={farClone} onClick={() => copyCommand()} />
+                    <FontAwesomeIcon icon={farClone} onClick={() => copyText('command')} />
                 </div>
             </div>}
         </>
