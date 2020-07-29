@@ -4,7 +4,6 @@ import hljs from 'highlight.js'
 import DnComponent from '../../DnComponent'
 import { faCheck, faDownload, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { parseDn } from '../../../utils/naming-utils';
 import cx from 'classnames'
 import { Controlled as CodeMirrorEditor } from 'react-codemirror2'
 import { faClone as farClone } from '@fortawesome/free-regular-svg-icons'
@@ -31,22 +30,28 @@ const Config = ({ group, dn }) => {
     const [kubectlCommand, setKubectlCommand] = useState('')
 
     useEffect(() => {
-        if (dn) {
-            const namespace = parseDn(dn).find(item => item.kind === 'ns') ? parseDn(dn).find(item => item.kind === 'ns').name : null
-            const name = parseDn(dn).find(item => item.kind === 'app') ? parseDn(dn).find(item => item.kind === 'app').name : null
-            const kind = parseDn(dn).find(item => item.kind === 'launcher') ? parseDn(dn).find(item => item.kind === 'launcher').name : null
 
-            let fn = 'config.yaml'
-            if (kind || name || namespace) {
-                fn = [kind, namespace, name]
-                    .filter(item => item)
-                    .map(item => item.toLocaleLowerCase()).join('-') + '.yaml'
-            }
+        var namespace = _.get(group.config, 'metadata.namespace');
+        var nameParts = [];
+        nameParts.push(_.get(group.config, 'kind'));
+        nameParts.push(namespace);
+        nameParts.push(_.get(group.config, 'metadata.name'));
+        nameParts = nameParts.filter(x => x);
 
-            setFileName(fn)
-
-            setKubectlCommand(`kubectl apply -f ${fn} -n ${namespace}`)
+        if (nameParts.length == 0) {
+            nameParts.push('config');
         }
+
+        nameParts = nameParts.map(x => x.toLocaleLowerCase());
+
+        let fn = nameParts.join('-') + '.yaml';
+        setFileName(fn)
+
+        var command = `kubectl apply -f ${fn}`;
+        if (namespace) {
+            command = command + ` -n ${namespace}`;
+        }
+        setKubectlCommand(command)
     }, [])
 
     useEffect(() => {
@@ -99,7 +104,7 @@ const Config = ({ group, dn }) => {
                 copiedText = code
                 break
             case 'command':
-                copiedText = 'kubectl apply -f my-file.yaml -n book'
+                copiedText = kubectlCommand
                 break
         }
 
