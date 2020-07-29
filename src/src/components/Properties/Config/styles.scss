@@ -99,12 +99,15 @@
 
 .Config-container {
   height: calc(100% - 110px);
-  font-family: Montserrat;
+  font-family: Montserrat, serif;
   font-size: 12px;
   overflow: hidden;
+  padding: 24px !important;
 
   &.edit-mode {
+    background: #181819d6;
     height: calc(100% - 110px - 50px);
+    padding: 20px !important;
   }
 
   &:hover {
@@ -116,26 +119,36 @@
     overflow-x: hidden;
   }
 
-  code {
-    font-family: Montserrat, sans-serif;
-    font-weight: bold;
-    line-height: 20px;
-  }
-
   .hljs-attr {
     color: white;
   }
 
   .CodeMirror {
     background: inherit;
-    padding: 15px;
     position: relative;
     width: 85vw;
 
+    &.cm-s-darcula {
+      border: none;
+    }
+
     .CodeMirror-code {
-      font-family: Montserrat;
-      font-weight: bold;
-      line-height: 20px;
+      font-family: 'Liberation Mono', monospace;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 18px;
+
+      .cm-atom, .cm-meta {
+        color: white;
+      }
+
+      .cm-number {
+        color: #ffcd22;
+      }
+
+      span[role='presentation'], .cm-string {
+        color: #ec7600;
+      }
     }
   }
 }
@@ -167,6 +180,7 @@
       background: #4ECD77;
       border-radius: 3px;
       color: white;
+      z-index: 10;
 
       .caret {
         width: 10px;

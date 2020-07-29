@@ -21,35 +21,52 @@ const Config = ({ group, dn }) => {
     const [indent, setIndent] = useState(2)
     const [editMode, setEditMode] = useState(false)
 
-    const code = jsyaml.safeDump(group.config, { indent })
+    const [code, setCode] = useState(jsyaml.safeDump(group.config, { indent }))
     const [editedConfig, setEditedConfig] = useState(code)
 
     const [configCopied, setConfigCopied] = useState(false)
     const [commandCopied, setCommandCopied] = useState(false)
 
-    const [namespace, setNamespace] = useState(null)
+    const [fileName, setFileName] = useState('config.yaml')
     const [kubectlCommand, setKubectlCommand] = useState('')
 
     useEffect(() => {
         if (dn) {
-            const namespace = parseDn(dn).find(item => item.kind === 'ns').name
-            setNamespace(namespace)
-            const fileName = namespace ? `${namespace}.yaml` : `config.yaml`
-            setKubectlCommand(`kubectl apply -f ${fileName} -n ${namespace}`)
+            const namespace = parseDn(dn).find(item => item.kind === 'ns') ? parseDn(dn).find(item => item.kind === 'ns').name : null
+            const name = parseDn(dn).find(item => item.kind === 'app') ? parseDn(dn).find(item => item.kind === 'app').name : null
+            const kind = parseDn(dn).find(item => item.kind === 'launcher') ? parseDn(dn).find(item => item.kind === 'launcher').name : null
+
+            let fn = 'config.yaml'
+            if (kind || name || namespace) {
+                fn = [kind, namespace, name]
+                    .filter(item => item)
+                    .map(item => item.toLocaleLowerCase()).join('-') + '.yaml'
+            }
+
+            setFileName(fn)
+
+            setKubectlCommand(`kubectl apply -f ${fn} -n ${namespace}`)
         }
     }, [])
 
     useEffect(() => {
-        setEditedConfig(jsyaml.safeDump(group.config, { indent }))
+        setCode(jsyaml.safeDump(group.config, { indent }))
+        setEditedConfig(jsyaml.safeDump(jsyaml.load(editedConfig), { indent }))
     }, [indent])
 
     const handleEditedMode = () => {
         setEditMode(!editMode)
 
         if (!editMode) {
-            _.unset(group.config, ['metadata'])
-            _.unset(group.config, ['status'])
-            setEditedConfig(jsyaml.safeDump(group.config, { indent }))
+            let conf = group.config
+            _.unset(conf, ['metadata', 'uid'])
+            _.unset(conf, ['metadata', 'selfLink'])
+            _.unset(conf, ['metadata', 'resourceVersion'])
+            _.unset(conf, ['metadata', 'generation'])
+            _.unset(conf, ['metadata', 'creationTimestamp'])
+            _.unset(conf, ['status'])
+
+            setEditedConfig(jsyaml.safeDump(conf, { indent }))
         }
     }
 
@@ -67,7 +84,7 @@ const Config = ({ group, dn }) => {
         const blob = new Blob([editMode ? editedConfig : code], { type: 'application/yaml' })
         const exportElem = document.getElementById('exportAnchor')
         exportElem.setAttribute('href', window.URL.createObjectURL(blob))
-        exportElem.setAttribute('download', `${namespace}.yaml`)
+        exportElem.setAttribute('download', fileName)
         exportElem.click()
     }
 
@@ -91,11 +108,11 @@ const Config = ({ group, dn }) => {
         document.body.appendChild(textField)
         textField.select()
         document.execCommand('copy')
-        type === 'config' ? setConfigCopied(true) : setConfigCopied(true)
+        type === 'config' ? setConfigCopied(true) : setCommandCopied(true)
         textField.remove()
 
         setTimeout(() => {
-            type === 'config' ? setConfigCopied(false) : setConfigCopied(false)
+            type === 'config' ? setConfigCopied(false) : setCommandCopied(false)
         }, 3000)
     }
 
@@ -154,7 +171,7 @@ const Config = ({ group, dn }) => {
 
                 {editMode && <CodeMirrorEditor
                     value={editedConfig}
-                    name="code"
+                    name="editedConfig"
                     options={{
                         mode: 'yaml',
                         theme: 'darcula',
