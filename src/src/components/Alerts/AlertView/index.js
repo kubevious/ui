@@ -4,13 +4,19 @@ import cx from 'classnames'
 import { prettyKind } from '../../../utils/ui-utils';
 import { sortSeverity, uniqueMessages, uniqueObjects } from '../../../utils/util';
 
-const AlertView = ({ alerts, clickDn }) => {
+const AlertView = ({ alerts, clickDn, openRule }) => {
     const [group, setGroup] = useState('no')
+
+    const clickMessage = (alert) => {
+        if (alert.source.kind === 'rule') {
+            openRule(alert.source.name)
+        }
+    }
 
     const renderAlert = ({ alert, shouldRenderDn = true }) => {
         return (
             <div className="alert-detail" key={alert.id}>
-                <div className="message-container">
+                <div className="message-container" onClick={() => clickMessage(alert)}>
                     <div className={'alert-item ' + alert.severity} />
                     {alert.msg}
                 </div>
@@ -36,17 +42,17 @@ const AlertView = ({ alerts, clickDn }) => {
     }
 
     const renderMessageGroup = () => {
-        const messages = uniqueMessages(alerts.map(({ msg, severity }) => ({ msg, severity })))
+        const messages = uniqueMessages(alerts.map(({ msg, severity, source }) => ({ msg, severity, source })))
             .map(m => ({
                 ...m,
-                alerts: alerts.filter(a => a.severity === m.severity),
+                alerts: alerts.filter(a => a.severity === m.severity && a.msg === m.msg),
             })).sort(sortSeverity)
 
         return (
             <>
                 {messages.map((message, index) => (
                     <div className="message-group-container" key={index}>
-                        <div className="message-container">
+                        <div className="message-container" onClick={() => clickMessage(message)}>
                             <div className={'alert-item ' + message.severity} />
                             {message.msg}
                         </div>

@@ -14,6 +14,7 @@ class Alerts extends BaseComponent {
         }
 
         this.clickDn = this.clickDn.bind(this)
+        this.openRule = this.openRule.bind(this)
     }
 
     componentDidMount() {
@@ -28,12 +29,20 @@ class Alerts extends BaseComponent {
         this.sharedState.set('auto_pan_to_selected_dn', true);
     }
 
+    openRule(ruleName) {
+        this.sharedState.set('rule_editor_selected_rule_id', ruleName);
+    }
+
     render() {
         const { alerts } = this.state
 
         return (
             <div id="alertsComponent">
-                {!isEmptyArray(alerts) && <AlertView alerts={alerts.sort(sortSeverity)} clickDn={this.clickDn} />}
+                {!isEmptyArray(alerts) && <AlertView
+                    alerts={alerts.sort(sortSeverity)}
+                    clickDn={this.clickDn}
+                    openRule={this.openRule}
+                />}
             </div>
         )
     }
