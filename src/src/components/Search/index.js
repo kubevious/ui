@@ -35,6 +35,7 @@ class Search extends BaseComponent {
                         className="form-control search-input"
                         placeholder="Search"
                         value={value}
+                        autoFocus={true}
                         onChange={(e) => this.handleChange(e)}
                     />
                 </div>
