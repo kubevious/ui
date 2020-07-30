@@ -49,6 +49,10 @@ class RuleEditor extends BaseComponent {
                 selectedItemData: value
             });
         });
+
+        this.subscribeToSharedState('rule_editor_selected_rule_id', (rule_editor_selected_rule_id) => {
+            this.selectItem({ name: rule_editor_selected_rule_id })
+        })
     }
 
     selectItem(rule) {

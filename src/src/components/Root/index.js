@@ -72,6 +72,12 @@ class Root extends BaseComponent {
                 }
             }
         );
+
+        this.subscribeToSharedState('rule_editor_selected_rule_id', (rule_editor_selected_rule_id) => {
+            if (rule_editor_selected_rule_id) {
+                value.activateComponent('ruleEditorComponent')
+            }
+        })
     }
 
     closeError() {
