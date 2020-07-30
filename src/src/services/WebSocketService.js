@@ -27,6 +27,21 @@ class WebSocketService
             {
                 if (target.dn == this.sharedState.get('selected_dn'))
                 {
+                    // TODO: Temporary change until backend returns the dn.
+                    if (value)
+                    {
+                        if (value.alerts)
+                        {
+                            for(var alert of value.alerts)
+                            {
+                                if (!alert.dn)
+                                {
+                                    alert.dn = target.dn;
+                                }
+                            }
+                        }
+                    }
+                    
                     this.sharedState.set('selected_object_assets', value);
                 }
             }
