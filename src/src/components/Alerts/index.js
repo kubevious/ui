@@ -1,7 +1,7 @@
 import React from 'react'
 import BaseComponent from '../../HOC/BaseComponent'
-import AlertTable from './AlertTable'
-import { isEmptyArray } from '../../utils/util'
+import AlertView from './AlertView'
+import { isEmptyArray, sortSeverity } from '../../utils/util'
 
 import './styles.scss'
 
@@ -10,8 +10,10 @@ class Alerts extends BaseComponent {
         super(props)
 
         this.state = {
-            alerts: []
+            alerts: [],
         }
+
+        this.clickDn = this.clickDn.bind(this)
     }
 
     componentDidMount() {
@@ -21,12 +23,17 @@ class Alerts extends BaseComponent {
             })
     }
 
+    clickDn(dn) {
+        this.sharedState.set('selected_dn', dn);
+        this.sharedState.set('auto_pan_to_selected_dn', true);
+    }
+
     render() {
         const { alerts } = this.state
 
         return (
             <div id="alertsComponent">
-                {!isEmptyArray(alerts) && <AlertTable alerts={alerts}/>}
+                {!isEmptyArray(alerts) && <AlertView alerts={alerts.sort(sortSeverity)} clickDn={this.clickDn} />}
             </div>
         )
     }
