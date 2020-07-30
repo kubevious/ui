@@ -9,7 +9,7 @@ const AlertView = ({ alerts, clickDn, openRule }) => {
 
     const clickMessage = (alert) => {
         if (alert.source.kind === 'rule') {
-            openRule(alert.source.name)
+            openRule(alert.source.id)
         }
     }
 

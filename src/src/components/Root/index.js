@@ -73,11 +73,13 @@ class Root extends BaseComponent {
             }
         );
 
-        this.subscribeToSharedState('rule_editor_selected_rule_id', (rule_editor_selected_rule_id) => {
-            if (rule_editor_selected_rule_id) {
-                value.activateComponent('ruleEditorComponent')
-            }
-        })
+        this.subscribeToSharedState(['rule_editor_selected_rule_id', 'focus_rule_editor' ],
+            ({rule_editor_selected_rule_id, focus_rule_editor}) => {
+                if (rule_editor_selected_rule_id && focus_rule_editor) {
+                    value.activateComponent('ruleEditorComponent')
+                    this.sharedState.set('focus_rule_editor', false)
+                }
+            });
     }
 
     closeError() {
