@@ -28,7 +28,7 @@ class Search extends BaseComponent {
         const { value, result } = this.state
 
         return (
-            <>
+            <div className="Search-wrapper p-40 overflow-hide">
                 <div className="form-group has-success">
                     <input
                         type="text"
@@ -44,7 +44,7 @@ class Search extends BaseComponent {
                         <DnShortcutComponent key={index} dn={item.dn} sharedState={this.sharedState} hidePopup={this.props.closePopup}/>
                     ))}
                 </div>
-            </>
+            </div>
         )
     }
 }

@@ -1,14 +1,5 @@
-.popup-contents {
-  padding: 0 !important;
-  overflow: unset !important;
-
-  .Config-container {
-    padding: 20px;
-  }
-}
-
-.close {
-  top: 5px !important;
+.popup-contents .Config-container {
+  padding: 24px;
 }
 
 .copy-icon {
@@ -102,12 +93,12 @@
   font-family: Montserrat, serif;
   font-size: 12px;
   overflow: hidden;
-  padding: 24px !important;
+  padding: 0;
 
   &.edit-mode {
     background: #181819d6;
     height: calc(100% - 110px - 50px);
-    padding: 20px !important;
+    padding: 20px;
   }
 
   &:hover {
