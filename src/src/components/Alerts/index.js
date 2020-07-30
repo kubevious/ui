@@ -31,6 +31,7 @@ class Alerts extends BaseComponent {
 
     openRule(ruleName) {
         this.sharedState.set('rule_editor_selected_rule_id', ruleName);
+        this.sharedState.set('focus_rule_editor', true);
     }
 
     render() {
