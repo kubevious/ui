@@ -38,7 +38,7 @@ const Config = ({ group, dn }) => {
         nameParts.push(_.get(group.config, 'metadata.name'));
         nameParts = nameParts.filter(x => x);
 
-        if (nameParts.length == 0) {
+        if (nameParts.length === 0) {
             nameParts.push('config');
         }
 
@@ -55,7 +55,7 @@ const Config = ({ group, dn }) => {
     }, [])
 
     useEffect(() => {
-        setCode(jsyaml.safeDump(group.config, { indent }))
+        setCode(jsyaml.safeDump(jsyaml.load(code), { indent }))
         setEditedConfig(jsyaml.safeDump(jsyaml.load(editedConfig), { indent }))
     }, [indent])
 
@@ -63,7 +63,7 @@ const Config = ({ group, dn }) => {
         setEditMode(!editMode)
 
         if (!editMode) {
-            let conf = group.config
+            const conf = _.cloneDeep(group.config)
             _.unset(conf, ['metadata', 'uid'])
             _.unset(conf, ['metadata', 'selfLink'])
             _.unset(conf, ['metadata', 'resourceVersion'])
@@ -101,7 +101,7 @@ const Config = ({ group, dn }) => {
         let copiedText = ''
         switch (type) {
             case 'config':
-                copiedText = code
+                copiedText = editMode ? editedConfig : code
                 break
             case 'command':
                 copiedText = kubectlCommand
@@ -109,7 +109,7 @@ const Config = ({ group, dn }) => {
         }
 
         const textField = document.createElement('textarea')
-        textField.innerText = copiedText
+        textField.value = copiedText
         document.body.appendChild(textField)
         textField.select()
         document.execCommand('copy')
