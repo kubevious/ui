@@ -122,7 +122,7 @@ const Config = ({ group, dn }) => {
     }
 
     return (
-        <>
+        <div className="Config-wrapper">
             {dn && <div className="Config-header">
                 <div className="cluster">
                     <DnComponent dn={dn} />
@@ -196,7 +196,7 @@ const Config = ({ group, dn }) => {
                     <FontAwesomeIcon icon={farClone} onClick={() => copyText('command')} />
                 </div>
             </div>}
-        </>
+        </div>
     )
 }
 
