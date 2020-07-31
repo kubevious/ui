@@ -2,19 +2,18 @@ import React, { useEffect, useState } from 'react'
 import jsyaml from 'js-yaml'
 import hljs from 'highlight.js'
 import DnComponent from '../../DnComponent'
-import { faCheck, faDownload, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
+import { faDownload, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import cx from 'classnames'
 import { Controlled as CodeMirrorEditor } from 'react-codemirror2'
-import { faClone as farClone } from '@fortawesome/free-regular-svg-icons'
 import _ from 'the-lodash'
+import CopyClipboard from '../../CopyClipboard';
 
 import './styles.scss'
 
 import 'codemirror/theme/darcula.css'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/mode/yaml/yaml'
-
 
 const Config = ({ group, dn }) => {
     const [indent, setIndent] = useState(2)
@@ -23,14 +22,10 @@ const Config = ({ group, dn }) => {
     const [code, setCode] = useState(jsyaml.safeDump(group.config, { indent }))
     const [editedConfig, setEditedConfig] = useState(code)
 
-    const [configCopied, setConfigCopied] = useState(false)
-    const [commandCopied, setCommandCopied] = useState(false)
-
     const [fileName, setFileName] = useState('config.yaml')
     const [kubectlCommand, setKubectlCommand] = useState('')
 
     useEffect(() => {
-
         var namespace = _.get(group.config, 'metadata.namespace');
         var nameParts = [];
         nameParts.push(_.get(group.config, 'kind'));
@@ -97,30 +92,6 @@ const Config = ({ group, dn }) => {
         setEditedConfig(value)
     }
 
-    const copyText = (type) => {
-        let copiedText = ''
-        switch (type) {
-            case 'config':
-                copiedText = editMode ? editedConfig : code
-                break
-            case 'command':
-                copiedText = kubectlCommand
-                break
-        }
-
-        const textField = document.createElement('textarea')
-        textField.value = copiedText
-        document.body.appendChild(textField)
-        textField.select()
-        document.execCommand('copy')
-        type === 'config' ? setConfigCopied(true) : setCommandCopied(true)
-        textField.remove()
-
-        setTimeout(() => {
-            type === 'config' ? setConfigCopied(false) : setCommandCopied(false)
-        }, 3000)
-    }
-
     return (
         <div className="Config-wrapper">
             {dn && <div className="Config-header">
@@ -139,6 +110,7 @@ const Config = ({ group, dn }) => {
                         <button
                             className={cx('config-btn', { 'selected': indent === 2 })}
                             onClick={() => setIndent(2)}
+                            title="Set tab size to 2 spaces"
                         >
                             2
                         </button>
@@ -146,6 +118,7 @@ const Config = ({ group, dn }) => {
                         <button
                             className={cx('config-btn mr-25', { 'selected': indent === 4 })}
                             onClick={() => setIndent(4)}
+                            title="Set tab size to 4 spaces"
                         >
                             4
                         </button>
@@ -153,6 +126,7 @@ const Config = ({ group, dn }) => {
                         <button
                             className={cx('config-btn mr-25', { 'selected': editMode })}
                             onClick={() => handleEditedMode()}
+                            title={`${editMode ? 'Disable' : 'Enable'} configuration editor`}
                         >
                             <FontAwesomeIcon icon={faPencilAlt} />
                         </button>
@@ -160,6 +134,7 @@ const Config = ({ group, dn }) => {
                         <button
                             className="config-btn download mr-25"
                             onClick={() => downloadFile()}
+                            title="Download"
                         >
                             <FontAwesomeIcon icon={faDownload} />
                         </button>
@@ -168,9 +143,7 @@ const Config = ({ group, dn }) => {
             </div>}
 
             <div className={cx('Config-container', { 'edit-mode': editMode })}>
-                {configCopied ? <FontAwesomeIcon className="copy-icon" icon={faCheck} /> :
-                    <FontAwesomeIcon className="copy-icon" icon={farClone} onClick={() => copyText('config')} />
-                }
+                <CopyClipboard text={editMode ? editedConfig : code} />
 
                 {!editMode && renderCode()}
 
@@ -188,13 +161,7 @@ const Config = ({ group, dn }) => {
             {editMode && <div className="footer">
                 $ {kubectlCommand}
 
-                <div className="icon-wrapper">
-                    {commandCopied && <div className="copied-container">
-                        Copied to clipboard
-                        <div className="caret" />
-                    </div>}
-                    <FontAwesomeIcon icon={farClone} onClick={() => copyText('command')} />
-                </div>
+                <CopyClipboard text={kubectlCommand} />
             </div>}
         </div>
     )
