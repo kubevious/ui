@@ -159,7 +159,7 @@ const Config = ({ group, dn }) => {
             </div>
 
             {editMode && <div className="footer">
-                $ {kubectlCommand}
+                <span className="run-command">$ {kubectlCommand}</span>
 
                 <CopyClipboard text={kubectlCommand} />
             </div>}

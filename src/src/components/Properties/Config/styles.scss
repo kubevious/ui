@@ -101,6 +101,11 @@
     overflow-x: hidden;
   }
 
+  code {
+    font-family: Inconsolata, monospace;
+    font-size: 14px;
+  }
+
   .hljs-attr {
     color: white;
   }
@@ -115,10 +120,9 @@
     }
 
     .CodeMirror-code {
-      font-family: 'Liberation Mono', monospace;
-      font-weight: 400;
-      font-size: 12px;
-      line-height: 18px;
+      font-family: Inconsolata, monospace;
+      font-size: 14px;
+      line-height: 21px;
 
       .cm-atom, .cm-meta {
         color: white;
@@ -136,18 +140,17 @@
 }
 
 .footer {
-  border-top: 1px solid #333333;
-  height: 50px;
   display: flex;
   align-items: center;
+  border-top: 1px solid #333333;
+  height: 50px;
   padding: 0 25px;
-  position: relative;
 
   .icon-wrapper {
+    width: 16px;
+    height: 16px;
     margin-left: 10px;
+    margin-bottom: 5px;
     color: #999999;
-    position: absolute;
-    left: 240px;
-    top: 15px;
   }
 }
