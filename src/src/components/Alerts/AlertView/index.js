@@ -31,12 +31,16 @@ const AlertView = ({ alerts, clickDn, openRule }) => {
 
         return (
             <div className="dn-container" key={dn} onClick={() => clickDn(dn)}>
-                <img className="dn-logo" src="/img/entities/ns.svg" alt="logo" />
+                <div className="logo-container">
+                    <img className="dn-logo" src="/img/entities/ns.svg" alt="logo" />
+                </div>
+                <div className="parts-container">
                 {dnParts.map(part => (
                     <span className="dn-part" key={part.name}>
                         {prettyKind(part.kind)} {part.name}
                     </span>
                 ))}
+                </div>
             </div>
         )
     }

@@ -29,7 +29,7 @@
   }
 
   .message-container {
-    width: 250px;
+    width: 40%;
     word-break: break-word;
 
     &:hover {
@@ -37,7 +37,7 @@
     }
 
     .dn-container {
-      width: calc(100% - 250px - 40px);
+      width: 60%;
     }
   }
 
@@ -50,7 +50,11 @@
 
   .message-container, .object-container {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+
+    .alert-item {
+      margin-top: 3px;
+    }
   }
 
   .message-objects .dn-container, .object-container .dn-container {
@@ -64,8 +68,8 @@
   }
 
   .dn-container {
-    margin-left: 40px;
-    max-width: 500px;
+    display: flex;
+    width: 60%;
 
     &:hover {
       cursor: pointer;
