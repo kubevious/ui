@@ -13,10 +13,11 @@ const AlertView = ({ alerts, clickDn, openRule }) => {
         }
     }
 
-    const renderAlert = ({ alert, shouldRenderDn = true }) => {
+    const renderAlert = ({ alert, index, shouldRenderDn = true }) => {
         return (
-            <div className="alert-detail" key={alert.id}>
-                <div className="message-container" onClick={() => clickMessage(alert)}>
+            <div className={cx('alert-detail', { 'even': index % 2 !== 0 })} key={alert.id}>
+                <div className={cx('message-container', { 'rule': alert.source.kind === 'rule' })}
+                     onClick={() => clickMessage(alert)}>
                     <div className={'alert-item ' + alert.severity} />
                     {alert.msg}
                 </div>
@@ -35,11 +36,11 @@ const AlertView = ({ alerts, clickDn, openRule }) => {
                     <img className="dn-logo" src="/img/entities/ns.svg" alt="logo" />
                 </div>
                 <div className="parts-container">
-                {dnParts.map(part => (
-                    <span className="dn-part" key={part.name}>
+                    {dnParts.map(part => (
+                        <span className="dn-part" key={part.name}>
                         {prettyKind(part.kind)} {part.name}
                     </span>
-                ))}
+                    ))}
                 </div>
             </div>
         )
@@ -96,10 +97,9 @@ const AlertView = ({ alerts, clickDn, openRule }) => {
 
     return (
         <div className="AlertView-container">
-
-            <div className="alerts">
+            <div className={`alerts group-${group}`}>
                 {group === 'no' && <>
-                    {alerts.map(alert => renderAlert({ alert }))}
+                    {alerts.map((alert, index) => renderAlert({ alert, index }))}
                 </>}
 
                 {group === 'message' && renderMessageGroup()}

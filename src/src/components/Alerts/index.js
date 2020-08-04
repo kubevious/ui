@@ -22,6 +22,8 @@ class Alerts extends BaseComponent {
             selected_object_assets => {
                 this.setState({ alerts: selected_object_assets })
             })
+
+        document.getElementById('alertsComponent').parentElement.style.overflow = 'hidden'
     }
 
     clickDn(dn) {

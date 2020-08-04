@@ -1,11 +1,30 @@
+#alertsComponent {
+  height: 100%;
+}
+
 .AlertView-container {
   display: flex;
   justify-content: space-between;
-  padding: 10px 10px 0 10px;
   font-size: 14px;
+  height: 100%;
 
   .alerts {
     width: calc(100% - 160px);
+    border-right: 1px solid #474D54;
+    padding-top: 5px;
+    overflow-y: hidden;
+
+    &:hover {
+      overflow-y: auto;
+    }
+
+    &.group-no .alert-detail.even {
+      background: #474D54;
+    }
+
+    &.group-object, &.group-message {
+      padding: 5px;
+    }
   }
 
   .alert-item {
@@ -32,8 +51,9 @@
     width: 40%;
     word-break: break-word;
 
-    &:hover {
+    &.rule:hover {
       cursor: pointer;
+      text-decoration: underline;
     }
 
     .dn-container {
@@ -63,8 +83,9 @@
 
   .alert-detail {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     margin-bottom: 5px;
+    padding: 0 5px;
   }
 
   .dn-container {
@@ -73,6 +94,7 @@
 
     &:hover {
       cursor: pointer;
+      text-decoration: underline;
     }
 
     .dn-logo {
@@ -103,6 +125,7 @@
 
   .group-options {
     width: 160px;
+    padding: 10px;
 
     .option {
       display: flex;
