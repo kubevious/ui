@@ -19666,7 +19666,7 @@ export const ALERTS_DATA = [
         'severity': 'error',
         'msg': 'Rule container-memory-usage failed. Memory request is not set.',
         'source': { kind: 'rule', id: 'rule 2'},
-        'dn': 'root/ns-[gitlab]/app-[gitlab-gitlab-exporter]/initcont-[configure]/image-[busybox]',
+        'dn': 'root/ns-[gitlab]/app-[gitlab-gitlab-exporter]/initcont-[configure]',
     },
     {
         'id': 'ContainersReady-2019-12-27T19:47:59Z',
