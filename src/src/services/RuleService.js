@@ -1,7 +1,11 @@
-class RuleService {
-    constructor(client)
+import BaseService from './BaseService'
+
+class RuleService extends BaseService {
+    constructor(client, sharedState, socket)
     {
-        this._client = client;
+        super(client, sharedState, socket)
+
+        this._setupWebSocket();
     }
 
     backendFetchRuleList(cb) {
@@ -43,6 +47,36 @@ class RuleService {
         return this._client.post('/rules/import', policies)
             .then(result => {
                 cb(result.data);
+            });
+    }
+
+    _setupWebSocket()
+    {
+        this.sharedState.set('rule_editor_items', []);
+
+        this._socketSubscribe({ kind: 'rules-statuses' }, value => {
+            if (!value) {
+                value = [];
+            }
+            this.sharedState.set('rule_editor_items', value)
+        });
+
+        var selectedRuleScope = this._socketScope((value, target) => {
+
+            this.sharedState.set('rule_editor_selected_rule_status', value);
+
+        });
+
+        this.sharedState.subscribe('rule_editor_selected_rule_id',
+            (rule_editor_selected_rule_id) => {
+
+                selectedRuleScope.replace([
+                    { 
+                        kind: 'rule-result',
+                        name: rule_editor_selected_rule_id
+                    }
+                ]);
+
             });
     }
 }
