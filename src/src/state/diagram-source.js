@@ -4,7 +4,14 @@ class DiagramSource
 {
     constructor(sharedState, socket)
     {
-        this._sharedState = sharedState;
+        if (!sharedState) {
+            throw new Error("SharedState not provided");
+        }
+        if (!socket) {
+            throw new Error("SocketService not provided");
+        }
+
+        this._sharedState = sharedState.user();
         this._socket = socket;
 
         this._delayedActions = {};
@@ -27,6 +34,14 @@ class DiagramSource
                     this._handleTreeChange();
                 }
             });
+    }
+
+    close()
+    {
+        this._sharedState.close();
+
+        // TODO: 
+        // CLose the SOCKET subscriptions
     }
 
     getChildren(dn)

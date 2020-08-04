@@ -16,7 +16,8 @@ class KubeviousHandler
 
     close()
     {
-        // handle
+        this._stateHandler.close();
+        this._diagramSource.close();
     }
 
 }

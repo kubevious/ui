@@ -25,11 +25,15 @@ class BaseComponent extends PureComponent {
     }
 
     subscribeToSharedState(subscribers, cb) {
-        this._subscribers = this._subscribers.concat(this._sharedState.subscribe(subscribers, cb).subscriber)
+        var subscriber = this._sharedState.subscribe(subscribers, cb);
+        this._subscribers.push(subscriber);
     }
 
     unsubscribeFromSharedState() {
-        this._sharedState.unsubscribe(this._subscribers)
+        for(var x of this._subscribers) {
+            x.close();
+        }
+        this._subscribers = [];
     }
 
     componentWillUnmount() {

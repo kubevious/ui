@@ -2,10 +2,11 @@ import axios from 'axios'
 import RemoteTrack from '../utils/remote-track';
 
 class BackendClient {
-    constructor(urlBase, sharedState)
+    constructor(urlBase, sharedState, headers)
     {
         this._urlBase = urlBase;
-        this._remoteTrack = new RemoteTrack(sharedState)
+        this._remoteTrack = new RemoteTrack(sharedState);
+        this._headers = headers || {};
     }
 
     get(url, params) {
@@ -31,7 +32,8 @@ class BackendClient {
         
         var options = {
             method: method,
-            url: url
+            url: url,
+            headers: this._headers
         };
 
         if (params) {

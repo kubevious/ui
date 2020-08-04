@@ -3,15 +3,23 @@ import { splitDn } from '../utils/naming-utils'
 import FieldsSaver from '../utils/save-fields';
 
 class StateHandler {
-    constructor(state, diagramService) {
-        this.sharedState = state;
+    constructor(sharedState, diagramService) {
+        if (!sharedState) {
+            throw new Error("SharedState not provided");
+        }
+        if (!diagramService) {
+            throw new Error("DiagramService not provided");
+        }
+
+        this.sharedState = sharedState.user();
         this._service = diagramService;
         this._fieldsSaver = new FieldsSaver('Diagram')
         this._setup();
     }
 
-    close() {
-
+    close()
+    {
+        this.sharedState.close();
     }
 
     _setup() {
