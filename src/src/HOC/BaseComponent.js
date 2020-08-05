@@ -6,10 +6,14 @@ class BaseComponent extends PureComponent {
         super(props);
 
         this._service = null;
-        this._sharedState = sharedState
+        this._sharedState = sharedState.user();
         this._subscribers = []
 
         console.log('[BaseComponent] ' + this.constructor.name + ' constructor. Props:', this.props);
+    }
+
+    get rootApi() {
+        return api;
     }
 
     get service() {
