@@ -21,13 +21,13 @@ class DiagramSource
 
         this._setupSocketSubscriptions();
 
-        this._sharedState.subscribe('diagram_expanded_dns', 
+        this._sharedState.subscribe('diagram_expanded_dns',
             (diagram_expanded_dns) => {
                 this._updateSubscriptions();
                 this._handleTreeChange();
             });
 
-        this._sharedState.subscribe('time_machine_enabled', 
+        this._sharedState.subscribe('time_machine_enabled',
             (time_machine_enabled) => {
                 if (!time_machine_enabled)
                 {
@@ -39,9 +39,7 @@ class DiagramSource
     close()
     {
         this._sharedState.close();
-
-        // TODO: 
-        // CLose the SOCKET subscriptions
+        this._socket.close();
     }
 
     getChildren(dn)
@@ -61,7 +59,7 @@ class DiagramSource
             } else {
                 delete this._nodeData[target.dn];
             }
-            
+
             this._handleTreeChange();
 
         });
@@ -92,7 +90,7 @@ class DiagramSource
 
     _updateChildrenSubscriptions()
     {
-        this._executeDelayedAction('update-ws-children-subscription', 
+        this._executeDelayedAction('update-ws-children-subscription',
             () => {
                 var expandedObjects = this._sharedState.get('diagram_expanded_dns');
 
@@ -105,14 +103,14 @@ class DiagramSource
 
     _updateMonitoredObjects()
     {
-        this._executeDelayedAction('update-monitored-objects', 
+        this._executeDelayedAction('update-monitored-objects',
             () => {
                 var monitoredObjects = {};
-        
+
                 this._traverseTree((dn) => {
                     monitoredObjects[dn] = true;
                 })
-                
+
                 this._nodesScope.replace(_.keys(monitoredObjects).map(x => ({
                     kind: 'node',
                     dn: x
@@ -126,7 +124,7 @@ class DiagramSource
             return;
         }
 
-        this._executeDelayedAction('build-tree', 
+        this._executeDelayedAction('build-tree',
             () => {
                 if (this._sharedState.get('time_machine_enabled')) {
                     return;
@@ -142,7 +140,7 @@ class DiagramSource
         var treeNodes = {};
         this._traverseTree((dn, parentDn) => {
             var nodeData = this._nodeData[dn];
-            if (nodeData) 
+            if (nodeData)
             {
                 nodeData = _.clone(nodeData);
                 nodeData.children = [];

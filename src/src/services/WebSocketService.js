@@ -9,7 +9,12 @@ class WebSocketService
         this._socket.run();
     }
 
-    subscribe(target, cb) 
+    close()
+    {
+        this._socket.close();
+    }
+
+    subscribe(target, cb)
     {
         return this._socket.subscribe(target, value => {
             cb(value);
