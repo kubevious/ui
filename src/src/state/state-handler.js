@@ -19,6 +19,7 @@ class StateHandler {
 
     close()
     {
+        this._service.close();
         this.sharedState.close();
     }
 
@@ -55,7 +56,7 @@ class StateHandler {
         if (tmdt) {
             this.sharedState.set('time_machine_date_to', Date.parse(tmdt))
         }
-        
+
         if (tmdf) {
             this.sharedState.set('time_machine_date_from', Date.parse(tmdf))
         }
@@ -180,7 +181,7 @@ class StateHandler {
 
                 var markerDict = {};
                 if (marker_editor_items) {
-                    markerDict = _.makeDict(marker_editor_items, 
+                    markerDict = _.makeDict(marker_editor_items,
                         x => x.name,
                         x => ({
                             shape: x.shape,
