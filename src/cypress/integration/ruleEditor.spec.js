@@ -10,6 +10,8 @@ describe('Test rule editor', () => {
     it('create new rule', () => {
         cy.get('.new-rule-btn').first().click()
 
+        cy.wait(1000)
+
         cy.get('.field-input.name').type('New super rule')
 
         cy.get('.react-codemirror2').first().type('Rule target')
