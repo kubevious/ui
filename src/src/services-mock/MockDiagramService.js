@@ -25,6 +25,11 @@ class MockDiagramService {
             });
     }
 
+    close()
+    {
+        
+    }
+
     fetchDiagram(cb) {
         cb(GRAPH_DATA)
     }
