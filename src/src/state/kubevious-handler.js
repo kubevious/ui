@@ -7,15 +7,20 @@ class KubeviousHandler
     {
         this._api = api;
         this._info = info;
-    
-        const diagramService = api.resolveService(info);
+
+        console.log("[KubeviousHandler] :: create", this._info);
+
+        this._diagramService = api.diagramService();
+        this._websocketService = api.socketService(info);
         
-        this._stateHandler = new StateHandler(api.sharedState, diagramService);
-        this._diagramSource = new DiagramSource(api.sharedState, api.socketService());
+        this._stateHandler = new StateHandler(api.sharedState, this._diagramService);
+        this._diagramSource = new DiagramSource(api.sharedState, this._websocketService);
     }
 
     close()
     {
+        console.log("[KubeviousHandler] :: destroy", this._info);
+
         this._stateHandler.close();
         this._diagramSource.close();
     }

@@ -28,7 +28,7 @@ class RootApiService extends BaseRootApiService {
         });
 
         this.registerService({ kind: 'diagram' }, ({ info }) => {
-            var client = new BackendClient('/api', sharedState);
+            var client = new BackendClient('/api/v1', sharedState);
             return new DiagramService(client, sharedState, this.socketService());
         });
 

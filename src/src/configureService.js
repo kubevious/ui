@@ -12,4 +12,4 @@ function apiFactory() {
 
 export const api = apiFactory();
 
-new KubeviousHandler(api, { kind: 'diagram' });
+new KubeviousHandler(api);

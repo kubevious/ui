@@ -10,28 +10,28 @@ class DiagramService extends BaseService {
     }
 
     fetchDiagram(cb) {
-        return this._client.get('/tree')
+        return this._client.get('/diagram/tree')
             .then(result => {
                 cb(result.data);
             })
     }
 
     fetchAssets(dn, cb) {
-        return this._client.get('/assets', { dn: dn })
+        return this._client.get('/diagram/assets', { dn: dn })
             .then(result => {
                 cb(result.data);
             })
     }
 
     fetchSearchResults(criteria, cb) {
-        return this._client.get('/search', { criteria: criteria })
+        return this._client.get('/diagram/search', { criteria: criteria })
             .then(result => {
                 cb(result.data);
             })
     }
 
     fetchHistoryRange(cb) {
-        return this._client.get('/v1/history/range')
+        return this._client.get('/history/range')
             .then(result => {
                 cb(result.data);
             });
@@ -42,7 +42,7 @@ class DiagramService extends BaseService {
             from: from,
             to: to
         };
-        return this._client.get('/v1/history/timeline', params)
+        return this._client.get('/history/timeline', params)
             .then(result => {
                 cb(result.data);
             });
@@ -52,7 +52,7 @@ class DiagramService extends BaseService {
         var params = {
             date: date
         };
-        return this._client.get('/v1/history/snapshot', params)
+        return this._client.get('/history/snapshot', params)
             .then(result => {
                 cb(result.data);
             });
@@ -63,7 +63,7 @@ class DiagramService extends BaseService {
             dn: dn,
             date: date
         };
-        return this._client.get('/v1/history/assets', params)
+        return this._client.get('/history/assets', params)
             .then(result => {
                 cb(result.data);
             });

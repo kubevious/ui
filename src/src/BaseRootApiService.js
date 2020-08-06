@@ -11,6 +11,10 @@ class BaseRootApiService {
     get sharedState() {
         return this._sharedState;
     }
+    
+    get serviceKinds() {
+        return _.keys(this._servicesDict);
+    }
 
     registerService(info, cb)
     {
@@ -24,6 +28,18 @@ class BaseRootApiService {
         };
         svcInfo.services = {};
         this._servicesDict[info.kind] = svcInfo;
+    }
+
+    closeServicesByKind(kind)
+    {
+        var svcInfo = this._servicesDict[kind];
+        if (svcInfo) {
+            for(var service of _.values(svcInfo.services))
+            {
+                service.close()
+            }
+            svcInfo.services = {};
+        }
     }
 
     resolveService(info)
