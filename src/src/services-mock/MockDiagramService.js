@@ -17,8 +17,12 @@ class MockDiagramService {
 
                 if (selected_dn) {
                     if (!time_machine_enabled) {
-                        this.fetchAssets(selected_dn, (data) => {
-                            this.sharedState.set('selected_object_assets', data);
+                        this.fetchProperties(selected_dn, (data) => {
+                            this.sharedState.set('selected_object_props', data);
+                        })
+
+                        this.fetchAlerts(selected_dn, (data) => {
+                            this.sharedState.set('selected_raw_alerts', data);
                         })
                     }
                 }
@@ -34,12 +38,15 @@ class MockDiagramService {
         cb(GRAPH_DATA)
     }
 
-    fetchAssets(dn, cb) {
+    fetchProperties(dn, cb) {
         setTimeout(() => {
-            cb(_.cloneDeep({
-                props: PROPERTIES_DATA,
-                alerts: ALERTS_DATA,
-            }))
+            cb(_.cloneDeep(PROPERTIES_DATA))
+        }, 200);
+    }
+
+    fetchAlerts(dn, cb) {
+        setTimeout(() => {
+            cb(_.cloneDeep(ALERTS_DATA))
         }, 200);
     }
 
@@ -85,7 +92,7 @@ class MockDiagramService {
         cb(HISTORY_GRAPH_DATA)
     }
 
-    fetchHistoryProperties(dn, date, cb) {
+    fetchHistoryAssets(dn, date, cb) {
         cb(_.cloneDeep(HISTORY_PROPERTIES))
     }
 }

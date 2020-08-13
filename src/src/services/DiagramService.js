@@ -16,8 +16,15 @@ class DiagramService extends BaseService {
             })
     }
 
-    fetchAssets(dn, cb) {
-        return this._client.get('/diagram/assets', { dn: dn })
+    fetchProperties(dn, cb) {
+        return this._client.get('/diagram/props', { dn: dn })
+            .then(result => {
+                cb(result.data);
+            })
+    }
+
+    fetchAlerts(dn, cb) {
+        return this._client.get('/diagram/alerts', { dn: dn })
             .then(result => {
                 cb(result.data);
             })
@@ -58,7 +65,7 @@ class DiagramService extends BaseService {
             });
     }
 
-    fetchHistoryProperties(dn, date, cb) {
+    fetchHistoryAssets(dn, date, cb) {
         var params = {
             dn: dn,
             date: date
@@ -71,32 +78,18 @@ class DiagramService extends BaseService {
 
     _setupWebSocket()
     {
-        this._setupAssets();
+        this._setupProperties();
+        this._setupAlerts();
     }
 
-    _setupAssets()
+    _setupProperties()
     {
         var socketScope = this._socketScope((value, target) => {
             if (!this.sharedState.get('time_machine_enabled'))
             {
                 if (target.dn == this.sharedState.get('selected_dn'))
                 {
-                    // TODO: Temporary change until backend returns the dn.
-                    if (value)
-                    {
-                        if (value.alerts)
-                        {
-                            for(var alert of value.alerts)
-                            {
-                                if (!alert.dn)
-                                {
-                                    alert.dn = target.dn;
-                                }
-                            }
-                        }
-                    }
-                    
-                    this.sharedState.set('selected_object_assets', value);
+                    this.sharedState.set('selected_object_props', value);
                 }
             }
         });
@@ -108,7 +101,35 @@ class DiagramService extends BaseService {
 
                 if (selected_dn) {
                     if (!time_machine_enabled) {
-                        wsSubscriptions.push({ kind: 'assets', dn: selected_dn });
+                        wsSubscriptions.push({ kind: 'props', dn: selected_dn });
+                    }
+                }
+
+                socketScope.replace(wsSubscriptions);
+            })
+    }
+
+
+    _setupAlerts()
+    {
+        var socketScope = this._socketScope((value, target) => {
+            if (!this.sharedState.get('time_machine_enabled'))
+            {
+                if (target.dn == this.sharedState.get('selected_dn'))
+                {
+                    this.sharedState.set('selected_raw_alerts', value);
+                }
+            }
+        });
+
+        this.sharedState.subscribe(['selected_dn', 'time_machine_enabled'],
+            ({ selected_dn, time_machine_enabled }) => {
+
+                var wsSubscriptions = []
+
+                if (selected_dn) {
+                    if (!time_machine_enabled) {
+                        wsSubscriptions.push({ kind: 'alerts', dn: selected_dn });
                     }
                 }
 
