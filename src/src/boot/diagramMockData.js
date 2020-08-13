@@ -19672,14 +19672,14 @@ export const ALERTS_DATA = [
         'id': 'ContainersReady-2019-12-27T19:47:59Z',
         'severity': 'warn',
         'msg': 'Memory usage warning',
-        'source': { kind: 'node', id: 'node-id'},
+        'source': { kind: 'parser' },
         'dn': 'root/ns-[gitlab]/app-[gitlab-gitlab-exporter]/initcont-[configure]/image-[busybox]',
     },
     {
         'id': 'PodScheduled-2019-12-27T19:47:53Z',
         'severity': 'error',
         'msg': 'Could not find apps matching selector.',
-        'source': { kind: 'node', id: 'node-id'},
+        'source': { kind: 'parser' },
         'dn': 'root/ns-[gitlab]/app-[gitlab-gitlab-exporter]/initcont-[configure]/image-[busybox]',
     }
 ]
@@ -20360,7 +20360,10 @@ export const HISTORY_PROPERTIES = {
             'id': 'Port-3500',
             'msg': 'Missing port 3500 definition.',
             'date': '2020-02-29T06:32:57.340Z',
-            'severity': 'warn'
+            'severity': 'warn',
+            'source': {
+                'kind': 'parser'
+            }
         }
     ],
     'props': [
