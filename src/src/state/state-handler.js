@@ -94,7 +94,6 @@ class StateHandler {
     }
 
     _handleTimeMachineChange() {
-        // TODO: .....
         this.sharedState.subscribe(['time_machine_enabled', 'time_machine_date'],
             ({ time_machine_enabled, time_machine_date }) => {
             console.log('time_machine_enabled', time_machine_enabled)
@@ -137,13 +136,28 @@ class StateHandler {
                 if (selected_raw_alerts && selected_dn) {
 
                     var alerts = _.cloneDeep(selected_raw_alerts);
-                    
-                    // TODO: Temporary change until backend returns the dn.
-                    for(var alert of alerts)
+
+                    if (_.isObject(alerts))
                     {
-                        if (!alert.dn)
+                        var newAlerts = [];
+                        for(var dn of _.keys(alerts))
                         {
-                            alert.dn = selected_dn;
+                            for(var alert of alerts[dn])
+                            {
+                                alert.dn = dn;
+                                newAlerts.push(alert);
+                            }
+                        }
+                        alerts = newAlerts
+                    }
+                    else
+                    {
+                        for(var alert of alerts)
+                        {
+                            if (!alert.dn)
+                            {
+                                alert.dn = selected_dn;
+                            }
                         }
                     }
 
