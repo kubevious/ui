@@ -2,7 +2,7 @@ import _ from 'the-lodash'
 import {
     ABOUT_DATA,
     ALERTS_DATA,
-    GRAPH_DATA, HISTORY_GRAPH_DATA, HISTORY_PROPERTIES,
+    GRAPH_DATA, HISTORY_GRAPH_DATA, HISTORY_ALERTS, HISTORY_PROPERTIES,
     HISTORY_RANGE, HISTORY_TIMELINE,
     PROPERTIES_DATA,
     DN_LIST
@@ -92,8 +92,12 @@ class MockDiagramService {
         cb(HISTORY_GRAPH_DATA)
     }
 
-    fetchHistoryAssets(dn, date, cb) {
+    fetchHistoryProps(dn, date, cb) {
         cb(_.cloneDeep(HISTORY_PROPERTIES))
+    }
+
+    fetchHistoryAlerts(dn, date, cb) {
+        cb(_.cloneDeep(HISTORY_ALERTS))
     }
 }
 

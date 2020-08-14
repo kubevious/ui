@@ -15,7 +15,7 @@ const AlertView = ({ alerts, clickDn, openRule }) => {
 
     const renderAlert = ({ alert, index, shouldRenderDn = true }) => {
         return (
-            <div className={cx('alert-detail', { 'even': index % 2 !== 0 })} key={alert.id}>
+            <div className={cx('alert-detail', { 'even': index % 2 !== 0 })} key={alert.uiKey}>
                 <div className={cx('message-container', { 'rule': alert.source.kind === 'rule' })}
                      onClick={() => clickMessage(alert)}>
                     <div className={'alert-item ' + alert.severity} />
@@ -36,8 +36,8 @@ const AlertView = ({ alerts, clickDn, openRule }) => {
                     <img className="dn-logo" src="/img/entities/ns.svg" alt="logo" />
                 </div>
                 <div className="parts-container">
-                    {dnParts.map(part => (
-                        <span className="dn-part" key={part.name}>
+                    {dnParts.map((part, index) => (
+                        <span className="dn-part" key={index}>
                         {prettyKind(part.kind)} {part.name}
                     </span>
                     ))}
@@ -127,7 +127,7 @@ const AlertView = ({ alerts, clickDn, openRule }) => {
                     className={cx('option', { 'selected': group === 'message' })}
                     onClick={() => setGroup('message')}
                 >
-                    Group by Message
+                    Group by Alert
                 </div>
             </div>
         </div>

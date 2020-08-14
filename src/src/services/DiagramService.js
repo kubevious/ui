@@ -65,12 +65,23 @@ class DiagramService extends BaseService {
             });
     }
 
-    fetchHistoryAssets(dn, date, cb) {
+    fetchHistoryProps(dn, date, cb) {
         var params = {
             dn: dn,
             date: date
         };
-        return this._client.get('/history/assets', params)
+        return this._client.get('/history/props', params)
+            .then(result => {
+                cb(result.data);
+            });
+    }
+
+    fetchHistoryAlerts(dn, date, cb) {
+        var params = {
+            dn: dn,
+            date: date
+        };
+        return this._client.get('/history/alerts', params)
             .then(result => {
                 cb(result.data);
             });

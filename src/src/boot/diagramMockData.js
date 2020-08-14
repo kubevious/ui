@@ -20354,60 +20354,911 @@ export const HISTORY_RANGE = {
 }
 
 
-export const HISTORY_PROPERTIES = {
-    'alerts': [
+export const HISTORY_ALERTS = {
+    "root/ns-[kube-system]/app-[fluentd-gcp-v3.2.0]": [
         {
-            'id': 'Port-3500',
-            'msg': 'Missing port 3500 definition.',
-            'date': '2020-02-29T06:32:57.340Z',
-            'severity': 'warn',
-            'source': {
-                'kind': 'parser'
-            }
+            "id": "Missing",
+            "msg": "Service account fluentd-gcp is not found.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "error"
         }
     ],
-    'props': [
+    "root/ns-[berlioz]/app-[gprod-berlioz-main-agent]": [
         {
-            'id': 'config',
-            'kind': 'yaml',
-            'title': 'Config',
-            'config': {
-                'kind': 'Service',
-                'spec': {
-                    'type': 'ClusterIP',
-                    'ports': [
-                        {
-                            'port': 80,
-                            'protocol': 'TCP',
-                            'targetPort': 3500
-                        }
-                    ],
-                    'selector': {
-                        'app': 'book-web'
-                    },
-                    'clusterIP': '10.75.1.215',
-                    'sessionAffinity': 'None'
-                },
-                'status': {
-                    'loadBalancer': {}
-                },
-                'metadata': {
-                    'uid': 'f70267ff-34c1-11ea-9cdc-42010a8001cf',
-                    'name': 'book-web-svc-2',
-                    'labels': {
-                        'name': 'book-web-svc-2'
-                    },
-                    'selfLink': '/api/v1/namespaces/book/services/book-web-svc-2',
-                    'namespace': 'book',
-                    'annotations': {
-                        'kubectl.kubernetes.io/last-applied-configuration': '{"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"name":"book-web-svc-2"},"name":"book-web-svc-2","namespace":"book"},"spec":{"ports":[{"port":80,"protocol":"TCP","targetPort":3500}],"selector":{"app":"book-web"},"type":"ClusterIP"}}\n'
-                    },
-                    'resourceVersion': '206743',
-                    'creationTimestamp': '2020-01-11T22:30:26Z'
-                },
-                'apiVersion': 'v1'
+            "id": "Missing",
+            "msg": "Service account default is not found.",
+            "source": {
+                "kind": "parser"
             },
-            'tooltip': 'Kubernetes YAML Configuration'
+            "severity": "error"
+        }
+    ],
+    "root/ns-[kube-system]/app-[metadata-proxy-v0.1]": [
+        {
+            "id": "Missing",
+            "msg": "Service account metadata-proxy is not found.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "error"
+        }
+    ],
+    "root/ns-[kube-system]/app-[nvidia-gpu-device-plugin]": [
+        {
+            "id": "Missing",
+            "msg": "Service account default is not found.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "error"
+        }
+    ],
+    "root/ns-[kube-system]/app-[prometheus-to-sd]": [
+        {
+            "id": "Missing",
+            "msg": "Service account prometheus-to-sd is not found.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "error"
+        }
+    ],
+    "root/ns-[kube-system]/app-[event-exporter-v0.2.4]": [
+        {
+            "id": "Missing",
+            "msg": "Service account event-exporter-sa is not found.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "error"
+        }
+    ],
+    "root/ns-[kube-system]/app-[fluentd-gcp-scaler]": [
+        {
+            "id": "Missing",
+            "msg": "Service account fluentd-gcp-scaler is not found.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "error"
+        }
+    ],
+    "root/ns-[addr]/app-[gprod-addr-main-app]": [
+        {
+            "id": "Missing",
+            "msg": "Service account default is not found.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "error"
+        }
+    ],
+    "root/ns-[addr]/app-[gprod-addr-main-web]": [
+        {
+            "id": "Missing",
+            "msg": "Service account default is not found.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "error"
+        }
+    ],
+    "root/ns-[berlioz]/app-[gprod-berlioz-main-ctlr]": [
+        {
+            "id": "Missing",
+            "msg": "Service account gprod-berlioz-main-ctlr is not found.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "error"
+        }
+    ],
+    "root/ns-[sprt]/app-[gprod-sprt-main-dtrace]": [
+        {
+            "id": "Missing",
+            "msg": "Service account default is not found.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "error"
+        }
+    ],
+    "root/ns-[sprt]/app-[gprod-sprt-main-grfna]": [
+        {
+            "id": "Missing",
+            "msg": "Service account default is not found.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "error"
+        }
+    ],
+    "root/ns-[sprt]/app-[gprod-sprt-main-prmts]": [
+        {
+            "id": "Missing",
+            "msg": "Service account default is not found.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "error"
+        }
+    ],
+    "root/ns-[kube-system]/app-[heapster]": [
+        {
+            "id": "Missing",
+            "msg": "Service account heapster is not found.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "error"
+        }
+    ],
+    "root/ns-[kube-system]/app-[kube-dns-autoscaler]": [
+        {
+            "id": "Missing",
+            "msg": "Service account kube-dns-autoscaler is not found.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "error"
+        }
+    ],
+    "root/ns-[kube-system]/app-[kube-dns]": [
+        {
+            "id": "Missing",
+            "msg": "Service account kube-dns is not found.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "error"
+        }
+    ],
+    "root/ns-[kube-system]/app-[l7-default-backend]": [
+        {
+            "id": "Missing",
+            "msg": "Service account default is not found.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "error"
+        }
+    ],
+    "root/ns-[kube-system]/app-[metrics-server-v0.3.1]": [
+        {
+            "id": "Missing",
+            "msg": "Service account metrics-server is not found.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "error"
+        }
+    ],
+    "root/ns-[addr]/app-[gprod-addr-main-app]/vol-[Volumes]/vol-[google-cloud-key]": [
+        {
+            "id": "MissingConfig",
+            "msg": "Could not find ConfigMap addr-gprod-addr-main-app-consumes",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "error"
+        },
+        {
+            "id": "MissingConfig",
+            "msg": "Could not find ConfigMap addr-gprod-addr-main-app-consumesdatabase",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "error"
+        }
+    ],
+    "root/ns-[addr]/app-[gprod-addr-main-app]/vol-[Volumes]/vol-[gprod-addr-main-app-consumes]": [
+        {
+            "id": "MissingConfig",
+            "msg": "Could not find ConfigMap addr-gprod-addr-main-app-consumes",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "error"
+        },
+        {
+            "id": "MissingConfig",
+            "msg": "Could not find ConfigMap addr-gprod-addr-main-app-consumesdatabase",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "error"
+        }
+    ],
+    "root/ns-[addr]/app-[gprod-addr-main-app]/vol-[Volumes]/vol-[gprod-addr-main-app-consumesdatabase]": [
+        {
+            "id": "MissingConfig",
+            "msg": "Could not find ConfigMap addr-gprod-addr-main-app-consumes",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "error"
+        },
+        {
+            "id": "MissingConfig",
+            "msg": "Could not find ConfigMap addr-gprod-addr-main-app-consumesdatabase",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "error"
+        }
+    ],
+    "root/ns-[addr]/app-[gprod-addr-main-app]/cont-[gprod-addr-main-app]/vol-[google-cloud-key]": [
+        {
+            "id": "MissingConfig",
+            "msg": "Could not find ConfigMap addr-gprod-addr-main-app-consumes",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "error"
+        },
+        {
+            "id": "MissingConfig",
+            "msg": "Could not find ConfigMap addr-gprod-addr-main-app-consumesdatabase",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "error"
+        }
+    ],
+    "root/ns-[addr]/app-[gprod-addr-main-app]/cont-[gprod-addr-main-app]/vol-[gprod-addr-main-app-consumes]": [
+        {
+            "id": "MissingConfig",
+            "msg": "Could not find ConfigMap addr-gprod-addr-main-app-consumes",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "error"
+        },
+        {
+            "id": "MissingConfig",
+            "msg": "Could not find ConfigMap addr-gprod-addr-main-app-consumesdatabase",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "error"
+        }
+    ],
+    "root/ns-[addr]/app-[gprod-addr-main-app]/cont-[gprod-addr-main-app]/vol-[gprod-addr-main-app-consumesdatabase]": [
+        {
+            "id": "MissingConfig",
+            "msg": "Could not find ConfigMap addr-gprod-addr-main-app-consumes",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "error"
+        },
+        {
+            "id": "MissingConfig",
+            "msg": "Could not find ConfigMap addr-gprod-addr-main-app-consumesdatabase",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "error"
+        }
+    ],
+    "root/ns-[addr]/app-[gprod-addr-main-app]/cont-[cloudsql-proxy-gprod-addr-uswest1c-main-book]/vol-[google-cloud-key]": [
+        {
+            "id": "MissingConfig",
+            "msg": "Could not find ConfigMap addr-gprod-addr-main-app-consumes",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "error"
+        },
+        {
+            "id": "MissingConfig",
+            "msg": "Could not find ConfigMap addr-gprod-addr-main-app-consumesdatabase",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "error"
+        }
+    ],
+    "root/ns-[kube-system]/app-[heapster]/service-[ClusterIP]": [
+        {
+            "id": "Port-8082",
+            "msg": "Missing port 8082 definition.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[berlioz]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[sql-schema]": [
+        {
+            "id": "Unused",
+            "msg": "ConfigMap not used.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[istio-system]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[istio-crd-10]": [
+        {
+            "id": "Unused",
+            "msg": "ConfigMap not used.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[istio-system]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[istio-crd-11]": [
+        {
+            "id": "Unused",
+            "msg": "ConfigMap not used.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[istio-system]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[istio-crd-12]": [
+        {
+            "id": "Unused",
+            "msg": "ConfigMap not used.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[istio-system]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[istio-galley-configuration]": [
+        {
+            "id": "Unused",
+            "msg": "ConfigMap not used.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[istio-system]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[istio-security-custom-resources]": [
+        {
+            "id": "Unused",
+            "msg": "ConfigMap not used.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[istio-system]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[istio-security]": [
+        {
+            "id": "Unused",
+            "msg": "ConfigMap not used.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[istio-system]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[istio-sidecar-injector]": [
+        {
+            "id": "Unused",
+            "msg": "ConfigMap not used.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[istio-system]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[istio]": [
+        {
+            "id": "Unused",
+            "msg": "ConfigMap not used.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[istio-system]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[prometheus]": [
+        {
+            "id": "Unused",
+            "msg": "ConfigMap not used.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[kube-system]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[berlioz.v1]": [
+        {
+            "id": "Unused",
+            "msg": "ConfigMap not used.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[kube-system]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[cluster-autoscaler-status]": [
+        {
+            "id": "Unused",
+            "msg": "ConfigMap not used.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[kube-system]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[extension-apiserver-authentication]": [
+        {
+            "id": "Unused",
+            "msg": "ConfigMap not used.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[kube-system]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[fluentd-gcp-config-v1.2.5]": [
+        {
+            "id": "Unused",
+            "msg": "ConfigMap not used.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[kube-system]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[gke-common-webhook-lock]": [
+        {
+            "id": "Unused",
+            "msg": "ConfigMap not used.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[kube-system]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[ingress-gce-lock]": [
+        {
+            "id": "Unused",
+            "msg": "ConfigMap not used.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[kube-system]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[ingress-uid]": [
+        {
+            "id": "Unused",
+            "msg": "ConfigMap not used.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[kube-system]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[istio-init.v1]": [
+        {
+            "id": "Unused",
+            "msg": "ConfigMap not used.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[kube-system]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[istio.v1]": [
+        {
+            "id": "Unused",
+            "msg": "ConfigMap not used.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[kube-system]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[kube-dns-autoscaler]": [
+        {
+            "id": "Unused",
+            "msg": "ConfigMap not used.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[default]/raw-[Raw Configs]/raw-[PersistentVolumeClaims]/pvc-[repo-data-gitlab-gitaly-0]": [
+        {
+            "id": "Unused",
+            "msg": "PersistentVolumeClaim not attached.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[experiment]/raw-[Raw Configs]/raw-[PersistentVolumeClaims]/pvc-[data-kubevious-mysql-0]": [
+        {
+            "id": "Unused",
+            "msg": "PersistentVolumeClaim not attached.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[gitlab]/raw-[Raw Configs]/raw-[PersistentVolumeClaims]/pvc-[data-gitlab-redis-server-0]": [
+        {
+            "id": "Unused",
+            "msg": "PersistentVolumeClaim not attached.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[gitlab]/raw-[Raw Configs]/raw-[PersistentVolumeClaims]/pvc-[data-gitlab-redis-server-1]": [
+        {
+            "id": "Unused",
+            "msg": "PersistentVolumeClaim not attached.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[gitlab]/raw-[Raw Configs]/raw-[PersistentVolumeClaims]/pvc-[data-gitlab-redis-server-2]": [
+        {
+            "id": "Unused",
+            "msg": "PersistentVolumeClaim not attached.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[gitlab]/raw-[Raw Configs]/raw-[PersistentVolumeClaims]/pvc-[gitlab-minio]": [
+        {
+            "id": "Unused",
+            "msg": "PersistentVolumeClaim not attached.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[gitlab]/raw-[Raw Configs]/raw-[PersistentVolumeClaims]/pvc-[gitlab-postgresql]": [
+        {
+            "id": "Unused",
+            "msg": "PersistentVolumeClaim not attached.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[gitlab]/raw-[Raw Configs]/raw-[PersistentVolumeClaims]/pvc-[gitlab-prometheus-server]": [
+        {
+            "id": "Unused",
+            "msg": "PersistentVolumeClaim not attached.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[gitlab]/raw-[Raw Configs]/raw-[PersistentVolumeClaims]/pvc-[repo-data-gitlab-gitaly-0]": [
+        {
+            "id": "Unused",
+            "msg": "PersistentVolumeClaim not attached.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[kubevious]/raw-[Raw Configs]/raw-[PersistentVolumeClaims]/pvc-[data-kubevious-mysql-0]": [
+        {
+            "id": "Unused",
+            "msg": "PersistentVolumeClaim not attached.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns/raw-[Raw Configs]/raw-[PodSecurityPolicies]/psp-[gce.gke-metrics-agent]": [
+        {
+            "id": "Unused",
+            "msg": "PodSecurityPolicy not used.",
+            "source": {
+                "kind": "parser"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[berlioz]/app-[gprod-berlioz-main-agent]/cont-[gprod-berlioz-main-agent]/image-[berliozcloud/agent]": [
+        {
+            "id": "rule-latest-tag-check",
+            "msg": "Rule latest-tag-check failed. You are using latest image. Please dont do that.",
+            "source": {
+                "id": "latest-tag-check",
+                "kind": "rule"
+            },
+            "severity": "error"
+        }
+    ],
+    "root/ns-[berlioz]/app-[gprod-berlioz-main-ctlr]/cont-[gprod-berlioz-main-ctlr]/image-[berliozcloud/k8s-controller]": [
+        {
+            "id": "rule-latest-tag-check",
+            "msg": "Rule latest-tag-check failed. You are using latest image. Please dont do that.",
+            "source": {
+                "id": "latest-tag-check",
+                "kind": "rule"
+            },
+            "severity": "error"
+        }
+    ],
+    "root/ns-[kube-system]/app-[fluentd-gcp-v3.2.0]/cont-[prometheus-to-sd-exporter]": [
+        {
+            "id": "rule-container-memory-usage",
+            "msg": "Rule container-memory-usage failed. Memory request is not set.",
+            "source": {
+                "id": "container-memory-usage",
+                "kind": "rule"
+            },
+            "severity": "warn"
+        },
+        {
+            "id": "rule-no-memory-request-set",
+            "msg": "Rule no-memory-request-set failed.",
+            "source": {
+                "id": "no-memory-request-set",
+                "kind": "rule"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[kube-system]/app-[prometheus-to-sd]/cont-[prometheus-to-sd]": [
+        {
+            "id": "rule-container-memory-usage",
+            "msg": "Rule container-memory-usage failed. Memory request is not set.",
+            "source": {
+                "id": "container-memory-usage",
+                "kind": "rule"
+            },
+            "severity": "warn"
+        },
+        {
+            "id": "rule-no-memory-request-set",
+            "msg": "Rule no-memory-request-set failed.",
+            "source": {
+                "id": "no-memory-request-set",
+                "kind": "rule"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[kube-system]/app-[event-exporter-v0.2.4]/cont-[event-exporter]": [
+        {
+            "id": "rule-container-memory-usage",
+            "msg": "Rule container-memory-usage failed. Memory request is not set.",
+            "source": {
+                "id": "container-memory-usage",
+                "kind": "rule"
+            },
+            "severity": "warn"
+        },
+        {
+            "id": "rule-no-memory-request-set",
+            "msg": "Rule no-memory-request-set failed.",
+            "source": {
+                "id": "no-memory-request-set",
+                "kind": "rule"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[kube-system]/app-[event-exporter-v0.2.4]/cont-[prometheus-to-sd-exporter]": [
+        {
+            "id": "rule-container-memory-usage",
+            "msg": "Rule container-memory-usage failed. Memory request is not set.",
+            "source": {
+                "id": "container-memory-usage",
+                "kind": "rule"
+            },
+            "severity": "warn"
+        },
+        {
+            "id": "rule-no-memory-request-set",
+            "msg": "Rule no-memory-request-set failed.",
+            "source": {
+                "id": "no-memory-request-set",
+                "kind": "rule"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[kube-system]/app-[fluentd-gcp-scaler]/cont-[fluentd-gcp-scaler]": [
+        {
+            "id": "rule-container-memory-usage",
+            "msg": "Rule container-memory-usage failed. Memory request is not set.",
+            "source": {
+                "id": "container-memory-usage",
+                "kind": "rule"
+            },
+            "severity": "warn"
+        },
+        {
+            "id": "rule-no-memory-request-set",
+            "msg": "Rule no-memory-request-set failed.",
+            "source": {
+                "id": "no-memory-request-set",
+                "kind": "rule"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[kube-system]/app-[heapster]/cont-[heapster]": [
+        {
+            "id": "rule-container-memory-usage",
+            "msg": "Rule container-memory-usage failed. Memory request is not set.",
+            "source": {
+                "id": "container-memory-usage",
+                "kind": "rule"
+            },
+            "severity": "warn"
+        },
+        {
+            "id": "rule-no-memory-request-set",
+            "msg": "Rule no-memory-request-set failed.",
+            "source": {
+                "id": "no-memory-request-set",
+                "kind": "rule"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[kube-system]/app-[heapster]/cont-[prom-to-sd]": [
+        {
+            "id": "rule-container-memory-usage",
+            "msg": "Rule container-memory-usage failed. Memory request is not set.",
+            "source": {
+                "id": "container-memory-usage",
+                "kind": "rule"
+            },
+            "severity": "warn"
+        },
+        {
+            "id": "rule-no-memory-request-set",
+            "msg": "Rule no-memory-request-set failed.",
+            "source": {
+                "id": "no-memory-request-set",
+                "kind": "rule"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[kube-system]/app-[kube-dns]/cont-[prometheus-to-sd]": [
+        {
+            "id": "rule-container-memory-usage",
+            "msg": "Rule container-memory-usage failed. Memory request is not set.",
+            "source": {
+                "id": "container-memory-usage",
+                "kind": "rule"
+            },
+            "severity": "warn"
+        },
+        {
+            "id": "rule-no-memory-request-set",
+            "msg": "Rule no-memory-request-set failed.",
+            "source": {
+                "id": "no-memory-request-set",
+                "kind": "rule"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[addr]/app-[gprod-addr-main-app]/cont-[cloudsql-proxy-gprod-addr-uswest1c-main-book]": [
+        {
+            "id": "rule-container-memory-usage",
+            "msg": "Rule container-memory-usage failed. Memory request is not set.",
+            "source": {
+                "id": "container-memory-usage",
+                "kind": "rule"
+            },
+            "severity": "warn"
+        },
+        {
+            "id": "rule-no-memory-request-set",
+            "msg": "Rule no-memory-request-set failed.",
+            "source": {
+                "id": "no-memory-request-set",
+                "kind": "rule"
+            },
+            "severity": "warn"
+        }
+    ],
+    "root/ns-[sprt]/app-[gprod-sprt-main-dtrace]/cont-[gprod-sprt-main-dtrace]/image-[jaegertracing/all-in-one]": [
+        {
+            "id": "rule-latest-tag-check",
+            "msg": "Rule latest-tag-check failed. You are using latest image. Please dont do that.",
+            "source": {
+                "id": "latest-tag-check",
+                "kind": "rule"
+            },
+            "severity": "error"
+        }
+    ],
+    "root/ns-[sprt]/app-[gprod-sprt-main-grfna]/cont-[gprod-sprt-main-grfna]/image-[berliozcloud/grafana]": [
+        {
+            "id": "rule-latest-tag-check",
+            "msg": "Rule latest-tag-check failed. You are using latest image. Please dont do that.",
+            "source": {
+                "id": "latest-tag-check",
+                "kind": "rule"
+            },
+            "severity": "error"
+        }
+    ],
+    "root/ns-[sprt]/app-[gprod-sprt-main-prmts]/cont-[gprod-sprt-main-prmts]/image-[berliozcloud/prometheus]": [
+        {
+            "id": "rule-latest-tag-check",
+            "msg": "Rule latest-tag-check failed. You are using latest image. Please dont do that.",
+            "source": {
+                "id": "latest-tag-check",
+                "kind": "rule"
+            },
+            "severity": "error"
         }
     ]
-}
+};
+
+export const HISTORY_PROPERTIES = [
+    {
+        'id': 'config',
+        'kind': 'yaml',
+        'title': 'Config',
+        'config': {
+            'kind': 'Service',
+            'spec': {
+                'type': 'ClusterIP',
+                'ports': [
+                    {
+                        'port': 80,
+                        'protocol': 'TCP',
+                        'targetPort': 3500
+                    }
+                ],
+                'selector': {
+                    'app': 'book-web'
+                },
+                'clusterIP': '10.75.1.215',
+                'sessionAffinity': 'None'
+            },
+            'status': {
+                'loadBalancer': {}
+            },
+            'metadata': {
+                'uid': 'f70267ff-34c1-11ea-9cdc-42010a8001cf',
+                'name': 'book-web-svc-2',
+                'labels': {
+                    'name': 'book-web-svc-2'
+                },
+                'selfLink': '/api/v1/namespaces/book/services/book-web-svc-2',
+                'namespace': 'book',
+                'annotations': {
+                    'kubectl.kubernetes.io/last-applied-configuration': '{"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"name":"book-web-svc-2"},"name":"book-web-svc-2","namespace":"book"},"spec":{"ports":[{"port":80,"protocol":"TCP","targetPort":3500}],"selector":{"app":"book-web"},"type":"ClusterIP"}}\n'
+                },
+                'resourceVersion': '206743',
+                'creationTimestamp': '2020-01-11T22:30:26Z'
+            },
+            'apiVersion': 'v1'
+        },
+        'tooltip': 'Kubernetes YAML Configuration'
+    }
+];

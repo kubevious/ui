@@ -117,9 +117,12 @@ class StateHandler {
 
                 if (selected_dn) {
                     if (time_machine_enabled) {
-                        this._service.fetchHistoryAssets(selected_dn, time_machine_date, (config) => {
-                            this.sharedState.set('selected_object_props', config.props);
-                            this.sharedState.set('selected_raw_alerts', config.alerts);
+                        this._service.fetchHistoryProps(selected_dn, time_machine_date, (config) => {
+                            this.sharedState.set('selected_object_props', config);
+                        })
+
+                        this._service.fetchHistoryAlerts(selected_dn, time_machine_date, (config) => {
+                            this.sharedState.set('selected_raw_alerts', config);
                         })
                     }
                 } else {
@@ -137,7 +140,7 @@ class StateHandler {
 
                     var alerts = _.cloneDeep(selected_raw_alerts);
 
-                    if (_.isObject(alerts))
+                    if (_.isPlainObject(alerts))
                     {
                         var newAlerts = [];
                         for(var dn of _.keys(alerts))
@@ -162,6 +165,11 @@ class StateHandler {
                     }
 
                     alerts = _.orderBy(alerts, ['dn', 'severity', 'msg']);
+
+                    for(var alert of alerts)
+                    {
+                        alert.uiKey = alert.dn + '-' + alert.severity + '-' + alert.id + '-' + alert.msg;
+                    }
 
                     this.sharedState.set('selected_object_alerts', alerts);
                 } else {
