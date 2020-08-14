@@ -161,6 +161,8 @@ class StateHandler {
                         }
                     }
 
+                    alerts = _.orderBy(alerts, ['dn', 'severity', 'msg']);
+
                     this.sharedState.set('selected_object_alerts', alerts);
                 } else {
                     this.sharedState.set('selected_object_alerts', null);
