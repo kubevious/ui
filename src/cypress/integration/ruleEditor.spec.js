@@ -8,9 +8,9 @@ describe('Test rule editor', () => {
     })
 
     it('create new rule', () => {
-        cy.get('.new-rule-btn').first().click()
+        cy.get('.rule-header .new-rule-btn').first().click()
 
-        cy.wait(2000)
+        cy.wait(15000)
 
         cy.get('#rule-editor .field-input.name').type('New super rule')
 
@@ -31,6 +31,7 @@ describe('Test rule editor', () => {
 
     it('update rule', () => {
         cy.get('.rule-item-button').first().click()
+
         cy.wait(1000)
 
         cy.get('.field-input.name').clear().type('Edited super rule')
