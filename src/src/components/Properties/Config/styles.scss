@@ -111,9 +111,9 @@
     color: white;
   }
 
-  .react-codemirror2 {
-    height: 100%;
-  }
+  // .react-codemirror2 {
+  //   height: 100%;
+  // }
 
   .CodeMirror {
     background: inherit;
@@ -122,8 +122,8 @@
 
     &.cm-s-darcula {
       border: none;
-      background: inherit;
-      height: 100%;
+      // background: inherit;
+      // height: 100%;
     }
 
     .CodeMirror-code {
