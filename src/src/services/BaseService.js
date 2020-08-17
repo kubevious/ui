@@ -1,7 +1,10 @@
 class BaseService {
-    constructor(client, sharedState, socket)
+    constructor(client, sharedState, socket, options)
     {
         console.log('[BaseService] ' + this.constructor.name + ' :: create');
+
+        options = options || {}
+        this._options = options;
 
         this._client = client;
         this._sharedState = sharedState;
@@ -13,8 +16,12 @@ class BaseService {
         if (!this.sharedState) {
             throw new Error("SharedState not provided");
         }
+
         if (!this.socket) {
-            throw new Error("Socket not provided");
+            if (!this._options.allowNoSocket)
+            {
+                throw new Error("Socket not provided");
+            }
         }
 
         this._socketHandlers = [];
