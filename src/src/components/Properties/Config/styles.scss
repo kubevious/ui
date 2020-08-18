@@ -6,6 +6,7 @@
   display: block;
 
 }
+
 .Config-header {
   color: white;
   font-family: 'Montserrat', monospace;
@@ -82,8 +83,8 @@
   padding: 0;
 
   &.edit-mode {
-    background: #181819d6;
-    height: calc(100% - 110px - 50px);
+    background: rgba(24,24,25,.84);
+    height: calc(100% - 160px);
     padding: 20px;
   }
 
@@ -111,9 +112,9 @@
     color: white;
   }
 
-  // .react-codemirror2 {
-  //   height: 100%;
-  // }
+  .react-codemirror2 {
+    overflow: hidden;
+  }
 
   .CodeMirror {
     background: inherit;
@@ -122,8 +123,8 @@
 
     &.cm-s-darcula {
       border: none;
-      // background: inherit;
-      // height: 100%;
+      background: inherit;
+      height: 100%;
     }
 
     .CodeMirror-code {
