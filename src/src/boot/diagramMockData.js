@@ -19685,10 +19685,21 @@ export const ALERTS_DATA = [
 ]
 
 
-export const ABOUT_DATA = {
-    'version': 'v4.5.6',
-    'backend version': 'v1.2.3'
-}
+export const ABOUT_DATA = [
+    {
+        name: 'version',
+        value: 'v4.5.6'
+    },
+    {
+        name: 'backend version',
+        value: 'v1.2.3'
+    },
+    {
+        category: 'collector',
+        name: 'parser version',
+        value: 'v8.8.8'
+    },
+];
 
 export const HISTORY_TIMELINE = [
     {

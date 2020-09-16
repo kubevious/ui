@@ -1,6 +1,5 @@
 import _ from 'the-lodash'
 import {
-    ABOUT_DATA,
     ALERTS_DATA,
     GRAPH_DATA, HISTORY_GRAPH_DATA, HISTORY_ALERTS, HISTORY_PROPERTIES,
     HISTORY_RANGE, HISTORY_TIMELINE,
@@ -74,10 +73,6 @@ class MockDiagramService {
     _randomInt(x)
     {
         return Math.floor(Math.random() * x); 
-    }
-
-    fetchAbout(cb) {
-        cb(ABOUT_DATA)
     }
 
     fetchHistoryRange(cb) {

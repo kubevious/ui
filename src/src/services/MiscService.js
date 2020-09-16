@@ -1,3 +1,5 @@
+const _ = require('the-lodash');
+
 class MiscService {
 
     constructor(client)
@@ -6,10 +8,12 @@ class MiscService {
     }
 
     fetchAbout(cb) {
-        var info = {
-        }
+        let info = [];
 
-        info['UI Version'] = require('../version');
+        info.push({
+            name: 'UI Version',
+            value: require('../version')
+        })
                   
         return Promise.resolve()
             .then(() => {
@@ -22,15 +26,15 @@ class MiscService {
                     });
             })
             .then(result => {
-                info['Backend Version'] = result;
+                info.push({
+                    name: 'Backend Version',
+                    value: result
+                })
             })
             .then(() => {
                 return this._client.get('/api/v1/metrics')
                     .then(result => {
-                        for(var metric of result.data.metrics)
-                        {
-                            info[metric.name] = metric.value;
-                        }
+                        info = _.concat(info, result.data.metrics);
                     })
                     .catch(reason => {
                         console.error(reason);
