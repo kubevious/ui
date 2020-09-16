@@ -7,17 +7,33 @@ class MiscService {
 
     fetchAbout(cb) {
         var info = {
-            version: require('../version')
         }
+
+        info['UI Version'] = require('../version');
                   
         return Promise.resolve()
             .then(() => {
-                return this._client.get('/version')
+                return this._client.get('/api/v1/version')
                     .then(result => {
-                        info['backend version'] = result.data.version;
+                        return result.data.version;
                     })
                     .catch(reason => {
-                        info['backend version'] = "unknown";
+                        return "unknown";
+                    });
+            })
+            .then(result => {
+                info['Backend Version'] = result;
+            })
+            .then(() => {
+                return this._client.get('/api/v1/metrics')
+                    .then(result => {
+                        for(var metric of result.data.metrics)
+                        {
+                            info[metric.name] = metric.value;
+                        }
+                    })
+                    .catch(reason => {
+                        console.error(reason);
                     });
             })
             .then(() => {
