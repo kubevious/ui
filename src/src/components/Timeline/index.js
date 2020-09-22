@@ -149,12 +149,14 @@ class Timeline extends BaseComponent {
   // }
 
   _toggleTimeMachine() {
-    if (!this.state.isTimeMachineActive) {
-      $('.timemachine').addClass('active')
-      this.setState({ isTimeMachineActive: true })
-    } else {
+    if (this.state.isTimeMachineActive) {
       $('.timemachine').removeClass('active')
       this.setState({ isTimeMachineActive: false })
+      this._removeTimeMachineInfo()
+    } else {
+      $('.timemachine').addClass('active')
+      this.setState({ isTimeMachineActive: true })
+      this._showTimeMachineInfo(this.state.activeIndex)
     }
   }
 
@@ -164,6 +166,7 @@ class Timeline extends BaseComponent {
       this.setState({
         activeIndex: elemId,
       })
+      this._showTimeMachineInfo(elemId)
     }
   }
 
@@ -180,6 +183,16 @@ class Timeline extends BaseComponent {
         </div>
       )
     }
+  }
+
+  _showTimeMachineInfo(index) {
+    const currentItem = timelineData[index].date
+    const html = '<span>Time Machine Active: ' + moment(currentItem).format('MMM DD hh:mm:ss A') + '</span>'	
+    $('.history-info').html(html)
+  }
+
+  _removeTimeMachineInfo() {
+    $('.history-info').html('')
   }
 
   render() {
