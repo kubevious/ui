@@ -12,6 +12,7 @@ import {
   AreaChart,
   Area,
   ComposedChart,
+  ReferenceLine, Label
 } from 'recharts'
 
 import './styles.scss'
@@ -23,6 +24,11 @@ class Timeline extends BaseComponent {
 
     this._parentElem = null
     this._showAxis = false
+
+    this.state = {
+      activeIndex: timelineData.length - 1,
+      isTimeMachineActive: false,
+    }
   }
 
   // get isTimeMachineEnabled() {
@@ -142,6 +148,25 @@ class Timeline extends BaseComponent {
   //   }
   // }
 
+  _toggleTimeMachine() {
+    if (!this.state.isTimeMachineActive) {
+      $('.timemachine').addClass('active')
+      this.setState({ isTimeMachineActive: true })
+    } else {
+      $('.timemachine').removeClass('active')
+      this.setState({ isTimeMachineActive: false })
+    }
+  }
+
+  _handleTimelineClick(data) {
+    if (this.state.isTimeMachineActive) {
+      const elemId = timelineData.findIndex((elem) => elem.date === data.date)
+      this.setState({
+        activeIndex: elemId,
+      })
+    }
+  }
+
   _formatXaxis(item) {
     return moment(item).format('MMM DD hh:mm A')
   }
@@ -149,14 +174,7 @@ class Timeline extends BaseComponent {
   _customTooltip({ active, payload, label }) {
     if (active) {
       return (
-        <div
-          className="custom-tooltip"
-          style={{
-            backgroundColor: 'white',
-            color: '#9b6565',
-            padding: '0 10px',
-          }}
-        >
+        <div className="custom-tooltip">
           <p className="label">{moment(label).format('MMM DD hh:mm:ss A')}</p>
           <p className="value">Items: {payload[0].value}</p>
         </div>
@@ -174,6 +192,8 @@ class Timeline extends BaseComponent {
               top: 10,
               bottom: 10,
             }}
+            barCategoryGap={0}
+            barGap={0}
           >
             <XAxis
               dataKey="date"
@@ -192,7 +212,7 @@ class Timeline extends BaseComponent {
               dataKey="date"
               height={30}
               stroke="#9b6565"
-              startIndex={timelineData.length - 200}
+              startIndex={timelineData.length - 300}
               tickFormatter={this._formatXaxis}
               gap={5}
               tick={true}
@@ -210,19 +230,45 @@ class Timeline extends BaseComponent {
             <Bar
               dataKey="items"
               fill="#fff"
-              stroke="#9b6565"
-              background={{ fill: '#9b6565', fillOpacity: '1' }}
-            />
-            <Area
-              dataKey="items"
-              fill="#fff"
+              stroke="#fff"
               fillOpacity="1"
-              stroke="none"
-              type="step"
-              activeDot={{ stroke: '#9b6565', fill: '#ccc' }}
-            />
+              barCategoryGap={0}
+              barGap={0}
+              background={{
+                fill: '#9b6565',
+                fillOpacity: '1',
+                stroke: '#9b6565',
+              }}
+              onClick={(data) => this._handleTimelineClick(data)}
+              cursor={this.state.isTimeMachineActive ? 'pointer' : 'default' }
+            ></Bar>
+            <ReferenceLine
+              x={
+                this.state.isTimeMachineActive &&
+                timelineData[this.state.activeIndex].date
+              }
+              stroke="#FCBD3F"
+              isFront={true}
+              strokeWidth={5}
+            >
+              <Label
+                value="▲"
+                offset={0}
+                position="bottom"
+                className="selected-time-bottom"
+                fill="#FCBD3F"
+              />
+            </ReferenceLine>
           </ComposedChart>
         </ResponsiveContainer>
+        <div className="tl-actions">
+          <a
+            role="button"
+            id="btnTimelineTimeMachine"
+            className="timemachine"
+            onClick={() => this._toggleTimeMachine()}
+          ><span class="tooltiptext">Activate Time Machine</span></a>
+        </div>
       </div>
     )
   }

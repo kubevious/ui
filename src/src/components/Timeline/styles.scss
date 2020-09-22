@@ -12,6 +12,20 @@
     right: 0;
 }
 
+.custom-tooltip {
+    background-color: white;
+    color: #9b6565;
+    padding: 0 10px;
+}
+
+.selected-time-bottom {
+    font-size: 20px;
+}
+
+.selected-time-top {
+    font-size: 40px;
+}
+
 .timeline svg .alerts {
     fill: #b77;
     opacity: 0.8;
@@ -25,27 +39,40 @@
 }
 
 .timeline.size-to-parent {
-    right: 81px;
+    margin-right: 60px;
+    display: flex;
 }
 
 a:focus {
     outline: none;
 }
 
+.tl-actions a.timemachine .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    position: absolute;
+    right: -40px;
+  z-index: 1;
+  font-size: 12px;
+  margin-top: 30px;
+}
+
 .tl-actions {
-    padding: 10px 15px;
+    padding: 10px 0 0 15px;
     border-left: solid 1px #35373E;
-    float: right;
-    height: 100%;
-    overflow: hidden;
-    width: 83px;
+    margin-left: 20px;
 }
 
 .tl-actions a {
     display: block;
     float: left;
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
     margin: 3px;
     border-radius: 2px;
     cursor: pointer;
@@ -58,7 +85,7 @@ a:focus {
 
 .tl-actions a.timemachine {
     background: #292A2F url('/img/timeline/clock.svg') center center no-repeat;
-    background-size: 16px;
+    background-size: 20px;
 }
 
 .tl-actions a.plus {
@@ -87,10 +114,17 @@ a:focus {
 
 .tl-actions a.timemachine:hover {
     background: #35373E url('/img/timeline/clock.svg') center center no-repeat;
+    background-size: 20px;
+}
+
+.tl-actions a.timemachine:hover .tooltiptext {
+visibility: visible;
+  opacity: 1;
 }
 
 .tl-actions a.timemachine.active {
     background: #FCBD3F url('/img/timeline/clock-active.svg') center center no-repeat;
+    background-size: 20px;
 }
 
 .tl-actions a.plus:hover {
