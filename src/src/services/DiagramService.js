@@ -1,3 +1,4 @@
+import { timelineData } from '../boot/timelineBoot';
 import BaseService from './BaseService'
 
 class DiagramService extends BaseService {
@@ -51,7 +52,9 @@ class DiagramService extends BaseService {
         };
         return this._client.get('/history/timeline', params)
             .then(result => {
-                cb(result.data);
+                // temporary solution, just to test new timeline
+                // TODO replace to result.data
+                cb(timelineData);
             });
     }
 
