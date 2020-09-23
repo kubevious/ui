@@ -183,7 +183,7 @@ class StateHandler {
             ({ time_machine_date_from, time_machine_date_to }) => {
 
                 if (!time_machine_date_from || !time_machine_date_to) {
-                    this.sharedState.set('time_machine_timeline_data', null);
+                    // this.sharedState.set('time_machine_timeline_data', null);
                     this.sharedState.set('time_machine_actual_date_from', null);
                     this.sharedState.set('time_machine_actual_date_to', null);
 
@@ -194,10 +194,6 @@ class StateHandler {
                 var to = time_machine_date_to ? new Date(time_machine_date_to) : time_machine_date_to.toISOString()
 
                 this._service.fetchHistoryTimeline(from, to, data => {
-                    for(var x of data)
-                    {
-                        x.date = new Date(x.date);
-                    }
                     var orderedData = _.orderBy(data, ['date'], ['asc']);
                     this.sharedState.set('time_machine_timeline_data', orderedData);
 

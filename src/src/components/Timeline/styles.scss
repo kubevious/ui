@@ -13,9 +13,31 @@
 }
 
 .custom-tooltip {
-    background-color: white;
-    color: #9b6565;
+    background-color: #ffffffaa;
+    color: #3a1b1b;
     padding: 0 10px;
+    line-height: 15px;
+    font-size: 12px;
+    padding-top: 5px;
+    margin-top: 5px;
+}
+.custom-tooltip p {
+    margin-bottom: 0;
+}
+
+.recharts-active-dot {
+    pointer-events: none;
+    visibility: visible;
+    fill: yellow;
+    position: absolute;
+    font-size: 12px;
+    top: 100px;
+    z-index: 1000;
+    transition: -webkit-transform 400ms ease 0s;
+}
+
+.recharts-legend-wrapper {
+    margin-left: 10px;
 }
 
 .selected-time-bottom {
