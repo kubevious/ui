@@ -6,14 +6,18 @@ import {
     PROPERTIES_DATA,
     DN_LIST
 } from '../boot/diagramMockData'
+import { timelineData } from '../boot/timelineBoot' 
 
 class MockDiagramService {
     constructor(sharedState) {
         this.sharedState = sharedState;
 
+        this.sharedState.set('time_machine_timeline_data', timelineData)
+
+
         this.sharedState.subscribe(['selected_dn', 'time_machine_enabled'],
             ({ selected_dn, time_machine_enabled }) => {
-
+                
                 if (selected_dn) {
                     if (!time_machine_enabled) {
                         this.fetchProperties(selected_dn, (data) => {
@@ -80,7 +84,7 @@ class MockDiagramService {
     }
 
     fetchHistoryTimeline(from, to, cb) {
-        cb(HISTORY_TIMELINE)
+        cb(timelineData)
     }
 
     fetchHistorySnapshot(date, cb) {
