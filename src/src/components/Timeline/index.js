@@ -391,9 +391,8 @@ class Timeline extends BaseComponent {
                   type="step"
                 />
                 <ReferenceLine
-                  x={currentX}
-                  stroke="black"
-                  fill="black"
+                  x={this.state.isTimeMachineActive && this.state.activeIndex}
+                  stroke="#FCBD3F"
                   strokeOpacity={1}
                   isFront={true}
                   strokeWidth={2}
@@ -431,6 +430,8 @@ class Timeline extends BaseComponent {
             <Bar
               dataKey="changes"
               fillOpacity={0}
+              stroke="black"
+              strokeOpacity={0}
               stackId="3"
               onClick={this._handleChartClick}
               legendType="none"
