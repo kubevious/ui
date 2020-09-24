@@ -1,10 +1,13 @@
+import BaseService from './BaseService'
 const _ = require('the-lodash');
 
-class MiscService {
+class MiscService extends BaseService {
 
-    constructor(client)
+    constructor(client, sharedState, socket)
     {
-        this._client = client;
+        super(client, sharedState, socket)
+
+        this._setupWebSocket();
     }
 
     fetchAbout(cb) {
@@ -43,7 +46,21 @@ class MiscService {
             .then(() => {
                 cb(info);
             });
-  
+    }
+
+    fetchNewVersion(cb) {
+        return this._client.get('/api/v1/new-version')
+            .then(result => {
+                cb(result.data);
+            });
+    }
+
+    _setupWebSocket()
+    {
+        this._subscribeSocketToSharedState(
+            'new_version_info', 
+            { kind: 'new-version' }, 
+            {});
     }
 }
 

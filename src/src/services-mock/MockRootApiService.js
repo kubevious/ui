@@ -31,7 +31,7 @@ class MockRootApiService extends BaseRootApiService
         });
 
         this.registerService({ kind: 'misc' }, () => {
-            return new MiscService(this);
+            return new MiscService(this, sharedState);
         });
     }
     
