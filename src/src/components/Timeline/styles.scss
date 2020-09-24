@@ -28,12 +28,30 @@
 .recharts-active-dot {
     pointer-events: none;
     visibility: visible;
-    fill: yellow;
+    fill: black;
     position: absolute;
+    background: gray;
     font-size: 12px;
     top: 100px;
     z-index: 1000;
     transition: -webkit-transform 400ms ease 0s;
+}
+
+.recharts-active-dot rect {
+    width: 100px; 
+    height: 20px; 
+    fill: gray;
+    fill-opacity: 0.8;
+}
+
+.recharts-reference-line {
+    font-size: 12px;
+}
+
+.recharts-reference-line rect {
+    width: 100px; 
+    height: 20px; 
+    fill: #FCBD3F;
 }
 
 .recharts-legend-wrapper {
