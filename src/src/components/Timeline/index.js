@@ -18,6 +18,8 @@ import {
   Legend,
   Line,
 } from 'recharts'
+import DatePicker from 'react-datepicker'
+import "react-datepicker/dist/react-datepicker.css"
 
 import './styles.scss'
 // import { this.timelineData } from '../../boot/timelineBoot'
@@ -38,7 +40,7 @@ class Timeline extends BaseComponent {
         changes: 0.8,
         warnings: 0.8,
       },
-      changedActiveIndex: '',
+      selectedDate: new Date(),
     }
     // this.setupView()
     this._handleChartClick = this._handleChartClick.bind(this)
@@ -273,6 +275,16 @@ class Timeline extends BaseComponent {
     )
   }
 
+  _getDates(currentDate) {
+    let stopDate = moment().subtract(14, 'days').toDate()
+    var dateArray = [];
+    while (moment(stopDate).isSameOrBefore(currentDate)) {
+        dateArray.push(moment(stopDate).toDate())
+        stopDate = moment(stopDate).add(1, 'days')
+    }
+    return dateArray;
+}
+
   _removeTimeMachineInfo() {
     $('.history-info').html('')
   }
@@ -328,22 +340,19 @@ class Timeline extends BaseComponent {
 
   render() {
     this._calculateStartIndex()
-    const timelineData = () => {
-      const data = this.sharedState.get('time_machine_timeline_data')
-      if (!data) {
-        return []
-      }
-      return data
-    }
+    const timelineAllData = this.sharedState.get('time_machine_timeline_data')
+      ? this.sharedState.get('time_machine_timeline_data')
+      : []
     const { errors, warnings, changes } = this.state.opacity
+    const timelineData = timelineAllData.filter(elem => moment(elem.date).isSame(this.state.selectedDate, 'day'))
     const currentX =
       this.state.isTimeMachineActive &&
-      timelineData()[this.state.activeIndex].date
+      timelineAllData[this.state.activeIndex].date
     return (
       <div id="timelineComponent" className="timeline size-to-parent">
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart
-            data={timelineData()}
+            data={timelineData}
             margin={{
               top: 10,
               bottom: 10,
@@ -377,12 +386,12 @@ class Timeline extends BaseComponent {
               dataKey="date"
               height={30}
               stroke="#9b6565"
-              startIndex={this._calculateStartIndex()}
+              // startIndex={this._calculateStartIndex()}  // TODO: needs to be refactored
               tickFormatter={this._formatXaxis}
-              gap={5}
+              gap={10}
               tick={true}
             >
-              <AreaChart data={timelineData()}>
+              <AreaChart data={timelineData}>
                 <Area
                   dataKey="changes"
                   fill="#aaa"
@@ -468,6 +477,12 @@ class Timeline extends BaseComponent {
           >
             <span className="tooltiptext">Activate Time Machine</span>
           </a>
+          <DatePicker
+            selected={this.state.selectedDate}
+            onChange={date => this.setState({ selectedDate: date })}
+            includeDates={this._getDates(new Date())}
+            withPortal
+          />
         </div>
       </div>
     )
