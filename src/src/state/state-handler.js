@@ -1,6 +1,7 @@
 import _ from 'the-lodash'
 import { splitDn } from '../utils/naming-utils'
 import FieldsSaver from '../utils/save-fields';
+import moment from 'moment'
 
 class StateHandler {
     constructor(sharedState, diagramService) {
@@ -179,6 +180,10 @@ class StateHandler {
     }
 
     _handleTimelineDataChange() {
+        this._service.fetchHistoryTimelinePreview(data => {
+            var orderedData = _.orderBy(data, ['date'], ['asc']);
+            this.sharedState.set('time_machine_timeline_preview', orderedData);
+        })
         this.sharedState.subscribe(['time_machine_date_from', 'time_machine_date_to'],
             ({ time_machine_date_from, time_machine_date_to }) => {
 
@@ -190,11 +195,12 @@ class StateHandler {
                     return;
                 }
 
-                var from = time_machine_date_from ? new Date(time_machine_date_from) : time_machine_date_from.toISOString()
-                var to = time_machine_date_to ? new Date(time_machine_date_to) : time_machine_date_to.toISOString()
+                var from = time_machine_date_from ? new Date(time_machine_date_from) : moment().subtract(1, 'days')
+                var to = time_machine_date_to ? new Date(time_machine_date_to) : moment()
 
                 this._service.fetchHistoryTimeline(from, to, data => {
-                    var orderedData = _.orderBy(data, ['date'], ['asc']);
+                    const dates = data.filter(elem => moment(elem.date).isSameOrAfter(from) && moment(elem.date).isSameOrBefore(to))
+                    var orderedData = _.orderBy(dates, ['date'], ['asc']);
                     this.sharedState.set('time_machine_timeline_data', orderedData);
 
                     this.sharedState.set('time_machine_actual_date_from', time_machine_date_from);

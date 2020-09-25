@@ -10,7 +10,6 @@ import {
   XAxis,
   YAxis,
   Tooltip,
-  AreaChart,
   Area,
   ComposedChart,
   ReferenceLine,
@@ -18,9 +17,6 @@ import {
   Legend,
   Line,
 } from 'recharts'
-import DatePicker from 'react-datepicker'
-import "react-datepicker/dist/react-datepicker.css"
-import { timelinePreviewData } from '../../boot/timelinePreviewBoot'
 
 import './styles.scss'
 // import { this.timelineData } from '../../boot/timelineBoot'
@@ -36,13 +32,13 @@ class Timeline extends BaseComponent {
       activeIndex:
         this.sharedState.get('time_machine_timeline_data').length - 100,
       isTimeMachineActive: false,
+      chartData: [],
     }
     // this.setupView()
     this._handleChartClick = this._handleChartClick.bind(this)
     this._handleChartDrag = this._handleChartDrag.bind(this)
-    this._calculateStartIndex = this._calculateStartIndex.bind(this)
+    this._calculateIndexes = this._calculateIndexes.bind(this)
   }
-  
 
   get isTimeMachineEnabled() {
     return this.sharedState.get('time_machine_enabled')
@@ -140,7 +136,6 @@ class Timeline extends BaseComponent {
   }
 
   _toggleTimeMachine() {
-    // TODO: Refactor toggling to single action
     this.sharedState.set(
       'time_machine_enabled',
       !this.sharedState.get('time_machine_enabled')
@@ -245,10 +240,36 @@ class Timeline extends BaseComponent {
     $('.history-info').html(html)
   }
 
-  _calculateStartIndex(props) {
-
+  _calculateIndexes(props) {
+    const dateFrom = this.sharedState.get('time_machine_timeline_preview')[
+      props.startIndex
+    ].date
+    this.sharedState.set('time_machine_date_from', dateFrom)
+    const dateTo = this.sharedState.get('time_machine_timeline_preview')[
+      props.endIndex
+    ].date
+    this.sharedState.set('time_machine_date_to', dateTo)
   }
 
+  _calculateStartIndex(data) {
+    const stateStartDate = moment(
+      this.sharedState.get('time_machine_date_from')
+    ).toDate()
+    const startIndex = data.findIndex((elem) =>
+      moment(elem.date).isSame(stateStartDate, 'hour')
+    )
+    return startIndex
+  }
+
+  _calculateEndIndex(data) {
+    const stateEndDate = moment(
+      this.sharedState.get('time_machine_date_to')
+    ).toDate()
+    const endIndex = data.findIndex((elem) =>
+      moment(elem.date).isSame(stateEndDate, 'hour')
+    )
+    return endIndex
+  }
 
   _removeTimeMachineInfo() {
     $('.history-info').html('')
@@ -281,9 +302,22 @@ class Timeline extends BaseComponent {
   }
 
   componentDidMount() {
-    this.subscribeToSharedState('time_machine_timeline_data', () => {
-      this.setupView()
-    })
+    this.subscribeToSharedState(
+      'time_machine_timeline_data',
+      (time_machine_timeline_data) => {
+        this.setState({ chartData: time_machine_timeline_data })
+        this.setupView()
+      }
+    )
+
+    this.subscribeToSharedState(
+      ['time_machine_date_from', 'time_machine_date_to'],
+      ({ time_machine_date_from, time_machine_date_to }) => {
+        const chartData = this.sharedState.get('time_machine_timeline_data')
+
+        this.setState({ chartData })
+      }
+    )
 
     this.subscribeToSharedState(
       'time_machine_target_date',
@@ -304,160 +338,176 @@ class Timeline extends BaseComponent {
   }
 
   render() {
-    this._calculateStartIndex()
-    const timelinePreviewData = this.sharedState.get('time_machine_timeline_preview') || []
-    const timelineAllData = this.sharedState.get('time_machine_timeline_data') || []
-    const timelineData = timelineAllData.filter(elem => moment(elem.date).isSame(this.state.selectedDate, 'day'))
+    const timelinePreviewData =
+      this.sharedState.get('time_machine_timeline_preview') || []
+    const timelineAllData =
+      this.sharedState.get('time_machine_timeline_data') || []
     const currentX =
       this.state.isTimeMachineActive &&
-      timelineAllData[this.state.activeIndex].date
+      this.state.chartData[this.state.activeIndex].date
+
+    console.log('this.state.chartData', this.state.chartData)
     return (
       <div id="timelineComponent" className="timeline size-to-parent">
-        <ResponsiveContainer width="100%" height="100%">
-          <ComposedChart
-            data={timelineData}
-            margin={{
-              top: 10,
-              bottom: 10,
-            }}
-            barCategoryGap={0}
-            barGap={0}
-          >
-            <XAxis
-              dataKey="date"
-              tickFormatter={this._formatXaxis}
-              minTickGap={100}
-              tickSize={15}
-              allowDecimals={false}
-            />
-            <YAxis tick={false} type="number" domain={['dataMin', 'dataMax']} />
-            
-            <Legend
-              align="left"
-              layout="vertical"
-              margin={{ right: 0 }}
-              verticalAlign="middle"
-            />
-            <Brush
-              dataKey="date"
-              height={30}
-              stroke="#9b6565"
-              fillOpacity={0.5}
-              // startIndex={this._calculateStartIndex()}  // TODO: needs to be refactored
-              tickFormatter={this._formatXaxis}
-              gap={10}
-              tick={true}
+        <div className="chart-view">
+          <ResponsiveContainer height="70%">
+            <ComposedChart
+              data={this.state.chartData}
+              margin={{
+                top: 10,
+                bottom: 10,
+              }}
+              barCategoryGap={0}
+              barGap={0}
+              syncId={1}
             >
-              <ComposedChart data={timelinePreviewData}>
-                <Area
-                  dataKey="warnings"
-                  fill="#FCBD3F"
-                  stroke="none"
-                  fillOpacity={0.5}
-                  stackId="2"
-                  legendType="none"
-                  isAnimationActive={false}
-                ></Area>
-                <Area
-                  dataKey="errors"
-                  fill="#9b6565"
-                  fillOpacity={0.3}
-                  stroke="none"
-                  stackId="2"
-                  legendType="none"
-                  isAnimationActive={false}
-                ></Area>
-                <Line
-                  dataKey="changes"
-                  stroke="#fff"
-                  type="linear"
-                  dot={false}
-                  fillOpacity={0.5}
-                  stackId="1"
-                  legendType="none"
-                  isAnimationActive={false}
-                ></Line>
-                <ReferenceLine
-                  x={this.state.isTimeMachineActive && this.state.activeIndex}
-                  stroke="#FCBD3F"
-                  strokeOpacity={1}
-                  isFront={true}
-                  strokeWidth={2}
-                ></ReferenceLine>
-              </ComposedChart>
-            </Brush>
-            <Area
-              dataKey="warnings"
-              fill="#FCBD3F"
-              stroke="none"
-              fillOpacity={1}
-              stackId="2"
-              activeDot={false}
-              legendType="triangle"
-              isAnimationActive={false}
-            ></Area>
-            <Area
-              dataKey="errors"
-              fill="#9b6565"
-              fillOpacity={1}
-              stroke="none"
-              stackId="2"
-              activeDot={false}
-              legendType="triangle"
-              isAnimationActive={false}
-            ></Area>
-            <Line
-              dataKey="changes"
-              stroke="#fff"
-              type="linear"
-              dot={false}
-              fillOpacity={1}
-              stackId="1"
-              activeDot={this._renderHoverTimeStamp}
-              legendType="triangle"
-              isAnimationActive={false}
-            ></Line>
-            <Bar
-              dataKey="changes"
-              stroke="black"
-              fillOpacity={0}
-              strokeOpacity={0}
-              background={{ fill: '#eee', stroke: '#eee', opacity: '0' }}
-              stackId="3"
-              onClick={this._handleChartClick}
-              legendType="none"
-            />
-            <ReferenceLine
-              x={currentX}
-              stroke="#FCBD3F"
-              isFront={true}
-              strokeWidth={5}
-              onClick={this._handleChartDrag}
-            >
-              <Label
-                value="▲"
-                offset={0}
-                position="bottom"
-                className="selected-time-bottom"
+              <XAxis
+                dataKey="date"
+                tickFormatter={this._formatXaxis}
+                minTickGap={100}
+                tickSize={15}
+                allowDecimals={false}
+              />
+              <YAxis
+                tick={false}
+                type="number"
+                domain={['dataMin', 'dataMax']}
+              />
+
+              <Legend
+                align="left"
+                layout="vertical"
+                margin={{ right: 0 }}
+                verticalAlign="middle"
+              />
+
+              <Area
+                dataKey="warnings"
                 fill="#FCBD3F"
+                stroke="none"
+                fillOpacity={1}
+                stackId="2"
+                activeDot={false}
+                legendType="triangle"
+                isAnimationActive={false}
+              ></Area>
+              <Area
+                dataKey="errors"
+                fill="#9b6565"
+                fillOpacity={1}
+                stroke="none"
+                stackId="2"
+                activeDot={false}
+                legendType="triangle"
+                isAnimationActive={false}
+              ></Area>
+              <Line
+                dataKey="changes"
+                stroke="#fff"
+                type="linear"
+                dot={false}
+                fillOpacity={1}
+                stackId="1"
+                activeDot={this._renderHoverTimeStamp}
+                legendType="triangle"
+                isAnimationActive={false}
+              ></Line>
+              <Bar
+                dataKey="changes"
+                stroke="black"
+                fillOpacity={0}
+                strokeOpacity={0}
+                background={{ fill: '#eee', stroke: '#eee', opacity: '0' }}
+                stackId="3"
+                onClick={this._handleChartClick}
+                legendType="none"
               />
-              <Label
-                data={currentX}
-                position="bottom"
-                content={this._renderTimeMachineStamp}
+              <ReferenceLine
+                x={currentX}
+                stroke="#FCBD3F"
+                isFront={true}
+                strokeWidth={5}
+                onClick={this._handleChartDrag}
+              >
+                <Label
+                  value="▲"
+                  offset={0}
+                  position="bottom"
+                  className="selected-time-bottom"
+                  fill="#FCBD3F"
+                />
+                <Label
+                  data={currentX}
+                  position="bottom"
+                  content={this._renderTimeMachineStamp}
+                />
+                <Label content={this._renderTimeMachineLine} />
+              </ReferenceLine>
+              <Tooltip
+                labelStyle={{ color: '#9b6565' }}
+                itemStyle={{ color: '#9b6565' }}
+                contentStyle={{ color: '#9b6565' }}
+                content={this._customTooltip}
+                isAnimationActive={false}
+                cursor={{ stroke: '#ffffffff', strokeOpacity: '1' }}
               />
-              <Label content={this._renderTimeMachineLine} />
-            </ReferenceLine>
-            <Tooltip
-              labelStyle={{ color: '#9b6565' }}
-              itemStyle={{ color: '#9b6565' }}
-              contentStyle={{ color: '#9b6565' }}
-              content={this._customTooltip}
-              isAnimationActive={false}
-              cursor={{ stroke: '#ffffffff', strokeOpacity: '1' }}
-            />
-          </ComposedChart>
-        </ResponsiveContainer>
+            </ComposedChart>
+          </ResponsiveContainer>
+          <ResponsiveContainer width="90%" height="20%" className="brush-chart">
+            <ComposedChart data={timelinePreviewData} width={800} height={100}>
+              <Brush
+                dataKey="date"
+                height={30}
+                stroke="#9b6565"
+                fillOpacity={0.5}
+                startIndex={this._calculateStartIndex(timelinePreviewData)}
+                endIndex={this._calculateEndIndex(timelinePreviewData)}
+                onChange={this._calculateIndexes}
+                tickFormatter={this._formatXaxis}
+                gap={30}
+                tick={true}
+              >
+                <ComposedChart data={timelinePreviewData}>
+                  <Area
+                    dataKey="warnings"
+                    fill="#FCBD3F"
+                    stroke="none"
+                    fillOpacity={0.5}
+                    stackId="2"
+                    legendType="none"
+                    isAnimationActive={false}
+                  ></Area>
+                  <Area
+                    dataKey="errors"
+                    fill="#9b6565"
+                    fillOpacity={0.3}
+                    stroke="none"
+                    stackId="2"
+                    legendType="none"
+                    isAnimationActive={false}
+                  ></Area>
+                  <Line
+                    dataKey="changes"
+                    stroke="#fff"
+                    type="linear"
+                    dot={false}
+                    fillOpacity={0.5}
+                    stackId="1"
+                    legendType="none"
+                    isAnimationActive={false}
+                  ></Line>
+                  <ReferenceLine
+                    x={this.state.isTimeMachineActive && this.state.activeIndex}
+                    stroke="#FCBD3F"
+                    strokeOpacity={1}
+                    isFront={true}
+                    strokeWidth={2}
+                  ></ReferenceLine>
+                </ComposedChart>
+              </Brush>
+            </ComposedChart>
+          </ResponsiveContainer>
+        </div>
         <div className="tl-actions">
           <a
             role="button"
