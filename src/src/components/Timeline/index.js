@@ -20,6 +20,7 @@ import {
 } from 'recharts'
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css"
+import { timelinePreviewData } from '../../boot/timelinePreviewBoot'
 
 import './styles.scss'
 // import { this.timelineData } from '../../boot/timelineBoot'
@@ -35,17 +36,13 @@ class Timeline extends BaseComponent {
       activeIndex:
         this.sharedState.get('time_machine_timeline_data').length - 100,
       isTimeMachineActive: false,
-      opacity: {
-        errors: 0.8,
-        changes: 0.8,
-        warnings: 0.8,
-      },
-      selectedDate: new Date(),
     }
     // this.setupView()
     this._handleChartClick = this._handleChartClick.bind(this)
     this._handleChartDrag = this._handleChartDrag.bind(this)
+    this._calculateStartIndex = this._calculateStartIndex.bind(this)
   }
+  
 
   get isTimeMachineEnabled() {
     return this.sharedState.get('time_machine_enabled')
@@ -97,7 +94,7 @@ class Timeline extends BaseComponent {
       'time_machine_date_from'
     )
       ? this.sharedState.get('time_machine_date_from')
-      : new Date(Date.now() - 2864e5) // TODO: remove this minus, it's temporary solution to make mocks work
+      : moment().subtract(1, 'days').toDate() // TODO: remove this minus, it's temporary solution to make mocks work
 
     this.sharedState.set('time_machine_date_to', time_machine_date_to)
     this.sharedState.set('time_machine_duration', time_machine_duration)
@@ -195,24 +192,6 @@ class Timeline extends BaseComponent {
     }
   }
 
-  _handleLegendMouseEnter = (o) => {
-    const { dataKey } = o
-    const { opacity } = this.state
-
-    this.setState({
-      opacity: { ...opacity, [dataKey]: 1 },
-    })
-  }
-
-  _handleLegendMouseLeave = (o) => {
-    const { dataKey } = o
-    const { opacity } = this.state
-
-    this.setState({
-      opacity: { ...opacity, [dataKey]: 0.8 },
-    })
-  }
-
   _renderHoverTimeStamp({ payload, cx }) {
     return (
       <>
@@ -266,24 +245,10 @@ class Timeline extends BaseComponent {
     $('.history-info').html(html)
   }
 
-  _calculateStartIndex() {
-    const data = this.sharedState.get('time_machine_timeline_data')
-    const targetDate = this.sharedState.get('time_machine_date_from')
+  _calculateStartIndex(props) {
 
-    return data.findIndex((elem) =>
-      moment(elem.date).isSame(targetDate, 'hour')
-    )
   }
 
-  _getDates(currentDate) {
-    let stopDate = moment().subtract(14, 'days').toDate()
-    var dateArray = [];
-    while (moment(stopDate).isSameOrBefore(currentDate)) {
-        dateArray.push(moment(stopDate).toDate())
-        stopDate = moment(stopDate).add(1, 'days')
-    }
-    return dateArray;
-}
 
   _removeTimeMachineInfo() {
     $('.history-info').html('')
@@ -340,10 +305,8 @@ class Timeline extends BaseComponent {
 
   render() {
     this._calculateStartIndex()
-    const timelineAllData = this.sharedState.get('time_machine_timeline_data')
-      ? this.sharedState.get('time_machine_timeline_data')
-      : []
-    const { errors, warnings, changes } = this.state.opacity
+    const timelinePreviewData = this.sharedState.get('time_machine_timeline_preview') || []
+    const timelineAllData = this.sharedState.get('time_machine_timeline_data') || []
     const timelineData = timelineAllData.filter(elem => moment(elem.date).isSame(this.state.selectedDate, 'day'))
     const currentX =
       this.state.isTimeMachineActive &&
@@ -368,37 +331,52 @@ class Timeline extends BaseComponent {
               allowDecimals={false}
             />
             <YAxis tick={false} type="number" domain={['dataMin', 'dataMax']} />
-            <Tooltip
-              labelStyle={{ color: '#9b6565' }}
-              itemStyle={{ color: '#9b6565' }}
-              contentStyle={{ color: '#9b6565' }}
-              content={this._customTooltip}
-            />
+            
             <Legend
               align="left"
               layout="vertical"
               margin={{ right: 0 }}
-              onMouseEnter={this._handleLegendMouseEnter}
-              onMouseLeave={this._handleLegendMouseLeave}
               verticalAlign="middle"
             />
             <Brush
               dataKey="date"
               height={30}
               stroke="#9b6565"
+              fillOpacity={0.5}
               // startIndex={this._calculateStartIndex()}  // TODO: needs to be refactored
               tickFormatter={this._formatXaxis}
               gap={10}
               tick={true}
             >
-              <AreaChart data={timelineData}>
+              <ComposedChart data={timelinePreviewData}>
                 <Area
-                  dataKey="changes"
-                  fill="#aaa"
-                  fillOpacity="1"
+                  dataKey="warnings"
+                  fill="#FCBD3F"
                   stroke="none"
-                  type="step"
-                />
+                  fillOpacity={0.5}
+                  stackId="2"
+                  legendType="none"
+                  isAnimationActive={false}
+                ></Area>
+                <Area
+                  dataKey="errors"
+                  fill="#9b6565"
+                  fillOpacity={0.3}
+                  stroke="none"
+                  stackId="2"
+                  legendType="none"
+                  isAnimationActive={false}
+                ></Area>
+                <Line
+                  dataKey="changes"
+                  stroke="#fff"
+                  type="linear"
+                  dot={false}
+                  fillOpacity={0.5}
+                  stackId="1"
+                  legendType="none"
+                  isAnimationActive={false}
+                ></Line>
                 <ReferenceLine
                   x={this.state.isTimeMachineActive && this.state.activeIndex}
                   stroke="#FCBD3F"
@@ -406,41 +384,45 @@ class Timeline extends BaseComponent {
                   isFront={true}
                   strokeWidth={2}
                 ></ReferenceLine>
-              </AreaChart>
+              </ComposedChart>
             </Brush>
             <Area
               dataKey="warnings"
               fill="#FCBD3F"
               stroke="none"
-              fillOpacity={warnings}
+              fillOpacity={1}
               stackId="2"
               activeDot={false}
               legendType="triangle"
+              isAnimationActive={false}
             ></Area>
             <Area
               dataKey="errors"
               fill="#9b6565"
-              fillOpacity={errors}
+              fillOpacity={1}
               stroke="none"
               stackId="2"
               activeDot={false}
               legendType="triangle"
+              isAnimationActive={false}
             ></Area>
             <Line
               dataKey="changes"
               stroke="#fff"
               type="linear"
               dot={false}
-              fillOpacity={changes}
+              fillOpacity={1}
               stackId="1"
               activeDot={this._renderHoverTimeStamp}
               legendType="triangle"
+              isAnimationActive={false}
             ></Line>
             <Bar
               dataKey="changes"
-              fillOpacity={0}
               stroke="black"
+              fillOpacity={0}
               strokeOpacity={0}
+              background={{ fill: '#eee', stroke: '#eee', opacity: '0' }}
               stackId="3"
               onClick={this._handleChartClick}
               legendType="none"
@@ -466,6 +448,14 @@ class Timeline extends BaseComponent {
               />
               <Label content={this._renderTimeMachineLine} />
             </ReferenceLine>
+            <Tooltip
+              labelStyle={{ color: '#9b6565' }}
+              itemStyle={{ color: '#9b6565' }}
+              contentStyle={{ color: '#9b6565' }}
+              content={this._customTooltip}
+              isAnimationActive={false}
+              cursor={{ stroke: '#ffffffff', strokeOpacity: '1' }}
+            />
           </ComposedChart>
         </ResponsiveContainer>
         <div className="tl-actions">
@@ -477,12 +467,6 @@ class Timeline extends BaseComponent {
           >
             <span className="tooltiptext">Activate Time Machine</span>
           </a>
-          <DatePicker
-            selected={this.state.selectedDate}
-            onChange={date => this.setState({ selectedDate: date })}
-            includeDates={this._getDates(new Date())}
-            withPortal
-          />
         </div>
       </div>
     )
