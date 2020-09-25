@@ -176,7 +176,7 @@ class Timeline extends BaseComponent {
   }
 
   _customTooltip({ active, payload, label }) {
-    if (active) {
+    if (active && payload && payload.length > 0) {
       return (
         <div className="custom-tooltip">
           <p>Errors: {payload[0].payload.errors}</p>

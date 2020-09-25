@@ -1,8 +1,9 @@
 import _ from 'the-lodash'
+import moment from 'moment'
 import {
     ALERTS_DATA,
     GRAPH_DATA, HISTORY_GRAPH_DATA, HISTORY_ALERTS, HISTORY_PROPERTIES,
-    HISTORY_RANGE, HISTORY_TIMELINE,
+    HISTORY_RANGE,
     PROPERTIES_DATA,
     DN_LIST
 } from '../boot/diagramMockData'
@@ -84,7 +85,24 @@ class MockDiagramService {
     }
 
     fetchHistoryTimeline(from, to, cb) {
-        cb(timelineData)
+        console.log("[fetchHistoryTimeline] BEGIN. PointCount: " + timelineData.length)
+        console.log("[fetchHistoryTimeline] FROM: " + from)
+        console.log("[fetchHistoryTimeline] TO: " + to)
+        // cb([]);
+        // return;
+
+        const filteredData = [];
+        const fromMoment = moment(from);
+        const toMoment = moment(to);
+        for(let x of timelineData)
+        {
+            if (moment(x.date).isBetween(fromMoment, toMoment))
+            {
+                filteredData.push(x);
+            }
+        }
+        console.log("[fetchHistoryTimeline] END. Filtered PointCount: " + filteredData.length);
+        cb(filteredData);
     }
 
     fetchHistoryTimelinePreview(cb) {
