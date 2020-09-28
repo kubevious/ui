@@ -187,15 +187,11 @@ class StateHandler {
         this.sharedState.subscribe(['time_machine_date_from', 'time_machine_date_to'],
             ({ time_machine_date_from, time_machine_date_to }) => {
 
-                if (!time_machine_date_from || !time_machine_date_to) {
-                    // this.sharedState.set('time_machine_timeline_data', null);
-                    this.sharedState.set('time_machine_actual_date_from', null);
-                    this.sharedState.set('time_machine_actual_date_to', null);
-
-                    return;
-                }
-
-                var from = time_machine_date_from ? new Date(time_machine_date_from) : moment().subtract(1, 'days')
+                var from =
+                  time_machine_date_from &&
+                  moment(time_machine_date_from).isBefore(time_machine_date_to)
+                    ? new Date(time_machine_date_from)
+                    : moment().subtract(1, 'days')
                 var to = time_machine_date_to ? new Date(time_machine_date_to) : moment()
 
                 this._service.fetchHistoryTimeline(from, to, data => {

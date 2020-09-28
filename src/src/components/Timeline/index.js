@@ -17,6 +17,7 @@ import {
   Legend,
   Line,
 } from 'recharts'
+import { debounce } from "debounce"
 
 import './styles.scss'
 // import { this.timelineData } from '../../boot/timelineBoot'
@@ -29,14 +30,13 @@ class Timeline extends BaseComponent {
     this._showAxis = false
 
     this.state = {
-      activeIndex:
-        this.sharedState.get('time_machine_timeline_data').length - 100,
+      activeIndex: 0,
       isTimeMachineActive: false,
       chartData: [],
+      targetDate: new Date().toISOString(),
     }
     // this.setupView()
     this._handleChartClick = this._handleChartClick.bind(this)
-    this._handleChartDrag = this._handleChartDrag.bind(this)
     this._calculateIndexes = this._calculateIndexes.bind(this)
   }
 
@@ -70,7 +70,7 @@ class Timeline extends BaseComponent {
 
   setupView() {
     const time_machine_date_to = this.sharedState.get('time_machine_date_to')
-      ? new Date(this.sharedState.get('time_machine_date_to'))
+      ? new Date(this.sharedState.get('time_machine_date_to')).toISOString()
       : new Date()
     const time_machine_duration = this.sharedState.get('time_machine_duration')
       ? Number(this.sharedState.get('time_machine_duration'))
@@ -79,25 +79,31 @@ class Timeline extends BaseComponent {
       ? this.sharedState.get('time_machine_enabled')
       : false
     const time_machine_date = this.sharedState.get('time_machine_date')
-      ? this.sharedState.get('time_machine_date')
+      ? new Date(this.sharedState.get('time_machine_date')).toISOString()
       : new Date()
     const time_machine_target_date = this.sharedState.get(
       'time_machine_target_date'
     )
-      ? this.sharedState.get('time_machine_target_date')
+      ? new Date(this.sharedState.get('time_machine_target_date')).toISOString()
       : new Date()
     const time_machine_date_from = this.sharedState.get(
       'time_machine_date_from'
     )
-      ? this.sharedState.get('time_machine_date_from')
-      : moment().subtract(1, 'days').toDate() // TODO: remove this minus, it's temporary solution to make mocks work
-
+      ? new Date(this.sharedState.get('time_machine_date_from'))
+      : moment().subtract(1, 'days').toDate()
+    
+    this.setState({ isTimeMachineActive: time_machine_enabled })
+    
     this.sharedState.set('time_machine_date_to', time_machine_date_to)
     this.sharedState.set('time_machine_duration', time_machine_duration)
     this.sharedState.set('time_machine_enabled', time_machine_enabled)
     this.sharedState.set('time_machine_date', time_machine_date)
     this.sharedState.set('time_machine_target_date', time_machine_target_date)
     this.sharedState.set('time_machine_date_from', time_machine_date_from)
+    
+    if (time_machine_enabled) {
+      this._showTimeMachineInfo(time_machine_target_date)
+    }
   }
 
   _setup() {
@@ -141,35 +147,13 @@ class Timeline extends BaseComponent {
       !this.sharedState.get('time_machine_enabled')
     )
     if (this.state.isTimeMachineActive) {
-      $('.timemachine').removeClass('active')
       this.setState({ isTimeMachineActive: false })
       this._removeTimeMachineInfo()
-      this.sharedState.set(
-        'time_machine_target_date',
-        this.sharedState.get('time_machine_date_to')
-      )
-      this.sharedState.set(
-        'time_machine_date',
-        this.sharedState.get('time_machine_date_to')
-      )
     } else {
-      $('.timemachine').addClass('active')
       this.setState({ isTimeMachineActive: true })
-      this._showTimeMachineInfo(this.state.activeIndex)
-      this.sharedState.set('time_machine_target_date', null)
-      this.sharedState.set('time_machine_date', null)
+      this._showTimeMachineInfo(this.state.targetDate)
     }
   }
-
-  // _handleTimelineClick() {
-  //   if (this.state.isTimeMachineActive) {
-  // const elemId = timelineData.findIndex((elem) => elem.date === data.date)
-  // this.setState({
-  //   activeIndex: elemId,
-  // })
-  // this._showTimeMachineInfo(elemId)
-  //   }
-  // }
 
   _formatXaxis(item) {
     return moment(item).format('MMM DD hh:mm A')
@@ -191,10 +175,10 @@ class Timeline extends BaseComponent {
     return (
       <>
         <rect
-          style={{ transform: `translate(${cx - 55}px, calc(100% - 70px))` }}
+          style={{ transform: `translate(${cx - 55}px, calc(100% - 40px))` }}
         />
         <text
-          style={{ transform: `translate(${cx - 50}px, calc(100% - 55px))` }}
+          style={{ transform: `translate(${cx - 50}px, calc(100% - 25px))` }}
         >
           <tspan>{moment(payload.date).format('MMM DD hh:mm A')}</tspan>
         </text>
@@ -207,10 +191,10 @@ class Timeline extends BaseComponent {
     return (
       <>
         <rect
-          style={{ transform: `translate(${cx - 55}px, calc(100% - 70px))` }}
+          style={{ transform: `translate(${cx - 55}px, calc(100% - 40px))` }}
         />
         <text
-          style={{ transform: `translate(${cx - 50}px, calc(100% - 55px))` }}
+          style={{ transform: `translate(${cx - 50}px, calc(100% - 25px))` }}
         >
           <tspan>{moment(props.data).format('MMM DD hh:mm A')}</tspan>
         </text>
@@ -229,13 +213,10 @@ class Timeline extends BaseComponent {
     )
   }
 
-  _showTimeMachineInfo(index) {
-    const currentItem = this.sharedState.get('time_machine_timeline_data')[
-      index
-    ].date
+  _showTimeMachineInfo(date) {
     const html =
       '<span>Time Machine Active: ' +
-      moment(currentItem).format('MMM DD hh:mm:ss A') +
+      moment(date).format('MMM DD hh:mm:ss A') +
       '</span>'
     $('.history-info').html(html)
   }
@@ -282,22 +263,11 @@ class Timeline extends BaseComponent {
     }
   }
 
-  _handleChartDrag(props) {
-    if (this.state.isTimeMachineActive) {
-      const selectedIndex = this.sharedState
-        .get('time_machine_timeline_data')
-        .findIndex((elem) => elem.date === props.target.attributes[0].nodeValue)
-      this.setState({ activeIndex: selectedIndex })
-    }
-  }
-
   _handleChartClick(props) {
     if (this.state.isTimeMachineActive) {
-      const selectedIndex = this.sharedState
-        .get('time_machine_timeline_data')
-        .findIndex((elem) => elem.date === props.date)
-      this.setState({ activeIndex: selectedIndex })
-      this._showTimeMachineInfo(selectedIndex)
+      this._showTimeMachineInfo(props.date)
+      this.sharedState.set('time_machine_target_date', props.date)
+      this.sharedState.set('time_machine_date', props.date)
     }
   }
 
@@ -322,17 +292,13 @@ class Timeline extends BaseComponent {
     this.subscribeToSharedState(
       'time_machine_target_date',
       (time_machine_target_date) => {
+
+        const selectedIndex = this.sharedState
+        .get('time_machine_timeline_preview')
+        .findIndex((elem) => moment(elem.date).isSame(time_machine_target_date, 'hours'))
+        this.setState({ activeIndex: selectedIndex, targetDate: time_machine_target_date })
+        
         this._cancelPendingTimeouts()
-
-        if (!time_machine_target_date) {
-          this.sharedState.set('time_machine_date', null)
-        } else {
-          this._dateChangeTimerId = setTimeout(() => {
-            this._cancelPendingTimeouts()
-
-            this.sharedState.set('time_machine_date', time_machine_target_date)
-          }, 250)
-        }
       }
     )
   }
@@ -340,13 +306,6 @@ class Timeline extends BaseComponent {
   render() {
     const timelinePreviewData =
       this.sharedState.get('time_machine_timeline_preview') || []
-    const timelineAllData =
-      this.sharedState.get('time_machine_timeline_data') || []
-    const currentX =
-      this.state.isTimeMachineActive &&
-      this.state.chartData[this.state.activeIndex].date
-
-    console.log('this.state.chartData', this.state.chartData)
     return (
       <div id="timelineComponent" className="timeline size-to-parent">
         <div className="chart-view">
@@ -423,21 +382,15 @@ class Timeline extends BaseComponent {
                 legendType="none"
               />
               <ReferenceLine
-                x={currentX}
+                x={this.state.isTimeMachineActive &&
+                  this.state.targetDate}
                 stroke="#FCBD3F"
                 isFront={true}
                 strokeWidth={5}
-                onClick={this._handleChartDrag}
               >
                 <Label
-                  value="▲"
-                  offset={0}
-                  position="bottom"
-                  className="selected-time-bottom"
-                  fill="#FCBD3F"
-                />
-                <Label
-                  data={currentX}
+                  data={this.state.isTimeMachineActive &&
+                    this.state.targetDate}
                   position="bottom"
                   content={this._renderTimeMachineStamp}
                 />
@@ -459,12 +412,11 @@ class Timeline extends BaseComponent {
                 dataKey="date"
                 height={30}
                 stroke="#9b6565"
-                fillOpacity={0.5}
                 startIndex={this._calculateStartIndex(timelinePreviewData)}
                 endIndex={this._calculateEndIndex(timelinePreviewData)}
-                onChange={this._calculateIndexes}
+                onChange={debounce(this._calculateIndexes, 200)}
                 tickFormatter={this._formatXaxis}
-                gap={30}
+                gap={2}
                 tick={true}
               >
                 <ComposedChart data={timelinePreviewData}>
@@ -512,7 +464,7 @@ class Timeline extends BaseComponent {
           <a
             role="button"
             id="btnTimelineTimeMachine"
-            className="timemachine"
+            className={`timemachine ${this.state.isTimeMachineActive && 'active'}`}
             onClick={() => this._toggleTimeMachine()}
           >
             <span className="tooltiptext">Activate Time Machine</span>

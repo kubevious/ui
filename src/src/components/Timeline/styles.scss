@@ -22,6 +22,20 @@
     margin-left: auto;
 }
 
+.recharts-brush-slide {
+    fill: white;
+    fill-opacity: 0.5;
+}
+
+.recharts-brush {
+    fill-opacity: 0.2;
+    stroke-opacity: 1;
+}
+
+.recharts-brush-traveller {
+    fill-opacity: 1;
+}
+
 .custom-tooltip {
     background-color: #ffffffaa;
     color: #3a1b1b;
@@ -69,9 +83,13 @@
 }
 
 .recharts-brush-texts {
-    stroke: black;
-    stroke-width: 0.3;
-    stroke-opacity: 0.5;
+    text-shadow: 0px 0px 3px black, 0px 0px 8px black;
+}
+
+.recharts-brush-texts text {
+    fill: #FCBD3F;
+    font-weight: 800;
+    fill-opacity: 1;
 }
 
 .selected-time-bottom {
