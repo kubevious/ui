@@ -79,7 +79,7 @@ class Timeline extends BaseComponent {
       ? this.sharedState.get('time_machine_enabled')
       : false
     const time_machine_date = this.sharedState.get('time_machine_date')
-      ? new Date(this.sharedState.get('time_machine_date')).toISOString()
+      ? new Date(this.sharedState.get('time_machine_date'))
       : new Date()
     const time_machine_target_date = this.sharedState.get(
       'time_machine_target_date'
@@ -309,7 +309,7 @@ class Timeline extends BaseComponent {
     return (
       <div id="timelineComponent" className="timeline size-to-parent">
         <div className="chart-view">
-          <ResponsiveContainer height="70%">
+          <ResponsiveContainer className="main-chart">
             <ComposedChart
               data={this.state.chartData}
               margin={{
@@ -406,8 +406,11 @@ class Timeline extends BaseComponent {
               />
             </ComposedChart>
           </ResponsiveContainer>
-          <ResponsiveContainer width="90%" height="20%" className="brush-chart">
-            <ComposedChart data={timelinePreviewData} width={800} height={100}>
+          <ResponsiveContainer width="90%" height={40} className="brush-chart">
+            <ComposedChart data={timelinePreviewData} height={30} margin={{
+                bottom: 10, left: 50,
+                right: 50
+            }}>
               <Brush
                 dataKey="date"
                 height={30}
@@ -456,7 +459,7 @@ class Timeline extends BaseComponent {
                     strokeWidth={2}
                   ></ReferenceLine>
                 </ComposedChart>
-              </Brush>
+                </Brush>
             </ComposedChart>
           </ResponsiveContainer>
         </div>
