@@ -187,14 +187,15 @@ class Timeline extends BaseComponent {
   }
 
   _renderTimeMachineStamp(props) {
+    const height = $('#timelineComponent').innerHeight()
     const cx = props.viewBox.x
     return (
       <>
         <rect
-          style={{ transform: `translate(${cx - 55}px, calc(100% - 40px))` }}
+          style={{ transform: `translate(${cx - 55}px, ${height - 90}px)` }}
         />
         <text
-          style={{ transform: `translate(${cx - 50}px, calc(100% - 25px))` }}
+          style={{ transform: `translate(${cx - 50}px, ${height - 75}px)` }}
         >
           <tspan>{moment(props.data).format('MMM DD hh:mm A')}</tspan>
         </text>
