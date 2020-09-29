@@ -106,41 +106,6 @@ class Timeline extends BaseComponent {
     }
   }
 
-  _setup() {
-    $(document).on('layout-resize-timelineComponent', () => {
-      this._setupDimentions()
-    })
-
-    this._setupDimentions()
-  }
-
-  _setupDimentions(size) {
-    if (!size) {
-      size = this._parentElem.node().getBoundingClientRect()
-    }
-
-    var margin = this._getMargin()
-
-    this._width = size.width - margin.left - margin.right
-    this._height = size.height - margin.top - margin.bottom
-  }
-
-  _getMargin() {
-    var margin = {
-      top: 10,
-      right: 15,
-      bottom: 25,
-      left: 15,
-    }
-
-    if (this._showAxis) {
-      margin.left += 40
-      margin.lerightft += 40
-    }
-
-    return margin
-  }
-
   _toggleTimeMachine() {
     this.sharedState.set(
       'time_machine_enabled',
@@ -175,10 +140,10 @@ class Timeline extends BaseComponent {
     return (
       <>
         <rect
-          style={{ transform: `translate(${cx - 55}px, calc(100% - 40px))` }}
+          style={{ transform: `translate(${cx - 55}px, calc(100% - 35px))` }}
         />
         <text
-          style={{ transform: `translate(${cx - 50}px, calc(100% - 25px))` }}
+          style={{ transform: `translate(${cx - 50}px, calc(100% - 20px))` }}
         >
           <tspan>{moment(payload.date).format('MMM DD hh:mm A')}</tspan>
         </text>
@@ -192,10 +157,10 @@ class Timeline extends BaseComponent {
     return (
       <>
         <rect
-          style={{ transform: `translate(${cx - 55}px, ${height - 90}px)` }}
+          style={{ transform: `translate(${cx - 55}px, ${height - 95}px)` }}
         />
         <text
-          style={{ transform: `translate(${cx - 50}px, ${height - 75}px)` }}
+          style={{ transform: `translate(${cx - 50}px, ${height - 80}px)` }}
         >
           <tspan>{moment(props.data).format('MMM DD hh:mm A')}</tspan>
         </text>
@@ -269,6 +234,7 @@ class Timeline extends BaseComponent {
       this._showTimeMachineInfo(props.date)
       this.sharedState.set('time_machine_target_date', props.date)
       this.sharedState.set('time_machine_date', props.date)
+      this.setState({ targetDate: props.date})
     }
   }
 
@@ -277,6 +243,15 @@ class Timeline extends BaseComponent {
       'time_machine_timeline_data',
       (time_machine_timeline_data) => {
         this.setState({ chartData: time_machine_timeline_data })
+
+        const time_machine_target_date = this.sharedState.get('time_machine_target_date')
+        const targetElement = time_machine_timeline_data.find(elem => moment(elem.date).isSame(time_machine_target_date, 'minutes'))
+    
+        if (targetElement) {
+          const targetDate = targetElement.date
+          this.setState({ targetDate })
+        }
+
         this.setupView()
       }
     )
@@ -294,11 +269,10 @@ class Timeline extends BaseComponent {
       'time_machine_target_date',
       (time_machine_target_date) => {
 
-        const selectedIndex = this.sharedState
-        .get('time_machine_timeline_preview')
-        .findIndex((elem) => moment(elem.date).isSame(time_machine_target_date, 'hours'))
-        this.setState({ activeIndex: selectedIndex, targetDate: time_machine_target_date })
+        const selectedIndex = this.sharedState.get('time_machine_timeline_preview')
+          .findIndex((elem) => moment(elem.date).isSame(time_machine_target_date, 'hours'))
         
+        this.setState({ activeIndex: selectedIndex })
         this._cancelPendingTimeouts()
       }
     )
@@ -307,16 +281,13 @@ class Timeline extends BaseComponent {
   render() {
     const timelinePreviewData =
       this.sharedState.get('time_machine_timeline_preview') || []
+
     return (
       <div id="timelineComponent" className="timeline size-to-parent">
         <div className="chart-view">
           <ResponsiveContainer className="main-chart">
             <ComposedChart
               data={this.state.chartData}
-              margin={{
-                top: 10,
-                bottom: 10,
-              }}
               barCategoryGap={0}
               barGap={0}
               syncId={1}
@@ -345,12 +316,13 @@ class Timeline extends BaseComponent {
                 dataKey="warnings"
                 fill="#FCBD3F"
                 stroke="none"
-                fillOpacity={1}
+                fillOpacity={0.8}
                 stackId="2"
                 activeDot={false}
                 legendType="triangle"
                 isAnimationActive={false}
-              ></Area>
+                connectNulls
+              />
               <Area
                 dataKey="errors"
                 fill="#9b6565"
@@ -360,18 +332,20 @@ class Timeline extends BaseComponent {
                 activeDot={false}
                 legendType="triangle"
                 isAnimationActive={false}
-              ></Area>
+                connectNulls
+              />
               <Line
                 dataKey="changes"
                 stroke="#fff"
-                type="linear"
+                type="natural"
                 dot={false}
                 fillOpacity={1}
                 stackId="1"
                 activeDot={this._renderHoverTimeStamp}
                 legendType="triangle"
                 isAnimationActive={false}
-              ></Line>
+                connectNulls
+              />
               <Bar
                 dataKey="changes"
                 stroke="black"
@@ -386,7 +360,7 @@ class Timeline extends BaseComponent {
                 x={this.state.isTimeMachineActive &&
                   this.state.targetDate}
                 stroke="#FCBD3F"
-                isFront={true}
+                isFront
                 strokeWidth={5}
               >
                 <Label
@@ -418,7 +392,7 @@ class Timeline extends BaseComponent {
                 stroke="#9b6565"
                 startIndex={this._calculateStartIndex(timelinePreviewData)}
                 endIndex={this._calculateEndIndex(timelinePreviewData)}
-                onChange={debounce(this._calculateIndexes, 200)}
+                onChange={debounce(this._calculateIndexes, 300)}
                 tickFormatter={this._formatXaxis}
                 gap={2}
                 tick={true}
@@ -432,6 +406,7 @@ class Timeline extends BaseComponent {
                     stackId="2"
                     legendType="none"
                     isAnimationActive={false}
+                    connectNulls
                   ></Area>
                   <Area
                     dataKey="errors"
@@ -441,6 +416,7 @@ class Timeline extends BaseComponent {
                     stackId="2"
                     legendType="none"
                     isAnimationActive={false}
+                    connectNulls
                   ></Area>
                   <Line
                     dataKey="changes"
@@ -451,6 +427,7 @@ class Timeline extends BaseComponent {
                     stackId="1"
                     legendType="none"
                     isAnimationActive={false}
+                    connectNulls
                   ></Line>
                   <ReferenceLine
                     x={this.state.isTimeMachineActive && this.state.activeIndex}
