@@ -22,8 +22,8 @@
 }
 
 .recharts-responsive-container.main-chart {
-    height: calc(100% - 60px) !important;
-    margin-bottom: 10px;
+    height: calc(100% - 50px) !important;
+    margin-bottom: 0;
     margin-top: 10px;
 }
 
@@ -51,8 +51,6 @@
 .activate-info {
     font-weight: 500;
     font-size: 14px;
-    color: #a04343;
-    text-shadow: 0px 0px 1px black;
 }
 
 .recharts-active-dot {

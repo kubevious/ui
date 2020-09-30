@@ -127,9 +127,9 @@ class Timeline extends BaseComponent {
       return (
         <>
         <div className="custom-tooltip">
-          {!this.state.isTimeMachineActive && <p className="activate-info">Click to activate Time Machine</p>} 
-          <p>Errors: {payload[0].payload.errors}</p>
+          {!this.state.isTimeMachineActive && <p className="activate-info">Click to activate the Time Machine</p>} 
           <p>Changes: {payload[0].payload.changes}</p>
+          <p>Errors: {payload[0].payload.errors}</p>
           <p>Warnings: {payload[0].payload.warnings}</p>
           </div>
           </>
@@ -309,12 +309,13 @@ class Timeline extends BaseComponent {
               barCategoryGap={0}
               barGap={0}
               syncId={1}
+              margin={{ top: 5, right: 5, bottom: -5, left: 5 }}
             >
               <XAxis
                 dataKey="date"
                 tickFormatter={this._formatXaxis}
                 minTickGap={100}
-                tickSize={10}
+                tickSize={5}
                 allowDecimals={false}
                 tickMargin={5}
               />
