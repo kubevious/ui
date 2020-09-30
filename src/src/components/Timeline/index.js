@@ -48,20 +48,18 @@ class Timeline extends BaseComponent {
     return this.sharedState.get('time_machine_target_date')
   }
 
-  get actualDateFrom() {
-    return this.sharedState.get('time_machine_actual_date_from')
-  }
-
-  get actualDateTo() {
-    return this.sharedState.get('time_machine_actual_date_to')
-  }
-
   get dateFrom() {
-    return this.sharedState.get('time_machine_date_from')
+    if (!this.sharedState.get('time_machine_date_from')) {
+      return new Date().toISOString();
+    }
+    return new Date(this.sharedState.get('time_machine_date_from')).toISOString();
   }
 
   get dateTo() {
-    return this.sharedState.get('time_machine_date_to')
+    if (!this.sharedState.get('time_machine_date_to')) {
+      return new Date().toISOString();
+    }
+    return new Date(this.sharedState.get('time_machine_date_to')).toISOString();
   }
 
   get durationHrs() {
@@ -90,7 +88,7 @@ class Timeline extends BaseComponent {
       'time_machine_date_from'
     )
       ? new Date(this.sharedState.get('time_machine_date_from'))
-      : moment().subtract(1, 'days').toDate()
+      : moment().subtract(12, 'hours').toDate()
     
     this.setState({ isTimeMachineActive: time_machine_enabled })
     
@@ -196,6 +194,7 @@ class Timeline extends BaseComponent {
       props.endIndex
     ].date
     this.sharedState.set('time_machine_date_to', dateTo)
+
   }
 
   _calculateStartIndex(data) {
@@ -257,15 +256,6 @@ class Timeline extends BaseComponent {
     )
 
     this.subscribeToSharedState(
-      ['time_machine_date_from', 'time_machine_date_to'],
-      ({ time_machine_date_from, time_machine_date_to }) => {
-        const chartData = this.sharedState.get('time_machine_timeline_data')
-
-        this.setState({ chartData })
-      }
-    )
-
-    this.subscribeToSharedState(
       'time_machine_target_date',
       (time_machine_target_date) => {
 
@@ -298,6 +288,7 @@ class Timeline extends BaseComponent {
                 minTickGap={100}
                 tickSize={15}
                 allowDecimals={false}
+       
               />
               <YAxis
                 tick={false}
@@ -392,7 +383,7 @@ class Timeline extends BaseComponent {
                 stroke="#9b6565"
                 startIndex={this._calculateStartIndex(timelinePreviewData)}
                 endIndex={this._calculateEndIndex(timelinePreviewData)}
-                onChange={debounce(this._calculateIndexes, 300)}
+                onChange={debounce(this._calculateIndexes, 10)}
                 tickFormatter={this._formatXaxis}
                 gap={2}
                 tick={true}

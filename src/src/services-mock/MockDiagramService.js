@@ -91,18 +91,24 @@ class MockDiagramService {
         // cb([]);
         // return;
 
+        console.time("PERF::fetchHistoryTimeline")
+
         const filteredData = [];
         const fromMoment = moment(from);
         const toMoment = moment(to);
         for(let x of timelineData)
         {
-            if (moment(x.date).isBetween(fromMoment, toMoment))
+            if (x.dateMoment.isBetween(fromMoment, toMoment))
             {
                 filteredData.push(x);
             }
         }
+        console.timeEnd("PERF::fetchHistoryTimeline")
+
         console.log("[fetchHistoryTimeline] END. Filtered PointCount: " + filteredData.length);
-        cb(filteredData);
+        setTimeout(() => {
+            cb(filteredData);
+        }, 500)
     }
 
     fetchHistoryTimelinePreview(cb) {

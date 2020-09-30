@@ -8,8 +8,10 @@ function getArray() {
   const dateArray = []
   console.log(`TIME MACHINE START DATE = ${stopDate}`)
   while (moment(stopDate).isSameOrBefore(today)) {
+    const date = moment(stopDate);
     dateArray.push({
-      date: moment(stopDate).toISOString(),
+      dateMoment: date,
+      date: date.toISOString(),
       changes: 4 + ~~(Math.random() * 6),
       errors: 5 + ~~(Math.random() * 2),
       warnings: 2 + ~~(Math.random() * 2),

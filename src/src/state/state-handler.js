@@ -89,7 +89,7 @@ class StateHandler {
                         dn = dn + '/' + parts[i];
                         dict[dn] = true;
                     }
-                    this.sharedState.set('diagram_expanded_dns', dict, { skipCompare: true });
+                    this.sharedState.set('diagram_expanded_dns', dict);
                 }
             });
     }
@@ -181,9 +181,11 @@ class StateHandler {
 
     _handleTimelineDataChange() {
         this._service.fetchHistoryTimelinePreview(data => {
-            var orderedData = _.orderBy(data, ['date'], ['asc']);
-            this.sharedState.set('time_machine_timeline_preview', orderedData);
+            const orderedData = _.orderBy(data, ['date'], ['asc']);
+            const sampledData = this._resamplePreviewTimelineData(orderedData);
+            this.sharedState.set('time_machine_timeline_preview', sampledData);
         })
+
         this.sharedState.subscribe(['time_machine_date_from', 'time_machine_date_to'],
             ({ time_machine_date_from, time_machine_date_to }) => {
 
@@ -194,18 +196,137 @@ class StateHandler {
                     : moment().subtract(1, 'days')
                 var to = time_machine_date_to ? new Date(time_machine_date_to) : moment()
 
-                this._service.fetchHistoryTimeline(from, to, data => {
-                    const dates = data.filter(elem => moment(elem.date).isSameOrAfter(from) && moment(elem.date).isSameOrBefore(to))
-                    var orderedData = _.orderBy(dates, ['date'], ['asc']);
-                    this.sharedState.set('time_machine_timeline_data', orderedData);
+                this._desiredTimelineDateFrom = from;
+                this._desiredTimelineDateTo = to;
 
-                    this.sharedState.set('time_machine_actual_date_from', time_machine_date_from);
-                    this.sharedState.set('time_machine_actual_date_to', time_machine_date_to);
-
-                });
-
+                this._tryQueryTimelineData();
             }
         )
+    }
+
+    _tryQueryTimelineData()
+    {
+        const from = this._desiredTimelineDateFrom;
+        const to = this._desiredTimelineDateTo;
+
+        const fromMoment = moment(from);
+        const toMoment = moment(to);
+
+        if ((from === this._latestTimelineDateFrom) && 
+            (to === this._latestTimelineDateTo))
+        {
+            return;
+        }
+
+        if (this._latestData)
+        {
+            let newData = this._latestData.filter(elem => elem.dateMoment.isBetween(fromMoment, toMoment));
+            this._setTimelineData(newData, fromMoment, toMoment);
+        }
+
+        if (this._isQueryingTimeline) {
+            return;
+        }
+        this._isQueryingTimeline = true;
+
+        this._service.fetchHistoryTimeline(from, to, data => {
+            this._isQueryingTimeline = false;
+
+            this._latestTimelineDateFrom = from;
+            this._latestTimelineDateTo = to;
+
+            const dates = data.filter(elem => elem.dateMoment.isBetween(fromMoment, toMoment));
+            let orderedData = _.orderBy(dates, ['date'], ['asc']);
+
+            this._latestData = orderedData;
+
+            this._setTimelineData(orderedData, fromMoment, toMoment);
+        });
+    }
+    
+    _setTimelineData(value, from, to)
+    {
+        const resampled = this._resampleTimelineData(value, from, to);
+        this.sharedState.set('time_machine_timeline_data', resampled);
+    }
+
+    _resamplePreviewTimelineData(data)
+    {
+        if (!data) {
+            return [];
+        }
+        if (!data.length) {
+            return [];
+        }
+
+        return this._resampleTimelineData(data, 
+            moment(_.head(data).date), 
+            moment(_.last(data).date))
+    }
+
+    _resampleTimelineData(data, from, to)
+    {
+        if (!data) {
+            return [];
+        }
+        if (!data.length) {
+            return [];
+        }
+
+        let sampleCount = 200;
+        if (data.length <= sampleCount) {
+            return data;
+        }
+
+        const diff = to.diff(from);
+        let period = diff / sampleCount;
+
+        let groups = [];
+
+        let date = to.clone();
+        let index = data.length - 1;
+        while (date.isSameOrAfter(from))
+        {
+            const periodStart = date.clone().subtract(period, 'milliseconds');
+            const newPoint = {
+                dateMoment: date,
+                date: date.toISOString(),
+                samples: []
+            }
+
+            while ((index >= 0) && (data[index].dateMoment.isSameOrAfter(periodStart)))
+            {
+                newPoint.samples.push(data[index]);
+                index--;
+            }
+            groups.unshift(newPoint);
+
+            date = periodStart;
+        }
+
+        const resampled = groups.map(x => this._reduceTimelineGroup(x));
+
+        return resampled;
+    }
+
+    _reduceTimelineGroup(group)
+    {
+        const point = {
+            date: group.date,
+            dateMoment: moment(group.date),
+            changes: 0,
+            errors: 0,
+            warnings: 0
+        };
+
+        if (group.samples.length > 0)
+        {
+            point.errors = Math.round(_.sum(group.samples.map(x => x.errors)) / group.samples.length);
+            point.warnings = Math.round(_.sum(group.samples.map(x => x.warnings))  / group.samples.length);
+            point.changes = _.max(group.samples.map(x => x.changes));
+        }
+
+        return point;
     }
 
     _handleMarkerListChange()
