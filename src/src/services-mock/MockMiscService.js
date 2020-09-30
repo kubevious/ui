@@ -23,6 +23,10 @@ class MockMiscService {
         cb(ABOUT_DATA);
     }
 
+    fetchNewVersion(cb) {
+        cb(NEW_VERSION_AVAILABLE_DATA);
+    }
+
 }
 
 export default MockMiscService

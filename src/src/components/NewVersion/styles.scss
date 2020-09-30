@@ -1,0 +1,52 @@
+.new-version-info {
+    background-color: #373737;
+    padding: 30px;
+    height: 90%;
+}
+
+.new-version-info h3 {
+    font-size: 24px;
+    margin-top: 15px;
+    font-weight: 700;
+}
+
+.heading-text {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    padding-bottom: 30px;
+}
+
+.install-btn {
+    padding: 10px;
+    background-color: #00f235;
+    display: block;
+    width: fit-content;
+    text-decoration: none;
+    color: black;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    margin-top: 15px;
+}
+
+.install-btn:hover {
+    text-decoration: none;
+    color: black;
+}
+
+.target-link {
+    text-decoration: underline;
+    color: inherit;
+    margin-bottom: 20px;
+    display: block;
+    margin: 10px 0 0 30px;
+    width: fit-content;
+}
+
+.new-version-info li {
+    margin-left: 30px;
+    list-style-type: "-";
+    padding-left: 10px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+}
