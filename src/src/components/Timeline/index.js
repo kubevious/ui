@@ -85,11 +85,10 @@ class Timeline extends BaseComponent {
     )
       ? new Date(this.sharedState.get('time_machine_target_date')).toISOString()
       : new Date()
-    const time_machine_date_from = this.sharedState.get(
-      'time_machine_date_from'
-    )
+    const time_machine_date_from = (this.sharedState.get('time_machine_date_from') &&
+      moment(this.sharedState.get('time_machine_date_from')).isBefore(time_machine_date_to))
       ? new Date(this.sharedState.get('time_machine_date_from'))
-      : moment().subtract(12, 'hours').toDate()
+      : moment(time_machine_date_to).subtract(12, 'hours').toDate()
     
     this.setState({ isTimeMachineActive: time_machine_enabled })
     
@@ -99,7 +98,7 @@ class Timeline extends BaseComponent {
     this.sharedState.set('time_machine_date', time_machine_date)
     this.sharedState.set('time_machine_target_date', time_machine_target_date)
     this.sharedState.set('time_machine_date_from', time_machine_date_from)
-    
+
     if (time_machine_enabled) {
       this._showTimeMachineInfo(time_machine_target_date)
     }
@@ -205,9 +204,16 @@ class Timeline extends BaseComponent {
     const stateStartDate = moment(
       this.sharedState.get('time_machine_date_from')
     ).toDate()
-    const startIndex = data.findIndex((elem) =>
-      moment(elem.date).isSame(stateStartDate, 'hour')
+    let startIndex = data.findIndex((elem) =>
+      moment(elem.date).isSame(stateStartDate, 'hours')
     )
+    if (startIndex === -1) {
+      const searchDateFrom = moment(stateStartDate).subtract(1,'hours')
+      const searchDateTo = moment(stateStartDate).add(1,'hours')
+      startIndex = data.find((elem) =>
+            moment(elem.date).isBetween(searchDateFrom, searchDateTo)
+          )
+    }
     return startIndex
   }
 
