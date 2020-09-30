@@ -14,7 +14,7 @@
 }
 
 .chart-view {
-    width: 100%;
+    width: calc(100% - 60px);
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -27,13 +27,13 @@
     margin-top: 10px;
 }
 
-.brush-chart {
-    margin-left: auto;
-}
-
 .recharts-brush-slide {
     fill: black;
     fill-opacity: 0.5;
+}
+
+.recharts-cartesian-axis-ticks {
+    font-size: 10px;
 }
 
 .custom-tooltip {
@@ -135,7 +135,7 @@ a:focus {
 .tl-actions {
     padding: 10px 0 0 15px;
     border-left: solid 1px #35373E;
-    margin-left: 20px;
+    margin-left: 10px;
 }
 
 .tl-actions a {

@@ -286,9 +286,9 @@ class Timeline extends BaseComponent {
                 dataKey="date"
                 tickFormatter={this._formatXaxis}
                 minTickGap={100}
-                tickSize={15}
+                tickSize={10}
                 allowDecimals={false}
-       
+                tickMargin={5}
               />
               <YAxis
                 tick={false}
@@ -372,9 +372,9 @@ class Timeline extends BaseComponent {
               />
             </ComposedChart>
           </ResponsiveContainer>
-          <ResponsiveContainer width="90%" height={40} className="brush-chart">
+          <ResponsiveContainer width="100%" height={40} className="brush-chart">
             <ComposedChart data={timelinePreviewData} height={30} margin={{
-                bottom: 10, left: 50,
+                bottom: 10, left: 200,
                 right: 50
             }}>
               <Brush
