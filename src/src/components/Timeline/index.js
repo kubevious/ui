@@ -38,6 +38,7 @@ class Timeline extends BaseComponent {
     // this.setupView()
     this._handleChartClick = this._handleChartClick.bind(this)
     this._calculateIndexes = this._calculateIndexes.bind(this)
+    this._customTooltip = this._customTooltip.bind(this)
   }
 
   get isTimeMachineEnabled() {
@@ -125,11 +126,14 @@ class Timeline extends BaseComponent {
   _customTooltip({ active, payload, label }) {
     if (active && payload && payload.length > 0) {
       return (
+        <>
         <div className="custom-tooltip">
+          {!this.state.isTimeMachineActive && <p className="activate-info">Click to activate Time Machine</p>} 
           <p>Errors: {payload[0].payload.errors}</p>
           <p>Changes: {payload[0].payload.changes}</p>
           <p>Warnings: {payload[0].payload.warnings}</p>
-        </div>
+          </div>
+          </>
       )
     }
   }
@@ -217,6 +221,7 @@ class Timeline extends BaseComponent {
     return endIndex
   }
 
+
   _removeTimeMachineInfo() {
     $('.history-info').html('')
   }
@@ -229,12 +234,13 @@ class Timeline extends BaseComponent {
   }
 
   _handleChartClick(props) {
-    if (this.state.isTimeMachineActive) {
+    if (!this.state.isTimeMachineActive) {
+    this.setState({ isTimeMachineActive: true })
+  }
       this._showTimeMachineInfo(props.date)
       this.sharedState.set('time_machine_target_date', props.date)
       this.sharedState.set('time_machine_date', props.date)
       this.setState({ targetDate: props.date})
-    }
   }
 
   componentDidMount() {
