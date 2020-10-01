@@ -1,15 +1,20 @@
 import React from 'react'
+import _ from 'the-lodash'
 
 import './styles.scss'
 
 const NewVersion = ({ info }) => {
+  let version = info.version;
+  if (!_.startsWith(version, 'v')) {
+    version = 'v' + version;
+  }
     return (
       <div className="p-40">
         <div>
           <h3 className="heading-text">Notifications</h3>
         </div>
         <div className="new-version-info overflow-hide">
-          <h3>{info.name} (version: {info.version}) Available!</h3>
+          <h3>{info.name} ({version}) Available!</h3>
           <a href={info.url} target="_blank" className="install-btn">
             Install Now
           </a>
