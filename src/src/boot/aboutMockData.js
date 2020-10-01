@@ -17,6 +17,7 @@ export const ABOUT_DATA = [
 
 export const NEW_VERSION_AVAILABLE_DATA = {
     "newVersionPresent": true,
+    "name": "Kubevious",
     "version": "1.6.1",
     "url": "https://github.com/kubevious/kubevious",
     "changes": [

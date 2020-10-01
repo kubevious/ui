@@ -9,26 +9,34 @@ const NewVersion = ({ info }) => {
           <h3 className="heading-text">Notifications</h3>
         </div>
         <div className="new-version-info overflow-hide">
-          <h3>New Version Available</h3>
-          <h3>Version: {info.version}</h3>
+          <h3>{info.name} (version: {info.version}) Available!</h3>
           <a href={info.url} target="_blank" className="install-btn">
-            Install Now:
+            Install Now
           </a>
-          <a href={info.url} target="_blank" className="target-link">
-            {info.url}
-          </a>
-          <h3>Features</h3>
-          <ul>
-            {info.features.map((elem) => (
-              <li>{elem}</li>
-            ))}
-          </ul>
-          <h3>Changes</h3>
-          <ul>
-            {info.changes.map((elem) => (
-              <li>{elem}</li>
-            ))}
-          </ul>
+          <div>
+            or visit:
+            <a href={info.url} target="_blank" className="target-link">
+              {info.url}
+            </a>
+          </div>
+          { info.features && (info.features.length > 0) && <>
+            <h3>Features</h3>
+            <ul>
+              {info.features.map((elem, index) => (
+                <li key={index}>{elem}</li>
+              ))}
+            </ul>
+          </>
+          }
+          { info.changes && (info.changes.length > 0) && <>
+            <h3>Changes</h3>
+            <ul>
+              {info.changes.map((elem, index) => (
+                <li key={index}>{elem}</li>
+              ))}
+            </ul>
+          </>
+          }
         </div>
       </div>
     )

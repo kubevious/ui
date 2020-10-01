@@ -13,6 +13,7 @@
         padding-left: 10px;
         font-family: 'Montserrat', sans-serif;
         font-size: 14px;
+        color: #D1D1D1;
     }
 }
 
@@ -24,7 +25,7 @@
 
 .install-btn {
     padding: 10px;
-    background-color: #00f235;
+    background-color: #6df921;
     display: block;
     width: fit-content;
     text-decoration: none;
@@ -33,6 +34,7 @@
     font-size: 24px;
     font-weight: 700;
     margin-top: 15px;
+    border-radius: 3px;
 }
 
 .install-btn:hover {
