@@ -54,10 +54,6 @@ class Header extends BaseComponent {
         })
     }
 
-    componentDidMount() {
-
-    }
-
     renderSettings() {
         const { windows } = this.props
 
@@ -91,7 +87,6 @@ class Header extends BaseComponent {
 
     render() {
         const { showSettings, isLoading } = this.state
-        console.log('newVersion>>>', this.sharedState.get('new_version_info'));
         return (
             <div className="header">
                 <div className="logo"/>

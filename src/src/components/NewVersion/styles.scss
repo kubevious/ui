@@ -1,13 +1,19 @@
 .new-version-info {
-    background-color: #373737;
-    padding: 30px;
     height: 90%;
-}
 
-.new-version-info h3 {
-    font-size: 24px;
-    margin-top: 15px;
-    font-weight: 700;
+    h3 {
+        font-size: 24px;
+        margin-top: 15px;
+        font-weight: 700;
+    }
+
+    li {
+        margin-left: 30px;
+        list-style-type: "-";
+        padding-left: 10px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 14px;
+    }
 }
 
 .heading-text {
@@ -41,12 +47,4 @@
     display: block;
     margin: 10px 0 0 30px;
     width: fit-content;
-}
-
-.new-version-info li {
-    margin-left: 30px;
-    list-style-type: "-";
-    padding-left: 10px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 14px;
 }
