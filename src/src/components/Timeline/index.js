@@ -175,14 +175,6 @@ class Timeline extends BaseComponent {
     )
   }
 
-  _showTimeMachineInfo(date) {
-    const html =
-      '<span>Time Machine Active: ' +
-      moment(date).format('MMM DD hh:mm:ss A') +
-      '</span>'
-    $('.history-info').html(html)
-  }
-
   _calculateIndexes(props) {
     let dateTo = null;
     let effectiveDateTo = null;
@@ -246,16 +238,11 @@ class Timeline extends BaseComponent {
     return Math.max(0, index);
   }
 
-  _removeTimeMachineInfo() {
-    $('.history-info').html('')
-  }
-
   _handleChartClick(props) {
     if (!this.state.isTimeMachineActive) {
       this.setState({ isTimeMachineActive: true })
       this.sharedState.set('time_machine_enabled', true)
     }
-    this._showTimeMachineInfo(props.date)
     this.sharedState.set('time_machine_target_date', props.date)
     this.setState({ targetDate: props.date })
   }
@@ -272,6 +259,8 @@ class Timeline extends BaseComponent {
         time_machine_date_to,
         time_machine_duration
       }) => {
+        console.log("[TIMELINE] time_machine_date_to or time_machine_duration changed.");
+
         const dateFrom = moment(time_machine_date_to).subtract(this.duration, 'seconds').toISOString()
         this.setState({ 
           dateTo: time_machine_date_to,
@@ -289,11 +278,6 @@ class Timeline extends BaseComponent {
         time_machine_enabled
       }) => {
         this.setState({ isTimeMachineActive: time_machine_enabled })
-        if (time_machine_enabled) {
-          this._showTimeMachineInfo(this.state.targetDate)
-        } else {
-          this._removeTimeMachineInfo()
-        }
       }
     );
     

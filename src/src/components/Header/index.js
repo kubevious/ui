@@ -7,6 +7,7 @@ import Search from '../Search'
 import BaseComponent from '../../HOC/BaseComponent'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import moment from 'moment'
 
 import './styles.scss'
 
@@ -69,10 +70,34 @@ class Header extends BaseComponent {
             (is_loading) => {
                 this.setState({ isLoading: is_loading })
             })
+
+        this.subscribeToSharedState(
+            [
+                'time_machine_enabled',
+                'time_machine_target_date'
+            ],
+            ({ 
+                time_machine_enabled,
+                time_machine_target_date
+            }) => {
+                if (time_machine_enabled && time_machine_target_date) {
+                    this.setState({
+                        time_machine_enabled,
+                        time_machine_target_date
+                    });
+                } else {
+                    this.setState({
+                        time_machine_enabled: false,
+                        time_machine_target_date: null
+                    });
+                }
+            }
+            );            
     }
 
     render() {
         const { showSettings, isLoading } = this.state
+        const { time_machine_enabled, time_machine_target_date } = this.state
 
         return (
             <div className="header">
@@ -80,7 +105,11 @@ class Header extends BaseComponent {
                 <div className="loading-icon">
                     {isLoading && <FontAwesomeIcon icon={faSpinner} spin />}
                 </div>
-                <div id="history-info" className="history-info"/>
+                { time_machine_enabled && 
+                    <div id="history-info" className="history-info">
+                        <span>Time Machine Active: {moment(time_machine_target_date).format('MMM DD hh:mm:ss A')}</span>
+                    </div>
+                }
                 <div className="actions">
                     <a href="https://github.com/kubevious/kubevious/issues/new/choose" target="_blank"
                        className="btn btn-bug">
