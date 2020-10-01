@@ -13,8 +13,8 @@ function getArray() {
       dateMoment: date,
       date: date.toISOString(),
       changes: 4 + ~~(Math.random() * 6),
-      errors: 5 + ~~(Math.random() * 2),
-      warnings: 2 + ~~(Math.random() * 2),
+      error: 5 + ~~(Math.random() * 2),
+      warn: 2 + ~~(Math.random() * 2),
     })
     stopDate = moment(stopDate).add(1, 'minutes')
   }

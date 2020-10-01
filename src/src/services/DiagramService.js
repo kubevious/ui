@@ -1,4 +1,5 @@
 import BaseService from './BaseService'
+import moment from 'moment'
 
 class DiagramService extends BaseService {
 
@@ -46,12 +47,32 @@ class DiagramService extends BaseService {
 
     fetchHistoryTimeline(from, to, cb) {
         var params = {
-            from: from,
-            to: to
+            from: moment(from).toISOString(),
+            to: moment(to).toISOString()
         };
         return this._client.get('/history/timeline', params)
             .then(result => {
-                cb(result.data);
+                let data = result.data;
+                for(let x of data)
+                {
+                    x.dateMoment = moment(x.date);
+                }
+                console.log("*****", data);
+                cb(data);
+            });
+    }
+
+    fetchHistoryTimelinePreview(cb) {
+        var params = {
+        };
+        return this._client.get('/history/timeline', params)
+            .then(result => {
+                let data = result.data;
+                for(let x of data)
+                {
+                    x.dateMoment = moment(x.date);
+                }
+                cb(data);
             });
     }
 

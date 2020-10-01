@@ -1,6 +1,7 @@
 import React from 'react'
 import BaseComponent from '../../HOC/BaseComponent'
 import $ from 'jquery'
+import _ from 'the-lodash'
 import moment from 'moment'
 import { formatDate } from '../../utils/ui-utils'
 import {
@@ -35,7 +36,6 @@ class Timeline extends BaseComponent {
       chartData: [],
       targetDate: new Date().toISOString(),
     }
-    // this.setupView()
     this._handleChartClick = this._handleChartClick.bind(this)
     this._calculateIndexes = this._calculateIndexes.bind(this)
     this._customTooltip = this._customTooltip.bind(this)
@@ -49,59 +49,47 @@ class Timeline extends BaseComponent {
     return this.sharedState.get('time_machine_target_date')
   }
 
-  get dateFrom() {
-    if (!this.sharedState.get('time_machine_date_from')) {
-      return new Date().toISOString();
-    }
-    return new Date(this.sharedState.get('time_machine_date_from')).toISOString();
-  }
-
   get dateTo() {
-    if (!this.sharedState.get('time_machine_date_to')) {
-      return new Date().toISOString();
+    const value = this.state.dateTo;// this.sharedState.get('time_machine_date_to');
+    if (!value) {
+      return moment();
     }
-    return new Date(this.sharedState.get('time_machine_date_to')).toISOString();
+    return moment(value);
   }
 
-  get durationHrs() {
-    return this.sharedState.get('time_machine_duration')
+  get duration() {
+    const duration = this.state.duration;
+    if (!duration) {
+       return 12 * 60 * 60;
+    }
+    return duration;
   }
 
-  setupView() {
-    const time_machine_date_to = this.sharedState.get('time_machine_date_to')
-      ? new Date(this.sharedState.get('time_machine_date_to'))
-      : new Date()
-    const time_machine_duration = this.sharedState.get('time_machine_duration')
-      ? Number(this.sharedState.get('time_machine_duration'))
-      : 24
-    const time_machine_enabled = this.sharedState.get('time_machine_enabled')
-      ? this.sharedState.get('time_machine_enabled')
-      : false
-    const time_machine_date = this.sharedState.get('time_machine_date')
-      ? new Date(this.sharedState.get('time_machine_date'))
-      : new Date()
-    const time_machine_target_date = this.sharedState.get(
-      'time_machine_target_date'
-    )
-      ? new Date(this.sharedState.get('time_machine_target_date')).toISOString()
-      : new Date()
-    const time_machine_date_from = (this.sharedState.get('time_machine_date_from') &&
-      moment(this.sharedState.get('time_machine_date_from')).isBefore(time_machine_date_to))
-      ? new Date(this.sharedState.get('time_machine_date_from'))
-      : moment(time_machine_date_to).subtract(12, 'hours').toDate()
-    
-    this.setState({ isTimeMachineActive: time_machine_enabled })
-    
-    this.sharedState.set('time_machine_date_to', time_machine_date_to)
-    this.sharedState.set('time_machine_duration', time_machine_duration)
-    this.sharedState.set('time_machine_enabled', time_machine_enabled)
-    this.sharedState.set('time_machine_date', time_machine_date)
-    this.sharedState.set('time_machine_target_date', time_machine_target_date)
-    this.sharedState.set('time_machine_date_from', time_machine_date_from)
+  get dateFrom() {
+    return this.dateTo.clone().subtract(this.duration, 'seconds');
+  }
 
-    if (time_machine_enabled) {
-      this._showTimeMachineInfo(time_machine_target_date)
+  get chartData() {
+    const value = this.state.chartData;
+    if (!value) {
+      return [];
     }
+    return value;
+  }
+
+  get chartPreviewData() {
+    const value = this.state.chartPreviewData;
+    if (!value) {
+      return [];
+    }
+    return value;
+  }
+
+  _reset()
+  {
+    this.sharedState.set('time_machine_enabled', false)
+    this.sharedState.set('time_machine_date_to', null)
+    this.sharedState.set('time_machine_duration', 12 * 60 * 60);
   }
 
   _toggleTimeMachine() {
@@ -109,13 +97,6 @@ class Timeline extends BaseComponent {
       'time_machine_enabled',
       !this.sharedState.get('time_machine_enabled')
     )
-    if (this.state.isTimeMachineActive) {
-      this.setState({ isTimeMachineActive: false })
-      this._removeTimeMachineInfo()
-    } else {
-      this.setState({ isTimeMachineActive: true })
-      this._showTimeMachineInfo(this.state.targetDate)
-    }
   }
 
   _formatXaxis(item) {
@@ -129,8 +110,8 @@ class Timeline extends BaseComponent {
         <div className="custom-tooltip">
           {!this.state.isTimeMachineActive && <p className="activate-info">Click to activate the Time Machine</p>} 
           <p>Changes: {payload[0].payload.changes}</p>
-          <p>Errors: {payload[0].payload.errors}</p>
-          <p>Warnings: {payload[0].payload.warnings}</p>
+          <p>Errors: {payload[0].payload.error}</p>
+          <p>Warnings: {payload[0].payload.warn}</p>
           </div>
           </>
       )
@@ -189,54 +170,70 @@ class Timeline extends BaseComponent {
   }
 
   _calculateIndexes(props) {
-    const dateFrom = this.sharedState.get('time_machine_timeline_preview')[
-      props.startIndex
-    ].date
-    this.sharedState.set('time_machine_date_from', dateFrom)
-    const dateTo = this.sharedState.get('time_machine_timeline_preview')[
-      props.endIndex
-    ].date
-    this.sharedState.set('time_machine_date_to', dateTo)
-
-  }
-
-  _calculateStartIndex(data) {
-    const stateStartDate = moment(
-      this.sharedState.get('time_machine_date_from')
-    ).toDate()
-    let startIndex = data.findIndex((elem) =>
-      moment(elem.date).isSame(stateStartDate, 'hours')
-    )
-    if (startIndex === -1) {
-      const searchDateFrom = moment(stateStartDate).subtract(1,'hours')
-      const searchDateTo = moment(stateStartDate).add(1,'hours')
-      startIndex = data.find((elem) =>
-            moment(elem.date).isBetween(searchDateFrom, searchDateTo)
-          )
+    let dateTo = null;
+    let effectiveDateTo = null;
+    if (props.endIndex != -1 && props.endIndex < this.chartPreviewData.length)
+    {
+      if (props.endIndex != this.chartPreviewData.length - 1)
+      {
+        dateTo = this.chartPreviewData[
+          props.endIndex
+        ].dateMoment;
+        effectiveDateTo = dateTo.toISOString();
+      }
+      else 
+      {
+        dateTo = moment();
+      }
+    } else {
+      dateTo = moment();
     }
-    return startIndex
+
+    let dateFrom = null;
+    if (props.startIndex != -1 && props.startIndex < this.chartPreviewData.length)
+    {
+      dateFrom = this.chartPreviewData[
+        props.startIndex
+      ].dateMoment;
+    } else {
+      dateFrom = moment();
+    }
+
+    let diff = moment.duration(dateTo.diff(dateFrom));
+    let durationSeconds = diff.asSeconds();
+
+    this.sharedState.set('time_machine_date_to', effectiveDateTo)
+    this.sharedState.set('time_machine_duration', durationSeconds)
   }
 
-  _calculateEndIndex(data) {
-    const stateEndDate = moment(
-      this.sharedState.get('time_machine_date_to')
-    ).toDate()
-    const endIndex = data.findIndex((elem) =>
-      moment(elem.date).isSame(stateEndDate, 'hour')
-    )
-    return endIndex
+  _calculateStartIndex() {
+    let index = -1;
+    const dateFrom = this.dateFrom;
+    if (!dateFrom) {
+      index = 0;
+    } else {
+      index = _.findIndex(this.chartPreviewData, elem => {
+        elem.dateMoment.isSameOrAfter(dateFrom);
+      })
+    }
+    return Math.max(0, index);
   }
 
+  _calculateEndIndex() {
+    let index = -1;
+    const dateTo = this.dateTo;
+    if (!dateTo) {
+      index = this.chartPreviewData.length - 1;
+    } else {
+      index = _.findLastIndex(this.chartPreviewData, elem => {
+        elem.dateMoment.isSameOrBefore(dateTo);
+      })
+    }
+    return Math.max(0, index);
+  }
 
   _removeTimeMachineInfo() {
     $('.history-info').html('')
-  }
-
-  _cancelPendingTimeouts() {
-    if (this._dateChangeTimerId) {
-      clearTimeout(this._dateChangeTimerId)
-      this._dateChangeTimerId = null
-    }
   }
 
   _handleChartClick(props) {
@@ -244,22 +241,64 @@ class Timeline extends BaseComponent {
       this.setState({ isTimeMachineActive: true })
       this.sharedState.set('time_machine_enabled', true)
     }
-      this._showTimeMachineInfo(props.date)
-      this.sharedState.set('time_machine_target_date', props.date)
-      this.sharedState.set('time_machine_date', props.date)
-      this.setState({ targetDate: props.date})
+    this._showTimeMachineInfo(props.date)
+    this.sharedState.set('time_machine_target_date', props.date)
+    this.setState({ targetDate: props.date})
   }
 
   componentDidMount() {
+
     this.subscribeToSharedState(
-      'time_machine_timeline_data',
-      (time_machine_timeline_data) => {
-        this.setState({ chartData: time_machine_timeline_data })
+      [
+        'time_machine_date_to',
+        'time_machine_date_duration'
+      ],
+      ({ 
+        time_machine_date_to,
+        time_machine_date_duration
+      }) => {
+        this.setState({ 
+          dateTo: time_machine_date_to,
+          duration: time_machine_date_duration
+        })
+      }
+    );
 
-        const time_machine_target_date = this.sharedState.get('time_machine_target_date')
+    this.subscribeToSharedState(
+      [
+        'time_machine_enabled'
+      ],
+      ({ 
+        time_machine_enabled
+      }) => {
+        this.setState({ isTimeMachineActive: time_machine_enabled })
+        if (time_machine_enabled) {
+          this._showTimeMachineInfo(this.state.targetDate)
+        } else {
+          this._removeTimeMachineInfo()
+        }
+      }
+    );
+    
+    this.subscribeToSharedState(
+      [
+        'time_machine_timeline_data',
+        'time_machine_timeline_preview',
+        'time_machine_target_date'
+      ],
+      ({ 
+        time_machine_timeline_data, 
+        time_machine_timeline_preview,
+        time_machine_target_date 
+      }) => {
 
-        let targetElement = time_machine_timeline_data.find((elem) =>
-          moment(elem.date).isSame(time_machine_target_date, 'minutes')
+        console.log("time_machine_timeline_preview: ", time_machine_timeline_preview)
+
+        this.setState({ chartData: time_machine_timeline_data || [] })
+        this.setState({ chartPreviewData: time_machine_timeline_preview || [] })
+
+        let targetElement = this.chartData.find((elem) =>
+          elem.dateMoment.isSame(time_machine_target_date, 'minutes')
         )
         if (targetElement) {
           const targetDate = targetElement.date
@@ -267,38 +306,34 @@ class Timeline extends BaseComponent {
         } else {
           const searchDateFrom = moment(time_machine_target_date).subtract(10,'minutes')
           const searchDateTo = moment(time_machine_target_date).add(10,'minutes')
-          targetElement = time_machine_timeline_data.find((elem) =>
-            moment(elem.date).isBetween(searchDateFrom, searchDateTo)
+          targetElement = this.chartData.find((elem) =>
+            elem.dateMoment.isBetween(searchDateFrom, searchDateTo)
           )
           if (targetElement) {
             const targetDate = targetElement.date
             this.setState({ targetDate })
           }
         }
-        this.setupView()
+
+        if (time_machine_target_date)
+        {
+          const selectedIndex = this.chartPreviewData
+            .findIndex((elem) => elem.dateMoment.isSame(time_machine_target_date, 'hours'))
+          if (selectedIndex !== -1) {
+            this.setState({ activeIndex: selectedIndex })
+          } else {
+            const closestIndex = this.chartPreviewData
+              .findIndex((elem) => elem.dateMoment.subtract(1, 'hours').isSame(time_machine_target_date, 'hours'))
+            this.setState({ activeIndex: closestIndex })
+          }
+        }
+
       }
     )
 
-    this.subscribeToSharedState(
-      'time_machine_target_date',
-      (time_machine_target_date) => {
-        const selectedIndex = this.sharedState.get('time_machine_timeline_preview')
-          .findIndex((elem) => moment(elem.date).isSame(time_machine_target_date, 'hours'))
-        if (selectedIndex !== -1) {
-          this.setState({ activeIndex: selectedIndex })
-        } else {
-          const closestIndex = this.sharedState.get('time_machine_timeline_preview')
-            .findIndex((elem) => moment(elem.date).subtract(1, 'hours').isSame(time_machine_target_date, 'hours'))
-          this.setState({ activeIndex: closestIndex })
-        }
-        this._cancelPendingTimeouts()
-      }
-    )
   }
 
   render() {
-    const timelinePreviewData =
-      this.sharedState.get('time_machine_timeline_preview') || []
 
     return (
       <div id="timelineComponent" className="timeline size-to-parent">
@@ -333,7 +368,7 @@ class Timeline extends BaseComponent {
               />
 
               <Area
-                dataKey="warnings"
+                dataKey="warn"
                 fill="#FCBD3F"
                 stroke="none"
                 fillOpacity={0.8}
@@ -344,7 +379,7 @@ class Timeline extends BaseComponent {
                 connectNulls
               />
               <Area
-                dataKey="errors"
+                dataKey="error"
                 fill="#9b6565"
                 fillOpacity={1}
                 stroke="none"
@@ -378,14 +413,14 @@ class Timeline extends BaseComponent {
               />
               <ReferenceLine
                 x={this.state.isTimeMachineActive &&
-                  this.state.targetDate}
+                   this.state.targetDate}
                 stroke="#FCBD3F"
                 isFront
                 strokeWidth={5}
               >
                 <Label
                   data={this.state.isTimeMachineActive &&
-                    this.state.targetDate}
+                        this.state.targetDate}
                   position="bottom"
                   content={this._renderTimeMachineStamp}
                 />
@@ -402,7 +437,7 @@ class Timeline extends BaseComponent {
             </ComposedChart>
           </ResponsiveContainer>
           <ResponsiveContainer width="100%" height={40} className="brush-chart">
-            <ComposedChart data={timelinePreviewData} height={30} margin={{
+            <ComposedChart data={this.chartPreviewData} height={30} margin={{
                 bottom: 10, left: 200,
                 right: 50
             }}>
@@ -410,16 +445,16 @@ class Timeline extends BaseComponent {
                 dataKey="date"
                 height={30}
                 stroke="#9b6565"
-                startIndex={this._calculateStartIndex(timelinePreviewData)}
-                endIndex={this._calculateEndIndex(timelinePreviewData)}
+                startIndex={this._calculateStartIndex(this.chartPreviewData)}
+                endIndex={this._calculateEndIndex(this.chartPreviewData)}
                 onChange={debounce(this._calculateIndexes, 10)}
                 tickFormatter={this._formatXaxis}
                 gap={2}
                 tick={true}
               >
-                <ComposedChart data={timelinePreviewData}>
+                <ComposedChart data={this.chartPreviewData}>
                   <Area
-                    dataKey="warnings"
+                    dataKey="warn"
                     fill="#FCBD3F"
                     stroke="none"
                     fillOpacity={0.5}
@@ -429,7 +464,7 @@ class Timeline extends BaseComponent {
                     connectNulls
                   ></Area>
                   <Area
-                    dataKey="errors"
+                    dataKey="error"
                     fill="#9b6565"
                     fillOpacity={0.3}
                     stroke="none"

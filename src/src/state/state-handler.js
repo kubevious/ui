@@ -44,7 +44,7 @@ class StateHandler {
 
         const fields = this._fieldsSaver.decodeParams(params)
 
-        const { sd, tme, tmdat, tmdt, tmdf, tmtd, tmdu } = fields
+        const { sd, tme, tmdat, tmdt, tmtd, tmdu } = fields
 
         if (tme) {
             this.sharedState.set('time_machine_enabled', tme === 'true')
@@ -56,10 +56,8 @@ class StateHandler {
 
         if (tmdt) {
             this.sharedState.set('time_machine_date_to', Date.parse(tmdt))
-        }
-
-        if (tmdf) {
-            this.sharedState.set('time_machine_date_from', Date.parse(tmdf))
+        } else {
+            this.sharedState.set('time_machine_date_to', null);
         }
 
         if (tmtd) {
@@ -73,6 +71,8 @@ class StateHandler {
 
         if (tmdu) {
             this.sharedState.set('time_machine_duration', tmdu)
+        } else {
+            this.sharedState.set('time_machine_duration', 12 * 60 * 60)
         }
     }
 
@@ -186,15 +186,15 @@ class StateHandler {
             this.sharedState.set('time_machine_timeline_preview', sampledData);
         })
 
-        this.sharedState.subscribe(['time_machine_date_from', 'time_machine_date_to'],
-            ({ time_machine_date_from, time_machine_date_to }) => {
+        this.sharedState.subscribe(['time_machine_duration', 'time_machine_date_to'],
+            ({ time_machine_duration, time_machine_date_to }) => {
+
+                var to = time_machine_date_to ? moment(time_machine_date_to) : moment()
+
+                var durationSec = time_machine_duration || 12 * 60 * 60;
 
                 var from =
-                  time_machine_date_from &&
-                  moment(time_machine_date_from).isBefore(time_machine_date_to)
-                    ? new Date(time_machine_date_from)
-                    : moment().subtract(1, 'days')
-                var to = time_machine_date_to ? new Date(time_machine_date_to) : moment()
+                    to.clone().subtract(durationSec, 'seconds');
 
                 this._desiredTimelineDateFrom = from;
                 this._desiredTimelineDateTo = to;
@@ -315,14 +315,14 @@ class StateHandler {
             date: group.date,
             dateMoment: moment(group.date),
             changes: 0,
-            errors: 0,
-            warnings: 0
+            error: 0,
+            warn: 0
         };
 
         if (group.samples.length > 0)
         {
-            point.errors = Math.round(_.sum(group.samples.map(x => x.errors)) / group.samples.length);
-            point.warnings = Math.round(_.sum(group.samples.map(x => x.warnings))  / group.samples.length);
+            point.error = Math.round(_.sum(group.samples.map(x => x.error)) / group.samples.length);
+            point.warn = Math.round(_.sum(group.samples.map(x => x.warn))  / group.samples.length);
             point.changes = _.max(group.samples.map(x => x.changes));
         }
 
