@@ -44,7 +44,7 @@ class StateHandler {
 
         const fields = this._fieldsSaver.decodeParams(params)
 
-        const { sd, tme, tmdat, tmdt, tmtd, tmdu } = fields
+        const { sd, tme, tmdat, tmdt, tmtd, tmd } = fields
 
         if (tme) {
             this.sharedState.set('time_machine_enabled', tme === 'true')
@@ -69,8 +69,8 @@ class StateHandler {
             this.sharedState.set('auto_pan_to_selected_dn', true);
         }
 
-        if (tmdu) {
-            this.sharedState.set('time_machine_duration', tmdu)
+        if (tmd) {
+            this.sharedState.set('time_machine_duration', tmd)
         } else {
             this.sharedState.set('time_machine_duration', 12 * 60 * 60)
         }

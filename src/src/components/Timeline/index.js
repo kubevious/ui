@@ -34,7 +34,7 @@ class Timeline extends BaseComponent {
       activeIndex: 0,
       isTimeMachineActive: false,
       chartData: [],
-      targetDate: new Date().toISOString(),
+      targetDate: null,
     }
     this._handleChartClick = this._handleChartClick.bind(this)
     this._calculateIndexes = this._calculateIndexes.bind(this)
@@ -52,9 +52,9 @@ class Timeline extends BaseComponent {
   get dateTo() {
     const value = this.state.dateTo;// this.sharedState.get('time_machine_date_to');
     if (!value) {
-      return moment();
+      return moment().toISOString();
     }
-    return moment(value);
+    return moment(value).toISOString();
   }
 
   get duration() {
@@ -66,7 +66,11 @@ class Timeline extends BaseComponent {
   }
 
   get dateFrom() {
-    return this.dateTo.clone().subtract(this.duration, 'seconds');
+    if (this.state.dateTo) {
+      return moment(this.state.dateTo).subtract(this.duration, 'seconds').toDate();
+    } else {
+      return moment(this.dateTo).subtract(this.duration, 'seconds').toDate();
+    }
   }
 
   get chartData() {
@@ -89,7 +93,16 @@ class Timeline extends BaseComponent {
   {
     this.sharedState.set('time_machine_enabled', false)
     this.sharedState.set('time_machine_date_to', null)
-    this.sharedState.set('time_machine_duration', 12 * 60 * 60);
+    this.sharedState.set('time_machine_duration', 12 * 60 * 60)
+    this.sharedState.set('time_machine_target_date', null);
+
+    this.setState({
+      dateTo: null,
+      dateFrom: null,
+      duration: 12 * 60 * 60
+    })
+
+    // window.location.href = '/'
   }
 
   _toggleTimeMachine() {
@@ -97,6 +110,7 @@ class Timeline extends BaseComponent {
       'time_machine_enabled',
       !this.sharedState.get('time_machine_enabled')
     )
+    this.sharedState.set('time_machine_target_date', this.state.targetDate)
   }
 
   _formatXaxis(item) {
@@ -122,10 +136,10 @@ class Timeline extends BaseComponent {
     return (
       <>
         <rect
-          style={{ transform: `translate(${cx - 55}px, calc(100% - 35px))` }}
+          style={{ transform: `translate(${cx - 55}px, calc(100% - 25px))` }}
         />
         <text
-          style={{ transform: `translate(${cx - 50}px, calc(100% - 20px))` }}
+          style={{ transform: `translate(${cx - 50}px, calc(100% - 10px))` }}
         >
           <tspan>{moment(payload.date).format('MMM DD hh:mm A')}</tspan>
         </text>
@@ -139,10 +153,10 @@ class Timeline extends BaseComponent {
     return (
       <>
         <rect
-          style={{ transform: `translate(${cx - 55}px, ${height - 95}px)` }}
+          style={{ transform: `translate(${cx - 55}px, ${height - 75}px)` }}
         />
         <text
-          style={{ transform: `translate(${cx - 50}px, ${height - 80}px)` }}
+          style={{ transform: `translate(${cx - 50}px, ${height - 60}px)` }}
         >
           <tspan>{moment(props.data).format('MMM DD hh:mm A')}</tspan>
         </text>
@@ -208,12 +222,12 @@ class Timeline extends BaseComponent {
 
   _calculateStartIndex() {
     let index = -1;
-    const dateFrom = this.dateFrom;
+    const dateFrom = this.state.dateFrom || this.dateFrom;
     if (!dateFrom) {
       index = 0;
     } else {
       index = _.findIndex(this.chartPreviewData, elem => {
-        elem.dateMoment.isSameOrAfter(dateFrom);
+        return elem.dateMoment.isSameOrAfter(dateFrom);
       })
     }
     return Math.max(0, index);
@@ -221,12 +235,12 @@ class Timeline extends BaseComponent {
 
   _calculateEndIndex() {
     let index = -1;
-    const dateTo = this.dateTo;
+    const dateTo = this.state.dateTo || this.dateTo;
     if (!dateTo) {
       index = this.chartPreviewData.length - 1;
     } else {
       index = _.findLastIndex(this.chartPreviewData, elem => {
-        elem.dateMoment.isSameOrBefore(dateTo);
+        return elem.dateMoment.isSameOrBefore(dateTo);
       })
     }
     return Math.max(0, index);
@@ -243,23 +257,26 @@ class Timeline extends BaseComponent {
     }
     this._showTimeMachineInfo(props.date)
     this.sharedState.set('time_machine_target_date', props.date)
-    this.setState({ targetDate: props.date})
+    this.setState({ targetDate: props.date })
   }
 
   componentDidMount() {
+    this.setState({ targetDate: this.timeMachineDate })
 
     this.subscribeToSharedState(
       [
         'time_machine_date_to',
-        'time_machine_date_duration'
+        'time_machine_duration'
       ],
       ({ 
         time_machine_date_to,
-        time_machine_date_duration
+        time_machine_duration
       }) => {
+        const dateFrom = moment(time_machine_date_to).subtract(this.duration, 'seconds').toISOString()
         this.setState({ 
           dateTo: time_machine_date_to,
-          duration: time_machine_date_duration
+          duration: time_machine_duration,
+          dateFrom,
         })
       }
     );
@@ -304,8 +321,8 @@ class Timeline extends BaseComponent {
           const targetDate = targetElement.date
           this.setState({ targetDate })
         } else {
-          const searchDateFrom = moment(time_machine_target_date).subtract(10,'minutes')
-          const searchDateTo = moment(time_machine_target_date).add(10,'minutes')
+          const searchDateFrom = moment(time_machine_target_date).subtract(20,'minutes')
+          const searchDateTo = moment(time_machine_target_date).add(20,'minutes')
           targetElement = this.chartData.find((elem) =>
             elem.dateMoment.isBetween(searchDateFrom, searchDateTo)
           )
@@ -392,7 +409,7 @@ class Timeline extends BaseComponent {
               <Line
                 dataKey="changes"
                 stroke="#fff"
-                type="natural"
+                type="monotone"
                 dot={false}
                 fillOpacity={1}
                 stackId="1"
@@ -505,6 +522,12 @@ class Timeline extends BaseComponent {
           >
             <span className="tooltiptext">Activate Time Machine</span>
           </a>
+          <a
+            role="button"
+            id="btnTimelineTimeMachine"
+            className={`reset`}
+            onClick={() => this._reset()}
+          ></a>
         </div>
       </div>
     )
