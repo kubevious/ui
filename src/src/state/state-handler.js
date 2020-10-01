@@ -98,7 +98,7 @@ class StateHandler {
         this.sharedState.subscribe(['time_machine_enabled', 'time_machine_date'],
             ({ time_machine_enabled, time_machine_date }) => {
             console.log('time_machine_enabled', time_machine_enabled)
-                if (time_machine_enabled) {
+                if (time_machine_enabled && time_machine_date) {
                     this._service.fetchHistorySnapshot(time_machine_date, (sourceData) => {
 
                         if (this.sharedState.get('time_machine_enabled') &&
