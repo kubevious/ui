@@ -31,17 +31,26 @@ class Root extends BaseComponent {
         this.closeError = this.closeError.bind(this)
 
         this.subscribeToSharedState([
-            'time_machine_enabled', 'time_machine_date', 'selected_dn',
-            'time_machine_date_to', 'time_machine_duration'
+            'selected_dn',
+            'time_machine_enabled', 
+            'time_machine_target_date',
+            'time_machine_date_to',
+            'time_machine_duration'
         ],
             ({
-                time_machine_enabled, time_machine_date, selected_dn, time_machine_date_to, 
-                time_machine_target_date = this.sharedState.get('time_machine_target_date'), time_machine_duration,
+                selected_dn,
+                time_machine_enabled, 
+                time_machine_target_date, 
+                time_machine_date_to,
+                time_machine_duration                
             }) => {
 
                 this._fieldsSaver.setValue({
-                    time_machine_enabled, time_machine_date, selected_dn, time_machine_date_to, 
-                    time_machine_target_date, time_machine_duration
+                    selected_dn,
+                    time_machine_enabled, 
+                    time_machine_target_date, 
+                    time_machine_date_to,
+                    time_machine_duration 
                 })
             })
     }

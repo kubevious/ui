@@ -12,6 +12,9 @@ class StateHandler {
             throw new Error("DiagramService not provided");
         }
 
+        this._isTimeMachineDateSetScheduled = false;
+        this._isTimeMachineDateDirty = false;
+
         this.sharedState = sharedState.user();
         this._service = diagramService;
         this._fieldsSaver = new FieldsSaver('Diagram')
@@ -44,29 +47,25 @@ class StateHandler {
 
         const fields = this._fieldsSaver.decodeParams(params)
 
-        const { sd, tme, tmdat, tmdt, tmtd, tmd } = fields
+        const { sd, tme, tmtd, tmdt, tmd } = fields
+
+        if (sd) {
+            this.sharedState.set('selected_dn', sd)
+            this.sharedState.set('auto_pan_to_selected_dn', true);
+        }
 
         if (tme) {
             this.sharedState.set('time_machine_enabled', tme === 'true')
-        }
-
-        if (tmdat) {
-            this.sharedState.set('time_machine_date', tmdat)
-        }
-
-        if (tmdt) {
-            this.sharedState.set('time_machine_date_to', Date.parse(tmdt))
-        } else {
-            this.sharedState.set('time_machine_date_to', null);
         }
 
         if (tmtd) {
             this.sharedState.set('time_machine_target_date', Date.parse(tmtd))
         }
 
-        if (sd) {
-            this.sharedState.set('selected_dn', sd)
-            this.sharedState.set('auto_pan_to_selected_dn', true);
+        if (tmdt) {
+            this.sharedState.set('time_machine_date_to', Date.parse(tmdt))
+        } else {
+            this.sharedState.set('time_machine_date_to', null);
         }
 
         if (tmd) {
@@ -95,9 +94,19 @@ class StateHandler {
     }
 
     _handleTimeMachineChange() {
+        this.sharedState.subscribe(['time_machine_target_date'],
+            () => {
+        
+                if (this._isTimeMachineDateSetScheduled) {
+                    this._isTimeMachineDateDirty = true;
+                    return;
+                }
+
+                this._triggerTimeMachine();
+            })
+
         this.sharedState.subscribe(['time_machine_enabled', 'time_machine_date'],
             ({ time_machine_enabled, time_machine_date }) => {
-            console.log('time_machine_enabled', time_machine_enabled)
                 if (time_machine_enabled && time_machine_date) {
                     this._service.fetchHistorySnapshot(time_machine_date, (sourceData) => {
 
@@ -109,6 +118,22 @@ class StateHandler {
                     })
                 }
             })
+    }
+
+    _triggerTimeMachine()
+    {
+        this._isTimeMachineDateDirty = false;
+
+        setTimeout(() => {
+            const value = this.sharedState.get('time_machine_target_date');
+            this.sharedState.set('time_machine_date', value);
+
+            this._isTimeMachineDateSetScheduled = false;
+            if (this._isTimeMachineDateDirty) {
+                this._triggerTimeMachine();
+            }
+
+        }, 250);
     }
 
     _handleSelectedDnChange() {
@@ -274,9 +299,9 @@ class StateHandler {
         }
 
         let sampleCount = 200;
-        if (data.length <= sampleCount) {
-            return data;
-        }
+        // if (data.length <= sampleCount) {
+        //     return data;
+        // }
 
         const diff = to.diff(from);
         let period = diff / sampleCount;

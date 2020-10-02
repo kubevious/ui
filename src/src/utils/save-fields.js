@@ -52,9 +52,8 @@ class FieldsSaver {
         let obj = {}
         switch (this._title) {
             case 'Diagram':
-                obj.tme = params.get('tme')
-                obj.tmdat = params.get('tmdat') ? atob(params.get('tmdat')) : params.get('tmdat')
                 obj.sd = params.get('sd') ? atob(params.get('sd')) : params.get('sd')
+                obj.tme = params.get('tme')
                 obj.tmtd = params.get('tmtd') ? atob(params.get('tmtd')) : params.get('tmtd')
                 obj.tmdt = params.get('tmdt') ? atob(params.get('tmdt')) : params.get('tmdt')
                 obj.tmd = params.get('tmd') ? atob(params.get('tmd')) : params.get('tmd')
