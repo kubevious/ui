@@ -21,6 +21,28 @@
     justify-content: space-between;
 }
 
+.chart-view svg {
+    width: 100%;
+    height: 100%;
+}
+
+.c3 {
+    max-height: 100% !important;
+}
+
+.c3-tooltip-container {
+    background: #cccccc99;
+}
+
+.c3-chart-line {
+    fill: transparent;
+}
+
+.c3-brush .selection {
+    fill: black;
+    fill-opacity: 0.6;
+}
+
 .recharts-responsive-container.main-chart {
     height: calc(100% - 50px) !important;
     margin-bottom: 0;

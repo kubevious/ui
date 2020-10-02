@@ -4,21 +4,8 @@ import $ from 'jquery'
 import _ from 'the-lodash'
 import moment from 'moment'
 import { formatDate } from '../../utils/ui-utils'
-import {
-  Bar,
-  Brush,
-  ResponsiveContainer,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Area,
-  ComposedChart,
-  ReferenceLine,
-  Label,
-  Legend,
-  Line,
-} from 'recharts'
-import { debounce } from "debounce"
+import c3 from 'c3'
+import { debounce } from 'debounce'
 
 import './styles.scss'
 // import { this.timelineData } from '../../boot/timelineBoot'
@@ -95,13 +82,13 @@ class Timeline extends BaseComponent {
     if (active && payload && payload.length > 0) {
       return (
         <>
-        <div className="custom-tooltip">
-          {!this.state.isTimeMachineActive && <p className="activate-info">Click to activate the Time Machine</p>} 
-          <p>Changes: {payload[0].payload.changes}</p>
-          <p>Errors: {payload[0].payload.error}</p>
-          <p>Warnings: {payload[0].payload.warn}</p>
+          <div className="custom-tooltip">
+            {!this.state.isTimeMachineActive && <p className="activate-info">Click to activate the Time Machine</p>}
+            <p>Changes: {payload[0].payload.changes}</p>
+            <p>Errors: {payload[0].payload.error}</p>
+            <p>Warnings: {payload[0].payload.warn}</p>
           </div>
-          </>
+        </>
       )
     }
   }
@@ -181,7 +168,7 @@ class Timeline extends BaseComponent {
     this.sharedState.set('time_machine_date_to', effectiveDateTo)
     this.sharedState.set('time_machine_duration', durationSeconds)
   }
-  
+
   _handleChartClick(props) {
     this.sharedState.set('time_machine_enabled', true)
     this.sharedState.set('time_machine_target_date', props.date)
@@ -190,8 +177,77 @@ class Timeline extends BaseComponent {
     }
   }
 
+  _handleBrush(props) {
+    console.log('props :>> ', props) // Will change dateTo and duration state
+  }
+
+  _renderChart() {
+    const data = this.sharedState.get('time_machine_timeline_preview').slice(1)
+    const chart = c3.generate({
+      padding: {
+        left: 20,
+        right: 20,
+      },
+      style: {
+        width: '100%',
+      },
+      bindto: '.chart-view',
+      data: {
+        json: data,
+        keys: {
+          x: 'date',
+          value: ['error', 'warn', 'changes'],
+        },
+        types: {
+          changes: 'line',
+          error: 'area',
+          warn: 'area',
+        },
+        groups: [['error', 'warn'], ['changes']],
+        colors: {
+          changes: 'white',
+          error: '#9b6565',
+          warn: '#fcbd3f',
+        },
+      },
+      axis: {
+        y: {
+          show: false,
+        },
+        x: {
+          type: 'category',
+          tick: {
+            format: function (x) {
+              return moment(data[Math.ceil(x)].date).format('MMM DD hh:mm A')
+            },
+            count: 5,
+            outer: true,
+            multiline: false,
+            // extent: [1, 5],
+          },
+        },
+      },
+      subchart: {
+        show: true,
+        onbrush: this._handleBrush,
+        size: {
+          height: 40
+        }
+      },
+      zoom: {
+        enabled: true,
+        onzoom: this._handleBrush,
+      },
+      point: {
+        show: false,
+      },
+    })
+
+    chart.zoom([150, 200]) // will be used with calculated From and To values
+  }
+
   componentDidMount() {
-    
+    this._renderChart()
     this.subscribeToSharedState(
       [
         'time_machine_enabled',
@@ -201,10 +257,10 @@ class Timeline extends BaseComponent {
         'time_machine_date_to',
         'time_machine_duration'
       ],
-      ({ 
+      ({
         time_machine_enabled,
         time_machine_target_date,
-        time_machine_timeline_data, 
+        time_machine_timeline_data,
         time_machine_timeline_preview,
         time_machine_date_to,
         time_machine_duration
@@ -228,7 +284,7 @@ class Timeline extends BaseComponent {
 
         if (time_machine_timeline_preview) {
           newState.chartPreviewData = time_machine_timeline_preview;
-          
+
           // TODO: Doing clone helps with RESET button showing correct range.
           // newState.chartPreviewData = _.clone(time_machine_timeline_preview);
         }
@@ -242,11 +298,11 @@ class Timeline extends BaseComponent {
         } else {
           newState.actualDateTo = moment();
         }
-       
+
         newState.dateFrom = newState.actualDateTo.clone().subtract(newState.duration, 'seconds');
         newState.actualDateFrom = newState.dateFrom.clone();
 
-
+      
         {
           let index = _.findIndex(newState.chartPreviewData, x => {
             return x.dateMoment.isSameOrAfter(newState.actualDateFrom);
@@ -266,7 +322,7 @@ class Timeline extends BaseComponent {
         console.log("[TIMLINE] FINAL ACTUAL TO:   " + newState.actualDateTo.toISOString());
         console.log("[TIMLINE] FINAL selectionDateFromIndex: " + newState.selectionDateFromIndex);
         console.log("[TIMLINE] FINAL   selectionDateToIndex: " + newState.selectionDateToIndex);
-        
+
         this.setState(newState);
       }
     )
@@ -278,166 +334,7 @@ class Timeline extends BaseComponent {
     return (
       <div id="timelineComponent" className="timeline size-to-parent">
         <div className="chart-view">
-          <ResponsiveContainer className="main-chart">
-            <ComposedChart
-              data={this.state.chartData}
-              barCategoryGap={0}
-              barGap={0}
-              syncId={1}
-              margin={{ top: 5, right: 5, bottom: -5, left: 5 }}
-            >
-              <XAxis
-                dataKey="date"
-                tickFormatter={this._formatXaxis}
-                minTickGap={100}
-                tickSize={5}
-                allowDecimals={false}
-                tickMargin={5}
-              />
-              <YAxis
-                tick={false}
-                type="number"
-                domain={['dataMin', 'dataMax']}
-              />
-
-              <Legend
-                align="left"
-                layout="vertical"
-                margin={{ right: 0 }}
-                verticalAlign="middle"
-              />
-
-              <Area
-                dataKey="warn"
-                fill="#FCBD3F"
-                stroke="none"
-                fillOpacity={0.8}
-                stackId="2"
-                activeDot={false}
-                legendType="triangle"
-                isAnimationActive={false}
-                connectNulls
-              />
-              <Area
-                dataKey="error"
-                fill="#9b6565"
-                fillOpacity={1}
-                stroke="none"
-                stackId="2"
-                activeDot={false}
-                legendType="triangle"
-                isAnimationActive={false}
-                connectNulls
-              />
-              <Line
-                dataKey="changes"
-                stroke="#fff"
-                type="monotone"
-                dot={false}
-                fillOpacity={1}
-                stackId="1"
-                activeDot={this._renderHoverTimeStamp}
-                legendType="triangle"
-                isAnimationActive={false}
-                connectNulls
-              />
-              <Bar
-                dataKey="changes"
-                stroke="black"
-                fillOpacity={0}
-                strokeOpacity={0}
-                background={{ fill: '#eee', stroke: '#eee', opacity: '0' }}
-                stackId="3"
-                onClick={this._handleChartClick}
-                legendType="none"
-              />
-              {this.state.isTimeMachineActive &&
-                <ReferenceLine
-                  x={this.state.targetDate}
-                  stroke="#FCBD3F"
-                  isFront
-                  strokeWidth={5}
-                >
-                  <Label
-                    data={this.state.targetDate}
-                    position="bottom"
-                    content={this._renderTimeMachineStamp}
-                  />
-                  <Label content={this._renderTimeMachineLine} />
-                </ReferenceLine>
-              }
-              <Tooltip
-                labelStyle={{ color: '#9b6565' }}
-                itemStyle={{ color: '#9b6565' }}
-                contentStyle={{ color: '#9b6565' }}
-                content={this._customTooltip}
-                isAnimationActive={false}
-                cursor={{ stroke: '#ffffffff', strokeOpacity: '1' }}
-              />
-            </ComposedChart>
-          </ResponsiveContainer>
-          <ResponsiveContainer width="100%" height={40} className="brush-chart">
-            <ComposedChart data={this.state.chartPreviewData} height={30} margin={{
-                bottom: 10, left: 200,
-                right: 50
-            }}>
-              <Brush
-                dataKey="date"
-                height={30}
-                stroke="#9b6565"
-                startIndex={this.state.selectionDateFromIndex}
-                endIndex={this.state.selectionDateToIndex}
-                onChange={debounce(this._calculateIndexes, 10)}
-                tickFormatter={this._formatXaxis}
-                gap={2}
-                tick={true}
-              >
-                <ComposedChart data={this.state.chartPreviewData}>
-                  <Area
-                    dataKey="warn"
-                    fill="#FCBD3F"
-                    stroke="none"
-                    fillOpacity={0.5}
-                    stackId="2"
-                    legendType="none"
-                    isAnimationActive={false}
-                    connectNulls
-                  ></Area>
-                  <Area
-                    dataKey="error"
-                    fill="#9b6565"
-                    fillOpacity={0.3}
-                    stroke="none"
-                    stackId="2"
-                    legendType="none"
-                    isAnimationActive={false}
-                    connectNulls
-                  ></Area>
-                  <Line
-                    dataKey="changes"
-                    stroke="#fff"
-                    type="linear"
-                    dot={false}
-                    fillOpacity={0.5}
-                    stackId="1"
-                    legendType="none"
-                    isAnimationActive={false}
-                    connectNulls
-                  ></Line>
-
-                  {this.state.isTimeMachineActive &&
-                    <ReferenceLine
-                      x={this.state.targetDate}
-                      stroke="#FCBD3F"
-                      strokeOpacity={1}
-                      isFront={true}
-                      strokeWidth={2}
-                    ></ReferenceLine>
-                  }
-                </ComposedChart>
-                </Brush>
-            </ComposedChart>
-          </ResponsiveContainer>
+          <div id="chart"></div>
         </div>
         <div className="tl-actions">
           <a
