@@ -26,8 +26,13 @@
     height: 100%;
 }
 
+.c3-event-rects {
+    cursor: default !important;
+}
+
 .c3 {
     max-height: 100% !important;
+    height: 100% !important;
 }
 
 .c3-tooltip-container {
@@ -41,6 +46,11 @@
 .c3-brush .selection {
     fill: black;
     fill-opacity: 0.6;
+}
+
+.tick, .c3-legend-item {
+    fill: white;
+    font-size: 12px;
 }
 
 .recharts-responsive-container.main-chart {
@@ -142,7 +152,7 @@ a:focus {
     outline: none;
 }
 
-.tl-actions a.timemachine .tooltiptext {
+.tl-actions a.timemachine .tooltiptext, .tl-actions a.reset .tooltiptext {
     visibility: hidden;
     width: 120px;
     background-color: #555;
@@ -156,6 +166,11 @@ a:focus {
   font-size: 12px;
   margin-top: 30px;
 }
+
+.tl-actions a.timemachine:hover .tooltiptext, .tl-actions a.reset:hover .tooltiptext {
+    visibility: visible;
+      opacity: 1;
+    }
 
 .tl-actions {
     padding: 15px 0 0 15px;
@@ -210,11 +225,6 @@ a:focus {
 .tl-actions a.timemachine:hover {
     background: #35373E url('/img/timeline/clock.svg') center center no-repeat;
     background-size: 20px;
-}
-
-.tl-actions a.timemachine:hover .tooltiptext {
-visibility: visible;
-  opacity: 1;
 }
 
 .tl-actions a.timemachine.active {

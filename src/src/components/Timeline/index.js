@@ -5,10 +5,9 @@ import _ from 'the-lodash'
 import moment from 'moment'
 import { formatDate } from '../../utils/ui-utils'
 import c3 from 'c3'
-import { debounce } from 'debounce'
+import * as d3 from 'd3'
 
 import './styles.scss'
-// import { this.timelineData } from '../../boot/timelineBoot'
 
 class Timeline extends BaseComponent {
   constructor(props) {
@@ -21,9 +20,7 @@ class Timeline extends BaseComponent {
 
     this._handleChartClick = this._handleChartClick.bind(this)
     this._calculateIndexes = this._calculateIndexes.bind(this)
-    // this._calculateStartIndex = this._calculateStartIndex.bind(this)
-    // this._calculateEndIndex = this._calculateEndIndex.bind(this)
-    this._customTooltip = this._customTooltip.bind(this)
+    this._handleBrush = this._handleBrush.bind(this)
   }
 
   _makeDefaultState()
@@ -50,6 +47,15 @@ class Timeline extends BaseComponent {
     this.sharedState.set('time_machine_duration', 12 * 60 * 60)
     this.sharedState.set('time_machine_target_date', null);
     this.sharedState.set('time_machine_date', null);
+    this._renderChart().zoom(this._resetZoom())
+  }
+
+  _resetZoom() {
+    const data = this.state.chartPreviewData
+    const dateFrom = moment().subtract(12 * 60 * 60, 'seconds')
+    const indexFrom = data.findIndex(elem => moment(elem.date).isSameOrAfter(dateFrom, 'minutes'))
+    const indexTo = data.length - 1
+    return [indexFrom, indexTo]
   }
 
   _toggleTimeMachine() {
@@ -78,120 +84,70 @@ class Timeline extends BaseComponent {
     return moment(item).format('MMM DD hh:mm A')
   }
 
-  _customTooltip({ active, payload, label }) {
-    if (active && payload && payload.length > 0) {
-      return (
-        <>
-          <div className="custom-tooltip">
-            {!this.state.isTimeMachineActive && <p className="activate-info">Click to activate the Time Machine</p>}
-            <p>Changes: {payload[0].payload.changes}</p>
-            <p>Errors: {payload[0].payload.error}</p>
-            <p>Warnings: {payload[0].payload.warn}</p>
-          </div>
-        </>
-      )
-    }
-  }
-
-  _renderHoverTimeStamp({ payload, cx }) {
-    return (
-      <>
-        <rect
-          style={{ transform: `translate(${cx - 55}px, calc(100% - 25px))` }}
-        />
-        <text
-          style={{ transform: `translate(${cx - 50}px, calc(100% - 10px))` }}
-        >
-          <tspan>{moment(payload.date).format('MMM DD hh:mm A')}</tspan>
-        </text>
-      </>
-    )
-  }
-
-  _renderTimeMachineStamp(props) {
-    const height = $('#timelineComponent').innerHeight()
-    const cx = props.viewBox.x
-    return (
-      <>
-        <rect
-          style={{ transform: `translate(${cx - 55}px, ${height - 75}px)` }}
-        />
-        <text
-          style={{ transform: `translate(${cx - 50}px, ${height - 60}px)` }}
-        >
-          <tspan>{moment(props.data).format('MMM DD hh:mm A')}</tspan>
-        </text>
-      </>
-    )
-  }
-
-  _renderTimeMachineLine(props) {
-    const cx = props.viewBox.x
-    return (
-      <path
-        d="M-7,-4 h14 v20 l-7,7 l-7,-7 z"
-        fill="#FCBD3F"
-        style={{ transform: `translate(${cx}px, 0)` }}
-      ></path>
-    )
-  }
-
-  _calculateIndexes(props) {
-    console.log("[TIMELINE:_calculateIndexes] ", props);
-    console.log("[TIMELINE:_calculateIndexes] SIZE: " + this.state.chartPreviewData.length);
-
-    if (props.endIndex == -1 || props.startIndex == -1) {
-      console.log("[TIMELINE:_calculateIndexes] IS -1!!!!", props);
-      return ;
+  _calculateIndexes() {
+    if (!this.state.actualDateFrom && !this.state.actualDateTo) {
+      return
     }
 
-    let dateTo = null;
-    let effectiveDateTo = null;
-    if (props.endIndex >= this.state.chartPreviewData.length - 1)
-    {
-      dateTo = moment();
-      effectiveDateTo = null;
-    } else {
-      dateTo = this.state.chartPreviewData[
-        props.endIndex
-      ].dateMoment;
-      effectiveDateTo = dateTo.toISOString();
-    }
-
-    let dateFrom = this.state.chartPreviewData[
-      props.startIndex
-    ].dateMoment;
-
-    let diff = moment.duration(dateTo.diff(dateFrom));
-    let durationSeconds = diff.asSeconds();
-
-    this.sharedState.set('time_machine_date_to', effectiveDateTo)
-    this.sharedState.set('time_machine_duration', durationSeconds)
+    const data = this.state.chartPreviewData
+    const indexFrom = data.findIndex(elem => { 
+      return moment(elem.date).isSameOrAfter(this.state.actualDateFrom, 'minutes')
+    })
+    const indexTo = data.findIndex(elem => {
+      return moment(elem.date).isSameOrAfter(this.state.actualDateTo, 'minutes')
+    })
+    return [indexFrom, indexTo]
   }
 
-  _handleChartClick(props) {
+  _handleChartClick(d, element) {
     this.sharedState.set('time_machine_enabled', true)
-    this.sharedState.set('time_machine_target_date', props.date)
-    if (!this.state.isTimeMachineActive) {
-      this.sharedState.set('time_machine_date', props.date)
-    }
+    this.sharedState.set('time_machine_target_date', this.state.chartPreviewData[d.x].date)
   }
 
-  _handleBrush(props) {
-    console.log('props :>> ', props) // Will change dateTo and duration state
+  _handleBrush(domain) {
+    const brushDateTo = ~~domain[1]
+    const brushDateFrom = ~~domain[0]
+          console.log("[TIMELINE:_calculateIndexes] ", domain);
+          console.log("[TIMELINE:_calculateIndexes] SIZE: " + this.state.chartPreviewData.length);
+      
+          if (brushDateTo == -1 || brushDateFrom == -1) {
+            console.log("[TIMELINE:_calculateIndexes] IS -1!!!!", domain);
+            return ;
+          }
+      
+          let dateTo = null;
+          let effectiveDateTo = null;
+          if (brushDateTo >= this.state.chartPreviewData.length - 1)
+          {
+            dateTo = moment();
+            effectiveDateTo = null;
+          } else {
+            dateTo = this.state.chartPreviewData[
+              brushDateTo
+            ].dateMoment;
+            effectiveDateTo = dateTo.toISOString();
+          }
+      
+          let dateFrom = this.state.chartPreviewData[
+            brushDateFrom
+          ].dateMoment;
+      
+          let diff = moment.duration(dateTo.diff(dateFrom));
+          let durationSeconds = diff.asSeconds();
+      
+          this.sharedState.set('time_machine_date_to', effectiveDateTo)
+    this.sharedState.set('time_machine_duration', durationSeconds)
+
+    
   }
 
   _renderChart() {
-    const data = this.sharedState.get('time_machine_timeline_preview').slice(1)
+    const data = this.sharedState.get('time_machine_timeline_preview')
     const chart = c3.generate({
       padding: {
         left: 20,
         right: 20,
       },
-      style: {
-        width: '100%',
-      },
-      bindto: '.chart-view',
       data: {
         json: data,
         keys: {
@@ -209,6 +165,11 @@ class Timeline extends BaseComponent {
           error: '#9b6565',
           warn: '#fcbd3f',
         },
+        selection: {
+          enabled: true,
+          multiple: false
+        },
+        onclick: this._handleChartClick
       },
       axis: {
         y: {
@@ -218,12 +179,11 @@ class Timeline extends BaseComponent {
           type: 'category',
           tick: {
             format: function (x) {
-              return moment(data[Math.ceil(x)].date).format('MMM DD hh:mm A')
+              return data[Math.ceil(x)].dateMoment.format('MMM DD hh:mm A')
             },
             count: 5,
             outer: true,
             multiline: false,
-            // extent: [1, 5],
           },
         },
       },
@@ -237,17 +197,21 @@ class Timeline extends BaseComponent {
       zoom: {
         enabled: true,
         onzoom: this._handleBrush,
+        initialRange: this._calculateIndexes()
       },
       point: {
         show: false,
+        select: {
+          r: 5
+        }
       },
     })
-
-    chart.zoom([150, 200]) // will be used with calculated From and To values
+    return chart
   }
 
   componentDidMount() {
     this._renderChart()
+
     this.subscribeToSharedState(
       [
         'time_machine_enabled',
@@ -331,6 +295,10 @@ class Timeline extends BaseComponent {
 
   render() {
 
+
+    $(document).on('layout-resize-timelineComponent', () => { 
+      this._renderChart()
+    })
     return (
       <div id="timelineComponent" className="timeline size-to-parent">
         <div className="chart-view">
@@ -350,7 +318,8 @@ class Timeline extends BaseComponent {
             id="btnTimelineTimeMachine"
             className={`reset`}
             onClick={() => this._reset()}
-          ></a>
+          ><span className="tooltiptext">Reset changes</span>
+          </a>
         </div>
       </div>
     )
