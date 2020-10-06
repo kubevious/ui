@@ -85,6 +85,22 @@
     font-size: 14px;
 }
 
+.c3-selected-circle {
+    opacity: 0;
+}
+
+// .c3-xgrid-focus {
+//     stroke: gray;
+//     stroke-width: 2;
+// }
+
+// .c3-chart .selector {
+//     fill: rgb(252, 189, 63);
+//     stroke-width: 2;
+//     stroke: rgb(252, 189, 63);
+//     cursor: pointer;
+// }
+
 .recharts-active-dot {
     pointer-events: none;
     visibility: visible;
@@ -112,6 +128,11 @@
     width: 100px; 
     height: 20px; 
     fill: #FCBD3F;
+}
+
+.hover-line {
+    stroke-width: 2;
+    stroke: gray;
 }
 
 .recharts-legend-wrapper {

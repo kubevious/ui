@@ -1,6 +1,6 @@
 import React from 'react'
 import BaseComponent from '../../HOC/BaseComponent'
-import $ from 'jquery'
+import * as $ from 'jquery'
 import _ from 'the-lodash'
 import moment from 'moment'
 import { formatDate } from '../../utils/ui-utils'
@@ -59,21 +59,18 @@ class Timeline extends BaseComponent {
   }
 
   _toggleTimeMachine() {
-    if (this.state.isTimeMachineActive)
-    {
-      this.sharedState.set('time_machine_enabled', false);
-    }
-    else
-    {
-      this.sharedState.set('time_machine_enabled', true);
-      let date;
-      if (this.state.targetDate)
-      {
-        date = moment(this.state.targetDate).toISOString();
-      }
-      else
-      {
-        date = this.state.actualDateTo.toISOString();
+
+    if (this.state.isTimeMachineActive) {
+      $('.selector').detach()
+      this.sharedState.set('time_machine_enabled', false)
+    } else {
+      this._renderTimeMachineLine()
+      this.sharedState.set('time_machine_enabled', true)
+      let date
+      if (this.state.targetDate) {
+        date = moment(this.state.targetDate).toISOString()
+      } else {
+        date = this.state.actualDateTo.toISOString()
       }
       this.sharedState.set('time_machine_target_date', date)
       this.sharedState.set('time_machine_date', date)
@@ -99,8 +96,29 @@ class Timeline extends BaseComponent {
     return [indexFrom, indexTo]
   }
 
+  _renderTimeMachineLine() {
+    $('.selector').detach()
+    const chartHeight = $('.c3-chart-lines')[0].getBoundingClientRect().height
+    const chartComponent = d3.select('.c3-chart')
+      const selector = chartComponent
+        .append('g')
+        .attr('class', 'selector')
+      selector.append('path').attr('d', 'M-7,0 h14 v20 l-7,7 l-7,-7 z')
+      selector.append('path').attr('d', 'M0,15 v' + chartHeight)
+    this._renderLinePosition()
+  }
+
+  _renderLinePosition() {
+    const posX = $('.c3-selected-circle').attr('cx')
+    $('.selector').attr('transform', 'translate(' + posX + ')')
+  }
+
   _handleChartClick(d, element) {
     this.sharedState.set('time_machine_enabled', true)
+    this._renderTimeMachineLine()
+    const posX = $(element).attr('cx')
+    $('.selector').attr('transform', 'translate(' + posX + ')')
+
     this.sharedState.set('time_machine_target_date', this.state.chartPreviewData[d.x].date)
   }
 
@@ -138,7 +156,7 @@ class Timeline extends BaseComponent {
           this.sharedState.set('time_machine_date_to', effectiveDateTo)
     this.sharedState.set('time_machine_duration', durationSeconds)
 
-    
+    this._renderLinePosition()
   }
 
   _renderChart() {
@@ -163,7 +181,7 @@ class Timeline extends BaseComponent {
         colors: {
           changes: 'white',
           error: '#9b6565',
-          warn: '#fcbd3f',
+          warn: '#fcbd3faa',
         },
         selection: {
           enabled: true,
@@ -200,17 +218,51 @@ class Timeline extends BaseComponent {
         initialRange: this._calculateIndexes()
       },
       point: {
+        r: 10,
         show: false,
         select: {
           r: 5
+        },
+        focus: {
+          expand: {
+            enabled: true,
+            r: 10,
+          }
         }
       },
     })
+
+    const chartHeight = $('.c3-chart-lines')[0].getBoundingClientRect().height
+    const vertical = d3
+      .select('.c3-chart')
+      .append('g')
+      .attr('class', 'hover-line')
+      .append('path')
+      .attr('d', 'M0,15 v' + chartHeight)
+      
+
+    d3.select('.c3-chart')
+      .on('mouseenter', function () {
+        vertical.attr('display', 'block')
+      })
+      .on('mousemove', function () {
+        let mousex = d3.mouse(this)
+        mousex = mousex[0] + 5
+        vertical.attr('transform', 'translate(' + mousex + ')')
+      })
+      .on('mouseover', function () {
+        let mousex = d3.mouse(this)
+        mousex = mousex[0] + 5
+        vertical.attr('transform', 'translate(' + mousex + ')')
+      })
+      .on('mouseleave', function () {
+        vertical.attr('display', 'none')
+      })
+
     return chart
   }
 
   componentDidMount() {
-    this._renderChart()
 
     this.subscribeToSharedState(
       [
