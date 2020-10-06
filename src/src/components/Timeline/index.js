@@ -121,10 +121,12 @@ class Timeline extends BaseComponent {
             .substr(element.className.baseVal.indexOf('c3-circle-'))
             .substr(10)
           $(element).addClass('_selected_')
-          this.sharedState.set(
-            'time_machine_target_date',
-            this.state.chartPreviewData[Number(index)].date
-          )
+          if (this.state.chartPreviewData[Number(index)]) {
+            this.sharedState.set(
+              'time_machine_target_date',
+              this.state.chartPreviewData[Number(index)].date
+            )
+          }
         }
       })
     )
