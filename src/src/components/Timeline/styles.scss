@@ -53,21 +53,6 @@
     font-size: 12px;
 }
 
-.recharts-responsive-container.main-chart {
-    height: calc(100% - 50px) !important;
-    margin-bottom: 0;
-    margin-top: 10px;
-}
-
-.recharts-brush-slide {
-    fill: black;
-    fill-opacity: 0.5;
-}
-
-.recharts-cartesian-axis-ticks {
-    font-size: 10px;
-}
-
 .custom-tooltip {
     background-color: #ffffffaa;
     color: #3a1b1b;
@@ -89,60 +74,9 @@
     opacity: 0;
 }
 
-// .c3-xgrid-focus {
-//     stroke: gray;
-//     stroke-width: 2;
-// }
-
-// .c3-chart .selector {
-//     fill: rgb(252, 189, 63);
-//     stroke-width: 2;
-//     stroke: rgb(252, 189, 63);
-//     cursor: pointer;
-// }
-
-.recharts-active-dot {
-    pointer-events: none;
-    visibility: visible;
-    fill: black;
-    position: absolute;
-    background: gray;
-    font-size: 12px;
-    top: 100px;
-    z-index: 1000;
-    transition: -webkit-transform 400ms ease 0s;
-}
-
-.recharts-active-dot rect {
-    width: 100px; 
-    height: 20px; 
-    fill: gray;
-    fill-opacity: 0.8;
-}
-
-.recharts-reference-line {
-    font-size: 12px;
-}
-
-.recharts-reference-line rect {
-    width: 100px; 
-    height: 20px; 
-    fill: #FCBD3F;
-}
-
 .hover-line {
     stroke-width: 2;
     stroke: gray;
-}
-
-.recharts-legend-wrapper {
-    margin-left: 10px;
-}
-
-.recharts-brush-texts text {
-    stroke: black;
-    stroke-width: 0.3;
-    stroke-opacity: 0.5;
 }
 
 .selected-time-bottom {
@@ -162,7 +96,7 @@
     fill: rgb(252, 189, 63);
     stroke-width: 2;
     stroke: rgb(252, 189, 63);
-    cursor: pointer;
+    cursor: col-resize;
 }
 
 .timeline.size-to-parent {
@@ -219,26 +153,6 @@ a:focus {
     background-size: 20px;
 }
 
-.tl-actions a.plus {
-    background: #292A2F url('/img/timeline/plus.svg') center center no-repeat;
-    background-size: 16px;
-}
-
-.tl-actions a.minus {
-    background: #292A2F url('/img/timeline/minus.svg') center center no-repeat;
-    background-size: 16px;
-}
-
-.tl-actions a.left {
-    background: #292A2F url('/img/timeline/left.svg') center center no-repeat;
-    background-size: 16px;
-}
-
-.tl-actions a.right {
-    background: #292A2F url('/img/timeline/right.svg') center center no-repeat;
-    background-size: 16px;
-}
-
 .tl-actions a.reset:hover {
     background: #35373E url('/img/timeline/reset.svg') center center no-repeat;
 }
@@ -251,20 +165,4 @@ a:focus {
 .tl-actions a.timemachine.active {
     background: #FCBD3F url('/img/timeline/clock-active.svg') center center no-repeat;
     background-size: 20px;
-}
-
-.tl-actions a.plus:hover {
-    background: #35373E url('/img/timeline/plus.svg') center center no-repeat;
-}
-
-.tl-actions a.minus:hover {
-    background: #35373E url('/img/timeline/minus.svg') center center no-repeat;
-}
-
-.tl-actions a.left:hover {
-    background: #35373E url('/img/timeline/left.svg') center center no-repeat;
-}
-
-.tl-actions a.right:hover {
-    background: #35373E url('/img/timeline/right.svg') center center no-repeat;
 }

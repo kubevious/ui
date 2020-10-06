@@ -21,6 +21,7 @@ class Timeline extends BaseComponent {
     this._handleChartClick = this._handleChartClick.bind(this)
     this._calculateIndexes = this._calculateIndexes.bind(this)
     this._handleBrush = this._handleBrush.bind(this)
+    this._renderTimeMachineLine = this._renderTimeMachineLine.bind(this)
   }
 
   _makeDefaultState()
@@ -66,7 +67,7 @@ class Timeline extends BaseComponent {
     } else {
       this._renderTimeMachineLine()
       this.sharedState.set('time_machine_enabled', true)
-      let date
+      let date = moment().toISOString()
       if (this.state.targetDate) {
         date = moment(this.state.targetDate).toISOString()
       } else {
@@ -100,12 +101,33 @@ class Timeline extends BaseComponent {
     $('.selector').detach()
     const chartHeight = $('.c3-chart-lines')[0].getBoundingClientRect().height
     const chartComponent = d3.select('.c3-chart')
-      const selector = chartComponent
-        .append('g')
-        .attr('class', 'selector')
-      selector.append('path').attr('d', 'M-7,0 h14 v20 l-7,7 l-7,-7 z')
-      selector.append('path').attr('d', 'M0,15 v' + chartHeight)
+    const selector = chartComponent
+      .append('g')
+      .attr('class', 'selector')
+    selector.append('path').attr('d', 'M-7,0 h14 v20 l-7,7 l-7,-7 z')
+    selector.append('path').attr('d', 'M0,15 v' + chartHeight)
+
     this._renderLinePosition()
+
+    selector.call(
+      d3.drag().on('drag', () => {
+        $('.selector').attr('transform', 'translate(' + d3.event.x + ')')
+        const element = document.querySelector(
+          'circle[cx="' + Math.floor(d3.event.x) + '"]'
+        ) // Will be rafactored to better logic
+
+        if (element) {
+          const index = element.className.baseVal
+            .substr(element.className.baseVal.indexOf('c3-circle-'))
+            .substr(10)
+          $(element).addClass('_selected_')
+          this.sharedState.set(
+            'time_machine_target_date',
+            this.state.chartPreviewData[Number(index)].date
+          )
+        }
+      })
+    )
   }
 
   _renderLinePosition() {
@@ -218,17 +240,8 @@ class Timeline extends BaseComponent {
         initialRange: this._calculateIndexes()
       },
       point: {
-        r: 10,
-        show: false,
-        select: {
-          r: 5
-        },
-        focus: {
-          expand: {
-            enabled: true,
-            r: 10,
-          }
-        }
+        r: 20,
+        show: true,
       },
     })
 
@@ -238,7 +251,7 @@ class Timeline extends BaseComponent {
       .append('g')
       .attr('class', 'hover-line')
       .append('path')
-      .attr('d', 'M0,15 v' + chartHeight)
+      .attr('d', 'M0,0 v' + chartHeight)
       
 
     d3.select('.c3-chart')
