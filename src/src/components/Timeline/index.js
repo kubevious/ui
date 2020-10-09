@@ -17,6 +17,7 @@ class Timeline extends BaseComponent {
     this._showAxis = false
 
     this.state = this._makeDefaultState();
+    this.previewLinePosition = 0
 
     this._calculateIndexes = this._calculateIndexes.bind(this)
     this._handleBrush = this._handleBrush.bind(this)
@@ -87,7 +88,7 @@ class Timeline extends BaseComponent {
     return [this.state.actualDateFrom, this.state.actualDateTo]
   }
 
-  _renderTimeMachineLine(date, isActive) {
+  _renderTimeMachineLine(date, isActive, isMoving) {
     $('.selector').detach()
     if (isActive) {
       const chart = window.$mainChart
@@ -110,36 +111,49 @@ class Timeline extends BaseComponent {
               'transform',
               'translate(' + d3.event.x + ')'
             )
-            this._calculatePreviewChartLine(d3.event.x)
+            this._calculatePreviewChartLine(d3.event.x, isMoving)
             const targetDate = chart.internal.x.invert(d3.event.x).toISOString()
             this.sharedState.set('time_machine_target_date', targetDate)
           })
         )
-        this._renderLinePosition(date)
+        this._renderLinePosition(date, isMoving)
       }
     }
   }
 
-  _renderLinePosition(targetDate) {
+  _renderLinePosition(targetDate , isMoving) {
     const chart = window.$mainChart
     if (chart) {
       const targetDatePosition = chart.internal.x(moment(targetDate))
-      if (targetDatePosition === 607 || targetDatePosition > chart.internal.width || targetDatePosition <= 0) {
-      $('.main-chart .selector').detach()
+      if (
+        targetDatePosition === Math.ceil(chart.internal.width / 2) ||
+        targetDatePosition > chart.internal.width ||
+        targetDatePosition <= 0 ||
+        targetDatePosition === NaN
+      ) {
+        $('.main-chart .selector').detach()
       } else {
-        $('.main-chart .selector').attr('transform', 'translate(' + targetDatePosition + ')')
+        $('.main-chart .selector').attr(
+          'transform',
+          'translate(' + targetDatePosition + ')'
+        )
       }
-      this._calculatePreviewChartLine(targetDatePosition)
+      this._calculatePreviewChartLine(targetDatePosition, isMoving)
     }
   }
 
-  _calculatePreviewChartLine(cursorX) {
-    const brushStartIndex = Number($('#chart .c3-brush .selection').attr('x'))
-    const brushWidth = Number($('#chart .c3-brush .selection').attr('width'))
-    const chartWidth = Number($('.main-chart svg').attr('width'))
-    const selectedPositionPercentage = cursorX / chartWidth
-    const position = brushStartIndex + brushWidth * selectedPositionPercentage
-    $('#chart .selector').attr('transform', 'translate(' + position + ')')
+  _calculatePreviewChartLine(cursorX, isMoving) {
+    if (cursorX && isMoving) {
+      const brushStartIndex = Number($('#chart .c3-brush .selection').attr('x'))
+      const brushWidth = Number($('#chart .c3-brush .selection').attr('width'))
+      const chartWidth = Number($('.main-chart svg').attr('width'))
+      const selectedPositionPercentage = cursorX / chartWidth
+      this.previewLinePosition = brushStartIndex + brushWidth * selectedPositionPercentage
+      $('#chart .selector').attr('transform', 'translate(' + this.previewLinePosition + ')')
+    }
+    else {
+      $('#chart .selector').attr('transform', 'translate(' + this.previewLinePosition + ')')
+    }
   }
 
   _handleChartClick() {
@@ -157,7 +171,6 @@ class Timeline extends BaseComponent {
           'transform',
           'translate(' + d3.mouse(this)[0] + ')'
         )
-        self._calculatePreviewChartLine(d3.mouse(this)[0])
       })
     }      
   }
@@ -174,8 +187,8 @@ class Timeline extends BaseComponent {
 
     this.sharedState.set('time_machine_date_to', effectiveDateTo)
     this.sharedState.set('time_machine_duration', durationSeconds)
-    
-    this._renderTimeMachineLine(this.state.targetDate, this.state.isTimeMachineActive)
+
+    this._renderTimeMachineLine(this.state.targetDate, this.state.isTimeMachineActive, false)
   }
 
   _renderBrushChart() {
@@ -351,7 +364,7 @@ class Timeline extends BaseComponent {
 
         let newState = this._makeDefaultState();
 
-        this._renderTimeMachineLine(time_machine_target_date, time_machine_enabled)
+        this._renderTimeMachineLine(time_machine_target_date, time_machine_enabled, true)
 
         if (time_machine_enabled && time_machine_target_date)
         {
