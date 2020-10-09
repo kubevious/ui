@@ -29,15 +29,12 @@ class Timeline extends BaseComponent {
     return {
       isTimeMachineActive: false,
       targetDate: null,
-      chartData: [],
       chartPreviewData: [],
       dateTo: null,
       actualDateTo: null,
       dateFrom: null,
       actualDateFrom: null,
-      duration: 12 * 60 * 60,
-      selectionDateFromIndex: 0,
-      selectionDateToIndex: 0
+      duration: 12 * 60 * 60
     };
   }
 
@@ -180,8 +177,7 @@ class Timeline extends BaseComponent {
     const dateFrom = domain[0].toISOString()
     const effectiveDateTo = dateTo.toISOString()
     console.log("[TIMELINE:_calculateIndexes] ", domain);
-    console.log("[TIMELINE:_calculateIndexes] SIZE: " + this.state.chartPreviewData.length);
-
+    
     let diff = moment.duration(dateTo.diff(dateFrom));
     let durationSeconds = diff.asSeconds();
 
@@ -255,7 +251,6 @@ class Timeline extends BaseComponent {
   }
 
   _renderMainChart() {
-    const data = this.state.chartData
     window.$mainChart = c3.generate({
       padding: {
         left: 100,
@@ -263,7 +258,7 @@ class Timeline extends BaseComponent {
       },
       bindto: '.main-chart',
       data: {
-        json: data,
+        json: [],
         xFormat: true,
         keys: {
           x: 'dateMoment',
@@ -309,6 +304,27 @@ class Timeline extends BaseComponent {
     this._handleChartClick()
   }
 
+  _updateMainChartData(data)
+  {
+    const chart = window.$mainChart
+    if (chart) {
+      chart.load({
+        json: data,
+        xFormat: true,
+        keys: {
+          x: 'dateMoment',
+          value: ['error', 'warn', 'changes'],
+        },
+        types: {
+          changes: 'line',
+          error: 'area',
+          warn: 'area',
+        },
+        groups: [['error', 'warn'], ['changes']],
+      })
+    }
+  }
+
   _renderHoverLine(chartHeight) {
     const vertical = d3
       .select('.main-chart .c3-chart')
@@ -344,7 +360,6 @@ class Timeline extends BaseComponent {
       [
         'time_machine_enabled',
         'time_machine_target_date',
-        'time_machine_timeline_data',
         'time_machine_timeline_preview',
         'time_machine_date_to',
         'time_machine_duration'
@@ -352,7 +367,6 @@ class Timeline extends BaseComponent {
       ({
         time_machine_enabled,
         time_machine_target_date,
-        time_machine_timeline_data,
         time_machine_timeline_preview,
         time_machine_date_to,
         time_machine_duration
@@ -371,28 +385,6 @@ class Timeline extends BaseComponent {
           newState.isTimeMachineActive = true;
         }
         newState.targetDate = time_machine_target_date;
-
-        if (time_machine_timeline_data) {
-          newState.chartData = time_machine_timeline_data
-
-          const chart = window.$mainChart
-          if (chart) {
-            chart.load({
-              json: time_machine_timeline_data,
-              xFormat: true,
-              keys: {
-                x: 'dateMoment',
-                value: ['error', 'warn', 'changes'],
-              },
-              types: {
-                changes: 'line',
-                error: 'area',
-                warn: 'area',
-              },
-              groups: [['error', 'warn'], ['changes']],
-            })
-          }
-        }
 
         if (time_machine_timeline_preview) {
           newState.chartPreviewData = time_machine_timeline_preview;
@@ -414,31 +406,19 @@ class Timeline extends BaseComponent {
         newState.dateFrom = newState.actualDateTo.clone().subtract(newState.duration, 'seconds');
         newState.actualDateFrom = newState.dateFrom.clone();
 
-      
-        {
-          let index = _.findIndex(newState.chartPreviewData, x => {
-            return x.dateMoment.isSameOrAfter(newState.actualDateFrom);
-          })
-          newState.selectionDateFromIndex = Math.max(0, index);
-        }
-
-        {
-          let index = _.findLastIndex(this.state.chartPreviewData, elem => {
-            return elem.dateMoment.isSameOrBefore(newState.actualDateTo);
-          })
-          newState.selectionDateToIndex = Math.max(0, index);
-        }
-
         console.log("[TIMLINE] FINAL DURATION: " + newState.duration);
         console.log("[TIMLINE] FINAL ACTUAL FROM: " + newState.actualDateFrom.toISOString());
         console.log("[TIMLINE] FINAL ACTUAL TO:   " + newState.actualDateTo.toISOString());
-        console.log("[TIMLINE] FINAL selectionDateFromIndex: " + newState.selectionDateFromIndex);
-        console.log("[TIMLINE] FINAL   selectionDateToIndex: " + newState.selectionDateToIndex);
 
         this.setState(newState);
         
       }
     )
+
+    this.subscribeToSharedState('time_machine_timeline_data',
+      (time_machine_timeline_data) => {
+        this._updateMainChartData(time_machine_timeline_data);
+    });
 
     this._renderMainChart()
     setTimeout(() => {
