@@ -24,18 +24,19 @@ $timelineYellow: rgb(252, 189, 63);
 }
 
 #chart {
-    margin-top: -70px;
+    margin-top: -100px;
     max-height: 150px !important;
     height: 150px !important;
+    width: 100% !important;
+    margin-bottom: 5px;
     svg {
         width: 100%;
         height: 150px;
     }
-}
 
-
-#chart > svg:nth-of-type(1) > g:nth-of-type(1) {
-    display: none;
+    & > svg:nth-of-type(1) > g:nth-of-type(1) {
+        display: none;
+    }
 }
 
 .c3-event-rects {
@@ -50,6 +51,10 @@ $timelineYellow: rgb(252, 189, 63);
     svg {
         width: 100%;
         height: 100%;
+    }
+
+    & > svg:nth-of-type(1) > g:nth-of-type(2) {
+        transform: translate(10px, 0px);   
     }
 }
 

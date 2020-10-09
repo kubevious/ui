@@ -47,7 +47,9 @@ class Timeline extends BaseComponent {
     this.sharedState.set('time_machine_duration', 12 * 60 * 60)
     this.sharedState.set('time_machine_target_date', null);
     this.sharedState.set('time_machine_date', null);
-    this._renderBrushChart().zoom(this._resetZoom())
+
+    const brushChart = window.$brushChart
+    brushChart.zoom(this._resetZoom())
   }
 
   _resetZoom() {
@@ -82,77 +84,82 @@ class Timeline extends BaseComponent {
     if (!this.state.actualDateFrom && !this.state.actualDateTo) {
       return
     }
-
     return [this.state.actualDateFrom, this.state.actualDateTo]
   }
 
-  _renderTimeMachineLine() {
+  _renderTimeMachineLine(date, isActive) {
     $('.selector').detach()
-    if (this.state.isTimeMachineActive) {
-      const chartInternal = window.$mainChart.internal
+    if (isActive) {
+      const chart = window.$mainChart
 
-      const chartHeight = $(
-        '.main-chart .c3-chart-lines'
-      )[0].getBoundingClientRect().height
+      const chartHeight = $('.main-chart .c3-event-rect').attr('height')
 
       const chartComponent = d3.select('.main-chart .c3-chart')
-      const selector = chartComponent
-        .append('g')
-        .attr('class', 'selector')
+      const selector = chartComponent.append('g').attr('class', 'selector')
       selector.append('path').attr('d', 'M-7,0 h14 v20 l-7,7 l-7,-7 z')
-      selector.append('path').attr('d', 'M0,15 v' + chartHeight)
+      selector.append('path').attr('d', 'M0,15 v' + chartHeight).attr('class', 'selector-line')
 
       const brushComponent = d3.select('#chart .c3-brush')
-      const brushSelector = brushComponent
-        .append('g')
-        .attr('class', 'selector')
+      const brushSelector = brushComponent.append('g').attr('class', 'selector')
       brushSelector.append('path').attr('d', 'M0,0 v' + 30)
 
-      this._renderLinePosition()
-
-      selector.call(
-        d3.drag().on('drag', () => {
-          $('.main-chart .selector').attr(
-            'transform',
-            'translate(' + d3.event.x + ')'
-          )
-          this._calculatePreviewChartLine(d3.event.x)
-          const targetDate = chartInternal.x.invert(d3.event.x).toISOString()
-          this.sharedState.set('time_machine_target_date', targetDate)
-        })
-      )
+      if (chart) {
+        selector.call(
+          d3.drag().on('drag', () => {
+            $('.main-chart .selector').attr(
+              'transform',
+              'translate(' + d3.event.x + ')'
+            )
+            this._calculatePreviewChartLine(d3.event.x)
+            const targetDate = chart.internal.x.invert(d3.event.x).toISOString()
+            this.sharedState.set('time_machine_target_date', targetDate)
+          })
+        )
+        this._renderLinePosition(date)
+      }
     }
   }
 
-  _renderLinePosition() {
-    const chartInternal = window.$mainChart.internal
-    const targetDatePosition = chartInternal.x(moment(this.state.targetDate))
-    $('.main-chart .selector').attr('transform', 'translate(' + targetDatePosition + ')')
-  }
-
-  _handleChartClick() {
-    const chartInternal = window.$mainChart.internal
-    const self = this
-
-    chartInternal.main.on('click', function (val) {
-      const targetDate = chartInternal.x.invert(d3.mouse(this)[0]).toISOString()
-      self.sharedState.set('time_machine_enabled', true)
-      self._renderTimeMachineLine()
-      self.sharedState.set('time_machine_target_date', targetDate)
-
-      $('.main-chart .selector').attr('transform', 'translate(' + d3.mouse(this)[0] + ')')
-      self._calculatePreviewChartLine(d3.mouse(this)[0])
-    })
+  _renderLinePosition(targetDate) {
+    const chart = window.$mainChart
+    if (chart) {
+      const targetDatePosition = chart.internal.x(moment(targetDate))
+      if (targetDatePosition === 607 || targetDatePosition > chart.internal.width || targetDatePosition <= 0) {
+      $('.main-chart .selector').detach()
+      } else {
+        $('.main-chart .selector').attr('transform', 'translate(' + targetDatePosition + ')')
+      }
+      this._calculatePreviewChartLine(targetDatePosition)
+    }
   }
 
   _calculatePreviewChartLine(cursorX) {
     const brushStartIndex = Number($('#chart .c3-brush .selection').attr('x'))
     const brushWidth = Number($('#chart .c3-brush .selection').attr('width'))
     const chartWidth = Number($('.main-chart svg').attr('width'))
-  const selectedPositionPercentage = cursorX / chartWidth
+    const selectedPositionPercentage = cursorX / chartWidth
     const position = brushStartIndex + brushWidth * selectedPositionPercentage
-  $('#chart .selector').attr('transform', 'translate(' + position + ')')
- 
+    $('#chart .selector').attr('transform', 'translate(' + position + ')')
+  }
+
+  _handleChartClick() {
+    const chart = window.$mainChart
+    const self = this
+    if (chart) {
+      chart.internal.main.on('click', function () {
+        const targetDate = chart.internal.x
+          .invert(d3.mouse(this)[0])
+          .toISOString()
+        self.sharedState.set('time_machine_enabled', true)
+        self.sharedState.set('time_machine_target_date', targetDate)
+
+        $('.main-chart .selector').attr(
+          'transform',
+          'translate(' + d3.mouse(this)[0] + ')'
+        )
+        self._calculatePreviewChartLine(d3.mouse(this)[0])
+      })
+    }      
   }
 
   _handleBrush(domain) {
@@ -167,15 +174,15 @@ class Timeline extends BaseComponent {
 
     this.sharedState.set('time_machine_date_to', effectiveDateTo)
     this.sharedState.set('time_machine_duration', durationSeconds)
-
-    this._renderLinePosition()
+    
+    this._renderTimeMachineLine(this.state.targetDate, this.state.isTimeMachineActive)
   }
 
   _renderBrushChart() {
     const data = this.state.chartPreviewData
-    const chart = c3.generate({
+    window.$brushChart = c3.generate({
       padding: {
-        left: 20,
+        left: 100,
         right: 20,
       },
       data: {
@@ -206,7 +213,7 @@ class Timeline extends BaseComponent {
           tick: {
             format: '%b-%d %I:%M %p',
             count: 7,
-            outer: true,
+            outer: false,
             multiline: false,
           },
         },
@@ -216,22 +223,29 @@ class Timeline extends BaseComponent {
         onbrush: this._handleBrush,
         size: {
           height: 30
+        }, 
+        axis: {
+          x: {
+            show: false
+          }
         }
       },
       zoom: {
         enabled: true,
         initialRange: this._calculateIndexes(),
       },
+      legend: {
+        position: 'right',
+        hide: true
+      }
     })
-
-    return chart
   }
 
   _renderMainChart() {
     const data = this.state.chartData
     window.$mainChart = c3.generate({
       padding: {
-        left: 20,
+        left: 100,
         right: 20,
       },
       bindto: '.main-chart',
@@ -276,23 +290,19 @@ class Timeline extends BaseComponent {
       },
       legend: {
         position: 'right',
-        hide: true
       }
     })
 
-    this._renderHoverLine()
     this._handleChartClick()
-    this._renderTimeMachineLine()
   }
 
-  _renderHoverLine() {
-    const chartHeight = $('.main-chart .c3-chart-lines')[0].getBoundingClientRect().height
+  _renderHoverLine(chartHeight) {
     const vertical = d3
       .select('.main-chart .c3-chart')
       .append('g')
       .attr('class', 'hover-line')
       .append('path')
-      .attr('d', 'M0,' + chartHeight / 10 + ' v' + chartHeight)
+      .attr('d', 'M0,' + chartHeight / 11 + ' v' + chartHeight)
       .attr('pointer-events', 'none')
       
 
@@ -334,12 +344,14 @@ class Timeline extends BaseComponent {
         time_machine_date_to,
         time_machine_duration
       }) => {
-
+        
         console.log("[TIMLINE] TARGET DATE: ", moment(time_machine_target_date).toISOString());
         console.log("[TIMLINE] INPUT DURATION: ", time_machine_duration);
         console.log("[TIMLINE] INPUT TO: ", time_machine_date_to);
 
         let newState = this._makeDefaultState();
+
+        this._renderTimeMachineLine(time_machine_target_date, time_machine_enabled)
 
         if (time_machine_enabled && time_machine_target_date)
         {
@@ -349,6 +361,24 @@ class Timeline extends BaseComponent {
 
         if (time_machine_timeline_data) {
           newState.chartData = time_machine_timeline_data
+
+          const chart = window.$mainChart
+          if (chart) {
+            chart.load({
+              json: time_machine_timeline_data,
+              xFormat: true,
+              keys: {
+                x: 'dateMoment',
+                value: ['error', 'warn', 'changes'],
+              },
+              types: {
+                changes: 'line',
+                error: 'area',
+                warn: 'area',
+              },
+              groups: [['error', 'warn'], ['changes']],
+            })
+          }
         }
 
         if (time_machine_timeline_preview) {
@@ -393,35 +423,34 @@ class Timeline extends BaseComponent {
         console.log("[TIMLINE] FINAL   selectionDateToIndex: " + newState.selectionDateToIndex);
 
         this.setState(newState);
-        const chart = window.$mainChart
-        if (chart) {
-          chart.load({
-            json: time_machine_timeline_data,
-            xFormat: true,
-            keys: {
-              x: 'dateMoment',
-              value: ['error', 'warn', 'changes'],
-            },types: {
-              changes: 'line',
-              error: 'area',
-              warn: 'area',
-            },
-            groups: [['error', 'warn'], ['changes']],
-          })
-        }
         
       }
     )
+
+    this._renderMainChart()
+    setTimeout(() => {
+      this._renderBrushChart()
+    }, 0)
+
+    $(document).on('layout-resize-timelineComponent', () => {
+      const mainChartheight = $('.chart-view').height() - 50
+      const mainChartwidth = $('.chart-view').width()
+      this._renderHoverLine(mainChartheight)
+      const chart = window.$mainChart
+      const brushChart = window.$brushChart
+      if (chart && brushChart) {
+        chart.resize({ height: mainChartheight, width: mainChartwidth })
+        brushChart.resize({ width: mainChartwidth })
+      }
+      $('.main-chart .selector-line').attr('d', 'M0,15 v' + (mainChartheight - 30))
+    })
+
+    
 
   }
 
   render() {
 
-
-    $(document).on('layout-resize-timelineComponent', () => { 
-      this._renderBrushChart()
-      this._renderMainChart()
-    })
     return (
       <div id="timelineComponent" className="timeline size-to-parent">
         <div className="chart-view">
