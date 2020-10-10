@@ -1,0 +1,52 @@
+.new-version-info {
+    height: 90%;
+
+    h3 {
+        font-size: 24px;
+        margin-top: 15px;
+        font-weight: 700;
+    }
+
+    li {
+        margin-left: 30px;
+        list-style-type: "-";
+        padding-left: 10px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 14px;
+        color: #D1D1D1;
+    }
+}
+
+.heading-text {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    padding-bottom: 30px;
+}
+
+.install-btn {
+    padding: 10px;
+    background-color: #6df921;
+    display: block;
+    width: fit-content;
+    text-decoration: none;
+    color: black;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    margin-top: 15px;
+    border-radius: 3px;
+}
+
+.install-btn:hover {
+    text-decoration: none;
+    color: black;
+}
+
+.target-link {
+    text-decoration: underline;
+    color: inherit;
+    margin-bottom: 20px;
+    display: block;
+    margin: 10px 0 0 30px;
+    width: fit-content;
+}
