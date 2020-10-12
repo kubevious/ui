@@ -21,9 +21,6 @@ class Timeline extends BaseComponent {
     }
 
 
-    this._calculateIndexes = this._calculateIndexes.bind(this)
-    this._handleBrush = this._handleBrush.bind(this)
-    this._renderTimeMachineLine = this._renderTimeMachineLine.bind(this)
   }
 
   _reset()
@@ -143,9 +140,12 @@ class Timeline extends BaseComponent {
     let diff = moment.duration(dateTo.diff(dateFrom));
     let durationSeconds = diff.asSeconds();
 
-    this.sharedState.set('time_machine_date_to', effectiveDateTo)
-    this.sharedState.set('time_machine_duration', durationSeconds)
-    
+    this._setDates(effectiveDateTo, durationSeconds)    
+  }
+
+  _setDates(dateTo, duration) {
+    this.sharedState.set('time_machine_date_to', dateTo)
+    this.sharedState.set('time_machine_duration', duration)
   }
 
   _renderBrushChart() {
@@ -190,7 +190,7 @@ class Timeline extends BaseComponent {
       },
       subchart: {
         show: true,
-        onbrush: this._handleBrush,
+        onbrush: (d) => this._handleBrush(d),
         size: {
           height: 30
         }, 
@@ -202,13 +202,15 @@ class Timeline extends BaseComponent {
       },
       zoom: {
         enabled: true,
-        initialRange: this._calculateIndexes(),
       },
       legend: {
         position: 'right',
         hide: true
       }
     })
+
+    const brushChart = window.$brushChart
+    setTimeout(() => {brushChart.zoom([this.actualDateFrom, this.actualDateTo])})
   }
 
   _renderMainChart() {
@@ -357,7 +359,7 @@ class Timeline extends BaseComponent {
         console.log("[TIMLINE] FINAL DURATION: " + this.duration);
         console.log("[TIMLINE] FINAL ACTUAL FROM: " + this.actualDateFrom.toISOString());
         console.log("[TIMLINE] FINAL ACTUAL TO:   " + this.actualDateTo.toISOString());
-
+        
         
         if (!time_machine_date_to && time_machine_duration === this.dayInSec) {
           const brushChart = window.$brushChart
