@@ -13,6 +13,7 @@ class Timeline extends BaseComponent {
   constructor(props) {
     super(props)
 
+    this.dayInSec = 12 * 60 * 60
     this.previewLinePosition = 0
     this.chartPreviewData = []
     this.state = {
@@ -29,7 +30,7 @@ class Timeline extends BaseComponent {
   {
     this.sharedState.set('time_machine_enabled', false)
     this.sharedState.set('time_machine_date_to', null)
-    this.sharedState.set('time_machine_duration', 12 * 60 * 60)
+    this.sharedState.set('time_machine_duration', this.dayInSec)
     this.sharedState.set('time_machine_target_date', null)
   }
 
@@ -42,7 +43,7 @@ class Timeline extends BaseComponent {
       this.sharedState.set('time_machine_enabled', true)
       let date = moment().toISOString()
       if (this.targetDate) {
-        date = moment(this.targetDate).toISOString()
+        date = this.targetDate
       } else {
         date = this.actualDateTo.toISOString()
       }
@@ -101,8 +102,10 @@ class Timeline extends BaseComponent {
     const chart = window.$mainChart
     if (chart) {
       const targetDatePosition = chart.internal.x(moment(targetDate))
-      $('.main-chart .selector').attr('transform','translate(' + targetDatePosition + ')')
-      isMoving && this._calculatePreviewChartLine(targetDatePosition, isMoving)
+      if (targetDatePosition !== (Math.ceil(chart.internal.width / 2) || NaN)) {
+        $('.main-chart .selector').attr('transform','translate(' + targetDatePosition + ')')
+        isMoving && this._calculatePreviewChartLine(targetDatePosition, isMoving)
+      }
     }
   }
 
@@ -330,7 +333,7 @@ class Timeline extends BaseComponent {
         console.log("[TIMLINE] INPUT TO: ", time_machine_date_to);
 
 
-
+        
         if (time_machine_timeline_preview) {
           this.chartPreviewData = time_machine_timeline_preview;
 
@@ -356,12 +359,14 @@ class Timeline extends BaseComponent {
         console.log("[TIMLINE] FINAL ACTUAL TO:   " + this.actualDateTo.toISOString());
 
         
-        if (!time_machine_date_to && time_machine_duration === 12 * 60 * 60) {
+        if (!time_machine_date_to && time_machine_duration === this.dayInSec) {
           const brushChart = window.$brushChart
           brushChart && brushChart.zoom([this.dateFrom, this.actualDateTo])
         }
 
-        setTimeout( () => {this._renderLinePosition(this.targetDate, false)})
+        setTimeout(() => {
+          this._renderLinePosition(this.targetDate, false)
+        })
 
       }
     )
@@ -376,15 +381,19 @@ class Timeline extends BaseComponent {
         time_machine_target_date
       }) => {
 
-        console.log('[TIMLINE] TARGET DATE: ', moment(time_machine_target_date).toISOString())
+        const actualTargetDate = moment(time_machine_target_date).toISOString()
+
+        console.log('[TIMLINE] TARGET DATE: ', actualTargetDate)
         
-        this._renderTimeMachineLine(time_machine_enabled)
-        this._renderLinePosition(time_machine_target_date,
-          true)
+        setTimeout(() => {
+          this._renderTimeMachineLine(time_machine_enabled)
+          this._renderLinePosition(actualTargetDate, true)
+        })
+
         if (time_machine_enabled && time_machine_target_date) {
           this.setState({ isTimeMachineActive: true })
         }
-        this.targetDate = time_machine_target_date
+        this.targetDate = actualTargetDate
         if (!time_machine_enabled) {
           this.setState({ isTimeMachineActive: false })
         }
