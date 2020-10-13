@@ -6,6 +6,7 @@ import moment from 'moment'
 import { formatDate } from '../../utils/ui-utils'
 import c3 from 'c3'
 import * as d3 from 'd3'
+import TimelineButtons from '../TimelineButtons'
 
 import './styles.scss'
 
@@ -16,10 +17,11 @@ class Timeline extends BaseComponent {
     this.dayInSec = 12 * 60 * 60
     this.previewLinePosition = 0
     this.chartPreviewData = []
-    this.state = {
-      isTimeMachineActive: false
-    }
+    this.isTimeMachineActive = false
 
+    this._toggleTimeMachine = this._toggleTimeMachine.bind(this)
+    this._reset = this._reset.bind(this)
+    this._btnHandling = this._btnHandling.bind(this)
 
   }
 
@@ -33,7 +35,7 @@ class Timeline extends BaseComponent {
 
   _toggleTimeMachine() {
 
-    if (this.state.isTimeMachineActive) {
+    if (this.isTimeMachineActive) {
       $('.selector').detach()
       this.sharedState.set('time_machine_enabled', false)
     } else {
@@ -318,6 +320,10 @@ class Timeline extends BaseComponent {
       })
   }
 
+  _btnHandling(setStatus) {
+    this.setBtnStatus = setStatus
+  }
+
   componentDidMount() {
     
     this.subscribeToSharedState(
@@ -392,13 +398,14 @@ class Timeline extends BaseComponent {
           this._renderTimeMachineLine(time_machine_enabled)
           this._renderLinePosition(actualTargetDate, true)
         })
+        this.setBtnStatus(time_machine_enabled)
 
         if (time_machine_enabled && time_machine_target_date) {
-          this.setState({ isTimeMachineActive: true })
+          this.isTimeMachineActive = true
         }
         this.targetDate = actualTargetDate
         if (!time_machine_enabled) {
-          this.setState({ isTimeMachineActive: false })
+          this.isTimeMachineActive = false
         }
       }
     )
@@ -438,23 +445,7 @@ class Timeline extends BaseComponent {
           <div className="main-chart"></div>
           <div id="chart"></div>
         </div>
-        <div className="tl-actions">
-          <a
-            role="button"
-            id="btnTimelineTimeMachine"
-            className={`timemachine ${this.state.isTimeMachineActive && 'active'}`}
-            onClick={() => this._toggleTimeMachine()}
-          >
-            <span className="tooltiptext">Activate Time Machine</span>
-          </a>
-          <a
-            role="button"
-            id="btnTimelineTimeMachine"
-            className={`reset`}
-            onClick={() => this._reset()}
-          ><span className="tooltiptext">Reset changes</span>
-          </a>
-        </div>
+        <TimelineButtons toggleTimeMachine={this._toggleTimeMachine} reset={this._reset} btnHandling={this._btnHandling} />
       </div>
     )
   }
