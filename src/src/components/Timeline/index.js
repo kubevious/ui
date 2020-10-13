@@ -215,6 +215,27 @@ class Timeline extends BaseComponent {
     setTimeout(() => {brushChart.zoom([this.actualDateFrom, this.actualDateTo])})
   }
 
+  _updateBrushChartData(data)
+  {
+    const brushChart = window.$brushChart
+    if (brushChart) {
+      brushChart.load({
+        json: data,
+        xFormat: true,
+        keys: {
+          x: 'dateMoment',
+          value: ['error', 'warn', 'changes'],
+        },
+        types: {
+          changes: 'line',
+          error: 'area',
+          warn: 'area',
+        },
+        groups: [['error', 'warn'], ['changes']],
+      })
+    }
+  }
+
   _renderMainChart() {
     window.$mainChart = c3.generate({
       padding: {
@@ -328,27 +349,16 @@ class Timeline extends BaseComponent {
     
     this.subscribeToSharedState(
       [
-        'time_machine_timeline_preview',
         'time_machine_date_to',
         'time_machine_duration'
       ],
       ({
-        time_machine_timeline_preview,
         time_machine_date_to,
         time_machine_duration
       }) => {
         
         console.log("[TIMLINE] INPUT DURATION: ", time_machine_duration);
         console.log("[TIMLINE] INPUT TO: ", time_machine_date_to);
-
-
-        
-        if (time_machine_timeline_preview) {
-          this.chartPreviewData = time_machine_timeline_preview;
-
-          // TODO: Doing clone helps with RESET button showing correct range.
-          // this.chartPreviewData = _.clone(time_machine_timeline_preview);
-        }
 
         if (time_machine_duration) {
           this.duration = time_machine_duration;
@@ -413,6 +423,14 @@ class Timeline extends BaseComponent {
     this.subscribeToSharedState('time_machine_timeline_data',
       (time_machine_timeline_data) => {
         this._updateMainChartData(time_machine_timeline_data);
+    });
+
+    this.subscribeToSharedState('time_machine_timeline_preview',
+      (time_machine_timeline_preview) => {
+        if (time_machine_timeline_preview) {
+          this.chartPreviewData = time_machine_timeline_preview;
+          this._updateBrushChartData(time_machine_timeline_preview)
+          }
     });
 
     this._renderMainChart()
