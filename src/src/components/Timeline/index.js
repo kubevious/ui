@@ -76,7 +76,7 @@ class Timeline extends BaseComponent {
       const chartComponent = d3.select('.main-chart .c3-chart')
       const selector = chartComponent.append('g').attr('class', 'selector')
       selector.append('path').attr('d', 'M-7,0 h14 v20 l-7,7 l-7,-7 z')
-      selector.append('path').attr('d', 'M0,15 v' + chartHeight).attr('class', 'selector-line')
+      selector.append('path').attr('d', 'M0,15 v' + (chartHeight - 10)).attr('class', 'selector-line')
 
       const brushComponent = d3.select('#chart .c3-brush')
       const brushSelector = brushComponent.append('g').attr('class', 'selector')
@@ -289,12 +289,13 @@ class Timeline extends BaseComponent {
   }
 
   _renderHoverLine(chartHeight) {
+    const calculatedHeightDiff = chartHeight / 20
     const vertical = d3
       .select('.main-chart .c3-chart')
       .append('g')
       .attr('class', 'hover-line')
       .append('path')
-      .attr('d', 'M0,' + chartHeight / 11 + ' v' + chartHeight)
+      .attr('d', 'M0,' + (5 + calculatedHeightDiff) + ' v' + (chartHeight - 35 - calculatedHeightDiff))
       .attr('pointer-events', 'none')
       
 
@@ -422,7 +423,7 @@ class Timeline extends BaseComponent {
         chart.resize({ height: mainChartheight, width: mainChartwidth })
         brushChart.resize({ width: mainChartwidth })
       }
-      $('.main-chart .selector-line').attr('d', 'M0,15 v' + (mainChartheight - 30))
+      $('.main-chart .selector-line').attr('d', 'M0,15 v' + (mainChartheight - 50))
     })
 
     
