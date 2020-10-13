@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import './styles.scss'
+import cx from 'classnames'
 
 
 const TimelineButtons = ({ toggleTimeMachine, reset, btnHandling }) => {
@@ -11,7 +12,7 @@ const TimelineButtons = ({ toggleTimeMachine, reset, btnHandling }) => {
       <a
         role="button"
         id="btnTimelineTimeMachine"
-        className={`timemachine ${isTimeMachineActive && 'active'}`}
+        className={cx('timemachine', {'active': isTimeMachineActive})}
         onClick={() => toggleTimeMachine()}
       >
         <span className="tooltiptext">Activate Time Machine</span>

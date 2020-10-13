@@ -18,6 +18,7 @@ class Timeline extends BaseComponent {
     this.previewLinePosition = 0
     this.chartPreviewData = []
     this.isTimeMachineActive = false
+    this.enableBrushLineCalc = true
 
     this._toggleTimeMachine = this._toggleTimeMachine.bind(this)
     this._reset = this._reset.bind(this)
@@ -91,7 +92,6 @@ class Timeline extends BaseComponent {
             'translate(' + d3.event.x + ')'
           )
           this._setTargetDate(d3.event.x)
-          this._calculatePreviewChartLine(d3.event.x)
         })
       )
     }
@@ -103,18 +103,21 @@ class Timeline extends BaseComponent {
       const targetDatePosition = chart.internal.x(moment(targetDate))
       if (targetDatePosition !== (Math.ceil(chart.internal.width / 2) || NaN)) {
         $('.main-chart .selector').attr('transform','translate(' + targetDatePosition + ')')
-        isMoving && this._calculatePreviewChartLine(targetDatePosition, isMoving)
+        this._calculatePreviewChartLine(targetDatePosition, isMoving)
       }
     }
   }
 
-  _calculatePreviewChartLine(cursorX) {
-    const brushStartIndex = Number($('#chart .c3-brush .selection').attr('x'))
-    const brushWidth = Number($('#chart .c3-brush .selection').attr('width'))
-    const chartWidth = Number($('.main-chart svg').attr('width'))
-    const selectedPositionPercentage = cursorX / chartWidth
-    this.previewLinePosition = brushStartIndex + brushWidth * selectedPositionPercentage
-    $('#chart .selector').attr('transform', 'translate(' + this.previewLinePosition + ')')
+  _calculatePreviewChartLine(cursorX, isMoving) {
+      const brushStartIndex = Number($('#chart .c3-brush .selection').attr('x'))
+      const brushWidth = Number($('#chart .c3-brush .selection').attr('width'))
+      const chartWidth = Number($('.main-chart svg').attr('width'))
+      const selectedPositionPercentage = cursorX / chartWidth
+    if (this.enableBrushLineCalc || isMoving) {
+      this.previewLinePosition = brushStartIndex + brushWidth * selectedPositionPercentage
+      this.enableBrushLineCalc = false
+    }
+      $('#chart .selector').attr('transform', 'translate(' + this.previewLinePosition + ')')
   }
 
   _handleChartClick() {
@@ -130,7 +133,7 @@ class Timeline extends BaseComponent {
           'translate(' + d3.mouse(this)[0] + ')'
         )
       })
-    }      
+    }
   }
 
   _handleBrush(domain) {
@@ -138,11 +141,11 @@ class Timeline extends BaseComponent {
     const dateFrom = domain[0].toISOString()
     const effectiveDateTo = dateTo.toISOString()
     console.log("[TIMELINE:_calculateIndexes] ", domain);
-    
+
     let diff = moment.duration(dateTo.diff(dateFrom));
     let durationSeconds = diff.asSeconds();
 
-    this._setDates(effectiveDateTo, durationSeconds)    
+    this._setDates(effectiveDateTo, durationSeconds)
   }
 
   _setDates(dateTo, duration) {
@@ -195,7 +198,7 @@ class Timeline extends BaseComponent {
         onbrush: (d) => this._handleBrush(d),
         size: {
           height: 30
-        }, 
+        },
         axis: {
           x: {
             show: false
@@ -320,7 +323,7 @@ class Timeline extends BaseComponent {
       .append('path')
       .attr('d', 'M0,' + (5 + calculatedHeightDiff) + ' v' + (chartHeight - 35 - calculatedHeightDiff))
       .attr('pointer-events', 'none')
-      
+
 
     d3.select('.main-chart .c3-chart')
       .on('mouseenter', function () {
@@ -346,7 +349,12 @@ class Timeline extends BaseComponent {
   }
 
   componentDidMount() {
-    
+
+    this._renderMainChart()
+    setTimeout(() => {
+      this._renderBrushChart()
+    })
+
     this.subscribeToSharedState(
       [
         'time_machine_date_to',
@@ -356,7 +364,7 @@ class Timeline extends BaseComponent {
         time_machine_date_to,
         time_machine_duration
       }) => {
-        
+
         console.log("[TIMLINE] INPUT DURATION: ", time_machine_duration);
         console.log("[TIMLINE] INPUT TO: ", time_machine_date_to);
 
@@ -376,8 +384,8 @@ class Timeline extends BaseComponent {
         console.log("[TIMLINE] FINAL DURATION: " + this.duration);
         console.log("[TIMLINE] FINAL ACTUAL FROM: " + this.actualDateFrom.toISOString());
         console.log("[TIMLINE] FINAL ACTUAL TO:   " + this.actualDateTo.toISOString());
-        
-        
+
+
         if (!time_machine_date_to && time_machine_duration === this.dayInSec) {
           const brushChart = window.$brushChart
           brushChart && brushChart.zoom([this.dateFrom, this.actualDateTo])
@@ -403,7 +411,7 @@ class Timeline extends BaseComponent {
         const actualTargetDate = moment(time_machine_target_date).toISOString()
 
         console.log('[TIMLINE] TARGET DATE: ', actualTargetDate)
-        
+
         setTimeout(() => {
           this._renderTimeMachineLine(time_machine_enabled)
           this._renderLinePosition(actualTargetDate, true)
@@ -433,10 +441,6 @@ class Timeline extends BaseComponent {
           }
     });
 
-    this._renderMainChart()
-    setTimeout(() => {
-      this._renderBrushChart()
-    }, 0)
 
     $(document).on('layout-resize-timelineComponent', () => {
       const mainChartheight = $('.chart-view').height() - 50
@@ -451,7 +455,7 @@ class Timeline extends BaseComponent {
       $('.main-chart .selector-line').attr('d', 'M0,15 v' + (mainChartheight - 50))
     })
 
-    
+
 
   }
 
