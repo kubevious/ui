@@ -116,10 +116,10 @@ class Timeline extends BaseComponent {
       const brushWidth = Number($('#chart .c3-brush .selection').attr('width'))
       const chartWidth = Number($('.main-chart svg').attr('width'))
       const selectedPositionPercentage = cursorX / chartWidth
-    if (this.enableBrushLineCalc || isMoving) {
-      this.previewLinePosition = brushStartIndex + brushWidth * selectedPositionPercentage
-      this.enableBrushLineCalc = false
-    }
+      if (this.enableBrushLineCalc || isMoving) {
+        this.previewLinePosition = brushStartIndex + brushWidth * selectedPositionPercentage
+        this.enableBrushLineCalc = false
+      }
       $('#chart .selector').attr('transform', 'translate(' + this.previewLinePosition + ')')
   }
 
@@ -411,6 +411,10 @@ class Timeline extends BaseComponent {
         time_machine_target_date
       }) => {
 
+        if (!time_machine_target_date && time_machine_enabled) {
+          this._toggleTimeMachine()
+        }
+
         const actualTargetDate = moment(time_machine_target_date).toISOString()
 
         console.log('[TIMLINE] TARGET DATE: ', actualTargetDate)
@@ -463,7 +467,7 @@ class Timeline extends BaseComponent {
   }
 
   render() {
-
+    
     return (
       <div id="timelineComponent" className="timeline size-to-parent">
         <div className="chart-view">
