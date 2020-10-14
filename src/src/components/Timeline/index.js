@@ -100,10 +100,13 @@ class Timeline extends BaseComponent {
   _renderLinePosition(targetDate, isMoving) {
     const chart = window.$mainChart
     if (chart) {
+
       const targetDatePosition = chart.internal.x(moment(targetDate))
-      if (targetDatePosition !== (Math.ceil(chart.internal.width / 2) || NaN)) {
+      if (targetDatePosition !== Math.ceil(chart.internal.width) / 2 && targetDatePosition !== NaN) {
         $('.main-chart .selector').attr('transform','translate(' + targetDatePosition + ')')
         this._calculatePreviewChartLine(targetDatePosition, isMoving)
+      } else {
+        $('.main-chart .selector').attr('transform','translate(' + -10 + ')')
       }
     }
   }
