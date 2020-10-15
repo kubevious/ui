@@ -19,36 +19,6 @@ class Timeline extends BaseComponent {
     this.chartPreviewData = []
     this.isTimeMachineActive = false
     this.enableBrushLineCalc = true
-
-    this._toggleTimeMachine = this._toggleTimeMachine.bind(this)
-    this._reset = this._reset.bind(this)
-    this._btnHandling = this._btnHandling.bind(this)
-
-  }
-
-  _reset()
-  {
-    this.sharedState.set('time_machine_enabled', false)
-    this.sharedState.set('time_machine_date_to', null)
-    this.sharedState.set('time_machine_duration', this.dayInSec)
-    this.sharedState.set('time_machine_target_date', null)
-  }
-
-  _toggleTimeMachine() {
-
-    if (this.isTimeMachineActive) {
-      $('.selector').detach()
-      this.sharedState.set('time_machine_enabled', false)
-    } else {
-      this.sharedState.set('time_machine_enabled', true)
-      let date = moment().toISOString()
-      if (this.targetDate) {
-        date = this.targetDate
-      } else {
-        date = this.actualDateTo.toISOString()
-      }
-      this.sharedState.set('time_machine_target_date', date)
-    }
   }
 
   _formatXaxis(item) {
@@ -347,10 +317,6 @@ class Timeline extends BaseComponent {
       })
   }
 
-  _btnHandling(setStatus) {
-    this.setBtnStatus = setStatus
-  }
-
   componentDidMount() {
 
     this._renderMainChart()
@@ -412,7 +378,7 @@ class Timeline extends BaseComponent {
       }) => {
 
         if (!time_machine_target_date && time_machine_enabled) {
-          this._toggleTimeMachine()
+          return;
         }
 
         const actualTargetDate = moment(time_machine_target_date).toISOString()
@@ -423,7 +389,6 @@ class Timeline extends BaseComponent {
           this._renderTimeMachineLine(time_machine_enabled)
           this._renderLinePosition(actualTargetDate, true)
         })
-        this.setBtnStatus(time_machine_enabled)
 
         if (time_machine_enabled && time_machine_target_date) {
           this.isTimeMachineActive = true
@@ -474,7 +439,7 @@ class Timeline extends BaseComponent {
           <div className="main-chart"></div>
           <div id="chart"></div>
         </div>
-        <TimelineButtons toggleTimeMachine={this._toggleTimeMachine} reset={this._reset} btnHandling={this._btnHandling} />
+        <TimelineButtons />
       </div>
     )
   }
