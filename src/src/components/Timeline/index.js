@@ -18,9 +18,7 @@ class Timeline extends BaseComponent {
     this._isDraggingSelector = false;
 
     this.dayInSec = 12 * 60 * 60
-    this.previewLinePosition = 0
     this.chartPreviewData = []
-    this.enableBrushLineCalc = true
   }
 
   _formatXaxis(item) {
@@ -56,6 +54,8 @@ class Timeline extends BaseComponent {
 
       this._renderTimeMachinePreviewLine();
       this._updateTimeMachinePreviewLinePosition();
+
+      this._setupSameSharedState()
     }
     else
     {
@@ -64,6 +64,11 @@ class Timeline extends BaseComponent {
     }
   }
 
+  _setupSameSharedState() {
+    this.sharedState.set('time_machine_target_date', this.actualTargetDate)
+    this.sharedState.set('time_machine_date_to', this.actualDateTo)
+    this.sharedState.set('time_machine_duration', this.duration)
+  }
 
   _renderTimeMachineLine() {
     if (!this.mainChartElem) {
@@ -84,7 +89,7 @@ class Timeline extends BaseComponent {
       d3.drag()
       .on('start', () => {
         this._isDraggingSelector = true;
-      }) 
+      })
       .on('drag', () => {
         this._setTargetDate(d3.event.x)
       })
@@ -121,10 +126,10 @@ class Timeline extends BaseComponent {
     }
 
     const brushComponent = d3.select('#chart .c3-brush')
-    const brushSelector = brushComponent.append('g').attr('class', 'selector')
-    brushSelector.append('path').attr('d', 'M0,0 v' + 30)
+      const brushSelector = brushComponent.append('g').attr('class', 'selector')
+      brushSelector.append('path').attr('d', 'M0,0 v' + 30)
 
-    this.previewChartSelectorElem = brushSelector;
+      this.previewChartSelectorElem = brushSelector;
   }
 
   _removeTimeMachinePreviewLine()
@@ -184,7 +189,6 @@ class Timeline extends BaseComponent {
     this.brushChartElem = c3.generate({
       padding: {
         left: 100,
-        right: 20,
       },
       data: {
         json: this._massageData(data),
@@ -217,6 +221,10 @@ class Timeline extends BaseComponent {
             outer: false,
             multiline: false,
           },
+          padding: {
+            left: 0,
+            right: 0
+          }
         },
       },
       subchart: {
@@ -239,17 +247,14 @@ class Timeline extends BaseComponent {
         hide: true
       }
     })
-
-    const brushChart = this.brushChartElem
-    setTimeout(() => {brushChart.zoom([this.actualDateFrom, this.actualDateTo])})
   }
 
-  _updateBrushChartData(data)
+  _updateBrushChartData()
   {
     const brushChart = this.brushChartElem
     if (brushChart) {
       brushChart.load({
-        json: this._massageData(data),
+        json: this._massageData(this.chartPreviewData),
         xFormat: true,
         keys: {
           x: 'dateMoment',
@@ -410,7 +415,7 @@ class Timeline extends BaseComponent {
       return;
     }
 
-    if (!this.time_machine_actual_date_from || 
+    if (!this.time_machine_actual_date_from ||
         !this.time_machine_actual_date_to)
     {
       this.mainChartElem.axis.range({});
@@ -432,9 +437,7 @@ class Timeline extends BaseComponent {
   componentDidMount() {
 
     this._renderMainChart()
-    setTimeout(() => {
-      this._renderBrushChart()
-    })
+    this._renderBrushChart()
 
     this.subscribeToSharedState(
       [
@@ -450,18 +453,15 @@ class Timeline extends BaseComponent {
           this.duration = time_machine_duration;
         }
         if (time_machine_date_to) {
-          this.dateTo = moment(time_machine_date_to);
-          this.actualDateTo = this.dateTo.clone();
+          this.actualDateTo = moment(time_machine_date_to);
         } else {
           this.actualDateTo = moment();
         }
 
-        this.dateFrom = this.actualDateTo.clone().subtract(this.duration, 'seconds');
-        this.actualDateFrom = this.dateFrom.clone();
+        this.actualDateFrom = this.actualDateTo.clone().subtract(this.duration, 'seconds');
 
         if (!time_machine_date_to && time_machine_duration === this.dayInSec) {
-          const brushChart = this.brushChartElem
-          brushChart && brushChart.zoom([this.dateFrom, this.actualDateTo])
+          this.brushChartElem && this.brushChartElem.zoom([this.dateFrom, this.actualDateTo])
         }
 
         this._setupTimeMachineTargetDate();
@@ -478,9 +478,9 @@ class Timeline extends BaseComponent {
         time_machine_target_date
       }) => {
 
-        if (time_machine_enabled && time_machine_target_date) {
-          this.actualTargetDate = moment(time_machine_target_date).toISOString();
-        } else {
+        this.actualTargetDate = moment(time_machine_target_date).toISOString();
+
+        if (!time_machine_enabled || !time_machine_target_date) {
           this.actualTargetDate = null;
         }
 
@@ -491,13 +491,15 @@ class Timeline extends BaseComponent {
     this.subscribeToSharedState('time_machine_timeline_data',
       (time_machine_timeline_data) => {
         this._updateMainChartData(time_machine_timeline_data);
+        this._setupTimeMachineTargetDate()
     });
 
     this.subscribeToSharedState('time_machine_timeline_preview',
       (time_machine_timeline_preview) => {
         if (time_machine_timeline_preview) {
           this.chartPreviewData = time_machine_timeline_preview;
-          this._updateBrushChartData(time_machine_timeline_preview)
+          this._updateBrushChartData()
+          this._setupTimeMachineTargetDate()
         }
     });
 

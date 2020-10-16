@@ -27,7 +27,7 @@ $timelineYellow: rgb(252, 189, 63);
     margin-top: -100px;
     max-height: 150px !important;
     height: 150px !important;
-    width: 100% !important;
+    width: calc(100% - 20px) !important;
     margin-bottom: 5px;
     svg {
         width: 100%;
@@ -54,7 +54,7 @@ $timelineYellow: rgb(252, 189, 63);
     }
 
     & > svg:nth-of-type(1) > g:nth-of-type(2) {
-        transform: translate(10px, 0px);   
+        transform: translate(10px, 0px);
     }
 }
 
@@ -135,4 +135,3 @@ $timelineYellow: rgb(252, 189, 63);
 a:focus {
     outline: none;
 }
-

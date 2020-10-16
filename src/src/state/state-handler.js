@@ -65,7 +65,7 @@ class StateHandler {
         if (tmdt) {
             this.sharedState.set('time_machine_date_to', Date.parse(tmdt))
         } else {
-            this.sharedState.set('time_machine_date_to', null);
+            this.sharedState.set('time_machine_date_to', new Date().toISOString());
         }
 
         if (tmd) {
@@ -96,7 +96,7 @@ class StateHandler {
     _handleTimeMachineChange() {
         this.sharedState.subscribe(['time_machine_target_date'],
             () => {
-        
+
                 if (this._isTimeMachineDateSetScheduled) {
                     this._isTimeMachineDateDirty = true;
                     return;
@@ -270,7 +270,7 @@ class StateHandler {
         const fromMoment = moment(from);
         const toMoment = moment(to);
 
-        if ((from === this._latestTimelineDateFrom) && 
+        if ((from === this._latestTimelineDateFrom) &&
             (to === this._latestTimelineDateTo))
         {
             return;
@@ -301,7 +301,7 @@ class StateHandler {
             this._setTimelineData(orderedData, fromMoment, toMoment);
         });
     }
-    
+
     _setTimelineData(value, from, to)
     {
         const resampled = this._resampleTimelineData(value, from, to);
@@ -317,8 +317,8 @@ class StateHandler {
             return [];
         }
 
-        return this._resampleTimelineData(data, 
-            moment(_.head(data).date), 
+        return this._resampleTimelineData(data,
+            moment(_.head(data).date),
             moment(_.last(data).date))
     }
 
