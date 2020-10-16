@@ -211,6 +211,39 @@ class StateHandler {
             this.sharedState.set('time_machine_timeline_preview', sampledData);
         })
 
+
+        this.sharedState.subscribe([
+            'time_machine_duration',
+            'time_machine_date_to',
+            'time_machine_timeline_preview'
+            ],
+            ({ time_machine_duration, time_machine_date_to, time_machine_timeline_preview }) => {
+
+                let to;
+                if (time_machine_date_to) {
+                    to = moment(time_machine_date_to);
+                } else {
+                    if (time_machine_timeline_preview && time_machine_timeline_preview.length > 0)
+                    {
+                        to = _.last(time_machine_timeline_preview).dateMoment.clone();
+                    }
+                    else
+                    {
+                        to = moment();
+                    }
+                }
+
+                let durationSec = time_machine_duration || 12 * 60 * 60;
+
+                let from =
+                    to.clone().subtract(durationSec, 'seconds');
+
+                this.sharedState.set('time_machine_actual_date_to', to);
+                this.sharedState.set('time_machine_actual_date_from', from);
+            }
+        )
+
+
         this.sharedState.subscribe(['time_machine_duration', 'time_machine_date_to'],
             ({ time_machine_duration, time_machine_date_to }) => {
 
