@@ -2,6 +2,7 @@ import _ from 'the-lodash'
 import { splitDn } from '../utils/naming-utils'
 import FieldsSaver from '../utils/save-fields';
 import moment from 'moment'
+import TimelineUtils from '../utils/timeline-utils'
 
 class StateHandler {
     constructor(sharedState, diagramService) {
@@ -11,6 +12,8 @@ class StateHandler {
         if (!diagramService) {
             throw new Error("DiagramService not provided");
         }
+
+        this._timelineUtils = new TimelineUtils(sharedState);
 
         this._isTimeMachineDateSetScheduled = false;
         this._isTimeMachineDateDirty = false;
@@ -32,6 +35,8 @@ class StateHandler {
         this.sharedState.set('is_error', false)
         this.sharedState.set('error', null)
         this.sharedState.set('diagram_expanded_dns', { 'root': true });
+
+        this.sharedState.set('time_machine_timeline_preview', []);
 
         this._handleDefaultParams()
         this._handleSelectedDnAutoExpandChange()
@@ -65,7 +70,7 @@ class StateHandler {
         if (tmdt) {
             this.sharedState.set('time_machine_date_to', Date.parse(tmdt))
         } else {
-            this.sharedState.set('time_machine_date_to', new Date().toISOString());
+            this.sharedState.set('time_machine_date_to', null);
         }
 
         if (tmd) {
@@ -207,55 +212,52 @@ class StateHandler {
     _handleTimelineDataChange() {
         this._service.fetchHistoryTimelinePreview(data => {
             const orderedData = _.orderBy(data, ['date'], ['asc']);
-            const sampledData = this._resamplePreviewTimelineData(orderedData);
-            this.sharedState.set('time_machine_timeline_preview', sampledData);
+            let sampledData = this._resamplePreviewTimelineData(orderedData);
+            this.sharedState.set('time_machine_timeline_preview_raw', sampledData);
         })
+
+        this.sharedState.subscribe('time_machine_timeline_preview_raw', 
+            time_machine_timeline_preview_raw => 
+            {
+                let data = time_machine_timeline_preview_raw;
+                if (!data || data.length === 0)
+                {
+                    let date = moment();
+                    data = [{
+                        date: date.toISOString(),
+                        dateMoment: date,
+                        error: 0,
+                        warn: 0,
+                        changes: 0
+                    }];
+                }
+
+                let lastDate = _.last(data).dateMoment;
+
+                this.sharedState.set('time_machine_timeline_preview', data);
+                this.sharedState.set('time_machine_timeline_preview_last_date', lastDate);
+            }
+        );
 
 
         this.sharedState.subscribe([
             'time_machine_duration',
             'time_machine_date_to',
-            'time_machine_timeline_preview'
+            'time_machine_timeline_preview_last_date'
             ],
-            ({ time_machine_duration, time_machine_date_to, time_machine_timeline_preview }) => {
-
-                let to;
-                if (time_machine_date_to) {
-                    to = moment(time_machine_date_to);
-                } else {
-                    if (time_machine_timeline_preview && time_machine_timeline_preview.length > 0)
-                    {
-                        to = _.last(time_machine_timeline_preview).dateMoment.clone();
-                    }
-                    else
-                    {
-                        to = moment();
-                    }
-                }
-
-                let durationSec = time_machine_duration || 12 * 60 * 60;
-
-                let from =
-                    to.clone().subtract(durationSec, 'seconds');
-
-                this.sharedState.set('time_machine_actual_date_to', to);
-                this.sharedState.set('time_machine_actual_date_from', from);
+            () => {
+                let actual = this._timelineUtils.getActualRange();
+               
+                this.sharedState.set('time_machine_actual_date_to', actual.to);
+                this.sharedState.set('time_machine_actual_date_from', actual.from);
             }
         )
 
+        this.sharedState.subscribe(['time_machine_actual_date_from', 'time_machine_actual_date_to'],
+            ({ time_machine_actual_date_from, time_machine_actual_date_to }) => {
 
-        this.sharedState.subscribe(['time_machine_duration', 'time_machine_date_to'],
-            ({ time_machine_duration, time_machine_date_to }) => {
-
-                var to = time_machine_date_to ? moment(time_machine_date_to) : moment()
-
-                var durationSec = time_machine_duration || 12 * 60 * 60;
-
-                var from =
-                    to.clone().subtract(durationSec, 'seconds');
-
-                this._desiredTimelineDateFrom = from;
-                this._desiredTimelineDateTo = to;
+                this._desiredTimelineDateFrom = time_machine_actual_date_from;
+                this._desiredTimelineDateTo = time_machine_actual_date_to;
 
                 this._tryQueryTimelineData();
             }
@@ -299,6 +301,8 @@ class StateHandler {
             this._latestData = orderedData;
 
             this._setTimelineData(orderedData, fromMoment, toMoment);
+
+            this._tryQueryTimelineData();
         });
     }
 

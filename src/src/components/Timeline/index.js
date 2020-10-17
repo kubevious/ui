@@ -7,6 +7,7 @@ import { formatDate } from '../../utils/ui-utils'
 import c3 from 'c3'
 import * as d3 from 'd3'
 import TimelineButtons from '../TimelineButtons'
+import TimelineUtils from '../../utils/timeline-utils'
 
 import './styles.scss'
 
@@ -17,19 +18,18 @@ class Timeline extends BaseComponent {
     this.actualTargetDate = null;
     this._isDraggingSelector = false;
 
+    this.time_machine_actual_date_range = {
+      from: moment(),
+      to: moment()
+    }
+
     this.dayInSec = 12 * 60 * 60
     this.chartPreviewData = []
+    this._timelineUtils = new TimelineUtils(this.sharedState);
   }
 
   _formatXaxis(item) {
     return moment(item).format('MMM DD hh:mm A')
-  }
-
-  _calculateIndexes() {
-    if (!this.actualDateFrom && !this.actualDateTo) {
-      return
-    }
-    return [this.actualDateFrom, this.actualDateTo]
   }
 
   _setTargetDate(mouseX) {
@@ -54,8 +54,6 @@ class Timeline extends BaseComponent {
 
       this._renderTimeMachinePreviewLine();
       this._updateTimeMachinePreviewLinePosition();
-
-      this._setupSameSharedState()
     }
     else
     {
@@ -64,10 +62,19 @@ class Timeline extends BaseComponent {
     }
   }
 
-  _setupSameSharedState() {
-    this.sharedState.set('time_machine_target_date', this.actualTargetDate)
-    this.sharedState.set('time_machine_date_to', this.actualDateTo)
-    this.sharedState.set('time_machine_duration', this.duration)
+  _setupBrushSelectionRange()
+  {
+    if (!this.brushChartElem) {
+      return;
+    }
+    if (!this.time_machine_actual_date_range.from || !this.time_machine_actual_date_range.to) {
+      return;
+    }
+    console.log('[_setupBrushSelectionRange] BEGIN');
+    console.log('[_setupBrushSelectionRange] FROM: ', this.time_machine_actual_date_range.from.toISOString());
+    console.log('[_setupBrushSelectionRange] TO: ', this.time_machine_actual_date_range.to.toISOString());
+    this.brushChartElem.zoom([this.time_machine_actual_date_range.from, this.time_machine_actual_date_range.to])
+    console.log('[_setupBrushSelectionRange] END');
   }
 
   _renderTimeMachineLine() {
@@ -125,7 +132,7 @@ class Timeline extends BaseComponent {
       return;
     }
 
-    const brushComponent = d3.select('#chart .c3-brush')
+    const brushComponent = d3.select('#preview-chart .c3-brush')
       const brushSelector = brushComponent.append('g').attr('class', 'selector')
       brushSelector.append('path').attr('d', 'M0,0 v' + 30)
 
@@ -166,32 +173,63 @@ class Timeline extends BaseComponent {
 
   _handleBrush(domain) {
 
-    this.time_machine_actual_date_from = moment(domain[0]);
-    this.time_machine_actual_date_to = moment(domain[1]);
+    console.log("[_handleBrush] domain: ", domain)
+    if (domain.length != 2) {
+      return;
+    }
+    if (!_.every(domain, x => isValidDate(x))) {
+      return;
+    }
+
+    let dates = _.map(domain, x => moment(x));
+    dates = _.sortBy(dates);
+
+    console.log("[_handleBrush] dates: ", dates)
+
+    this.time_machine_actual_date_range = {
+      from: dates[0],
+      to: dates[1]
+    }
+
+    console.log("[_handleBrush] From: ", this.time_machine_actual_date_range.from.toISOString());
+    console.log("[_handleBrush]   To: ", this.time_machine_actual_date_range.to.toISOString());
+
     this._activateMainChartRange();
 
     this._setupTimeMachineTargetDate();
 
-    const dateTo = moment(domain[1])
-    const dateFrom = domain[0].toISOString()
-    const effectiveDateTo = dateTo.toISOString()
+    this._applyUIRangeChange();
+  }
 
-    let diff = moment.duration(dateTo.diff(dateFrom));
+  _applyUIRangeChange()
+  {
+    let diff = moment.duration(this.time_machine_actual_date_range.to.diff(this.time_machine_actual_date_range.from));
     let durationSeconds = diff.asSeconds();
+    console.log("[_handleBrush] durationSeconds: ", durationSeconds);
 
-    this.sharedState.set('time_machine_date_to', effectiveDateTo)
+    let lastDate = this.sharedState.get('time_machine_timeline_preview_last_date');
+    if (this.time_machine_actual_date_range.to.isSameOrAfter(lastDate))
+    {
+      this.sharedState.set('time_machine_date_to', null)
+    }
+    else
+    {
+      this.sharedState.set('time_machine_date_to', this.time_machine_actual_date_range.to.toISOString());
+    }
     this.sharedState.set('time_machine_duration', durationSeconds)
   }
 
   _renderBrushChart() {
-    // return;
-    const data = this.chartPreviewData
     this.brushChartElem = c3.generate({
       padding: {
         left: 100,
       },
+      transition: {
+        duration: null
+      },
+      bindto: '#preview-chart',
       data: {
-        json: this._massageData(data),
+        json: this._massageData(this.chartPreviewData),
         xFormat: true,
         keys: {
           x: 'dateMoment',
@@ -254,7 +292,7 @@ class Timeline extends BaseComponent {
     const brushChart = this.brushChartElem
     if (brushChart) {
       brushChart.load({
-        json: this._massageData(this.chartPreviewData),
+        json: this.chartPreviewData,
         xFormat: true,
         keys: {
           x: 'dateMoment',
@@ -414,9 +452,11 @@ class Timeline extends BaseComponent {
     if (!this.mainChartElem) {
       return;
     }
+    console.log('[_activateMainChartRange] FROM:', this.time_machine_actual_date_range.from);
+    console.log('[_activateMainChartRange]   TO:', this.time_machine_actual_date_range.to);
 
-    if (!this.time_machine_actual_date_from ||
-        !this.time_machine_actual_date_to)
+    if (!this.time_machine_actual_date_range.from ||
+        !this.time_machine_actual_date_range.to)
     {
       this.mainChartElem.axis.range({});
     }
@@ -424,14 +464,28 @@ class Timeline extends BaseComponent {
     {
       this.mainChartElem.axis.range({
         min: {
-          x: this.time_machine_actual_date_from
+          x: this.time_machine_actual_date_range.from
         },
         max: {
-          x: this.time_machine_actual_date_to
+          x: this.time_machine_actual_date_range.to
         }
       });
 
     }
+  }
+
+  _dateRangesAreSame(newActual)
+  {
+    return this._datesAreSame(this.time_machine_actual_date_range.from, newActual.from) &&
+      this._datesAreSame(this.time_machine_actual_date_range.to, newActual.to);
+  }
+
+  _datesAreSame(oldDate, newDate)
+  {
+    if (oldDate) {
+      return oldDate.isSame(newDate);
+    }
+    return false;
   }
 
   componentDidMount() {
@@ -441,29 +495,26 @@ class Timeline extends BaseComponent {
 
     this.subscribeToSharedState(
       [
-        'time_machine_date_to',
-        'time_machine_duration'
+        'time_machine_actual_date_from',
+        'time_machine_actual_date_to'
       ],
-      ({
-        time_machine_date_to,
-        time_machine_duration
-      }) => {
+      () => {
+        
+        let actual = this._timelineUtils.getActualRange();
 
-        if (time_machine_duration) {
-          this.duration = time_machine_duration;
+        console.log("[subscribeToSharedState] CURR From: ", this.time_machine_actual_date_range.from.toISOString());
+        console.log("[subscribeToSharedState] CURR  To: ", this.time_machine_actual_date_range.to.toISOString());
+
+        console.log("[subscribeToSharedState] From: ", actual.from.toISOString());
+        console.log("[subscribeToSharedState]   To: ", actual.to.toISOString());
+
+        if (this._dateRangesAreSame(actual)) {
+          return;
         }
-        if (time_machine_date_to) {
-          this.actualDateTo = moment(time_machine_date_to);
-        } else {
-          this.actualDateTo = moment();
-        }
+        
+        this.time_machine_actual_date_range = actual;
 
-        this.actualDateFrom = this.actualDateTo.clone().subtract(this.duration, 'seconds');
-
-        if (!time_machine_date_to && time_machine_duration === this.dayInSec) {
-          this.brushChartElem && this.brushChartElem.zoom([this.dateFrom, this.actualDateTo])
-        }
-
+        this._setupBrushSelectionRange();
         this._setupTimeMachineTargetDate();
       }
     );
@@ -496,11 +547,9 @@ class Timeline extends BaseComponent {
 
     this.subscribeToSharedState('time_machine_timeline_preview',
       (time_machine_timeline_preview) => {
-        if (time_machine_timeline_preview) {
-          this.chartPreviewData = time_machine_timeline_preview;
-          this._updateBrushChartData()
-          this._setupTimeMachineTargetDate()
-        }
+        this.chartPreviewData = this._massageData(time_machine_timeline_preview);
+        this._updateBrushChartData()
+        this._setupTimeMachineTargetDate()
     });
 
     $(document).on('layout-resize-timelineComponent', () => {
@@ -524,11 +573,28 @@ class Timeline extends BaseComponent {
       <div id="timelineComponent" className="timeline size-to-parent">
         <div className="chart-view">
           <div className="main-chart"></div>
-          <div id="chart"></div>
+          <div id="preview-chart"></div>
         </div>
         <TimelineButtons />
       </div>
     )
+  }
+}
+
+function isValidDate(date)
+{
+  if (!date) {
+    return false;
+  }
+  if (Object.prototype.toString.call(date) === "[object Date]") {
+    // it is a date
+    if (isNaN(date.getTime())) {  // d.valueOf() could also work
+      return false
+    } else {
+      return true;
+    }
+  } else {
+    return false;
   }
 }
 

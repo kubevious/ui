@@ -23,7 +23,7 @@ $timelineYellow: rgb(252, 189, 63);
     justify-content: space-between;
 }
 
-#chart {
+#preview-chart {
     margin-top: -100px;
     max-height: 150px !important;
     height: 150px !important;
@@ -122,7 +122,7 @@ $timelineYellow: rgb(252, 189, 63);
     cursor: col-resize;
 }
 
-#chart svg .selector * {
+#preview-chart svg .selector * {
     fill: $timelineYellow;
     stroke-width: 2;
     stroke: $timelineYellow;
