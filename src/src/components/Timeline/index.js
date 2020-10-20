@@ -62,18 +62,20 @@ class Timeline extends BaseComponent {
     }
   }
 
-  _setupBrushSelectionRange()
+  _setupBrushSelectionRange(actual)
   {
     if (!this.brushChartElem) {
       return;
     }
-    if (!this.time_machine_actual_date_range.from || !this.time_machine_actual_date_range.to) {
+    if (!actual.from || !actual.to) {
       return;
     }
     console.log('[_setupBrushSelectionRange] BEGIN');
     console.log('[_setupBrushSelectionRange] FROM: ', this.time_machine_actual_date_range.from.toISOString());
     console.log('[_setupBrushSelectionRange] TO: ', this.time_machine_actual_date_range.to.toISOString());
-    this.brushChartElem.zoom([this.time_machine_actual_date_range.from, this.time_machine_actual_date_range.to])
+    setTimeout(() => {
+      this.brushChartElem.zoom([actual.from, actual.to])
+    })
     console.log('[_setupBrushSelectionRange] END');
   }
 
@@ -499,7 +501,7 @@ class Timeline extends BaseComponent {
         'time_machine_actual_date_to'
       ],
       () => {
-        
+
         let actual = this._timelineUtils.getActualRange();
 
         console.log("[subscribeToSharedState] CURR From: ", this.time_machine_actual_date_range.from.toISOString());
@@ -511,10 +513,10 @@ class Timeline extends BaseComponent {
         if (this._dateRangesAreSame(actual)) {
           return;
         }
-        
+
         this.time_machine_actual_date_range = actual;
 
-        this._setupBrushSelectionRange();
+        this._setupBrushSelectionRange(this.time_machine_actual_date_range);
         this._setupTimeMachineTargetDate();
       }
     );
