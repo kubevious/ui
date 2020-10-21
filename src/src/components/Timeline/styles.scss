@@ -15,12 +15,30 @@ $timelineYellow: rgb(252, 189, 63);
     display: flex;
 }
 
+.timeline svg .warnings {
+    fill: $timelineYellow;
+    opacity: 0.8;
+}
+
+.timeline svg .errors {
+    fill: #b77;
+    opacity: 0.8;
+}
+
+.timeline svg .selector * {
+    fill: rgb(252, 189, 63);
+    stroke-width: 2;
+    stroke: rgb(252, 189, 63);
+    cursor: pointer;
+}
+
 .chart-view {
     width: calc(100% - 60px);
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    padding-left: 20px;
 }
 
 #preview-chart {
@@ -134,4 +152,82 @@ $timelineYellow: rgb(252, 189, 63);
 
 a:focus {
     outline: none;
+}
+
+
+.tl-actions {
+    padding: 10px 15px;
+    border-left: solid 1px #35373E;
+    float: right;
+    height: 100%;
+    overflow: hidden;
+    width: 83px;
+}
+
+.tl-actions a {
+    display: block;
+    float: left;
+    width: 20px;
+    height: 20px;
+    margin: 3px;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.tl-actions a.reset {
+    background: #292A2F url('/img/timeline/reset.svg') center center no-repeat;
+    background-size: 16px;
+}
+
+.tl-actions a.timemachine {
+    background: #292A2F url('/img/timeline/clock.svg') center center no-repeat;
+    background-size: 16px;
+}
+
+.tl-actions a.plus {
+    background: #292A2F url('/img/timeline/plus.svg') center center no-repeat;
+    background-size: 16px;
+}
+
+.tl-actions a.minus {
+    background: #292A2F url('/img/timeline/minus.svg') center center no-repeat;
+    background-size: 16px;
+}
+
+.tl-actions a.left {
+    background: #292A2F url('/img/timeline/left.svg') center center no-repeat;
+    background-size: 16px;
+}
+
+.tl-actions a.right {
+    background: #292A2F url('/img/timeline/right.svg') center center no-repeat;
+    background-size: 16px;
+}
+
+.tl-actions a.reset:hover {
+    background: #35373E url('/img/timeline/reset.svg') center center no-repeat;
+}
+
+.tl-actions a.timemachine:hover {
+    background: #35373E url('/img/timeline/clock.svg') center center no-repeat;
+}
+
+.tl-actions a.timemachine.active {
+    background: #FCBD3F url('/img/timeline/clock-active.svg') center center no-repeat;
+}
+
+.tl-actions a.plus:hover {
+    background: #35373E url('/img/timeline/plus.svg') center center no-repeat;
+}
+
+.tl-actions a.minus:hover {
+    background: #35373E url('/img/timeline/minus.svg') center center no-repeat;
+}
+
+.tl-actions a.left:hover {
+    background: #35373E url('/img/timeline/left.svg') center center no-repeat;
+}
+
+.tl-actions a.right:hover {
+    background: #35373E url('/img/timeline/right.svg') center center no-repeat;
 }
