@@ -63,7 +63,7 @@ class TimelineButtons extends BaseComponent {
 
   render() {
     return (
-      <div className="tl-actions">
+      <div className="tl-interaction">
         <a
           role="button"
           id="btnTimelineTimeMachine"

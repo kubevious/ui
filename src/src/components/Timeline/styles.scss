@@ -41,57 +41,14 @@ $timelineYellow: rgb(252, 189, 63);
     padding-left: 20px;
 }
 
-#preview-chart {
-    margin-top: -100px;
-    max-height: 150px !important;
-    height: 150px !important;
-    width: calc(100% - 20px) !important;
-    margin-bottom: 5px;
-    svg {
-        width: 100%;
-        height: 150px;
-    }
-
-    & > svg:nth-of-type(1) > g:nth-of-type(1) {
-        display: none;
-    }
-}
-
-.c3-event-rects {
-    cursor: default !important;
+.x-brush > * {
+    height: 30px
 }
 
 .main-chart {
     max-height: 100% !important;
     height: 100% !important;
     z-index: 10;
-
-    svg {
-        width: 100%;
-        height: 100%;
-    }
-
-    & > svg:nth-of-type(1) > g:nth-of-type(2) {
-        transform: translate(10px, 0px);
-    }
-}
-
-.c3-tooltip-container {
-    background: #cccccc99;
-}
-
-.c3-chart-line {
-    fill: transparent;
-}
-
-.c3-brush .selection {
-    fill: black;
-    fill-opacity: 0.6;
-}
-
-.tick, .c3-legend-item {
-    fill: white;
-    font-size: 12px;
 }
 
 .custom-tooltip {
@@ -109,10 +66,6 @@ $timelineYellow: rgb(252, 189, 63);
 .activate-info {
     font-weight: 500;
     font-size: 14px;
-}
-
-.c3-selected-circle {
-    opacity: 0;
 }
 
 .hover-line {

@@ -14,8 +14,8 @@ class Timeline extends BaseComponent {
   constructor(props) {
     super(props)
 
-    this.actualTargetDate = null;
-    this._isDraggingSelector = false;
+    this.actualTargetDate = null
+    this._isDraggingSelector = false
 
     this.time_machine_actual_date_range = {
       from: moment(),
@@ -24,335 +24,479 @@ class Timeline extends BaseComponent {
 
     this.dayInSec = 12 * 60 * 60
     this.chartPreviewData = []
-    this._timelineUtils = new TimelineUtils(this.sharedState);
-    this._parentElem = null;
-    this._showAxis = false;
+    this._timelineUtils = new TimelineUtils(this.sharedState)
+    this._parentElem = null
+    this._showAxis = false
   }
 
   zoomIn() {
-    this.sharedState.set('time_machine_duration', Math.max(1, this.durationSeconds / 2));
-}
+    this.sharedState.set('time_machine_duration', Math.max(1, this.durationSeconds / 2))
+  }
 
   zoomOut() {
-    this.sharedState.set('time_machine_duration', Math.max(1, this.durationSeconds * 2));
-}
+    this.sharedState.set('time_machine_duration', Math.max(1, this.durationSeconds * 2))
+  }
 
-panLeft() {
-    this.sharedState.set('time_machine_date_to', this._calcShiftDate(-this.durationSeconds / 2));
-}
+  panLeft() {this.sharedState.set('time_machine_date_to', this._calcShiftDate(-this.durationSeconds / 2))
+  }
 
-panRight() {
-    this.sharedState.set('time_machine_date_to', this._calcShiftDate(this.durationSeconds / 2));
-}
+  panRight() {this.sharedState.set('time_machine_date_to', this._calcShiftDate(this.durationSeconds / 2))
+  }
 
-_calcShiftDate(diffSeconds) {
-    return moment(this.time_machine_actual_date_range.to).add(diffSeconds, 'seconds').toISOString();
-}
+  _calcShiftDate(diffSeconds) {
+    return moment(this.time_machine_actual_date_range.to).add(diffSeconds, 'seconds').toISOString()
+  }
 
-_setup() {
-    this._svgElem = this._parentElem
-        .insert('svg', ':first-child')
-        .attr('position', 'absolute')
-        .attr('overflow', 'hidden')
-        .attr('top', 0)
-        .attr('left', 0)
-        .attr('right', 0)
-        .attr('bottom', 0)
-        .attr('width', '100%')
-        .attr('height', '100%')
+  _setup() {
+    this._mainSvgElem = this._parentElem
+      .insert('svg', ':first-child')
+      .attr('position', 'absolute')
+      .attr('overflow', 'hidden')
+      .attr('top', 0)
+      .attr('left', 0)
+      .attr('right', 0)
+      .attr('bottom', 0)
+      .attr('width', '100%')
+      .attr('height', 'calc(100% - 50px)')
 
-    this._axisElem = this._svgElem
-        .append('g')
-        .attr('class', 'axis')
+    this._mainChartElem = this._mainSvgElem
+      .append('g')
+      .attr('class', 'main-chart')
+      .attr('transform', 'translate(0, 0)')
 
-    this._chartsElem = this._svgElem
-        .append('g')
-        .attr('class', 'charts')
+    this._axisElem = this._mainChartElem.append('g').attr('class', 'axis')
 
-    this._selectorElem = this._svgElem
-        .append('g')
-        .attr('class', 'selector')
-    this._selectorElem
-        .call(
-            d3.drag().on('drag', this._selectorDragged.bind(this))
-    );
+    this._chartsElem = this._mainChartElem.append('g').attr('class', 'charts')
 
-    this._brushElem = this._svgElem
-      .append("g")
-      .classed("sub", true)
-    this._brush = d3.brushX(this._subXScale).on("brush", this._onBrushChange)
+    this._selectorElem = this._mainChartElem
+      .append('g')
+      .attr('class', 'selector')
+    this._selectorElem.call(
+      d3.drag().on('drag', this._selectorDragged.bind(this))
+    )
+
+    this._subSvgElem = this._parentElem
+      .insert('svg')
+      .attr('position', 'absolute')
+      .attr('overflow', 'hidden')
+      .attr('top', 0)
+      .attr('left', 0)
+      .attr('right', 0)
+      .attr('bottom', 0)
+      .attr('width', '100%')
+      .attr('height', '50px')
+
+    this._subchartElem = this._subSvgElem.append('g').classed('sub', true)
+
+    this._brush = d3.brushX(this._subXScale).on('brush', () => {
+      const domain = this._brush
+        ? this._subXScale.domain()
+        : this._brush.extent()
+    })
+
+    this._subchartAxisElem = this._subchartElem
+      .append('g')
+      .attr('class', 'subchart-axis')
+
+    this._subElemCharts = this._subchartElem
+      .append('g')
+      .attr('class', 'brush-charts')
 
     $(document).on('layout-resize-timelineComponent', () => {
-        this._setupDimentions();
-    });
+      this._setupDimentions()
+    })
 
-    this._setupDimentions();
-}
+    this._setupDimentions()
+  }
 
-_onBrushChange() {
-  const domain = this._brush.empty() ? this._subXScale.domain() : this._brush.extent();
-  // activateRangeInMainChart(domain[0], domain[1]);
-}
 
-_setupDimentions(size) {
+  _setupDimentions(size) {
     if (!size) {
-        size = this._parentElem.node().getBoundingClientRect();
+      size = this._parentElem.node().getBoundingClientRect()
     }
 
-    var margin = this._getMargin();
+    var margin = this._getMargin()
 
-    this._width = size.width - margin.left - margin.right;
-    this._height = size.height - margin.top - margin.bottom;
+    this._width = size.width - margin.left - margin.right
+    this._height = size.height - margin.top - margin.bottom - 40
 
     var viewBox = [
-        (-margin.left),
-        (-margin.top),
-        (this._width + margin.left + margin.right),
-        (this._height + margin.top + margin.bottom)
+      -margin.left,
+      0,
+      this._width + margin.left + margin.right,
+      this._height + margin.top + margin.bottom - 20,
     ]
-    this._svgElem
-        .attr('viewBox', viewBox.join(' '));
+    this._mainSvgElem.attr('viewBox', viewBox.join(' '))
+    const subViewBox = [
+      -margin.left,
+      0,
+      this._width + margin.left + margin.top,
+      50,
+    ]
+    this._subSvgElem.attr('viewBox', subViewBox.join(' '))
 
-    this._renderTimeline();
-}
+    this._renderTimeline()
+  }
 
-_getMargin() {
+  _getMargin() {
     var margin = {
-        top: 10,
-        right: 15,
-        bottom: 25,
-        left: 15
-    };
+      top: 10,
+      right: 15,
+      bottom: 30,
+      left: 15,
+    }
 
     if (this._showAxis) {
-        margin.left += 40;
-        margin.lerightft += 40;
+      margin.left += 40
+      margin.lerightft += 40
     }
 
-    return margin;
-}
+    return margin
+  }
 
-_renderTimeline() {
-    this._setupScales();
+  _renderTimeline() {
+    this._setupChartScales()
 
-    this._renderCharts();
+    this._setupSubChartScales()
 
-    this._renderAxis();
+    this._renderCharts()
 
-    this._renderSelector();
-}
+    this._renderAxis()
 
-  _setupScales() {
-    if (this.chartData && this.time_machine_actual_date_range.from && this.time_machine_actual_date_range.to) {
-    this._xScale = d3
+    this._renderSubchartAxis()
+
+    this._renderSelector()
+
+    if (this.chartPreviewData.length > 0) {
+      this._renderBrushCharts()
+    }
+
+    this._renderSubchartBrush()
+  }
+
+  _setupChartScales() {
+    if (
+      this.chartData &&
+      this.chartPreviewData.length &&
+      this.time_machine_actual_date_range.from &&
+      this.time_machine_actual_date_range.to
+    ) {
+      this._xScale = d3
         .scaleTime()
         .domain([
-          this.time_machine_actual_date_range.to.clone().subtract('12', 'hours'),
           this.time_machine_actual_date_range.to
+            .clone()
+            .subtract('12', 'hours'),
+          this.time_machine_actual_date_range.to,
         ])
-        .range([0, this._width]);
-    this._yScaleChanges = d3
+        .range([0, this._width])
+      this._yScaleChanges = d3
         .scaleLinear()
-        .domain(d3.extent(this.chartData, function (d) {
-            return d.changes;
-        }))
-        .range([this._height, 0]);
-    this._yScaleWarnings = d3
+        .domain(
+          d3.extent(this.chartData, function (d) {
+            return d.changes
+          })
+        )
+        .range([this._height, 0])
+      this._yScaleWarnings = d3
         .scaleLinear()
-        .domain(d3.extent(this.chartData, function (d) {
-            return d.warn;
-        }))
-        .range([this._height, 0]);
-    this._yScaleErrors = d3
+        .domain(
+          d3.extent(this.chartData, function (d) {
+            return d.warn
+          })
+        )
+        .range([this._height, 0])
+      this._yScaleErrors = d3
         .scaleLinear()
-        .domain(d3.extent(this.chartData, function (d) {
-            return d.error;
-        }))
-        .range([this._height, 0]);
+        .domain(
+          d3.extent(this.chartData, function (d) {
+            return d.error
+          })
+        )
+        .range([this._height, 0])
     }
+  }
+
+  _setupSubChartScales() {
+    const head = _.head(this.chartPreviewData)
+    const last = _.last(this.chartPreviewData)
     this._subXScale = d3
       .scaleTime()
+      .domain([
+        head ? head.dateMoment : moment().subtract('12', 'hours'),
+        last ? last.dateMoment : moment(),
+      ])
       .range([0, this._width])
-    this._subYScale = d3
+    this._subYScaleChanges = d3
       .scaleLinear()
-      .range([this._height, 0])
-}
+      .domain(
+        d3.extent(this.chartPreviewData, function (d) {
+          return d.changes
+        })
+      )
+      .range([30, 0])
+    this._subYScaleWarnings = d3
+      .scaleLinear()
+      .domain(
+        d3.extent(this.chartPreviewData, function (d) {
+          return d.warn
+        })
+      )
+      .range([30, 0])
+    this._subYScaleErrors = d3
+      .scaleLinear()
+      .domain(
+        d3.extent(this.chartPreviewData, function (d) {
+          return d.error
+        })
+      )
+      .range([30, 0])
+  }
 
-_renderCharts() {
-    if (this.chartData) {
-    {
-        const warnings = d3.area()
+  _renderCharts() {
+    if (this.chartData && this._xScale) {
+      {
+        const errors = d3
+          .area()
           .x((d) => {
-                return this._xScale(d.dateMoment);
-            })
-            .y0(this._height)
-            .y1((d) => {
-                return this._yScaleWarnings(d.warn);
-            });
-        this._renderChart(warnings, 'warnings');
-    }
-
-    {
-        const changes = d3.line()
-          .x((d) => {
-              return this._xScale(d.dateMoment);
-            })
-          .y((d) => {
-              return this._yScaleChanges(d.changes);
-            });
-
-        this._renderChart(changes, 'changes');
-      }
-    }
-
-    {
-      const errors = d3.area()
-        .x((d) => {
-              return this._xScale(d.dateMoment);
+            return this._xScale(d.dateMoment)
           })
           .y0(this._height)
           .y1((d) => {
-              return this._yScaleErrors(d.error);
-          });
-      this._renderChart(errors, 'errors');
-  }
-}
+            return this._yScaleErrors(d.error)
+          })
+        this._renderChart(errors, 'errors')
+      }
 
-_renderAxis() {
-    this._axisElem.html('');
-  if (this.chartData) {
-    var horizontalTickCount = Math.max(1, this._width / 200);
-    this._axisElem
+      {
+        const warnings = d3
+          .area()
+          .x((d) => {
+            return this._xScale(d.dateMoment)
+          })
+          .y0(this._height)
+          .y1((d) => {
+            return this._yScaleWarnings(d.warn)
+          })
+        this._renderChart(warnings, 'warnings')
+      }
+
+      {
+        const changes = d3
+          .line()
+          .x((d) => {
+            return this._xScale(d.dateMoment)
+          })
+          .y((d) => {
+            return this._yScaleChanges(d.changes)
+          })
+
+        this._renderChart(changes, 'changes')
+      }
+    }
+  }
+
+  _renderBrushCharts() {
+    if (this.chartPreviewData.length > 0) {
+      {
+        const brushErrors = d3
+          .area()
+          .x((d) => {
+            return this._subXScale(d.dateMoment)
+          })
+          .y0(30)
+          .y1((d) => {
+            return this._subYScaleErrors(d.error)
+          })
+        this._renderSubchart(brushErrors, 'errors')
+      }
+
+      {
+        const brushWarnings = d3
+          .area()
+          .x((d) => {
+            return this._subXScale(d.dateMoment)
+          })
+          .y0(30)
+          .y1((d) => {
+            return this._subYScaleWarnings(d.warn)
+          })
+        this._renderSubchart(brushWarnings, 'warnings')
+      }
+
+      {
+        const brushChanges = d3
+          .line()
+          .x((d) => {
+            return this._subXScale(d.dateMoment)
+          })
+          .y((d) => {
+            return this._subYScaleChanges(d.changes)
+          })
+
+        this._renderSubchart(brushChanges, 'changes')
+      }
+    }
+  }
+
+  _renderAxis() {
+    this._axisElem.html('')
+    if (this.chartData) {
+      var horizontalTickCount = Math.max(1, this._width / 200)
+      this._axisElem
         .append('g')
         .attr('class', 'x axis')
         .attr('transform', 'translate(0, ' + this._height + ')')
-        .call(d3
+        .call(
+          d3
             .axisBottom(this._xScale)
-          .tickFormat(function (d) {
-                return formatDate(d);
+            .tickFormat(function (d) {
+              return formatDate(d)
             })
             .ticks(horizontalTickCount)
-        );
+        )
 
-    if (this._showAxis) {
-        var verticalTickCount = Math.max(1, this._height / 20);
+      if (this._showAxis) {
+        var verticalTickCount = Math.max(1, this._height / 20)
         this._axisElem
-            .append('g')
-            .attr('class', 'y axis')
-            .call(d3
-                .axisLeft(this._yScaleChanges)
-                .ticks(verticalTickCount));
+          .append('g')
+          .attr('class', 'y axis')
+          .call(d3.axisLeft(this._yScaleChanges).ticks(verticalTickCount))
 
         this._axisElem
-            .append('g')
-            .attr('class', 'y axis')
-            .attr('transform', 'translate(' + this._width + ', 0)')
-            .call(d3
-                .axisRight(this._yScaleWarnings)
-              .ticks(verticalTickCount));
+          .append('g')
+          .attr('class', 'y axis')
+          .attr('transform', 'translate(' + this._width + ', 0)')
+          .call(d3.axisRight(this._yScaleWarnings).ticks(verticalTickCount))
 
         this._axisElem
-              .append('g')
-              .attr('class', 'y axis')
-              .attr('transform', 'translate(' + this._width + ', 0)')
-              .call(d3
-                  .axisRight(this._yScaleErrors)
-                  .ticks(verticalTickCount));
+          .append('g')
+          .attr('class', 'y axis')
+          .attr('transform', 'translate(' + this._width + ', 0)')
+          .call(d3.axisRight(this._yScaleErrors).ticks(verticalTickCount))
+      }
     }
-
-    this._subXAxis = d3.axisBottom(this._subXScale)
-    this._subYAxis = d3.axisLeft(this._subYScale)
   }
-}
 
-_renderSelector() {
-    this._selectorElem.html('');
+  _renderSubchartAxis() {
+    if (this.chartPreviewData) {
+      this._subXAxis = d3.axisBottom(this._subXScale)
+      this._subYAxisChanges = d3.axisLeft(this._subYScaleChanges)
+      this._subchartAxisElem.html('')
+
+      this._subchartAxisElem
+        .append('g')
+        .classed('x axis', true)
+        .attr('transform', 'translate(0, ' + 30 + ')')
+        .call(this._subXAxis)
+
+      if (this._showAxis) {
+        this._subchartAxisElem
+          .append('g')
+          .classed('y axis', true)
+          .attr('transform', 'translate(0, 0)')
+          .call(this._subYAxisChanges)
+      }
+    }
+  }
+
+  _renderSubchartBrush() {
+    if (this.chartPreviewData.length > 0) {
+      this._subchartElem
+        .append('g')
+        .classed('x-brush', true)
+        .call(this._brush)
+        .selectAll('rect')
+        .attr('y', 0)
+        .attr('height', 30)
+    }
+  }
+
+  _renderSelector() {
+    this._selectorElem.html('')
 
     if (!this.isTimeMachineEnabled) {
-        return;
+      return
     }
 
-    var margin = this._getMargin();
+    var margin = this._getMargin()
     this._selectorElem
-        .append('path')
-        .attr('d', 'M-7,' + (-0.4 * margin.top) + ' h14 v20 l-7,7 l-7,-7 z');
+      .append('path')
+      .attr('d', 'M-7,' + -0.4 * margin.top + ' h14 v20 l-7,7 l-7,-7 z')
     this._selectorElem
-        .append('path')
-        .attr('d', 'M0,' + (-0.4 * margin.top) + ' v' + (this._height + margin.top * 0.7));
+      .append('path')
+      .attr(
+        'd',
+        'M0,' + -0.4 * margin.top + ' v' + (this._height + margin.top * 0.7)
+      )
 
-    var selectorPositionX = this._xScale(this.actualTargetDate);
+    var selectorPositionX = this._xScale(this.actualTargetDate)
     if (selectorPositionX < 0) {
-        selectorPositionX = 0;
+      selectorPositionX = 0
     }
     if (selectorPositionX > this._width) {
-        selectorPositionX = this._width;
+      selectorPositionX = this._width
     }
-    this._selectorElem.attr('transform', 'translate(' + selectorPositionX + ')');
-}
+    this._selectorElem.attr('transform', 'translate(' + selectorPositionX + ')')
+  }
 
   _renderChart(chartObj, chartClass) {
     if (this.chartData) {
       const stack = d3.stack().keys(['error', 'warn'])
       const stackedData = stack(this.chartData)
-    const charts = this._chartsElem.selectAll('.' + chartClass)
+      const charts = this._chartsElem
+        .selectAll('.' + chartClass)
         .data([this.chartData])
-        .attr('class', chartClass);
+        .attr('class', chartClass)
 
-    charts.exit()
-        .remove();
+      charts.exit().remove()
 
-    charts.enter()
+      charts
+        .enter()
         .append('path')
         .attr('class', chartClass)
         .attr('d', chartObj)
         .merge(charts)
         .attr('d', chartObj)
-      }
+    }
   }
 
-  _renderSubchart() {
-    this._brushElemPath = this._brushElem.append("path")
+  _renderSubchart(chartObj, chartClass) {
+    if (this.chartPreviewData) {
+      const brushCharts = this._subElemCharts
+        .selectAll('.' + chartClass)
+        .data([this.chartPreviewData])
+        .attr('class', chartClass)
 
-    this._brushElem
-        .append("g")
-        .classed("x axis", true)
-        .attr("transform", "translate(0, " + this._height + ")")
-        .call(this._subXAxis);
-    this._brushElem
-        .append("g")
-        .classed("y axis", true)
-        .attr("transform", "translate(0, 0)")
-        .call(this._subYAxis);
+      brushCharts.exit().remove()
 
-
-    // this._brushElemPath.datum(data).classed("area", true).attr("d", subArea);
-
-    this._brushElem
-        .append("g")
-        .classed("x brush", true)
-        .call(this._brush)
-        .selectAll("rect")
-        .attr("y", -6)
-        .attr("height", this._height + 7);
+      brushCharts
+        .enter()
+        .append('path')
+        .attr('class', chartClass)
+        .attr('d', chartObj)
+        .merge(brushCharts)
+        .attr('d', chartObj)
+    }
   }
 
-_selectorDragged() {
-    var date = new Date(this._xScale.invert(d3.event.x));
+  _selectorDragged() {
+    var date = new Date(this._xScale.invert(d3.event.x))
     if (date < this.this.time_machine_actual_date_range.from) {
-        date = this.this.time_machine_actual_date_range.from
+      date = this.this.time_machine_actual_date_range.from
     }
     if (date > this.this.time_machine_actual_date_range.to) {
-        date = this.this.time_machine_actual_date_range.to
+      date = this.this.time_machine_actual_date_range.to
     }
     this.sharedState.set('time_machine_target_date', date)
-}
+  }
 
-_cancelPendingTimeouts() {
+  _cancelPendingTimeouts() {
     if (this._dateChangeTimerId) {
-        clearTimeout(this._dateChangeTimerId);
-        this._dateChangeTimerId = null;
+      clearTimeout(this._dateChangeTimerId)
+      this._dateChangeTimerId = null
     }
-}
+  }
 
   _formatXaxis(item) {
     return moment(item).format('MMM DD hh:mm A')
@@ -363,16 +507,13 @@ _cancelPendingTimeouts() {
     //   'transform',
     //   'translate(' + mouseX + ')'
     // )
-
     // if (this.mainChartElem) {
     //   const targetDate = this.mainChartElem.internal.x.invert(mouseX).toISOString()
     //   this.sharedState.set('time_machine_target_date', targetDate)
     // }
-
   }
 
-  _setupTimeMachineTargetDate()
-  {
+  _setupTimeMachineTargetDate() {
     // if (this.actualTargetDate)
     // {
     //   this._renderTimeMachineLine();
@@ -508,15 +649,15 @@ _cancelPendingTimeouts() {
     {
       if (data.length > 0)
       {
-        return data;
+        return data
       }
     }
     return [{
-      dateMoment: moment(),
-      error: 0,
-      warn: 0,
-      changes: 0
-    }];
+        dateMoment: moment(),
+        error: 0,
+        warn: 0,
+        changes: 0
+      }]
   }
 
   _renderHoverLine() {
@@ -553,7 +694,6 @@ _cancelPendingTimeouts() {
     // if (!this.verticalElem) {
     //   return;
     // }
-
     // const calculatedHeightDiff = chartHeight / 20
     // this.verticalElem.attr('d', 'M0,' + (5 + calculatedHeightDiff) + ' v' + (chartHeight - 35 - calculatedHeightDiff));
   }
@@ -588,15 +728,15 @@ _cancelPendingTimeouts() {
   _dateRangesAreSame(newActual)
   {
     return this._datesAreSame(this.time_machine_actual_date_range.from, newActual.from) &&
-      this._datesAreSame(this.time_machine_actual_date_range.to, newActual.to);
+      this._datesAreSame(this.time_machine_actual_date_range.to, newActual.to)
   }
 
   _datesAreSame(oldDate, newDate)
   {
     if (oldDate) {
-      return oldDate.isSame(newDate);
+      return oldDate.isSame(newDate)
     }
-    return false;
+    return false
   }
 
   componentDidMount() {
@@ -610,28 +750,27 @@ _cancelPendingTimeouts() {
         'time_machine_actual_date_to'
       ],
       () => {
+        let actual = this._timelineUtils.getActualRange()
 
-        let actual = this._timelineUtils.getActualRange();
+        console.log('[subscribeToSharedState] CURR From: ', this.time_machine_actual_date_range.from.toISOString())
+        console.log('[subscribeToSharedState] CURR  To: ', this.time_machine_actual_date_range.to.toISOString())
 
-        console.log("[subscribeToSharedState] CURR From: ", this.time_machine_actual_date_range.from.toISOString());
-        console.log("[subscribeToSharedState] CURR  To: ", this.time_machine_actual_date_range.to.toISOString());
-
-        console.log("[subscribeToSharedState] From: ", actual.from.toISOString());
-        console.log("[subscribeToSharedState]   To: ", actual.to.toISOString());
+        console.log('[subscribeToSharedState] From: ', actual.from.toISOString())
+        console.log('[subscribeToSharedState]   To: ', actual.to.toISOString())
 
         if (this._dateRangesAreSame(actual)) {
-          return;
+          return
         }
 
-        let diff = moment.duration(actual.to.diff(actual.from));
-        this.durationSeconds = diff.asSeconds();
+        let diff = moment.duration(actual.to.diff(actual.from))
+        this.durationSeconds = diff.asSeconds()
 
-        this.time_machine_actual_date_range = actual;
+        this.time_machine_actual_date_range = actual
 
         // this._setupBrushSelectionRange(this.time_machine_actual_date_range);
         // this._setupTimeMachineTargetDate();
       }
-    );
+    )
 
     this.subscribeToSharedState(
       [
@@ -643,33 +782,38 @@ _cancelPendingTimeouts() {
         time_machine_target_date
       }) => {
 
-        this.actualTargetDate = moment(time_machine_target_date).toISOString();
+        this.actualTargetDate = moment(time_machine_target_date).toISOString()
 
         if (!time_machine_enabled || !time_machine_target_date) {
-          this.actualTargetDate = null;
+          this.actualTargetDate = null
         }
         this._renderSelector()
         // this._setupTimeMachineTargetDate();
       }
-    );
+    )
 
     this.subscribeToSharedState('time_machine_timeline_data',
       (time_machine_timeline_data) => {
         this.chartData = time_machine_timeline_data
         // this._updateMainChartData(time_machine_timeline_data);
         // this._setupTimeMachineTargetDate()
-        this._renderTimeline()
-    });
+        // this._renderTimeline()
+        // this._renderCharts()
+        this._setupChartScales()
+        this._renderCharts()
+      }
+    )
 
     this.subscribeToSharedState('time_machine_timeline_preview',
       (time_machine_timeline_preview) => {
-        this.chartPreviewData = this._massageData(time_machine_timeline_preview);
+        this.chartPreviewData = this._massageData(time_machine_timeline_preview)
         // this._updateBrushChartData()
         // this._setupTimeMachineTargetDate()
-    });
+      }
+    )
 
-    $('.plus').on('click', () => this.zoomIn())
-    $('.minus').on('click', () => this.zoomOut())
+    $('.plus').on('click', () => this.zoomOut())
+    $('.minus').on('click', () => this.zoomIn())
     $('.left').on('click', () => this.panLeft())
     $('.right').on('click', () => this.panRight())
 
@@ -695,17 +839,17 @@ _cancelPendingTimeouts() {
 function isValidDate(date)
 {
   if (!date) {
-    return false;
+    return false
   }
-  if (Object.prototype.toString.call(date) === "[object Date]") {
+  if (Object.prototype.toString.call(date) === '[object Date]') {
     // it is a date
     if (isNaN(date.getTime())) {  // d.valueOf() could also work
       return false
     } else {
-      return true;
+      return true
     }
   } else {
-    return false;
+    return false
   }
 }
 
