@@ -37,14 +37,21 @@ class Timeline extends BaseComponent {
     this.sharedState.set('time_machine_duration', Math.max(1, this.durationSeconds * 2))
   }
 
-  onUserPanLeft() {this.sharedState.set('time_machine_date_to', this._calcShiftDate(-this.durationSeconds / 2))
+  onUserPanLeft() {
+    d3.select('.x-brush').call(this._brush.move, this._calcShiftDate(-this.durationSeconds / 2))
   }
 
-  onUserPanRight() {this.sharedState.set('time_machine_date_to', this._calcShiftDate(this.durationSeconds / 2))
+  onUserPanRight() {
+    d3.select('.x-brush').call(this._brush.move, this._calcShiftDate(this.durationSeconds / 2))
   }
 
   _calcShiftDate(diffSeconds) {
-    return moment(this.time_machine_actual_date_range.to).add(diffSeconds, 'seconds').toISOString()
+    const startDate = moment(this.time_machine_actual_date_range.from).add(diffSeconds, 'seconds')
+    const endDate = moment(this.time_machine_actual_date_range.to).add(diffSeconds, 'seconds')
+
+    const startPos = this._subXScale(startDate)
+    const endPos = this._subXScale(endDate)
+    return [startPos, endPos]
   }
 
   _setup() {
