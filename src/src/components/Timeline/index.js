@@ -399,11 +399,14 @@ class Timeline extends BaseComponent {
         .on('brush', function() {
             self._onUserBrushMove(this)
       })
+      const startPos = this._subXScale(this.time_machine_actual_date_range.from)
+      const endPos = this._subXScale(this.time_machine_actual_date_range.to)
 
       this._subSvgElem
         .append('g')
         .classed('x-brush', true)
         .call(this._brush)
+        .call(this._brush.move, [startPos, endPos])
         .selectAll('rect')
         .attr('y', 0)
         .attr('height', 30)
