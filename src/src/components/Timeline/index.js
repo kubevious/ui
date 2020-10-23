@@ -75,6 +75,8 @@ class Timeline extends BaseComponent {
 
     this._chartsElem = this._mainChartElem.append('g').attr('class', 'charts')
 
+    this._chartsElem.on('click', this._onUserChartClick.bind(this))
+
     this._selectorElem = this._mainChartElem
       .append('g')
       .attr('class', 'selector')
@@ -465,7 +467,7 @@ class Timeline extends BaseComponent {
   }
 
   _updateSelectorPosition() {
-    if(this._xScale) {
+    if (this._xScale) {
       const selectorPositionX = this._xScale(moment(this.actualTargetDate))
     // if (selectorPositionX < 0 || selectorPositionX > this._width) {   // Perhaps will be usable
     // }
@@ -581,14 +583,10 @@ class Timeline extends BaseComponent {
     this._subchartSelectorElem.attr('transform','translate(' + position + ')')
   }
 
-  _handleChartClick() {
-    // const self = this
-    // if (this.mainChartElem) {
-    //   this.mainChartElem.internal.main.on('click', function () {
-    //     self.sharedState.set('time_machine_enabled', true)
-    //     self._setTargetDate(d3.mouse(this)[0])
-    //   })
-    // }
+  _onUserChartClick() {
+    const date = this._xScale.invert(d3.event.x - 25) //  Temporary substraction because of wrong position calculating
+    this.sharedState.set('time_machine_enabled', true)
+    this.sharedState.set('time_machine_target_date', date)
   }
 
   _massageData(data)
@@ -736,6 +734,8 @@ class Timeline extends BaseComponent {
           this.actualTargetDate = null
         }
         this._renderSelector()
+        this._updateSelectorPosition()
+
         // this._setupTimeMachineTargetDate();
       }
     )
