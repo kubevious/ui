@@ -164,7 +164,7 @@ class Timeline extends BaseComponent {
 
     this._renderSelector()
 
-    this._renderSelectorPosition()
+    this._updateSelectorPosition()
 
     if (this.chartPreviewData.length > 0) {
       this._renderSubCharts()
@@ -424,23 +424,27 @@ class Timeline extends BaseComponent {
     const dateTo = moment(this._subXScale.invert(d3.brushSelection(self)[1]))
     const dateFrom = moment(this._subXScale.invert(d3.brushSelection(self)[0]))
 
-    let diff = moment.duration(dateTo.diff(dateFrom));
-    let durationSeconds = diff.asSeconds();
+    let diff = moment.duration(dateTo.diff(dateFrom))
+    let durationSeconds = diff.asSeconds().toFixed()
 
-    let lastDate = this.sharedState.get('time_machine_timeline_preview_last_date');
+    let lastDate = this.sharedState.get('time_machine_timeline_preview_last_date')
     if (dateTo.isSameOrAfter(lastDate))
     {
       this.sharedState.set('time_machine_date_to', null)
     }
     else
     {
-      this.sharedState.set('time_machine_date_to', dateTo.toISOString());
+      this.sharedState.set('time_machine_date_to', dateTo.toISOString())
     }
     this.sharedState.set('time_machine_duration', durationSeconds)
   }
 
   _renderSelector() {
     this._selectorElem.html('')
+
+    if (this._subchartSelectorElem) {
+      this._subchartSelectorElem.html('')
+    }
 
     if (!this.actualTargetDate) {
       return
@@ -455,10 +459,12 @@ class Timeline extends BaseComponent {
       .attr(
         'd',
         'M0,' + -0.4 * margin.top + ' v' + (this._height + margin.top * 0.7)
-      )
+    )
+
+    this._renderSubchartSelector()
   }
 
-  _renderSelectorPosition() {
+  _updateSelectorPosition() {
     if(this._xScale) {
       const selectorPositionX = this._xScale(moment(this.actualTargetDate))
     // if (selectorPositionX < 0 || selectorPositionX > this._width) {   // Perhaps will be usable
@@ -558,38 +564,21 @@ class Timeline extends BaseComponent {
     //   .attr('transform','translate(' + targetDatePosition + ')')
   }
 
-  _renderTimeMachinePreviewLine() {
-    // if (this.previewChartSelectorElem) {
-    //   return;
-    // }
+  _renderSubchartSelector()
+  {
+    this._subchartSelectorElem = this._subSvgElem
+    .append('g')
+    .attr('class', 'sub-selector')
 
-    // const brushComponent = d3.select('#preview-chart .c3-brush')
-    //   const brushSelector = brushComponent.append('g').attr('class', 'selector')
-    //   brushSelector.append('path').attr('d', 'M0,0 v' + 30)
-
-    //   this.previewChartSelectorElem = brushSelector;
+      this._subchartSelectorElem.append('path').attr('d', 'M0,0 v' + 30)
+      this._updateSubchartSelectorPosition()
   }
 
-  _removeTimeMachinePreviewLine()
+  _updateSubchartSelectorPosition()
   {
-    // if (this.previewChartSelectorElem) {
-    //   this.previewChartSelectorElem.remove();
-    //   this.previewChartSelectorElem = null;
-    // }
-  }
-
-  _updateTimeMachinePreviewLinePosition()
-  {
-    // if (!this.brushChartElem) {
-    //   return;
-    // }
-    // if (!this.previewChartSelectorElem) {
-    //   return;
-    // }
-
-    // const date = moment(this.actualTargetDate);
-    // const position = this.brushChartElem.internal.subX(date)
-    // this.previewChartSelectorElem.attr('transform','translate(' + position + ')')
+    const date = moment(this.actualTargetDate);
+    const position = this._subXScale(date)
+    this._subchartSelectorElem.attr('transform','translate(' + position + ')')
   }
 
   _handleChartClick() {
@@ -725,7 +714,7 @@ class Timeline extends BaseComponent {
         this.durationSeconds = diff.asSeconds()
 
         this.time_machine_actual_date_range = actual
-        this._renderSelectorPosition()
+        this._updateSelectorPosition()
         // this._setupBrushSelectionRange(this.time_machine_actual_date_range);
         // this._setupTimeMachineTargetDate();
       }

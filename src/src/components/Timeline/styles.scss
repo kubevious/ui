@@ -32,6 +32,12 @@ $timelineYellow: rgb(252, 189, 63);
     cursor: pointer;
 }
 
+.timeline svg .sub-selector * {
+    fill: rgb(252, 189, 63);
+    stroke-width: 2;
+    stroke: rgb(252, 189, 63);
+}
+
 .chart-view {
     width: calc(100% - 60px);
     height: 100%;
