@@ -18,7 +18,7 @@ class Timeline extends BaseComponent {
     this._isDraggingSelector = false
 
     this.time_machine_actual_date_range = {
-      from: moment(),
+      from: moment().subtract('12', 'hours'),
       to: moment(),
     }
 
@@ -30,24 +30,30 @@ class Timeline extends BaseComponent {
   }
 
   zoomIn() {
-    this.sharedState.set('time_machine_duration', Math.max(1, this.durationSeconds / 2))
+    d3.select('.x-brush').call(this._brush.move, this._calcShiftDate(this.durationSeconds / 4, -this.durationSeconds / 4))
+    if (this.durationSeconds < this.dayInSec) {
+      $('.plus').css('cursor', 'not-allowed').off('click')
+    }
   }
 
   zoomOut() {
-    this.sharedState.set('time_machine_duration', Math.max(1, this.durationSeconds * 2))
+    d3.select('.x-brush').call(this._brush.move, this._calcShiftDate(-this.durationSeconds / 4, this.durationSeconds / 4))
+    if (this.durationSeconds > this.dayInSec / 4) {
+      $('.plus').css('cursor', 'pointer').on('click', () => this.zoomIn())
+    }
   }
 
   onUserPanLeft() {
-    d3.select('.x-brush').call(this._brush.move, this._calcShiftDate(-this.durationSeconds / 2))
+    d3.select('.x-brush').call(this._brush.move, this._calcShiftDate(-this.durationSeconds / 2, -this.durationSeconds / 2))
   }
 
   onUserPanRight() {
-    d3.select('.x-brush').call(this._brush.move, this._calcShiftDate(this.durationSeconds / 2))
+    d3.select('.x-brush').call(this._brush.move, this._calcShiftDate(this.durationSeconds / 2, this.durationSeconds / 2))
   }
 
-  _calcShiftDate(diffSeconds) {
-    const startDate = moment(this.time_machine_actual_date_range.from).add(diffSeconds, 'seconds')
-    const endDate = moment(this.time_machine_actual_date_range.to).add(diffSeconds, 'seconds')
+  _calcShiftDate(diffSecondsStart, diffSecondsEnd) {
+    const startDate = moment(this.time_machine_actual_date_range.from).add(diffSecondsStart, 'seconds')
+    const endDate = moment(this.time_machine_actual_date_range.to).add(diffSecondsEnd, 'seconds')
 
     const startPos = this._subXScale(startDate)
     const endPos = this._subXScale(endDate)
@@ -178,17 +184,16 @@ class Timeline extends BaseComponent {
   _setupChartScales() {
     if (
       this.chartData &&
-      this.chartPreviewData.length &&
-      this.time_machine_actual_date_range.from &&
-      this.time_machine_actual_date_range.to
+      this.chartPreviewData.length
     ) {
+      const head = _.head(this.chartData)
+      const last = _.last(this.chartData)
+
       this._xScale = d3
         .scaleTime()
         .domain([
-          this.time_machine_actual_date_range.to
-            .clone()
-            .subtract('12', 'hours'),
-          this.time_machine_actual_date_range.to,
+          head.dateMoment,
+          last.dateMoment
         ])
         .range([0, this._width])
       this._yScaleChanges = d3
@@ -402,6 +407,7 @@ class Timeline extends BaseComponent {
   }
 
   _renderSubchartBrush() {
+    $('.x-brush').detach()
     if (this.chartPreviewData.length > 0) {
       const self = this
       this._brush = d3.brushX(this._subXScale)
@@ -707,7 +713,7 @@ class Timeline extends BaseComponent {
         if (this._dateRangesAreSame(actual)) {
           return
         }
-
+        
         let diff = moment.duration(actual.to.diff(actual.from))
         this.durationSeconds = diff.asSeconds()
 
@@ -761,8 +767,8 @@ class Timeline extends BaseComponent {
       }
     )
 
-    $('.plus').on('click', () => this.zoomOut())
-    $('.minus').on('click', () => this.zoomIn())
+    $('.plus').on('click', () => this.zoomIn())
+    $('.minus').on('click', () => this.zoomOut())
     $('.left').on('click', () => this.onUserPanLeft())
     $('.right').on('click', () => this.onUserPanRight())
   }
