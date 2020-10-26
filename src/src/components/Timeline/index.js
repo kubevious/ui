@@ -88,6 +88,16 @@ class Timeline extends BaseComponent {
       .attr('class', 'selector')
       .call(d3.drag().on('drag', this._onUserDragSelector.bind(this)))
 
+    this._hoverLineElem = this._mainChartElem
+      .append('g')
+      .attr('class', 'hover-line')
+      .append('path')
+      .attr('pointer-events', 'none')
+
+    this._tooltipElem = this._parentElem
+      .append('div')
+      .attr('class', 'custom-tooltip')
+
     this._subSvgElem = this._parentElem
       .insert('svg')
       .attr('position', 'absolute')
@@ -109,6 +119,7 @@ class Timeline extends BaseComponent {
 
     $(document).on('layout-resize-timelineComponent', () => {
       this._setupDimentions()
+      this._updateHoverLineHeight(this._height)
     })
 
     this._setupDimentions()
@@ -181,6 +192,8 @@ class Timeline extends BaseComponent {
       }
 
       this._renderSubchartBrush()
+
+      this._renderHoverLine()
     }
   }
 
@@ -465,9 +478,10 @@ class Timeline extends BaseComponent {
 
   _updateSelectorPosition() {
       const selectorPositionX = this._xScale(moment(this.actualTargetDate))
-    // if (selectorPositionX < 0 || selectorPositionX > this._width) {   // Perhaps will be usable
-    // }
-    this._selectorElem.attr('transform', 'translate(' + selectorPositionX + ')')
+      this._selectorElem.attr(
+        'transform',
+        'translate(' + selectorPositionX + ')'
+      )
   }
 
   _renderChart(chartObj, chartClass) {
@@ -521,40 +535,11 @@ class Timeline extends BaseComponent {
     return moment(item).format('MMM DD hh:mm A')
   }
 
-  _setTargetDate(mouseX) {
-    // $('.main-chart .selector').attr(
-    //   'transform',
-    //   'translate(' + mouseX + ')'
-    // )
-    // if (this.mainChartElem) {
-    //   const targetDate = this.mainChartElem.internal.x.invert(mouseX).toISOString()
-    //   this.sharedState.set('time_machine_target_date', targetDate)
-    // }
-  }
-
   _setupBrushSelectionRange(actual) {
     // this.mainXScale.domain([this.from, this.to]);
     // this.main.select(".area").attr("d", this.mainArea);
     // this.main.select(".x.axis").call(this.mainXAxis);
     // this._refreshMainData(this.from, this.to);
-  }
-
-  _removeTimeMachineLine() {
-    // if (this.mainChartSelectorElem) {
-    //   this.mainChartSelectorElem.remove();
-    //   this.mainChartSelectorElem = null;
-    // }
-  }
-
-  _updateTimeMachineSelectorLinePosition()
-  {
-    // if (!this.mainChartElem) {
-    //   return;
-    // }
-    // const targetDatePosition = this.mainChartElem.internal.x(moment(this.actualTargetDate))
-    // $('.main-chart .selector')
-    //   .attr('display', 'block')
-    //   .attr('transform','translate(' + targetDatePosition + ')')
   }
 
   _renderSubchartSelector()
@@ -569,6 +554,9 @@ class Timeline extends BaseComponent {
 
   _updateSubchartSelectorPosition()
   {
+    if (!this._subchartSelectorElem) {
+      return
+    }
     const date = moment(this.actualTargetDate);
     const position = this._subXScale(date)
     this._subchartSelectorElem.attr('transform','translate(' + position + ')')
@@ -598,41 +586,53 @@ class Timeline extends BaseComponent {
   }
 
   _renderHoverLine() {
-    // const vertical = d3
-    //   .select('.main-chart .c3-chart')
-    //   .append('g')
-    //   .attr('class', 'hover-line')
-    //   .append('path')
-    //   .attr('pointer-events', 'none')
+    const self = this
+    this._chartsElem
+      .on('mouseenter', function () {
+        self._hoverLineElem.attr('display', 'inherit')
+      })
+      .on('mousemove', function () {
+        let mousex = d3.mouse(this)
+        mousex = mousex[0]
+        self._hoverLineElem.attr('transform', 'translate(' + mousex + ')')
+        self._renderTooltip(mousex)
+      })
+      .on('mouseover', function () {
+        let mousex = d3.mouse(this)
+        mousex = mousex[0]
+        self._hoverLineElem.attr('transform', 'translate(' + mousex + ')')
+      })
+      .on('mouseleave', function () {
+        self._hoverLineElem.attr('display', 'none')
+        self._tooltipElem.style('opacity', '0')
+      })
 
-    // this.verticalElem = vertical;
-
-    // d3.select('.main-chart .c3-chart')
-    //   .on('mouseenter', function () {
-    //     vertical.attr('display', 'inherit')
-    //   })
-    //   .on('mousemove', function () {
-    //     let mousex = d3.mouse(this)
-    //     mousex = mousex[0]
-    //     vertical.attr('transform', 'translate(' + mousex + ')')
-    //   })
-    //   .on('mouseover', function () {
-    //     let mousex = d3.mouse(this)
-    //     mousex = mousex[0]
-    //     vertical.attr('transform', 'translate(' + mousex + ')')
-    //   })
-    //   .on('mouseleave', function () {
-    //     vertical.attr('display', 'none')
-    //   })
   }
 
-  _updateHoverLineHeight(chartHeight)
+  _renderTooltip(mousex) {
+    if (this._tooltipElem) {
+      this._tooltipElem.html('')
+    }
+    const bisectDate = d3.bisector(d => d.dateMoment).left
+    const date = this._xScale.invert(mousex)
+    const foundId = bisectDate(this.chartData, moment(date))
+    const formattedDate = moment(date).format('MMM DD hh:mm A')
+    const { changes, error, warn } = this.chartData[foundId]
+
+    this._tooltipElem
+      .style('opacity', '1')
+      .html('<p>' + formattedDate + '</p>' + '<p> Changes: ' + changes + '</p>' + '<p> Errors: ' + error + '</p>' + '<p> Warnings: ' + warn + '</p>')
+      .style('transform', 'translate(' + (mousex + 10) + 'px, 5px)')
+
+  }
+
+  _updateHoverLineHeight()
   {
-    // if (!this.verticalElem) {
-    //   return;
-    // }
-    // const calculatedHeightDiff = chartHeight / 20
-    // this.verticalElem.attr('d', 'M0,' + (5 + calculatedHeightDiff) + ' v' + (chartHeight - 35 - calculatedHeightDiff));
+    if (!this._hoverLineElem) {
+      return;
+    }
+    const margin = this._getMargin()
+    this._hoverLineElem.attr('d', 'M0,' + -0.4 * margin.top + ' v' + (this._height + margin.top * 0.7))
   }
 
   _activateMainChartRange()
