@@ -160,72 +160,70 @@ class Timeline extends BaseComponent {
   }
 
   _renderTimeline() {
-    this._setupChartScales()
+    if (this.chartPreviewData && this.chartData) {
+      this._setupChartScales()
 
-    this._setupSubChartScales()
+      this._setupSubChartScales()
 
-    this._renderCharts()
+      this._renderCharts()
 
-    this._renderAxis()
+      this._renderAxis()
 
-    this._renderSubchartAxis()
+      this._renderSubchartAxis()
 
-    this._renderSelector()
+      this._renderSelector()
 
-    this._updateSelectorPosition()
-
-    if (this.chartPreviewData.length > 0) {
       this._renderSubCharts()
-    }
 
-    this._renderSubchartBrush()
+      if (this.actualTargetDate) {
+        this._updateSelectorPosition()
+        this._updateSubchartSelectorPosition()
+      }
+
+      this._renderSubchartBrush()
+    }
   }
 
   _setupChartScales() {
-    if (
-      this.chartData &&
-      this.chartPreviewData.length
-    ) {
-      const head = _.head(this.chartData)
-      const last = _.last(this.chartData)
+    const head = this.chartData[0]
+    const last = this.chartData[this.chartData.length - 1]
 
-      this._xScale = d3
-        .scaleTime()
-        .domain([
-          head.dateMoment,
-          last.dateMoment
-        ])
-        .range([0, this._width])
-      this._yScaleChanges = d3
-        .scaleLinear()
-        .domain(
-          d3.extent(this.chartData, function (d) {
-            return d.changes
-          })
-        )
-        .range([this._height, 0])
-      this._yScaleWarnings = d3
-        .scaleLinear()
-        .domain(
-          d3.extent(this.chartData, function (d) {
-            return d.warn
-          })
-        )
-        .range([this._height, 0])
-      this._yScaleErrors = d3
-        .scaleLinear()
-        .domain(
-          d3.extent(this.chartData, function (d) {
-            return d.error
-          })
-        )
-        .range([this._height, 0])
-    }
+    this._xScale = d3
+      .scaleTime()
+      .domain([
+        head.dateMoment,
+        last.dateMoment
+      ])
+      .range([0, this._width])
+    this._yScaleChanges = d3
+      .scaleLinear()
+      .domain(
+        d3.extent(this.chartData, function (d) {
+          return d.changes
+        })
+      )
+      .range([this._height, 0])
+    this._yScaleWarnings = d3
+      .scaleLinear()
+      .domain(
+        d3.extent(this.chartData, function (d) {
+          return d.warn
+        })
+      )
+      .range([this._height, 0])
+    this._yScaleErrors = d3
+      .scaleLinear()
+      .domain(
+        d3.extent(this.chartData, function (d) {
+          return d.error
+        })
+      )
+      .range([this._height, 0])
   }
 
   _setupSubChartScales() {
-    const head = _.head(this.chartPreviewData)
-    const last = _.last(this.chartPreviewData)
+    const head = this.chartPreviewData[0]
+    const last = this.chartPreviewData[this.chartPreviewData.length - 1]
     this._subXScale = d3
       .scaleTime()
       .domain([
@@ -257,10 +255,11 @@ class Timeline extends BaseComponent {
         })
       )
       .range([30, 0])
+
+    this._renderSubchartAxis()
   }
 
   _renderCharts() {
-    if (this.chartData && this._xScale) {
       {
         const errors = d3
           .area()
@@ -299,11 +298,9 @@ class Timeline extends BaseComponent {
 
         this._renderChart(changes, 'changes')
       }
-    }
   }
 
   _renderSubCharts() {
-    if (this.chartPreviewData.length > 0) {
       {
         const brushErrors = d3
           .area()
@@ -342,50 +339,49 @@ class Timeline extends BaseComponent {
 
         this._renderSubchart(brushChanges, 'changes')
       }
-    }
+
+      this._renderSubchartBrush()
   }
 
   _renderAxis() {
     this._axisElem.html('')
-    if (this.chartData && this._xScale) {
-      var horizontalTickCount = Math.max(1, this._width / 200)
+
+    var horizontalTickCount = Math.max(1, this._width / 200)
+    this._axisElem
+      .append('g')
+      .attr('class', 'x axis')
+      .attr('transform', 'translate(0, ' + this._height + ')')
+      .call(
+        d3
+          .axisBottom(this._xScale)
+          .tickFormat(function (d) {
+            return formatDate(d)
+          })
+          .ticks(horizontalTickCount)
+      )
+
+    if (this._showAxis) {
+      var verticalTickCount = Math.max(1, this._height / 20)
       this._axisElem
         .append('g')
-        .attr('class', 'x axis')
-        .attr('transform', 'translate(0, ' + this._height + ')')
-        .call(
-          d3
-            .axisBottom(this._xScale)
-            .tickFormat(function (d) {
-              return formatDate(d)
-            })
-            .ticks(horizontalTickCount)
-        )
+        .attr('class', 'y axis')
+        .call(d3.axisLeft(this._yScaleChanges).ticks(verticalTickCount))
 
-      if (this._showAxis) {
-        var verticalTickCount = Math.max(1, this._height / 20)
-        this._axisElem
-          .append('g')
-          .attr('class', 'y axis')
-          .call(d3.axisLeft(this._yScaleChanges).ticks(verticalTickCount))
+      this._axisElem
+        .append('g')
+        .attr('class', 'y axis')
+        .attr('transform', 'translate(' + this._width + ', 0)')
+        .call(d3.axisRight(this._yScaleWarnings).ticks(verticalTickCount))
 
-        this._axisElem
-          .append('g')
-          .attr('class', 'y axis')
-          .attr('transform', 'translate(' + this._width + ', 0)')
-          .call(d3.axisRight(this._yScaleWarnings).ticks(verticalTickCount))
-
-        this._axisElem
-          .append('g')
-          .attr('class', 'y axis')
-          .attr('transform', 'translate(' + this._width + ', 0)')
-          .call(d3.axisRight(this._yScaleErrors).ticks(verticalTickCount))
-      }
+      this._axisElem
+        .append('g')
+        .attr('class', 'y axis')
+        .attr('transform', 'translate(' + this._width + ', 0)')
+        .call(d3.axisRight(this._yScaleErrors).ticks(verticalTickCount))
     }
   }
 
   _renderSubchartAxis() {
-    if (this.chartPreviewData) {
       this._subXAxis = d3.axisBottom(this._subXScale)
       this._subYAxisChanges = d3.axisLeft(this._subYScaleChanges)
       this._subchartAxisElem.html('')
@@ -403,29 +399,27 @@ class Timeline extends BaseComponent {
           .attr('transform', 'translate(0, 0)')
           .call(this._subYAxisChanges)
       }
-    }
+      this._renderSubCharts()
   }
 
   _renderSubchartBrush() {
     $('.x-brush').detach()
-    if (this.chartPreviewData.length > 0) {
-      const self = this
-      this._brush = d3.brushX(this._subXScale)
-        .on('brush', function() {
-            self._onUserBrushMove(this)
-      })
-      const startPos = this._subXScale(this.time_machine_actual_date_range.from)
-      const endPos = this._subXScale(this.time_machine_actual_date_range.to)
 
-      this._subSvgElem
-        .append('g')
-        .classed('x-brush', true)
-        .call(this._brush)
-        .call(this._brush.move, [startPos, endPos])
-        .selectAll('rect')
-        .attr('y', 0)
-        .attr('height', 30)
-    }
+    const self = this
+    this._brush = d3.brushX(this._subXScale).on('brush', function () {
+      self._onUserBrushMove(this)
+    })
+    const startPos = this._subXScale(this.time_machine_actual_date_range.from)
+    const endPos = this._subXScale(this.time_machine_actual_date_range.to)
+
+    this._subSvgElem
+      .insert('g', '.sub-selector')
+      .classed('x-brush', true)
+      .call(this._brush)
+      .call(this._brush.move, [startPos, endPos])
+      .selectAll('rect')
+      .attr('y', 0)
+      .attr('height', 30)
   }
 
   _onUserBrushMove(self) {
@@ -450,9 +444,6 @@ class Timeline extends BaseComponent {
   _renderSelector() {
     this._selectorElem.html('')
 
-    if (this._subchartSelectorElem) {
-      this._subchartSelectorElem.html('')
-    }
 
     if (!this.actualTargetDate) {
       return
@@ -473,16 +464,13 @@ class Timeline extends BaseComponent {
   }
 
   _updateSelectorPosition() {
-    if (this._xScale) {
       const selectorPositionX = this._xScale(moment(this.actualTargetDate))
     // if (selectorPositionX < 0 || selectorPositionX > this._width) {   // Perhaps will be usable
     // }
     this._selectorElem.attr('transform', 'translate(' + selectorPositionX + ')')
-    }
   }
 
   _renderChart(chartObj, chartClass) {
-    if (this.chartData) {
       const stack = d3.stack().keys(['error', 'warn'])
       const stackedData = stack(this.chartData)
       const charts = this._chartsElem
@@ -499,17 +487,14 @@ class Timeline extends BaseComponent {
         .attr('d', chartObj)
         .merge(charts)
         .attr('d', chartObj)
-    }
   }
 
   _renderSubchart(chartObj, chartClass) {
-    if (this.chartPreviewData) {
       const brushCharts = this._subElemCharts
         .append('path')
         .datum(this.chartPreviewData)
         .attr('class', chartClass)
         .attr('d', chartObj)
-    }
   }
 
   _onUserDragSelector() {
@@ -574,12 +559,12 @@ class Timeline extends BaseComponent {
 
   _renderSubchartSelector()
   {
+    $('.sub-selector').detach()
     this._subchartSelectorElem = this._subSvgElem
     .append('g')
     .attr('class', 'sub-selector')
 
       this._subchartSelectorElem.append('path').attr('d', 'M0,0 v' + 30)
-      this._updateSubchartSelectorPosition()
   }
 
   _updateSubchartSelectorPosition()
@@ -713,14 +698,15 @@ class Timeline extends BaseComponent {
         if (this._dateRangesAreSame(actual)) {
           return
         }
-        
+
         let diff = moment.duration(actual.to.diff(actual.from))
         this.durationSeconds = diff.asSeconds()
 
         this.time_machine_actual_date_range = actual
-        this._updateSelectorPosition()
-        // this._setupBrushSelectionRange(this.time_machine_actual_date_range);
-        // this._setupTimeMachineTargetDate();
+
+        if (this._xScale) {
+          this._updateSelectorPosition()
+        }
       }
     )
 
@@ -740,19 +726,17 @@ class Timeline extends BaseComponent {
           this.actualTargetDate = null
         }
         this._renderSelector()
-        this._updateSelectorPosition()
-
-        // this._setupTimeMachineTargetDate();
+        if (this._xScale) {
+          this._updateSelectorPosition()
+          this._updateSubchartSelectorPosition()
+        }
       }
     )
 
     this.subscribeToSharedState('time_machine_timeline_data',
       (time_machine_timeline_data) => {
         this.chartData = this._massageData(time_machine_timeline_data)
-        // this._updateMainChartData(time_machine_timeline_data);
-        // this._setupTimeMachineTargetDate()
-        // this._renderTimeline()
-        // this._renderCharts()
+
         this._setupChartScales()
         this._renderCharts()
         this._renderAxis()
@@ -762,8 +746,6 @@ class Timeline extends BaseComponent {
     this.subscribeToSharedState('time_machine_timeline_preview',
       (time_machine_timeline_preview) => {
         this.chartPreviewData = this._massageData(time_machine_timeline_preview)
-        // this._updateBrushChartData()
-        // this._setupTimeMachineTargetDate()
       }
     )
 
