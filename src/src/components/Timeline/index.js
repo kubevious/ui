@@ -203,10 +203,6 @@ class Timeline extends BaseComponent {
 
     this._xScale = d3
       .scaleTime()
-      .domain([
-        head.dateMoment,
-        last.dateMoment
-      ])
       .range([0, this._width])
     this._yScaleChanges = d3
       .scaleLinear()
@@ -232,6 +228,9 @@ class Timeline extends BaseComponent {
         })
       )
       .range([this._height, 0])
+
+      this._activateMainChartDomain()
+
   }
 
   _setupSubChartScales() {
@@ -439,17 +438,26 @@ class Timeline extends BaseComponent {
     const dateTo = moment(this._subXScale.invert(d3.brushSelection(self)[1]))
     const dateFrom = moment(this._subXScale.invert(d3.brushSelection(self)[0]))
 
-    let diff = moment.duration(dateTo.diff(dateFrom))
-    let durationSeconds = diff.asSeconds().toFixed()
+    this.time_machine_actual_date_range = {
+      from: dateFrom,
+      to: dateTo
+    }
 
+    this._activateMainChartDomain()
+    this._applyUIRangeChange()
+  }
+
+  _applyUIRangeChange() {
+    let diff = moment.duration(this.time_machine_actual_date_range.to.diff(this.time_machine_actual_date_range.from))
+    let durationSeconds = diff.asSeconds().toFixed()
     let lastDate = this.sharedState.get('time_machine_timeline_preview_last_date')
-    if (dateTo.isSameOrAfter(lastDate))
+    if (this.time_machine_actual_date_range.to.isSameOrAfter(lastDate))
     {
       this.sharedState.set('time_machine_date_to', null)
     }
     else
     {
-      this.sharedState.set('time_machine_date_to', dateTo.toISOString())
+      this.sharedState.set('time_machine_date_to', this.time_machine_actual_date_range.to.toISOString())
     }
     this.sharedState.set('time_machine_duration', durationSeconds)
   }
@@ -477,7 +485,10 @@ class Timeline extends BaseComponent {
   }
 
   _updateSelectorPosition() {
-      const selectorPositionX = this._xScale(moment(this.actualTargetDate))
+    if (!this._xScale) {
+      return
+    }
+    const selectorPositionX = this._xScale(moment(this.actualTargetDate))
       this._selectorElem.attr(
         'transform',
         'translate(' + selectorPositionX + ')'
@@ -524,13 +535,6 @@ class Timeline extends BaseComponent {
     this.sharedState.set('time_machine_target_date', date)
   }
 
-  _cancelPendingTimeouts() {
-    if (this._dateChangeTimerId) {
-      clearTimeout(this._dateChangeTimerId)
-      this._dateChangeTimerId = null
-    }
-  }
-
   _formatXaxis(item) {
     return moment(item).format('MMM DD hh:mm A')
   }
@@ -554,7 +558,7 @@ class Timeline extends BaseComponent {
 
   _updateSubchartSelectorPosition()
   {
-    if (!this._subchartSelectorElem || !this.actualTargetDate) {
+    if (!this._subchartSelectorElem || !this.actualTargetDate || !this._xScale) {
       $('.sub-selector').detach()
       return
     }
@@ -649,31 +653,26 @@ class Timeline extends BaseComponent {
     this._hoverLineElem.attr('d', 'M0,' + -0.4 * margin.top + ' v' + (this._height + margin.top * 0.7))
   }
 
-  _activateMainChartRange()
+  _activateMainChartDomain()
   {
-    // if (!this.mainChartElem) {
-    //   return;
-    // }
-    // console.log('[_activateMainChartRange] FROM:', this.time_machine_actual_date_range.from);
-    // console.log('[_activateMainChartRange]   TO:', this.time_machine_actual_date_range.to);
+    if (!this._xScale) {
+      return;
+    }
+    console.log('[_activateMainChartDomain] FROM:', this.time_machine_actual_date_range.from);
+    console.log('[_activateMainChartDomain]   TO:', this.time_machine_actual_date_range.to);
 
-    // if (!this.time_machine_actual_date_range.from ||
-    //     !this.time_machine_actual_date_range.to)
-    // {
-    //   this.mainChartElem.axis.range({});
-    // }
-    // else
-    // {
-    //   this.mainChartElem.axis.range({
-    //     min: {
-    //       x: this.time_machine_actual_date_range.from
-    //     },
-    //     max: {
-    //       x: this.time_machine_actual_date_range.to
-    //     }
-    //   });
-
-    // }
+    if (!this.time_machine_actual_date_range.from ||
+        !this.time_machine_actual_date_range.to)
+    {
+      this._xScale.domain([])
+    }
+    else
+    {
+      this._xScale.domain([
+        this.time_machine_actual_date_range.from,
+        this.time_machine_actual_date_range.to,
+      ])
+    }
   }
 
   _dateRangesAreSame(newActual)
@@ -718,9 +717,6 @@ class Timeline extends BaseComponent {
 
         this.time_machine_actual_date_range = actual
 
-        if (this._xScale) {
-          this._updateSelectorPosition()
-        }
       }
     )
 
@@ -740,10 +736,8 @@ class Timeline extends BaseComponent {
           this.actualTargetDate = null
         }
         this._renderSelector()
-        if (this._xScale) {
-          this._updateSelectorPosition()
-          this._updateSubchartSelectorPosition()
-        }
+        this._updateSelectorPosition()
+        this._updateSubchartSelectorPosition()
       }
     )
 
@@ -754,6 +748,8 @@ class Timeline extends BaseComponent {
         this._setupChartScales()
         this._renderCharts()
         this._renderAxis()
+        this._updateSelectorPosition()
+
       }
     )
 
