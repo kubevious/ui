@@ -191,8 +191,6 @@ class Timeline extends BaseComponent {
         this._updateSubchartSelectorPosition()
       }
 
-      this._renderSubchartBrush()
-
       this._renderHoverLine()
     }
   }
@@ -662,6 +660,14 @@ class Timeline extends BaseComponent {
     }
   }
 
+  _resetBrush() {
+    if (this._brush) {
+      const startPos = this._subXScale(moment().subtract(this.dayInSec, 'seconds'))
+      const endPos = this._subXScale(moment())
+      d3.select('.x-brush').call(this._brush.move, [startPos, endPos])
+    }
+  }
+
   _dateRangesAreSame(newActual)
   {
     return this._datesAreSame(this.time_machine_actual_date_range.from, newActual.from) &&
@@ -721,6 +727,7 @@ class Timeline extends BaseComponent {
 
         if (!time_machine_enabled || !time_machine_target_date) {
           this.actualTargetDate = null
+          this._resetBrush()
         }
         this._renderSelector()
         this._updateSelectorPosition()
