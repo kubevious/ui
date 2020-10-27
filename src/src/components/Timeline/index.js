@@ -546,15 +546,16 @@ class Timeline extends BaseComponent {
   {
     $('.sub-selector').detach()
     this._subchartSelectorElem = this._subSvgElem
-    .append('g')
-    .attr('class', 'sub-selector')
+      .append('g')
+      .attr('class', 'sub-selector')
 
-      this._subchartSelectorElem.append('path').attr('d', 'M0,0 v' + 30)
+    this._subchartSelectorElem.append('path').attr('d', 'M0,0 v' + 30)
   }
 
   _updateSubchartSelectorPosition()
   {
-    if (!this._subchartSelectorElem) {
+    if (!this._subchartSelectorElem || !this.actualTargetDate) {
+      $('.sub-selector').detach()
       return
     }
     const date = moment(this.actualTargetDate);
@@ -618,11 +619,24 @@ class Timeline extends BaseComponent {
     const foundId = bisectDate(this.chartData, moment(date))
     const formattedDate = moment(date).format('MMM DD hh:mm A')
     const { changes, error, warn } = this.chartData[foundId]
+    const tooltipHtml =
+      '<p>' +
+      formattedDate +
+      '</p>' +
+      '<p class="txt-white"> Changes: ' +
+      changes +
+      '</p>' +
+      '<p class="txt-red"> Errors: ' +
+      error +
+      '</p>' +
+      '<p class="txt-orange"> Warnings: ' +
+      warn +
+      '</p>'
 
     this._tooltipElem
       .style('opacity', '1')
-      .html('<p>' + formattedDate + '</p>' + '<p> Changes: ' + changes + '</p>' + '<p> Errors: ' + error + '</p>' + '<p> Warnings: ' + warn + '</p>')
-      .style('transform', 'translate(' + (mousex + 10) + 'px, 5px)')
+      .html(tooltipHtml)
+      .style('transform', 'translate(' + (mousex + 10) + 'px, ' + (this._height / 2 - 30) + 'px)')
 
   }
 
