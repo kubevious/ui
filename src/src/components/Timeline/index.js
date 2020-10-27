@@ -198,9 +198,6 @@ class Timeline extends BaseComponent {
   }
 
   _setupChartScales() {
-    const head = this.chartData[0]
-    const last = this.chartData[this.chartData.length - 1]
-
     this._xScale = d3
       .scaleTime()
       .range([0, this._width])
@@ -212,19 +209,11 @@ class Timeline extends BaseComponent {
         })
       )
       .range([this._height, 0])
-    this._yScaleWarnings = d3
+    this._yScaleErrorsWarnings = d3
       .scaleLinear()
       .domain(
         d3.extent(this.chartData, function (d) {
-          return d.warn
-        })
-      )
-      .range([this._height, 0])
-    this._yScaleErrors = d3
-      .scaleLinear()
-      .domain(
-        d3.extent(this.chartData, function (d) {
-          return d.error
+          return d.error + d.warn
         })
       )
       .range([this._height, 0])
@@ -239,7 +228,7 @@ class Timeline extends BaseComponent {
     this._subXScale = d3
       .scaleTime()
       .domain([
-        head ? head.dateMoment : moment().subtract('12', 'hours'),
+        head ? head.dateMoment : moment().subtract('5', 'days'),
         last ? last.dateMoment : moment(),
       ])
       .range([0, this._width])
@@ -251,19 +240,11 @@ class Timeline extends BaseComponent {
         })
       )
       .range([30, 0])
-    this._subYScaleWarnings = d3
+    this._subYScaleErrorsWarnings = d3
       .scaleLinear()
       .domain(
         d3.extent(this.chartPreviewData, function (d) {
-          return d.warn
-        })
-      )
-      .range([30, 0])
-    this._subYScaleErrors = d3
-      .scaleLinear()
-      .domain(
-        d3.extent(this.chartPreviewData, function (d) {
-          return d.error
+          return d.error + d.warn
         })
       )
       .range([30, 0])
@@ -278,9 +259,11 @@ class Timeline extends BaseComponent {
           .x((d) => {
             return this._xScale(d.dateMoment)
           })
-          .y0(this._height)
+          .y0((d) => {
+            return this._yScaleErrorsWarnings(d.warn)
+          })
           .y1((d) => {
-            return this._yScaleErrors(d.error)
+            return this._yScaleErrorsWarnings(d.error + d.warn)
           })
         this._renderChart(errors, 'errors')
       }
@@ -293,7 +276,7 @@ class Timeline extends BaseComponent {
           })
           .y0(this._height)
           .y1((d) => {
-            return this._yScaleWarnings(d.warn)
+            return this._yScaleErrorsWarnings(d.warn)
           })
         this._renderChart(warnings, 'warnings')
       }
@@ -319,9 +302,11 @@ class Timeline extends BaseComponent {
           .x((d) => {
             return this._subXScale(d.dateMoment)
           })
-          .y0(30)
+          .y0((d) => {
+            return this._subYScaleErrorsWarnings(d.warn)
+          })
           .y1((d) => {
-            return this._subYScaleErrors(d.error)
+            return this._subYScaleErrorsWarnings(d.error + d.warn)
           })
         this._renderSubchart(brushErrors, 'errors')
       }
@@ -334,7 +319,7 @@ class Timeline extends BaseComponent {
           })
           .y0(30)
           .y1((d) => {
-            return this._subYScaleWarnings(d.warn)
+            return this._subYScaleErrorsWarnings(d.warn)
           })
         this._renderSubchart(brushWarnings, 'warnings')
       }
@@ -383,13 +368,7 @@ class Timeline extends BaseComponent {
         .append('g')
         .attr('class', 'y axis')
         .attr('transform', 'translate(' + this._width + ', 0)')
-        .call(d3.axisRight(this._yScaleWarnings).ticks(verticalTickCount))
-
-      this._axisElem
-        .append('g')
-        .attr('class', 'y axis')
-        .attr('transform', 'translate(' + this._width + ', 0)')
-        .call(d3.axisRight(this._yScaleErrors).ticks(verticalTickCount))
+        .call(d3.axisRight(this._yScaleErrorsWarnings).ticks(verticalTickCount))
     }
   }
 
@@ -496,8 +475,6 @@ class Timeline extends BaseComponent {
   }
 
   _renderChart(chartObj, chartClass) {
-      const stack = d3.stack().keys(['error', 'warn'])
-      const stackedData = stack(this.chartData)
       const charts = this._chartsElem
         .selectAll('.' + chartClass)
         .data([this.chartData])
