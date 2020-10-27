@@ -545,9 +545,17 @@ class Timeline extends BaseComponent {
   }
 
   _onUserChartClick() {
-    const date = this._xScale.invert(d3.event.x - 25) //  Temporary substraction because of wrong position calculating
+    const posX = d3.event.x + this._calculateCoeff(d3.event.x, 25)
+    const date = this._xScale.invert(posX)
     this.sharedState.set('time_machine_enabled', true)
     this.sharedState.set('time_machine_target_date', date)
+  }
+
+  _calculateCoeff(cursorX, padding) {
+    const halfWidth = this._width / 2
+    const distFromCenter = cursorX - halfWidth
+    const remotenessСoeff = distFromCenter / (halfWidth / 10) - padding
+    return remotenessСoeff
   }
 
   _massageData(data)
@@ -614,10 +622,12 @@ class Timeline extends BaseComponent {
       warn +
       '</p>'
 
+    const posX = mousex - this._calculateCoeff(mousex, 10)
+
     this._tooltipElem
       .style('opacity', '1')
       .html(tooltipHtml)
-      .style('transform', 'translate(' + (mousex + 10) + 'px, ' + (this._height / 2 - 30) + 'px)')
+      .style('transform', 'translate(' + posX + 'px, ' + (this._height / 2 - 30) + 'px)')
 
   }
 
