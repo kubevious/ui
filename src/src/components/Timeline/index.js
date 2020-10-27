@@ -604,6 +604,10 @@ class Timeline extends BaseComponent {
     const bisectDate = d3.bisector(d => d.dateMoment).left
     const date = this._xScale.invert(mousex)
     const foundId = bisectDate(this.chartData, moment(date))
+
+    if (!this.chartData[foundId]) {
+      return
+    }
     const formattedDate = moment(date).format('MMM DD hh:mm A')
     const { changes, error, warn } = this.chartData[foundId]
     const tooltipHtml =
@@ -704,7 +708,7 @@ class Timeline extends BaseComponent {
         if (this._dateRangesAreSame(actual)) {
           return
         }
-
+        
         let diff = moment.duration(actual.to.diff(actual.from))
         this.durationSeconds = diff.asSeconds()
 
@@ -752,6 +756,17 @@ class Timeline extends BaseComponent {
         this.chartPreviewData = this._massageData(time_machine_timeline_preview)
       }
     )
+
+    this.subscribeToSharedState(
+      [
+        'time_machine_date_to',
+        'time_machine_duration'
+      ],
+      ({time_machine_date_to, time_machine_duration}) => {
+        if (time_machine_date_to === null && time_machine_duration === this.dayInSec) {
+          this._resetBrush()
+        }
+      })
 
     $('.plus').on('click', () => this.zoomIn())
     $('.minus').on('click', () => this.zoomOut())
