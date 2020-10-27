@@ -209,32 +209,40 @@ class StateHandler {
             });
     }
 
+    _massageTimelineData(data)
+    {
+        if (!data || data.length === 0)
+        {
+            let date = moment();
+            return [{
+                date: date.toISOString(),
+                dateMoment: date,
+                error: 0,
+                warn: 0,
+                changes: 0
+            }];
+        }
+
+        for(let x of data)
+        {
+            x.dateMoment = moment(x.date);
+        }
+
+        return data;
+    }
+
     _handleTimelineDataChange() {
         this._service.fetchHistoryTimelinePreview(data => {
-            const orderedData = _.orderBy(data, ['date'], ['asc']);
-            let sampledData = this._resamplePreviewTimelineData(orderedData);
-            this.sharedState.set('time_machine_timeline_preview_raw', sampledData);
+            this.sharedState.set('time_machine_timeline_preview_raw', data);
         })
 
         this.sharedState.subscribe('time_machine_timeline_preview_raw', 
             time_machine_timeline_preview_raw => 
             {
-                let data = time_machine_timeline_preview_raw;
-                if (!data || data.length === 0)
-                {
-                    let date = moment();
-                    data = [{
-                        date: date.toISOString(),
-                        dateMoment: date,
-                        error: 0,
-                        warn: 0,
-                        changes: 0
-                    }];
-                }
+                const massagedData = this._massageTimelineData(time_machine_timeline_preview_raw);
+                const lastDate = _.last(massagedData).dateMoment;
 
-                let lastDate = _.last(data).dateMoment;
-
-                this.sharedState.set('time_machine_timeline_preview', data);
+                this.sharedState.set('time_machine_timeline_preview', massagedData);
                 this.sharedState.set('time_machine_timeline_preview_last_date', lastDate);
             }
         );
@@ -278,12 +286,6 @@ class StateHandler {
             return;
         }
 
-        if (this._latestData)
-        {
-            let newData = this._latestData.filter(elem => elem.dateMoment.isBetween(fromMoment, toMoment));
-            this._setTimelineData(newData, fromMoment, toMoment);
-        }
-
         if (this._isQueryingTimeline) {
             return;
         }
@@ -295,100 +297,11 @@ class StateHandler {
             this._latestTimelineDateFrom = from;
             this._latestTimelineDateTo = to;
 
-            const dates = data.filter(elem => elem.dateMoment.isBetween(fromMoment, toMoment));
-            let orderedData = _.orderBy(dates, ['date'], ['asc']);
-
-            this._latestData = orderedData;
-
-            this._setTimelineData(orderedData, fromMoment, toMoment);
+            const massagedData = this._massageTimelineData(data);
+            this.sharedState.set('time_machine_timeline_data', massagedData);
 
             this._tryQueryTimelineData();
         });
-    }
-
-    _setTimelineData(value, from, to)
-    {
-        const resampled = this._resampleTimelineData(value, from, to);
-        this.sharedState.set('time_machine_timeline_data', resampled);
-    }
-
-    _resamplePreviewTimelineData(data)
-    {
-        if (!data) {
-            return [];
-        }
-        if (!data.length) {
-            return [];
-        }
-
-        return this._resampleTimelineData(data,
-            moment(_.head(data).date),
-            moment(_.last(data).date))
-    }
-
-    _resampleTimelineData(data, from, to)
-    {
-        if (!data) {
-            return [];
-        }
-        if (!data.length) {
-            return [];
-        }
-
-        let sampleCount = 200;
-        // if (data.length <= sampleCount) {
-        //     return data;
-        // }
-
-        const diff = to.diff(from);
-        let period = diff / sampleCount;
-
-        let groups = [];
-
-        let date = to.clone();
-        let index = data.length - 1;
-        while (date.isSameOrAfter(from))
-        {
-            const periodStart = date.clone().subtract(period, 'milliseconds');
-            const newPoint = {
-                dateMoment: date,
-                date: date.toISOString(),
-                samples: []
-            }
-
-            while ((index >= 0) && (data[index].dateMoment.isSameOrAfter(periodStart)))
-            {
-                newPoint.samples.push(data[index]);
-                index--;
-            }
-            groups.unshift(newPoint);
-
-            date = periodStart;
-        }
-
-        const resampled = groups.map(x => this._reduceTimelineGroup(x));
-
-        return resampled;
-    }
-
-    _reduceTimelineGroup(group)
-    {
-        const point = {
-            date: group.date,
-            dateMoment: moment(group.date),
-            changes: 0,
-            error: 0,
-            warn: 0
-        };
-
-        if (group.samples.length > 0)
-        {
-            point.error = Math.round(_.sum(group.samples.map(x => x.error)) / group.samples.length);
-            point.warn = Math.round(_.sum(group.samples.map(x => x.warn))  / group.samples.length);
-            point.changes = _.max(group.samples.map(x => x.changes));
-        }
-
-        return point;
     }
 
     _handleMarkerListChange()

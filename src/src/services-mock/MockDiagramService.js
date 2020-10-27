@@ -8,7 +8,6 @@ import {
     DN_LIST
 } from '../boot/diagramMockData'
 import { timelineData } from '../boot/timelineBoot' 
-import { timelinePreviewData } from '../boot/timelinePreviewBoot'
 
 class MockDiagramService {
     constructor(sharedState) {
@@ -104,15 +103,54 @@ class MockDiagramService {
             }
         }
         console.timeEnd("PERF::fetchHistoryTimeline")
-
         console.log("[fetchHistoryTimeline] END. Filtered PointCount: " + filteredData.length);
+
+        const resampledData = this._resampleTimelineData(filteredData);
+        console.log("[fetchHistoryTimeline] END. Resampled PointCount: " + resampledData.length);
+
         setTimeout(() => {
-            cb(filteredData);
+            cb(resampledData);
         }, 500)
     }
 
     fetchHistoryTimelinePreview(cb) {
-        cb(timelinePreviewData)
+        const now = moment();
+        const filteredData = [];
+        for(let x of timelineData)
+        {
+            if (x.dateMoment.isSameOrBefore(now))
+            {
+                filteredData.push(x);
+            }
+        }
+
+        const resampledData = this._resampleTimelineData(filteredData);
+
+        setTimeout(() => {
+            cb(resampledData);
+        }, 500)
+    }
+
+    _resampleTimelineData(data)
+    {
+        if (data.length <= 200) {
+            return data;
+        }
+        const index_delta = (data.length - 2) / (200 - 2);
+
+        let resampled = [];
+        resampled.push(data[0]);
+        let latest_index = 0;
+        for(let i = 0; i < 200 - 2; i++)
+        {
+            let index = Math.floor(i * index_delta);
+            if (index != latest_index) {
+                resampled.push(data[index]);
+                latest_index = index;
+            }
+        }
+        resampled.push(data[data.length - 1]);
+        return resampled;
     }
 
     fetchHistorySnapshot(date, cb) {

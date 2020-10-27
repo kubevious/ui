@@ -57,7 +57,6 @@ class DiagramService extends BaseService {
                 {
                     x.dateMoment = moment(x.date);
                 }
-                console.log("*****", data);
                 cb(data);
             });
     }

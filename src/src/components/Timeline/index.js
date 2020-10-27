@@ -647,8 +647,6 @@ class Timeline extends BaseComponent {
     if (!this._xScale) {
       return;
     }
-    console.log('[_activateMainChartDomain] FROM:', this.time_machine_actual_date_range.from);
-    console.log('[_activateMainChartDomain]   TO:', this.time_machine_actual_date_range.to);
 
     if (!this.time_machine_actual_date_range.from ||
         !this.time_machine_actual_date_range.to)
@@ -698,12 +696,6 @@ class Timeline extends BaseComponent {
       ],
       () => {
         let actual = this._timelineUtils.getActualRange()
-
-        console.log('[subscribeToSharedState] CURR From: ', this.time_machine_actual_date_range.from.toISOString())
-        console.log('[subscribeToSharedState] CURR  To: ', this.time_machine_actual_date_range.to.toISOString())
-
-        console.log('[subscribeToSharedState] From: ', actual.from.toISOString())
-        console.log('[subscribeToSharedState]   To: ', actual.to.toISOString())
 
         if (this._dateRangesAreSame(actual)) {
           return
