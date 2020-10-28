@@ -29,37 +29,6 @@ class Timeline extends BaseComponent {
     this._showAxis = false
   }
 
-  zoomIn() {
-    d3.select('.x-brush').call(this._brush.move, this._calcShiftDate(this.durationSeconds / 4, -this.durationSeconds / 4))
-    if (this.durationSeconds < this.dayInSec) {
-      $('.plus').css('cursor', 'not-allowed').off('click')
-    }
-  }
-
-  zoomOut() {
-    d3.select('.x-brush').call(this._brush.move, this._calcShiftDate(-this.durationSeconds / 4, this.durationSeconds / 4))
-    if (this.durationSeconds > this.dayInSec / 4) {
-      $('.plus').css('cursor', 'pointer').on('click', () => this.zoomIn())
-    }
-  }
-
-  onUserPanLeft() {
-    d3.select('.x-brush').call(this._brush.move, this._calcShiftDate(-this.durationSeconds / 2, -this.durationSeconds / 2))
-  }
-
-  onUserPanRight() {
-    d3.select('.x-brush').call(this._brush.move, this._calcShiftDate(this.durationSeconds / 2, this.durationSeconds / 2))
-  }
-
-  _calcShiftDate(diffSecondsStart, diffSecondsEnd) {
-    const startDate = moment(this.time_machine_actual_date_range.from).add(diffSecondsStart, 'seconds')
-    const endDate = moment(this.time_machine_actual_date_range.to).add(diffSecondsEnd, 'seconds')
-
-    const startPos = this._subXScale(startDate)
-    const endPos = this._subXScale(endDate)
-    return [startPos, endPos]
-  }
-
   _setup() {
     this._mainSvgElem = this._parentElem
       .insert('svg', ':first-child')
@@ -515,13 +484,6 @@ class Timeline extends BaseComponent {
     return moment(item).format('MMM DD hh:mm A')
   }
 
-  _setupBrushSelectionRange(actual) {
-    // this.mainXScale.domain([this.from, this.to]);
-    // this.main.select(".area").attr("d", this.mainArea);
-    // this.main.select(".x.axis").call(this.mainXAxis);
-    // this._refreshMainData(this.from, this.to);
-  }
-
   _renderSubchartSelector()
   {
     $('.sub-selector').detach()
@@ -555,23 +517,6 @@ class Timeline extends BaseComponent {
     const distFromCenter = cursorX - halfWidth
     const remotenessСoeff = distFromCenter / (halfWidth / 10) - padding
     return remotenessСoeff
-  }
-
-  _massageData(data)
-  {
-    if (data)
-    {
-      if (data.length > 0)
-      {
-        return data
-      }
-    }
-    return [{
-        dateMoment: moment(),
-        error: 0,
-        warn: 0,
-        changes: 0
-      }]
   }
 
   _renderHoverLine() {
@@ -615,10 +560,11 @@ class Timeline extends BaseComponent {
       (this.isTimeMachineActive
         ? ''
         : '<p>Click to activate Time Machine at </p>') +
-      `<p><b>${formattedDate}</p></b>
-      <p class="txt-white">Changes${this.wrap ? '<br>' : ': '}<b>${changes}</b></p>
-      <p class="txt-red">Errors${this.wrap ? '<br>' : ': '}<b>${error}</b></p>
-      <p class="txt-orange">Warnings${this.wrap ? '<br>' : ': '}<b>${warn}</b></p>`
+          `<p><b>${formattedDate}</p></b>
+            <p class="txt-white">Changes${this.wrap ? '<br>' : ': '}<b>${changes}</b></p>
+            <p class="txt-red">Errors${this.wrap ? '<br>' : ': '}<b>${error}</b></p>
+            <p class="txt-orange">Warnings${this.wrap ? '<br>' : ': '}<b>${warn}</b>
+          </p>`
 
     const posX = mousex - this._calculateCoeff(mousex, 10)
 
@@ -696,7 +642,7 @@ class Timeline extends BaseComponent {
         if (this._dateRangesAreSame(actual)) {
           return
         }
-        
+
         let diff = moment.duration(actual.to.diff(actual.from))
         this.durationSeconds = diff.asSeconds()
 
@@ -719,7 +665,6 @@ class Timeline extends BaseComponent {
         this.isTimeMachineActive = time_machine_enabled
         if (!time_machine_enabled || !time_machine_target_date) {
           this.actualTargetDate = null
-          this._resetBrush()
         }
         this._renderSelector()
         this._updateSelectorPosition()
@@ -729,7 +674,7 @@ class Timeline extends BaseComponent {
 
     this.subscribeToSharedState('time_machine_timeline_data',
       (time_machine_timeline_data) => {
-        this.chartData = this._massageData(time_machine_timeline_data)
+        this.chartData = time_machine_timeline_data
 
         this._setupChartScales()
         this._renderCharts()
@@ -741,7 +686,7 @@ class Timeline extends BaseComponent {
 
     this.subscribeToSharedState('time_machine_timeline_preview',
       (time_machine_timeline_preview) => {
-        this.chartPreviewData = this._massageData(time_machine_timeline_preview)
+        this.chartPreviewData = time_machine_timeline_preview
       }
     )
 
@@ -755,11 +700,6 @@ class Timeline extends BaseComponent {
           this._resetBrush()
         }
       })
-
-    $('.plus').on('click', () => this.zoomIn())
-    $('.minus').on('click', () => this.zoomOut())
-    $('.left').on('click', () => this.onUserPanLeft())
-    $('.right').on('click', () => this.onUserPanRight())
   }
 
   render() {
@@ -769,30 +709,9 @@ class Timeline extends BaseComponent {
         </div>
         <div className="tl-actions">
           <TimelineButtons />
-          <a role="button" className="plus" />
-          <a role="button" className="minus" />
-          <a role="button" className="left" />
-          <a role="button" className="right" />
         </div>
       </div>
     )
-  }
-}
-
-function isValidDate(date)
-{
-  if (!date) {
-    return false
-  }
-  if (Object.prototype.toString.call(date) === '[object Date]') {
-    // it is a date
-    if (isNaN(date.getTime())) {  // d.valueOf() could also work
-      return false
-    } else {
-      return true
-    }
-  } else {
-    return false
   }
 }
 
