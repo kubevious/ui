@@ -443,28 +443,37 @@ class Timeline extends BaseComponent {
   }
 
   _renderChart(chartObj, chartClass) {
-      const charts = this._chartsElem
-        .selectAll('.' + chartClass)
-        .data([this.chartData])
-        .attr('class', chartClass)
+    const charts = this._chartsElem
+      .selectAll('.' + chartClass)
+      .data([this.chartData])
+      .attr('class', chartClass)
 
-      charts.exit().remove()
+    charts.exit().remove()
 
-      charts
-        .enter()
-        .append('path')
-        .attr('class', chartClass)
-        .attr('d', chartObj)
-        .merge(charts)
-        .attr('d', chartObj)
+    charts
+      .enter()
+      .append('path')
+      .attr('class', chartClass)
+      .attr('d', chartObj)
+      .merge(charts)
+      .attr('d', chartObj)
   }
 
   _renderSubchart(chartObj, chartClass) {
-      const brushCharts = this._subElemCharts
-        .append('path')
-        .datum(this.chartPreviewData)
-        .attr('class', chartClass)
-        .attr('d', chartObj)
+    const brushCharts = this._subElemCharts
+      .selectAll('.' + chartClass)
+      .data([this.chartPreviewData])
+      .attr('class', chartClass)
+
+    brushCharts.exit().remove()
+
+    brushCharts
+      .enter()
+      .append('path')
+      .attr('class', chartClass)
+      .attr('d', chartObj)
+      .merge(brushCharts)
+      .attr('d', chartObj)
   }
 
   _onUserDragSelector() {
