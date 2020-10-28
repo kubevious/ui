@@ -156,6 +156,8 @@ class Timeline extends BaseComponent {
 
       this._renderSubCharts()
 
+      this._calculateBrushInit()
+
       if (this.actualTargetDate) {
         this._updateSelectorPosition()
         this._updateSubchartSelectorPosition()
@@ -364,17 +366,20 @@ class Timeline extends BaseComponent {
     this._brush = d3.brushX(this._subXScale).on('brush', function () {
       self._onUserBrushMove(this)
     })
-    const startPos = this._subXScale(this.time_machine_actual_date_range.from)
-    const endPos = this._subXScale(this.time_machine_actual_date_range.to)
 
     this._subSvgElem
       .insert('g', '.sub-selector')
       .classed('x-brush', true)
       .call(this._brush)
-      .call(this._brush.move, [startPos, endPos])
       .selectAll('rect')
       .attr('y', 0)
       .attr('height', 30)
+  }
+
+  _calculateBrushInit() {
+    const startPos = this._subXScale(this.time_machine_actual_date_range.from)
+    const endPos = this._subXScale(this.time_machine_actual_date_range.to)
+    d3.select('.x-brush').call(this._brush.move, [startPos, endPos])
   }
 
   _onUserBrushMove(self) {
@@ -692,6 +697,11 @@ class Timeline extends BaseComponent {
     this.subscribeToSharedState('time_machine_timeline_preview',
       (time_machine_timeline_preview) => {
         this.chartPreviewData = time_machine_timeline_preview
+        if (this._subXScale) {
+          this._renderSubCharts()
+          this._calculateBrushInit()
+          this._updateSubchartSelectorPosition()
+        }
       }
     )
 
