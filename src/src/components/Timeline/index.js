@@ -172,18 +172,16 @@ class Timeline extends BaseComponent {
     this._yScaleChanges = d3
       .scaleLinear()
       .domain(
-        d3.extent(this.chartData, function (d) {
+        [0, d3.max(this.chartData, function (d) {
           return d.changes
-        })
+        })]
       )
       .range([this._height, 0])
     this._yScaleErrorsWarnings = d3
       .scaleLinear()
-      .domain(
-        d3.extent(this.chartData, function (d) {
-          return d.error + d.warn
-        })
-      )
+      .domain([0, d3.max(this.chartData, function (d) {
+          return (d.error + d.warn)
+        })])
       .range([this._height, 0])
 
       this._activateMainChartDomain()
@@ -203,18 +201,16 @@ class Timeline extends BaseComponent {
     this._subYScaleChanges = d3
       .scaleLinear()
       .domain(
-        d3.extent(this.chartPreviewData, function (d) {
+        [0, d3.max(this.chartData, function (d) {
           return d.changes
-        })
+        })]
       )
       .range([30, 0])
     this._subYScaleErrorsWarnings = d3
       .scaleLinear()
-      .domain(
-        d3.extent(this.chartPreviewData, function (d) {
-          return d.error + d.warn
-        })
-      )
+      .domain([0, d3.max(this.chartData, function (d) {
+        return (d.error + d.warn)
+      })])
       .range([30, 0])
 
     this._renderSubchartAxis()
