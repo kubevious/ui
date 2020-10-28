@@ -135,6 +135,7 @@ class Timeline extends BaseComponent {
 
     this._width = size.width - margin.left - margin.right
     this._height = size.height - margin.top - margin.bottom - 40
+    this.wrap = this._height > 150
 
     var viewBox = [
       -margin.left,
@@ -611,25 +612,20 @@ class Timeline extends BaseComponent {
     const formattedDate = moment(date).format('MMM DD hh:mm A')
     const { changes, error, warn } = this.chartData[foundId]
     const tooltipHtml =
-      '<p>' +
-      formattedDate +
-      '</p>' +
-      '<p class="txt-white"> Changes: ' +
-      changes +
-      '</p>' +
-      '<p class="txt-red"> Errors: ' +
-      error +
-      '</p>' +
-      '<p class="txt-orange"> Warnings: ' +
-      warn +
-      '</p>'
+      (this.isTimeMachineActive
+        ? ''
+        : '<p>Click to activate Time Machine at </p>') +
+      `<p><b>${formattedDate}</p></b>
+      <p class="txt-white">Changes${this.wrap ? '<br>' : ': '}<b>${changes}</b></p>
+      <p class="txt-red">Errors${this.wrap ? '<br>' : ': '}<b>${error}</b></p>
+      <p class="txt-orange">Warnings${this.wrap ? '<br>' : ': '}<b>${warn}</b></p>`
 
     const posX = mousex - this._calculateCoeff(mousex, 10)
 
     this._tooltipElem
       .style('opacity', '1')
       .html(tooltipHtml)
-      .style('transform', 'translate(' + posX + 'px, ' + (this._height / 2 - 30) + 'px)')
+      .style('transform', 'translate(' + posX + 'px, ' + (this._height / 2 - (this.wrap ? 80 : 40)) + 'px)')
 
   }
 
@@ -720,7 +716,7 @@ class Timeline extends BaseComponent {
       }) => {
 
         this.actualTargetDate = moment(time_machine_target_date).toISOString()
-
+        this.isTimeMachineActive = time_machine_enabled
         if (!time_machine_enabled || !time_machine_target_date) {
           this.actualTargetDate = null
           this._resetBrush()
