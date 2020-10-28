@@ -684,7 +684,7 @@ class Timeline extends BaseComponent {
 
     this.subscribeToSharedState('time_machine_timeline_data',
       (time_machine_timeline_data) => {
-        this.chartData = time_machine_timeline_data
+        this.chartData = time_machine_timeline_data || []
 
         this._setupChartScales()
         this._renderCharts()
@@ -696,7 +696,7 @@ class Timeline extends BaseComponent {
 
     this.subscribeToSharedState('time_machine_timeline_preview',
       (time_machine_timeline_preview) => {
-        this.chartPreviewData = time_machine_timeline_preview
+        this.chartPreviewData = time_machine_timeline_preview || []
         if (this._subXScale) {
           this._renderSubCharts()
           this._calculateBrushInit()
