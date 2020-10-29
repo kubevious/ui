@@ -122,7 +122,9 @@ class Timeline extends BaseComponent {
     ]
     this._subSvgElem.attr('viewBox', subViewBox.join(' '))
 
-    this._renderTimeline()
+    this._renderTimelineMain()
+    this._renderTimelineSub()
+
   }
 
   _getMargin() {
@@ -141,30 +143,37 @@ class Timeline extends BaseComponent {
     return margin
   }
 
-  _renderTimeline() {
-    if (this.chartPreviewData && this.chartData) {
+  _renderTimelineMain() {
+    if (this.chartData) {
       this._setupChartScales()
-
-      this._setupSubChartScales()
 
       this._renderCharts()
 
       this._renderAxis()
 
-      this._renderSubchartAxis()
-
       this._renderSelector()
+
+      if (this.actualTargetDate) {
+        this._updateSelectorPosition()
+      }
+
+      this._renderHoverLine()
+    }
+  }
+
+  _renderTimelineSub() {
+    if (this.chartPreviewData) {
+      this._setupSubChartScales()
+
+      this._renderSubchartAxis()
 
       this._renderSubCharts()
 
       this._calculateBrushInit()
 
       if (this.actualTargetDate) {
-        this._updateSelectorPosition()
         this._updateSubchartSelectorPosition()
       }
-
-      this._renderHoverLine()
     }
   }
 
@@ -204,14 +213,14 @@ class Timeline extends BaseComponent {
     this._subYScaleChanges = d3
       .scaleLinear()
       .domain(
-        [0, d3.max(this.chartData, function (d) {
+        [0, d3.max(this.chartPreviewData, function (d) {
           return d.changes
         })]
       )
       .range([30, 0])
     this._subYScaleErrorsWarnings = d3
       .scaleLinear()
-      .domain([0, d3.max(this.chartData, function (d) {
+      .domain([0, d3.max(this.chartPreviewData, function (d) {
         return (d.error + d.warn)
       })])
       .range([30, 0])
@@ -380,13 +389,17 @@ class Timeline extends BaseComponent {
   _calculateBrushInit() {
     const startPos = this._subXScale(this.time_machine_actual_date_range.from)
     const endPos = this._subXScale(this.time_machine_actual_date_range.to)
-    d3.select('.x-brush').call(this._brush.move, [startPos, endPos])
+    if (startPos > 0 && endPos > 0 && startPos !== endPos) {
+      d3.select('.x-brush').call(this._brush.move, [startPos, endPos])
+    }
   }
 
   _onUserBrushMove(self) {
     const dateTo = moment(this._subXScale.invert(d3.brushSelection(self)[1]))
     const dateFrom = moment(this._subXScale.invert(d3.brushSelection(self)[0]))
-
+    if (dateTo.isSame(dateFrom)) {
+      return
+    }
     this.time_machine_actual_date_range = {
       from: dateFrom,
       to: dateTo
@@ -687,22 +700,15 @@ class Timeline extends BaseComponent {
       (time_machine_timeline_data) => {
         this.chartData = time_machine_timeline_data || []
 
-        this._setupChartScales()
-        this._renderCharts()
-        this._renderAxis()
-        this._updateSelectorPosition()
-
+        this._renderTimelineMain()
       }
     )
 
     this.subscribeToSharedState('time_machine_timeline_preview',
       (time_machine_timeline_preview) => {
         this.chartPreviewData = time_machine_timeline_preview || []
-        if (this._subXScale) {
-          this._renderSubCharts()
-          this._calculateBrushInit()
-          this._updateSubchartSelectorPosition()
-        }
+
+        this._renderTimelineSub()
       }
     )
 
