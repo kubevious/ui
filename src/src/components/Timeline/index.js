@@ -577,7 +577,7 @@ class Timeline extends BaseComponent {
             <p class="txt-orange">Warnings${this.wrap ? '<br>' : ': '}<b>${warn}</b>
           </p>`
 
-    const posX = mousex - this._calculateCoeff(mousex, 10)
+    const posX = mousex - this._calculateCoeff(mousex, 20)
 
     this._tooltipElem
       .style('opacity', '1')

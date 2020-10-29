@@ -64,6 +64,18 @@ $timelineYellow: rgb(252, 189, 63);
     opacity: 0;
     pointer-events: none;
 
+    &::before {
+        content: '';
+        width: 0;
+        height: 0;
+        border-top: 15px solid transparent;
+        border-right: 15px solid #C4C4C4bb;
+        border-bottom: 15px solid transparent;
+        top: 10%;
+        right: 100%;
+        position: absolute;
+    }
+
     p {
         margin-bottom: 0;
         text-align: center;
