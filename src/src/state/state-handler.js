@@ -1,6 +1,8 @@
 import _ from 'the-lodash'
 import { splitDn } from '../utils/naming-utils'
 import FieldsSaver from '../utils/save-fields';
+import moment from 'moment'
+import TimelineUtils from '../utils/timeline-utils'
 
 class StateHandler {
     constructor(sharedState, diagramService) {
@@ -10,6 +12,11 @@ class StateHandler {
         if (!diagramService) {
             throw new Error("DiagramService not provided");
         }
+
+        this._timelineUtils = new TimelineUtils(sharedState);
+
+        this._isTimeMachineDateSetScheduled = false;
+        this._isTimeMachineDateDirty = false;
 
         this.sharedState = sharedState.user();
         this._service = diagramService;
@@ -29,6 +36,8 @@ class StateHandler {
         this.sharedState.set('error', null)
         this.sharedState.set('diagram_expanded_dns', { 'root': true });
 
+        this.sharedState.set('time_machine_timeline_preview', []);
+
         this._handleDefaultParams()
         this._handleSelectedDnAutoExpandChange()
         this._handleTimeMachineChange()
@@ -43,35 +52,31 @@ class StateHandler {
 
         const fields = this._fieldsSaver.decodeParams(params)
 
-        const { sd, tme, tmdat, tmdt, tmdf, tmtd, tmdu } = fields
-
-        if (tme) {
-            this.sharedState.set('time_machine_enabled', tme === 'true')
-        }
-
-        if (tmdat) {
-            this.sharedState.set('time_machine_date', tmdat)
-        }
-
-        if (tmdt) {
-            this.sharedState.set('time_machine_date_to', Date.parse(tmdt))
-        }
-
-        if (tmdf) {
-            this.sharedState.set('time_machine_date_from', Date.parse(tmdf))
-        }
-
-        if (tmtd) {
-            this.sharedState.set('time_machine_target_date', Date.parse(tmtd))
-        }
+        const { sd, tme, tmtd, tmdt, tmd } = fields
 
         if (sd) {
             this.sharedState.set('selected_dn', sd)
             this.sharedState.set('auto_pan_to_selected_dn', true);
         }
 
-        if (tmdu) {
-            this.sharedState.set('time_machine_duration', tmdu)
+        if (tme) {
+            this.sharedState.set('time_machine_enabled', tme === 'true')
+        }
+
+        if (tmtd) {
+            this.sharedState.set('time_machine_target_date', Date.parse(tmtd))
+        }
+
+        if (tmdt) {
+            this.sharedState.set('time_machine_date_to', Date.parse(tmdt))
+        } else {
+            this.sharedState.set('time_machine_date_to', null);
+        }
+
+        if (tmd) {
+            this.sharedState.set('time_machine_duration', tmd)
+        } else {
+            this.sharedState.set('time_machine_duration', 12 * 60 * 60)
         }
     }
 
@@ -88,16 +93,26 @@ class StateHandler {
                         dn = dn + '/' + parts[i];
                         dict[dn] = true;
                     }
-                    this.sharedState.set('diagram_expanded_dns', dict, { skipCompare: true });
+                    this.sharedState.set('diagram_expanded_dns', dict);
                 }
             });
     }
 
     _handleTimeMachineChange() {
+        this.sharedState.subscribe(['time_machine_target_date'],
+            () => {
+
+                if (this._isTimeMachineDateSetScheduled) {
+                    this._isTimeMachineDateDirty = true;
+                    return;
+                }
+
+                this._triggerTimeMachine();
+            })
+
         this.sharedState.subscribe(['time_machine_enabled', 'time_machine_date'],
             ({ time_machine_enabled, time_machine_date }) => {
-            console.log('time_machine_enabled', time_machine_enabled)
-                if (time_machine_enabled) {
+                if (time_machine_enabled && time_machine_date) {
                     this._service.fetchHistorySnapshot(time_machine_date, (sourceData) => {
 
                         if (this.sharedState.get('time_machine_enabled') &&
@@ -108,6 +123,22 @@ class StateHandler {
                     })
                 }
             })
+    }
+
+    _triggerTimeMachine()
+    {
+        this._isTimeMachineDateDirty = false;
+
+        setTimeout(() => {
+            const value = this.sharedState.get('time_machine_target_date');
+            this.sharedState.set('time_machine_date', value);
+
+            this._isTimeMachineDateSetScheduled = false;
+            if (this._isTimeMachineDateDirty) {
+                this._triggerTimeMachine();
+            }
+
+        }, 250);
     }
 
     _handleSelectedDnChange() {
@@ -178,36 +209,99 @@ class StateHandler {
             });
     }
 
+    _massageTimelineData(data)
+    {
+        if (!data || data.length === 0)
+        {
+            let date = moment();
+            return [{
+                date: date.toISOString(),
+                dateMoment: date,
+                error: 0,
+                warn: 0,
+                changes: 0
+            }];
+        }
+
+        for(let x of data)
+        {
+            x.dateMoment = moment(x.date);
+        }
+
+        return data;
+    }
+
     _handleTimelineDataChange() {
-        this.sharedState.subscribe(['time_machine_date_from', 'time_machine_date_to'],
-            ({ time_machine_date_from, time_machine_date_to }) => {
 
-                if (!time_machine_date_from || !time_machine_date_to) {
-                    this.sharedState.set('time_machine_timeline_data', null);
-                    this.sharedState.set('time_machine_actual_date_from', null);
-                    this.sharedState.set('time_machine_actual_date_to', null);
+        this._service.subscribeTimelinePreview(data => {
+            this.sharedState.set('time_machine_timeline_preview_raw', data);
+        })
 
-                    return;
-                }
+        this.sharedState.subscribe('time_machine_timeline_preview_raw', 
+            time_machine_timeline_preview_raw => 
+            {
+                const massagedData = this._massageTimelineData(time_machine_timeline_preview_raw);
+                const lastDate = _.last(massagedData).dateMoment;
 
-                var from = time_machine_date_from ? new Date(time_machine_date_from) : time_machine_date_from.toISOString()
-                var to = time_machine_date_to ? new Date(time_machine_date_to) : time_machine_date_to.toISOString()
+                this.sharedState.set('time_machine_timeline_preview', massagedData);
+                this.sharedState.set('time_machine_timeline_preview_last_date', lastDate);
+            }
+        );
 
-                this._service.fetchHistoryTimeline(from, to, data => {
-                    for(var x of data)
-                    {
-                        x.date = new Date(x.date);
-                    }
-                    var orderedData = _.orderBy(data, ['date'], ['asc']);
-                    this.sharedState.set('time_machine_timeline_data', orderedData);
-
-                    this.sharedState.set('time_machine_actual_date_from', time_machine_date_from);
-                    this.sharedState.set('time_machine_actual_date_to', time_machine_date_to);
-
-                });
-
+        this.sharedState.subscribe([
+            'time_machine_duration',
+            'time_machine_date_to',
+            'time_machine_timeline_preview_last_date'
+            ],
+            () => {
+                let actual = this._timelineUtils.getActualRange();
+               
+                this.sharedState.set('time_machine_actual_date_to', actual.to);
+                this.sharedState.set('time_machine_actual_date_from', actual.from);
             }
         )
+
+        this.sharedState.subscribe(['time_machine_actual_date_from', 'time_machine_actual_date_to'],
+            ({ time_machine_actual_date_from, time_machine_actual_date_to }) => {
+
+                this._desiredTimelineDateFrom = time_machine_actual_date_from;
+                this._desiredTimelineDateTo = time_machine_actual_date_to;
+
+                this._tryQueryTimelineData();
+            }
+        )
+    }
+
+    _tryQueryTimelineData()
+    {
+        const from = this._desiredTimelineDateFrom;
+        const to = this._desiredTimelineDateTo;
+
+        const fromMoment = moment(from);
+        const toMoment = moment(to);
+
+        if ((from === this._latestTimelineDateFrom) &&
+            (to === this._latestTimelineDateTo))
+        {
+            return;
+        }
+
+        if (this._isQueryingTimeline) {
+            return;
+        }
+        this._isQueryingTimeline = true;
+
+        this._service.fetchHistoryTimeline(from, to, data => {
+            this._isQueryingTimeline = false;
+
+            this._latestTimelineDateFrom = from;
+            this._latestTimelineDateTo = to;
+
+            const massagedData = this._massageTimelineData(data);
+            this.sharedState.set('time_machine_timeline_data', massagedData);
+
+            this._tryQueryTimelineData();
+        });
     }
 
     _handleMarkerListChange()

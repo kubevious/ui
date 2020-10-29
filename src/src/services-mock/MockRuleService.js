@@ -99,7 +99,6 @@ class MockRuleService {
             this.sharedState.set('rule_editor_items', result);
         })
 
-        console.log('rule_editor_selected_rule_id', this.sharedState.get('rule_editor_selected_rule_id'))
         var name = this.sharedState.get('rule_editor_selected_rule_id');
         if (name) {
             this._notifyRuleStatus(name);

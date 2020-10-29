@@ -1,0 +1,57 @@
+$timelineYellow: rgb(252, 189, 63);
+
+.tl-interaction a.timemachine .tooltiptext, .tl-interaction a.reset .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    position: absolute;
+    right: -10px;
+    z-index: 1;
+    font-size: 12px;
+    margin-top: 30px;
+}
+
+.tl-interaction a.timemachine:hover .tooltiptext, .tl-interaction a.reset:hover .tooltiptext {
+    visibility: visible;
+      opacity: 1;
+    }
+
+.tl-interaction {
+    a {
+        display: block;
+        float: left;
+        width: 30px;
+        height: 30px;
+        margin: 3px;
+        border-radius: 2px;
+        cursor: pointer;
+
+        &.reset {
+            background: #292A2F url('/img/timeline/reset.svg') center center no-repeat;
+            background-size: 16px;
+
+            &:hover {
+                background: #35373E url('/img/timeline/reset.svg') center center no-repeat;
+            }
+        }
+
+        &.timemachine {
+            background: #292A2F url('/img/timeline/clock.svg') center center no-repeat;
+            background-size: 20px;
+
+            &:hover {
+                background: #35373E url('/img/timeline/clock.svg') center center no-repeat;
+                background-size: 20px;
+            }
+
+            &.active {
+                background: $timelineYellow url('/img/timeline/clock-active.svg') center center no-repeat;
+                background-size: 20px;
+            }
+        }
+    }
+}
