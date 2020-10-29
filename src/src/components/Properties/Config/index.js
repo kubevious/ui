@@ -57,15 +57,22 @@ const Config = ({ group, dn }) => {
     const handleEditedMode = () => {
         setEditMode(!editMode)
 
+        const PATHS_TO_UNSET = [
+            'metadata.uid',
+            'metadata.selfLink',
+            'metadata.resourceVersion',
+            'metadata.generation',
+            'metadata.creationTimestamp',
+            'metadata.managedFields',
+            'status'
+        ]
+
         if (!editMode) {
             const conf = _.cloneDeep(group.config)
-            _.unset(conf, ['metadata', 'uid'])
-            _.unset(conf, ['metadata', 'selfLink'])
-            _.unset(conf, ['metadata', 'resourceVersion'])
-            _.unset(conf, ['metadata', 'generation'])
-            _.unset(conf, ['metadata', 'creationTimestamp'])
-            _.unset(conf, ['status'])
-
+            for(let p of PATHS_TO_UNSET)
+            {
+                _.unset(conf, p);
+            }
             setEditedConfig(jsyaml.safeDump(conf, { indent }))
         }
     }
