@@ -4,6 +4,7 @@ import slackImg from '../../assets/header-btns/slack.svg'
 import githubImg from '../../assets/header-btns/github.svg'
 import About from '../About'
 import Search from '../Search'
+import NewVersion from '../NewVersion';
 import BaseComponent from '../../HOC/BaseComponent'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
@@ -19,13 +20,15 @@ class Header extends BaseComponent {
 
         this.state = {
             showSettings: false,
-            isLoading: false
+            isLoading: false,
+            newVersion: false,
         }
 
         this.openAbout = this.openAbout.bind(this)
         this.openSearch = this.openSearch.bind(this)
         this.detectIsVisible = this.detectIsVisible.bind(this)
         this.renderSettings = this.renderSettings.bind(this)
+        this.openNewVersionInfo = this.openNewVersionInfo.bind(this)
     }
 
     openAbout() {
@@ -42,6 +45,14 @@ class Header extends BaseComponent {
 
     detectIsVisible(item) {
         return document.getElementById(item.id) !== null;
+    }
+
+    openNewVersionInfo() {
+        this.props.handleShowPopup()
+
+        this.service.fetchNewVersion(result => {
+            this.props.handlePopupContent(<NewVersion info={result}/>)
+        })
     }
 
     renderSettings() {
@@ -93,6 +104,9 @@ class Header extends BaseComponent {
                 }
             }
             );            
+        this.subscribeToSharedState('new_version_info', (info) => {
+            this.setState({ newVersion: info.newVersionPresent })
+        })
     }
 
     render() {
@@ -111,6 +125,8 @@ class Header extends BaseComponent {
                     </div>
                 }
                 <div className="actions">
+                    {this.state.newVersion &&
+                        <button id="btnHeaderNewVersion" type="button" className="btn btn-new-version" onClick={this.openNewVersionInfo} />}
                     <a href="https://github.com/kubevious/kubevious/issues/new/choose" target="_blank"
                        className="btn btn-bug">
                         <img src={bugImg} alt="bug"/>
