@@ -13,6 +13,7 @@ $timelineYellow: rgb(252, 189, 63);
     left: 0;
     right: 0;
     display: flex;
+    overflow: hidden;
 }
 
 .timeline svg .warnings {

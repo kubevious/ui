@@ -45,6 +45,7 @@ class Timeline extends BaseComponent {
       .append('g')
       .attr('class', 'main-chart')
       .attr('transform', 'translate(0, 0)')
+      .attr('height', '100%')
 
     this._axisElem = this._mainChartElem.append('g').attr('class', 'axis')
 
@@ -110,7 +111,7 @@ class Timeline extends BaseComponent {
       -margin.left,
       0,
       this._width + margin.left + margin.right,
-      this._height + margin.top + margin.bottom - 20,
+      this._height + margin.top + margin.bottom - 10 - (this._height / 65),
     ]
     this._mainSvgElem.attr('viewBox', viewBox.join(' '))
     const subViewBox = [
@@ -128,7 +129,7 @@ class Timeline extends BaseComponent {
     var margin = {
       top: 10,
       right: 15,
-      bottom: 30,
+      bottom: 25,
       left: 15,
     }
 

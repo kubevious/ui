@@ -52,7 +52,7 @@ class RegisterComponents {
             component: Timeline,
             location: 'bottom',
             title: 'Timeline',
-            allowVerticalScroll: true
+            allowVerticalScroll: false
         })
     }
 }
