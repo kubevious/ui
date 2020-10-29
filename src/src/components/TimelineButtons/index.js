@@ -3,12 +3,15 @@ import './styles.scss'
 import cx from 'classnames'
 import BaseComponent from '../../HOC/BaseComponent'
 import moment from 'moment'
+import TimelineUtils from '../../utils/timeline-utils'
 
 
 
 class TimelineButtons extends BaseComponent {
   constructor(props) {
     super(props)
+
+    this._timelineUtils = new TimelineUtils(this.sharedState)
 
     this.dayInSec = 12 * 60 * 60
 
@@ -26,15 +29,19 @@ class TimelineButtons extends BaseComponent {
     } else {
       this.sharedState.set('time_machine_enabled', true)
 
-      if (!this.sharedState.get('time_machine_target_date'))
+      let actual = this._timelineUtils.getActualRange();
+
+      if (this.sharedState.get('time_machine_target_date'))
       {
-        let dateTo = this.sharedState.get('time_machine_date_to');
-        if (dateTo) {
-          this.sharedState.set('time_machine_target_date', dateTo);
-        } else {
-          this.sharedState.set('time_machine_target_date', moment().toISOString());
+        const date = moment(this.sharedState.get('time_machine_target_date'))
+        if (date.isBetween(actual.from, actual.to)) {
+          return;
         }
       }
+
+      const diff = actual.to.diff(actual.from) / 2;
+      const date = moment(actual.from).add(diff);
+      this.sharedState.set('time_machine_target_date', date.toISOString());
     }
   }
 
