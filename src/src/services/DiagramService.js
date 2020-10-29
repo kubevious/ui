@@ -8,6 +8,24 @@ class DiagramService extends BaseService {
         super(client, sharedState, socket)
 
         this._setupWebSocket();
+
+        this._latestTimelinePreviewData = [];
+        this._timelinePreviewHandlers = [];
+
+        this._intervals = [];
+        this._intervals.push(setInterval(() => {
+            this._performTimelinePreviewQuery();
+        }, 1 * 60 * 1000))
+
+        this._performTimelinePreviewQuery();
+    }
+
+    close()
+    {
+        for(let i of this._intervals) {
+            clearInterval(i);
+        }
+        this._intervals = [];
     }
 
     fetchDiagram(cb) {
@@ -59,6 +77,22 @@ class DiagramService extends BaseService {
                 }
                 cb(data);
             });
+    }
+
+    subscribeTimelinePreview(cb) {
+        this._timelinePreviewHandlers.push(cb);
+        cb(this._latestTimelinePreviewData);
+    }
+
+    _performTimelinePreviewQuery()
+    {
+        this.fetchHistoryTimelinePreview(data => {
+            this._latestTimelinePreviewData = data;
+            for(let cb of this._timelinePreviewHandlers)
+            {
+                cb(data);
+            }
+        });
     }
 
     fetchHistoryTimelinePreview(cb) {

@@ -1,21 +1,22 @@
 import moment from 'moment'
 
-export const timelineData = getArray()
-
-function getArray() {
-  let stopDate = moment().subtract(14, 'days')
-  const today = moment().add(1, 'days')
-  const dateArray = []
-  while (moment(stopDate).isSameOrBefore(today)) {
-    const date = moment(stopDate);
-    dateArray.push({
+export function generateTimelineData() {
+  const startDate = moment().subtract(14, 'days');
+  const endDate = moment().add(5, 'days');
+  const duration = moment.duration(endDate.diff(startDate)).asSeconds();
+  const results = []
+  let currDate = moment(startDate);
+  while (moment(currDate).isSameOrBefore(endDate)) {
+    const date = moment(currDate);
+    const pos = moment.duration(date.diff(startDate)).asSeconds();
+    results.push({
       dateMoment: date,
       date: date.toISOString(),
-      changes: 4 + ~~(Math.random() * 6),
-      error: 5 + ~~(Math.random() * 2),
-      warn: 2 + ~~(Math.random() * 2),
+      changes: Math.floor(500 * Math.abs(Math.sin(50 * pos / duration))),
+      error: Math.floor(100 * Math.abs(Math.sin(100 * pos / duration))),
+      warn: Math.floor(300 * Math.abs(Math.cos(70 * pos / duration))),
     })
-    stopDate = moment(stopDate).add(1, 'minutes')
+    currDate = moment(currDate).add(1, 'minutes')
   }
-  return dateArray
+  return results
 }

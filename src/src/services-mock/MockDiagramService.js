@@ -7,10 +7,12 @@ import {
     PROPERTIES_DATA,
     DN_LIST
 } from '../boot/diagramMockData'
-import { timelineData } from '../boot/timelineBoot' 
+import { generateTimelineData } from '../boot/timelineBoot' 
 
 class MockDiagramService {
     constructor(sharedState) {
+        this.dateInit = moment();
+        this.timelineData = generateTimelineData();
         this.sharedState = sharedState;
 
         this.sharedState.set('time_machine_timeline_data', [])
@@ -30,11 +32,24 @@ class MockDiagramService {
                     }
                 }
             });
+
+        this._latestTimelinePreviewData = [];
+        this._timelinePreviewHandlers = [];
+
+        this._intervals = [];
+        this._intervals.push(setInterval(() => {
+            this._performTimelinePreviewQuery();
+        }, 10 * 1000))
+
+        this._performTimelinePreviewQuery();
     }
 
     close()
     {
-        
+        for(let i of this._intervals) {
+            clearInterval(i);
+        }
+        this._intervals = [];
     }
 
     fetchDiagram(cb) {
@@ -84,7 +99,7 @@ class MockDiagramService {
     }
 
     fetchHistoryTimeline(from, to, cb) {
-        console.log("[fetchHistoryTimeline] BEGIN. PointCount: " + timelineData.length)
+        console.log("[fetchHistoryTimeline] BEGIN. PointCount: " + this.timelineData.length)
         console.log("[fetchHistoryTimeline] FROM: " + from)
         console.log("[fetchHistoryTimeline] TO: " + to)
         // cb([]);
@@ -95,7 +110,7 @@ class MockDiagramService {
         const filteredData = [];
         const fromMoment = moment(from);
         const toMoment = moment(to);
-        for(let x of timelineData)
+        for(let x of this.timelineData)
         {
             if (x.dateMoment.isBetween(fromMoment, toMoment))
             {
@@ -113,18 +128,39 @@ class MockDiagramService {
         }, 500)
     }
 
+    subscribeTimelinePreview(cb) {
+        this._timelinePreviewHandlers.push(cb);
+        cb(this._latestTimelinePreviewData);
+    }
+
+    _performTimelinePreviewQuery()
+    {
+        this.fetchHistoryTimelinePreview(data => {
+            this._latestTimelinePreviewData = data;
+            for(let cb of this._timelinePreviewHandlers)
+            {
+                cb(data);
+            }
+        });
+    }
+
     fetchHistoryTimelinePreview(cb) {
         const now = moment();
+        let diffSec = moment.duration(now.diff(this.dateInit)).asSeconds();
+        diffSec = diffSec * 20 * 60;
+        const adjustedNow = moment(this.dateInit).add(diffSec, 'seconds');
+
         const filteredData = [];
-        for(let x of timelineData)
+        for(let x of this.timelineData)
         {
-            if (x.dateMoment.isSameOrBefore(now))
+            if (x.dateMoment.isSameOrBefore(adjustedNow))
             {
                 filteredData.push(x);
             }
         }
 
         const resampledData = this._resampleTimelineData(filteredData);
+        this._latestTimelinePreviewData = resampledData;
 
         setTimeout(() => {
             cb(resampledData);

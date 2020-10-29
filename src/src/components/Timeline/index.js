@@ -387,14 +387,22 @@ class Timeline extends BaseComponent {
   }
 
   _calculateBrushInit() {
+    if (!this._brush) {
+      return;
+    }
     const startPos = this._subXScale(this.time_machine_actual_date_range.from)
     const endPos = this._subXScale(this.time_machine_actual_date_range.to)
     if (startPos > 0 && endPos > 0 && startPos !== endPos) {
-      d3.select('.x-brush').call(this._brush.move, [startPos, endPos])
+      this._movingTheBrush = true;
+      d3.select('.x-brush').call(this._brush.move, [startPos, endPos]);
+      this._movingTheBrush = false;
     }
   }
 
   _onUserBrushMove(self) {
+    if (this._movingTheBrush) {
+      return;
+    }
     const dateTo = moment(this._subXScale.invert(d3.brushSelection(self)[1]))
     const dateFrom = moment(this._subXScale.invert(d3.brushSelection(self)[0]))
     if (dateTo.isSame(dateFrom)) {
@@ -628,14 +636,6 @@ class Timeline extends BaseComponent {
     }
   }
 
-  _resetBrush() {
-    if (this._brush) {
-      const startPos = this._subXScale(moment().subtract(this.dayInSec, 'seconds'))
-      const endPos = this._subXScale(moment())
-      d3.select('.x-brush').call(this._brush.move, [startPos, endPos])
-    }
-  }
-
   _dateRangesAreSame(newActual)
   {
     return this._datesAreSame(this.time_machine_actual_date_range.from, newActual.from) &&
@@ -666,12 +666,16 @@ class Timeline extends BaseComponent {
         if (this._dateRangesAreSame(actual)) {
           return
         }
+        if (this._movingTheBrush) {
+          return;
+        }
 
         let diff = moment.duration(actual.to.diff(actual.from))
         this.durationSeconds = diff.asSeconds()
 
         this.time_machine_actual_date_range = actual
 
+        this._calculateBrushInit();
       }
     )
 
@@ -711,17 +715,6 @@ class Timeline extends BaseComponent {
         this._renderTimelineSub()
       }
     )
-
-    this.subscribeToSharedState(
-      [
-        'time_machine_date_to',
-        'time_machine_duration'
-      ],
-      ({time_machine_date_to, time_machine_duration}) => {
-        if (time_machine_date_to === null && time_machine_duration === this.dayInSec) {
-          this._resetBrush()
-        }
-      })
   }
 
   render() {

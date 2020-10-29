@@ -232,7 +232,8 @@ class StateHandler {
     }
 
     _handleTimelineDataChange() {
-        this._service.fetchHistoryTimelinePreview(data => {
+
+        this._service.subscribeTimelinePreview(data => {
             this.sharedState.set('time_machine_timeline_preview_raw', data);
         })
 
@@ -246,7 +247,6 @@ class StateHandler {
                 this.sharedState.set('time_machine_timeline_preview_last_date', lastDate);
             }
         );
-
 
         this.sharedState.subscribe([
             'time_machine_duration',
