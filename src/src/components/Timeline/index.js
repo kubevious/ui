@@ -373,7 +373,7 @@ class Timeline extends BaseComponent {
     $('.x-brush').detach()
 
     const self = this
-    this._brush = d3.brushX(this._subXScale).on('brush', function () {
+    this._brush = d3.brushX(this._subXScale).on('end', function () {
       self._onUserBrushMove(this)
     })
 
@@ -403,6 +403,11 @@ class Timeline extends BaseComponent {
     if (this._movingTheBrush) {
       return;
     }
+
+    if (!d3.brushSelection(self)) {
+      this._calculateBrushInit()
+    }
+
     const dateTo = moment(this._subXScale.invert(d3.brushSelection(self)[1]))
     const dateFrom = moment(this._subXScale.invert(d3.brushSelection(self)[0]))
     if (dateTo.isSame(dateFrom)) {

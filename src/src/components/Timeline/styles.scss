@@ -4,6 +4,7 @@ $timelineYellow: rgb(252, 189, 63);
     stroke: #fff;
     stroke-width: 2px;
     fill: none;
+    pointer-events: bounding-box;
 }
 
 .size-to-parent {
@@ -19,11 +20,13 @@ $timelineYellow: rgb(252, 189, 63);
 .timeline svg .warnings {
     fill: $timelineYellow;
     opacity: 0.8;
+    pointer-events: bounding-box;
 }
 
 .timeline svg .errors {
     fill: #b77;
     opacity: 0.8;
+    pointer-events: bounding-box;
 }
 
 .timeline svg .selector * {
