@@ -171,6 +171,8 @@ class Timeline extends BaseComponent {
 
       this._calculateBrushInit()
 
+      this._renderSubchartSelector()
+
       if (this.actualTargetDate) {
         this._updateSubchartSelectorPosition()
       }
@@ -373,7 +375,7 @@ class Timeline extends BaseComponent {
     $('.x-brush').detach()
 
     const self = this
-    this._brush = d3.brushX(this._subXScale).on('brush', function () {
+    this._brush = d3.brushX(this._subXScale).on('end', function () {
       self._onUserBrushMove(this)
     })
 
@@ -403,6 +405,11 @@ class Timeline extends BaseComponent {
     if (this._movingTheBrush) {
       return;
     }
+
+    if (!d3.brushSelection(self)) {
+      this._calculateBrushInit()
+    }
+
     const dateTo = moment(this._subXScale.invert(d3.brushSelection(self)[1]))
     const dateFrom = moment(this._subXScale.invert(d3.brushSelection(self)[0]))
     if (dateTo.isSame(dateFrom)) {
@@ -451,7 +458,6 @@ class Timeline extends BaseComponent {
         'M0,' + -0.4 * margin.top + ' v' + (this._height + margin.top * 0.7)
     )
 
-    this._renderSubchartSelector()
   }
 
   _updateSelectorPosition() {
@@ -519,6 +525,9 @@ class Timeline extends BaseComponent {
   _renderSubchartSelector()
   {
     $('.sub-selector').detach()
+    if (!this.actualTargetDate) {
+      return
+    }
     this._subchartSelectorElem = this._subSvgElem
       .append('g')
       .attr('class', 'sub-selector')
@@ -696,6 +705,7 @@ class Timeline extends BaseComponent {
         }
         this._renderSelector()
         this._updateSelectorPosition()
+        this._renderSubchartSelector()
         this._updateSubchartSelectorPosition()
       }
     )
