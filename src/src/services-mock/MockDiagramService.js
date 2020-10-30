@@ -82,6 +82,10 @@ class MockDiagramService {
     }
 
     fetchSearchResults(criteria, cb) {
+        if (!criteria) {
+            cb([]);
+            return;
+        }
         var res = this.getRandomDnList();
         res = res.map(x => ({
             dn: x

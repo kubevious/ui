@@ -50,6 +50,10 @@ class DiagramService extends BaseService {
     }
 
     fetchSearchResults(criteria, cb) {
+        if (!criteria) {
+            cb([]);
+            return;
+        }
         return this._client.get('/diagram/search', { criteria: criteria })
             .then(result => {
                 cb(result.data);
