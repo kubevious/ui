@@ -171,6 +171,8 @@ class Timeline extends BaseComponent {
 
       this._calculateBrushInit()
 
+      this._renderSubchartSelector()
+
       if (this.actualTargetDate) {
         this._updateSubchartSelectorPosition()
       }
@@ -456,7 +458,6 @@ class Timeline extends BaseComponent {
         'M0,' + -0.4 * margin.top + ' v' + (this._height + margin.top * 0.7)
     )
 
-    this._renderSubchartSelector()
   }
 
   _updateSelectorPosition() {
@@ -524,6 +525,9 @@ class Timeline extends BaseComponent {
   _renderSubchartSelector()
   {
     $('.sub-selector').detach()
+    if (!this.actualTargetDate) {
+      return
+    }
     this._subchartSelectorElem = this._subSvgElem
       .append('g')
       .attr('class', 'sub-selector')
@@ -701,6 +705,7 @@ class Timeline extends BaseComponent {
         }
         this._renderSelector()
         this._updateSelectorPosition()
+        this._renderSubchartSelector()
         this._updateSubchartSelectorPosition()
       }
     )
