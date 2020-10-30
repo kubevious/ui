@@ -2,6 +2,7 @@ import React from 'react'
 import BaseComponent from '../../HOC/BaseComponent'
 import AlertView from './AlertView'
 import { isEmptyArray, sortSeverity } from '../../utils/util'
+import cx from 'classnames'
 
 import './styles.scss'
 
@@ -40,12 +41,14 @@ class Alerts extends BaseComponent {
         const { alerts } = this.state
 
         return (
-            <div id="alertsComponent">
-                {!isEmptyArray(alerts) && <AlertView
-                    alerts={alerts.sort(sortSeverity)}
-                    clickDn={this.clickDn}
-                    openRule={this.openRule}
-                />}
+            <div id="alertsComponent" className={cx({'empty': isEmptyArray(alerts)})}>
+                {isEmptyArray(alerts)
+                    ? <div className="message-empty">No object selected.</div>
+                    : <AlertView
+                        alerts={alerts.sort(sortSeverity)}
+                        clickDn={this.clickDn}
+                        openRule={this.openRule}
+                    />}
             </div>
         )
     }

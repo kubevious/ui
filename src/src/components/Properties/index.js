@@ -8,6 +8,7 @@ import EnvironmentVariables from './EnvironmentVariables'
 import DnList from './DnList'
 import Config from './Config'
 import PropertiesTable from './PropertiesTable'
+import cx from 'classnames'
 
 import './styles.scss'
 import './obsidian.css'
@@ -91,6 +92,19 @@ class Properties extends BaseComponent {
         )
     }
 
+    renderUserView() {
+        const { selectedDn, selectedObjectProps } = this.state
+
+        if (!selectedDn && !selectedObjectProps) {
+            return <div className="message-empty">No object selected.</div>
+        }
+
+        return [
+            selectedDn && this._renderPropertiesNodeDn(),
+            selectedObjectProps && this._renderContent()
+        ]
+    }
+
     componentDidMount() {
         this.subscribeToSharedState(['selected_dn', 'selected_object_props'],
             ({ selected_dn, selected_object_props }) => {
@@ -103,9 +117,13 @@ class Properties extends BaseComponent {
         const { selectedDn, selectedObjectProps } = this.state
 
         return (
-            <div id="propertiesComponent" className="properties">
-                {selectedDn && this._renderPropertiesNodeDn()}
-                {selectedObjectProps && this._renderContent()}
+            <div
+                id="propertiesComponent"
+                className={cx('properties', {
+                'empty': !selectedDn && !selectedObjectProps,
+                })}
+            >
+                {this.renderUserView()}
             </div>
         )
     }
