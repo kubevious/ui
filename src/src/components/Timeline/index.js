@@ -113,18 +113,26 @@ class Timeline extends BaseComponent {
       this._width + margin.left + margin.right,
       this._height + margin.top + margin.bottom - 10 - (this._height / 65),
     ]
-    this._mainSvgElem.attr('viewBox', viewBox.join(' '))
+    this._applyViewBox(this._mainSvgElem, viewBox);
+
     const subViewBox = [
       -margin.left,
       0,
-      this._width + margin.left + margin.top,
+      this._width + margin.left + margin.right,
       50,
     ]
-    this._subSvgElem.attr('viewBox', subViewBox.join(' '))
+    this._applyViewBox(this._subSvgElem, subViewBox);
 
     this._renderTimelineMain()
     this._renderTimelineSub()
+  }
 
+  _applyViewBox(elem, viewBox)
+  {
+    const myViewBox = _.clone(viewBox);
+    myViewBox[2] = Math.max(0, myViewBox[2]);
+    myViewBox[3] = Math.max(0, myViewBox[3]);
+    elem.attr('viewBox', myViewBox.join(' '))
   }
 
   _getMargin() {
