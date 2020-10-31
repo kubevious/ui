@@ -153,9 +153,7 @@ class Timeline extends BaseComponent {
 
       this._renderSelector()
 
-      if (this.actualTargetDate) {
-        this._updateSelectorPosition()
-      }
+      this._updateSelectorPosition()
 
       this._renderHoverLine()
     }
@@ -442,7 +440,6 @@ class Timeline extends BaseComponent {
   _renderSelector() {
     this._selectorElem.html('')
 
-
     if (!this.actualTargetDate) {
       return
     }
@@ -461,6 +458,9 @@ class Timeline extends BaseComponent {
   }
 
   _updateSelectorPosition() {
+    if (!this.actualTargetDate) {
+      return;
+    }
     if (!this._xScale) {
       return
     }
