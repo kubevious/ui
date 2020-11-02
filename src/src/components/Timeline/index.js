@@ -382,8 +382,13 @@ class Timeline extends BaseComponent {
 
     const self = this
     this._brush = d3.brushX(this._subXScale).on('end', function () {
+
+      if (!d3.event.selection && d3.event.sourceEvent) {
+        self._calculateBrushInit()
+        return
+      }
       self._onUserBrushMove(this)
-    })
+      })
 
     this._subSvgElem
       .insert('g', '.sub-selector')
@@ -410,10 +415,6 @@ class Timeline extends BaseComponent {
   _onUserBrushMove(self) {
     if (this._movingTheBrush) {
       return;
-    }
-
-    if (!d3.brushSelection(self)) {
-      this._calculateBrushInit()
     }
 
     const dateTo = moment(this._subXScale.invert(d3.brushSelection(self)[1]))
@@ -620,7 +621,7 @@ class Timeline extends BaseComponent {
     this._tooltipElem
       .style('opacity', '1')
       .html(tooltipHtml)
-      .style('transform', 'translate(' + posX + 'px, ' + (this._height / 2 - (this.wrap ? 80 : 40)) + 'px)')
+      .style('transform', 'translate(' + posX + 'px, ' + (this.wrap ? this._height / 2 - 80 : this._height / 8) + 'px)')
 
   }
 
