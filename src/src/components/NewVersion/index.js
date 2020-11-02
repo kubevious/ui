@@ -15,7 +15,7 @@ const NewVersion = ({ info }) => {
         </div>
         <div className="new-version-info overflow-hide">
           <h3>{info.name} ({version}) Available!</h3>
-          <a href={info.url} target="_blank" className="install-btn">
+          <a href={info.url} target="_blank" className="install-btn button success">
             Install Now
           </a>
           <div>

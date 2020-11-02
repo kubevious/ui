@@ -92,7 +92,7 @@ class Header extends BaseComponent {
                 'time_machine_enabled',
                 'time_machine_target_date'
             ],
-            ({ 
+            ({
                 time_machine_enabled,
                 time_machine_target_date
             }) => {
@@ -132,23 +132,50 @@ class Header extends BaseComponent {
                 }
                 <div className="actions">
                     {this.state.newVersion &&
-                        <button id="btnHeaderNewVersion" type="button" className="btn btn-new-version" onClick={this.openNewVersionInfo} />}
-                    <a href="https://github.com/kubevious/kubevious/issues/new/choose" target="_blank"
-                       className="btn btn-bug">
-                        <img src={bugImg} alt="bug"/>
+                        <div className="btn-container">
+                            <button id="btnHeaderNewVersion" type="button" className="btn btn-new-version" onClick={this.openNewVersionInfo}></button>
+                            <span className="tooltiptext">Notifications</span>
+                        </div>}
 
-                    </a>
-                    <a href="https://kubevious.io/slack" target="_blank" className="btn btn-slack">
-                        <img src={slackImg} alt="slack"/>
-                    </a>
-                    <a href="https://github.com/kubevious/kubevious" target="_blank" className="btn btn-github">
-                        <img src={githubImg} alt="github"/>
-                    </a>
-                    <button id="btnHeaderAbout" type="button" className="btn btn-about" onClick={this.openAbout}/>
-                    <button id="btnHeaderSearch" type="button" className="btn btn-search" onClick={this.openSearch}/>
-                    <button className="btn btn-settings" onMouseEnter={() => this.setState({ showSettings: true })}
-                            onMouseLeave={() => this.setState({ showSettings: false })}/>
-                    {showSettings && this.renderSettings()}
+
+                    <div className="btn-container">
+                        <button id="btnHeaderSearch" type="button" className="btn btn-search" onClick={this.openSearch} />
+                        <span className="tooltiptext">Object Search</span>
+                    </div>
+
+                    <div className="btn-container">
+                        <button className="btn btn-settings" onMouseEnter={() => this.setState({ showSettings: true })}
+                            onMouseLeave={() => this.setState({ showSettings: false })} />
+                        {showSettings && this.renderSettings()}
+                    </div>
+
+                    <div className="btn-container">
+                        <button id="btnHeaderAbout" type="button" className="btn btn-about" onClick={this.openAbout}>
+                        </button>
+                        <span className="tooltiptext">About Kubevious</span>
+                    </div>
+
+                    <div className="btn-container">
+                        <a href="https://github.com/kubevious/kubevious/issues/new/choose" target="_blank"
+                            className="btn btn-bug">
+                            <img src={bugImg} alt="bug" />
+                        </a>
+                        <span className="tooltiptext">Report Issues</span>
+                    </div>
+
+                    <div className="btn-container">
+                        <a href="https://github.com/kubevious/kubevious" target="_blank" className="btn btn-github">
+                            <img src={githubImg} alt="github" />
+                        </a>
+                        <span className="tooltiptext">GitHub Project</span>
+                    </div>
+
+                    <div className="btn-container">
+                        <a href="https://kubevious.io/slack" target="_blank" className="btn btn-slack">
+                            <img src={slackImg} alt="slack" />
+                        </a>
+                        <span className="tooltiptext">Slack Channel</span>
+                    </div>
                 </div>
             </div>
         )

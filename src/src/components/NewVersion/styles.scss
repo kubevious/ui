@@ -25,21 +25,18 @@
 
 .install-btn {
     padding: 10px;
-    background-color: #6df921;
-    display: block;
+    display: flex;
+    align-items: center;
     width: fit-content;
-    text-decoration: none;
-    color: black;
     font-family: 'Montserrat', sans-serif;
     font-size: 24px;
     font-weight: 700;
     margin-top: 15px;
-    border-radius: 3px;
+    text-align: center;
 }
 
 .install-btn:hover {
     text-decoration: none;
-    color: black;
 }
 
 .target-link {
