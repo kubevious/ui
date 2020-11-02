@@ -16,12 +16,13 @@
   .history-info {
     text-align: center;
     margin-left: 30%;
-    display: block;
+    display: flex;
+    align-items: center;
     font-family: 'Montserrat', sans-serif;
     font-weight: 400;
     color: white;
     position: absolute;
-    top: 20px;
+    top: 15px;
 
     span {
       display: inline-block;
@@ -34,6 +35,13 @@
         background: url('/img/alerts/warn.svg') left top;
         margin: -3px 10px 0 0;
       }
+    }
+
+    .deactivate {
+      margin: 0 10px;
+      height: 30px;
+      font-size: 12px;
+      font-weight: 700;
     }
   }
 

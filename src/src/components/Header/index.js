@@ -29,6 +29,7 @@ class Header extends BaseComponent {
         this.detectIsVisible = this.detectIsVisible.bind(this)
         this.renderSettings = this.renderSettings.bind(this)
         this.openNewVersionInfo = this.openNewVersionInfo.bind(this)
+        this.deactivateTimemachine = this.deactivateTimemachine.bind(this)
     }
 
     openAbout() {
@@ -53,6 +54,10 @@ class Header extends BaseComponent {
         this.service.fetchNewVersion(result => {
             this.props.handlePopupContent(<NewVersion info={result}/>)
         })
+    }
+
+    deactivateTimemachine() {
+        this.sharedState.set('time_machine_enabled', false)
     }
 
     renderSettings() {
@@ -103,7 +108,7 @@ class Header extends BaseComponent {
                     });
                 }
             }
-            );            
+            );
         this.subscribeToSharedState('new_version_info', (info) => {
             this.setState({ newVersion: info.newVersionPresent })
         })
@@ -119,9 +124,10 @@ class Header extends BaseComponent {
                 <div className="loading-icon">
                     {isLoading && <FontAwesomeIcon icon={faSpinner} spin />}
                 </div>
-                { time_machine_enabled && 
+                { time_machine_enabled &&
                     <div id="history-info" className="history-info">
                         <span>Time Machine Active: {moment(time_machine_target_date).format('MMM DD hh:mm:ss A')}</span>
+                        <button className="button success deactivate" onClick={this.deactivateTimemachine}>Deactivate</button>
                     </div>
                 }
                 <div className="actions">
