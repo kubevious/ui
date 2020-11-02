@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { parseDn } from '../../../utils/naming-utils';
 import cx from 'classnames'
-import { prettyKind } from '../../../utils/ui-utils';
+import { generateDnPathHtml } from '../../../utils/ui-utils';
 import { sortSeverity, uniqueMessages, uniqueObjects } from '../../../utils/util';
 
 const AlertView = ({ alerts, clickDn, openRule }) => {
@@ -35,12 +35,8 @@ const AlertView = ({ alerts, clickDn, openRule }) => {
                 <div className="logo-container">
                     <img className="dn-logo" src="/img/entities/ns.svg" alt="logo" />
                 </div>
-                <div className="parts-container">
-                    {dnParts.map((part, index) => (
-                        <span className="dn-part" key={index}>
-                        {prettyKind(part.kind)} {part.name}
-                    </span>
-                    ))}
+                <div className="parts-container"
+                        dangerouslySetInnerHTML={{ __html: generateDnPathHtml(dnParts) }}>
                 </div>
             </div>
         )

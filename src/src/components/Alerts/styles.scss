@@ -102,7 +102,20 @@
 
     &:hover {
       cursor: pointer;
-      text-decoration: underline;
+
+      .parts-container .dn-path .name {
+        text-decoration: underline;
+      }
+    }
+
+    .parts-container .dn-path span {
+      margin: 0 4px 0 0;
+      line-height: 20px;
+    }
+
+    .parts-container .dn-path {
+      font-size: 13px;
+      min-height: 20px;
     }
 
     .dn-logo {
