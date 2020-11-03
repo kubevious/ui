@@ -16,6 +16,15 @@
     font-size: 13px;
 }
 
+.properties-owner .dn-path .dn-logo {
+    width: 15px;
+    height: 15px;
+    &.big {
+        height: 25px;
+        width: 25px;
+      }
+}
+
 .properties-owner .dn-path .kind {
     font-size: 11px;
 }

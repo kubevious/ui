@@ -103,7 +103,7 @@
     &:hover {
       cursor: pointer;
 
-      .parts-container .dn-path .name {
+      .parts-container .dn-path .name, .kind {
         text-decoration: underline;
       }
     }
@@ -111,16 +111,33 @@
     .parts-container .dn-path span {
       margin: 0 4px 0 0;
       line-height: 20px;
+
+      &:empty {
+        margin: 0;
+      }
+    }
+
+    .logo-container {
+      display: flex;
+      align-self: center;
     }
 
     .parts-container .dn-path {
       font-size: 13px;
       min-height: 20px;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
     }
 
     .dn-logo {
       height: 15px;
       width: 15px;
+
+      &.big {
+        height: 20px;
+        width: 20px;
+      }
     }
 
     .dn-part {

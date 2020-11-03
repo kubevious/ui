@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { parseDn } from '../../../utils/naming-utils';
+import { parseDn } from '../../../utils/naming-utils'
 import cx from 'classnames'
-import { generateDnPathHtml } from '../../../utils/ui-utils';
 import { sortSeverity, uniqueMessages, uniqueObjects } from '../../../utils/util';
+import DnPath from '../../GenerateDnPath';
 
 const AlertView = ({ alerts, clickDn, openRule }) => {
     const [group, setGroup] = useState('no')
@@ -35,8 +35,8 @@ const AlertView = ({ alerts, clickDn, openRule }) => {
                 <div className="logo-container">
                     <img className="dn-logo" src="/img/entities/ns.svg" alt="logo" />
                 </div>
-                <div className="parts-container"
-                        dangerouslySetInnerHTML={{ __html: generateDnPathHtml(dnParts) }}>
+                <div className="parts-container">
+                    <DnPath dnParts={dnParts} />
                 </div>
             </div>
         )

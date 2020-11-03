@@ -1,13 +1,13 @@
 import React from 'react'
 import BaseComponent from '../../HOC/BaseComponent'
 import _ from 'the-lodash'
-import { generateDnPathHtml } from '../../utils/ui-utils'
 import { parseDn } from '../../utils/naming-utils'
 import PropertyGroup from './PropertyGroup'
 import EnvironmentVariables from './EnvironmentVariables'
 import DnList from './DnList'
 import Config from './Config'
 import PropertiesTable from './PropertiesTable'
+import DnPath from '../GenerateDnPath'
 import cx from 'classnames'
 
 import './styles.scss'
@@ -57,7 +57,9 @@ class Properties extends BaseComponent {
         const dnParts = parseDn(this.state.selectedDn)
 
         return (
-            <div className="properties-owner" dangerouslySetInnerHTML={{ __html: generateDnPathHtml(dnParts) }}/>
+            <div className="properties-owner">
+                <DnPath dnParts={dnParts} includeLogo bigLogo />
+            </div>
         )
     }
 
