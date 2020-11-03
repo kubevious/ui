@@ -40,3 +40,19 @@ export const NEW_VERSION_AVAILABLE_DATA = {
 export const NO_NEW_VERSION_AVAILABLE_DATA = {
     "newVersionPresent": false
 }
+
+export const FEEDBACK_QUESTIONS = [
+    {
+        "type": "rate",
+        "text": "How do you like the easy of use?"
+    },
+    {
+        "type": "select",
+        "text": "Is there some additional functionality you want to see in Kubevious?",
+        "options": ["Yes", "No"]
+    },
+    {
+        "type": "input",
+        "text": "Comment your Kubevious experience"
+    },
+]

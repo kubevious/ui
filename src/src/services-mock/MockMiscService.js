@@ -1,7 +1,8 @@
 import {
     ABOUT_DATA,
     NEW_VERSION_AVAILABLE_DATA,
-    NO_NEW_VERSION_AVAILABLE_DATA
+    NO_NEW_VERSION_AVAILABLE_DATA,
+    FEEDBACK_QUESTIONS
 } from '../boot/aboutMockData'
 
 class MockMiscService {
@@ -25,6 +26,10 @@ class MockMiscService {
 
     fetchNewVersion(cb) {
         cb(NEW_VERSION_AVAILABLE_DATA);
+    }
+
+    fetchFeedbackQuestions(cb) {
+        cb(FEEDBACK_QUESTIONS)
     }
 
 }
