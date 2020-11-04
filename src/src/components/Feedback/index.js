@@ -169,6 +169,36 @@ const Feedback = ({ request }) => {
         return url
     }
 
+    const composeFBpost = () => {
+        const tweet = userAnswers.answers
+            .map((el) => {
+                const text = questions.find((que) => que.id === el.id)
+                return text.text + '\n - ' + el.value
+            })
+            .join('\n')
+        const defaultMessage =
+            'I am a proud @kubevious user and it helps with making #Kubernetes safer and easier to use. Try it yourself: https://kubevious.io'
+        const TweetText = encodeURIComponent(tweet + '\n\n' + defaultMessage)
+        const url = `https://www.facebook.com/sharer/sharer.php?u=https://kubevious.io&quote=${TweetText}`
+
+        return url
+    }
+
+    const composeLinkedInpost = () => {
+        const tweet = userAnswers.answers
+            .map((el) => {
+                const text = questions.find((que) => que.id === el.id)
+                return text.text + '\n - ' + el.value
+            })
+            .join('\n')
+        const defaultMessage =
+            'I am a proud @kubevious user and it helps with making #Kubernetes safer and easier to use. Try it yourself: https://kubevious.io'
+        const TweetText = encodeURIComponent(tweet + '\n\n' + defaultMessage)
+        const url = `https://www.linkedin.com/shareArticle?url=https://kubevious.io&title=Kebevious&summary=${TweetText}&source=https://kubevious.io`
+        console.log('url>>>', url)
+        return url
+    }
+
     const onSubmit = () => {
         console.log('[DATA FILLED BY USER::]', userAnswers)
         setScreen('share')
@@ -209,17 +239,30 @@ const Feedback = ({ request }) => {
                 <div className="share-buttons">
                     <a
                         type="button"
-                        className="twitter-share-button"
+                        className="btn-twitter"
                         href={composeTweet()}
                         target="_blank"
                     >
-                        Twitter
+                        Tweet it
+                        <img src="./img/social/twitter.svg"></img>
                     </a>
-                    <a type="button" className="btn-fb" href="/">
-                        Facebook
+                    <a
+                        type="button"
+                        className="btn-fb"
+                        href={composeFBpost()}
+                        target="_blank"
+                    >
+                        Post on Facebook
+                        <img src="./img/social/facebook.svg"></img>
                     </a>
-                    <a type="button" className="btn-linkein" href="/">
-                        LinkedIn
+                    <a
+                        type="button"
+                        className="btn-linkedin"
+                        href={composeLinkedInpost()}
+                        target="_blank"
+                    >
+                        Post on LinkedIn
+                        <img src="./img/social/linkedin.svg"></img>
                     </a>
                 </div>
             </>
