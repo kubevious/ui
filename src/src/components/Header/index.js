@@ -23,7 +23,6 @@ class Header extends BaseComponent {
             showSettings: false,
             isLoading: false,
             newVersion: false,
-            getFeedback: true,
         }
 
         this.openAbout = this.openAbout.bind(this)
@@ -32,7 +31,6 @@ class Header extends BaseComponent {
         this.renderSettings = this.renderSettings.bind(this)
         this.openNewVersionInfo = this.openNewVersionInfo.bind(this)
         this.deactivateTimemachine = this.deactivateTimemachine.bind(this)
-        this.openFeedback = this.openFeedback.bind(this)
     }
 
     openAbout() {
@@ -56,14 +54,6 @@ class Header extends BaseComponent {
 
         this.service.fetchNewVersion(result => {
             this.props.handlePopupContent(<NewVersion info={result}/>)
-        })
-    }
-
-    openFeedback() {
-        this.props.handleShowPopup()
-
-        this.service.fetchFeedbackQuestions(result => {
-            this.props.handlePopupContent(<Feedback questions={result} />)
         })
     }
 
@@ -142,11 +132,6 @@ class Header extends BaseComponent {
                     </div>
                 }
                 <div className="actions">
-                    {this.state.getFeedback &&
-                        <div className="btn-container">
-                            <button id="btnHeaderFeedback" type="button" className="btn btn-feedback" onClick={this.openFeedback}></button>
-                            <span className="tooltiptext">Give Feedback</span>
-                        </div>}
 
                     {this.state.newVersion &&
                         <div className="btn-container">

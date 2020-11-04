@@ -1,23 +1,51 @@
 import React, { useState } from 'react'
+import $ from 'jquery'
 import './styles.scss'
 
-const Feedback = ({ questions }) => {
+const Feedback = ({ request }) => {
+    const questions = request.questions
+    const defaultResponse = { id: request.id, answers: [] }
     const [screen, setScreen] = useState('questions')
-    const [userAnswers, setUserAnswers] = useState(questions)
+    const [userAnswers, setUserAnswers] = useState(defaultResponse)
 
     const handleInputChange = (e) => {
-        const changedAnswers = userAnswers.map((item) => {
-            if (item.text === e.target.name) {
-                return {
-                    ...item,
-                    answer: e.target.value,
-                }
-            } else {
-                return item
-            }
-        })
-        
-        setUserAnswers(changedAnswers)
+        const answer = { id: e.target.name, value: e.target.value }
+        const changedAnswers = userAnswers.answers
+        const found = changedAnswers.find((item) => item.id === answer.id)
+
+        found
+            ? changedAnswers.map((item) => {
+                  if (item.id == answer.id) {
+                      item.value = answer.value
+                  }
+              })
+            : changedAnswers.push(answer)
+
+        setUserAnswers({ answers: changedAnswers })
+    }
+
+    const setClicked = (e) => {
+        $('.user-single-select button').removeClass('clicked')
+        e.target.classList.add('clicked')
+    }
+
+    const handleMultiselect = (e) => {
+        e.target.classList.toggle('clicked')
+
+        const changedAnswers = userAnswers.answers
+        const answer = { id: e.target.name, value: [e.target.value] }
+        const found = changedAnswers.find((item) => item.id === answer.id)
+
+        if (!found) {
+            changedAnswers.push(answer)
+        } else {
+            const element = found.value.find((item) => item === e.target.value)
+            found.value = element
+                ? found.value.filter((item) => item !== e.target.value)
+                : found.value.concat(e.target.value)
+        }
+
+        setUserAnswers({ answers: changedAnswers })
     }
 
     const renderQuestion = (question, index) => {
@@ -31,7 +59,7 @@ const Feedback = ({ questions }) => {
                         <textarea
                             type="text"
                             placeholder="Type here..."
-                            name={question.text}
+                            name={question.id}
                             onChange={handleInputChange}
                         ></textarea>
                     </div>
@@ -48,39 +76,39 @@ const Feedback = ({ questions }) => {
                             <input
                                 type="radio"
                                 id="star1"
-                                name={question.text}
-                                value="1"
+                                name={question.id}
+                                value="5/5"
                             />
                             <input
                                 type="radio"
                                 id="star2"
-                                name={question.text}
-                                value="2"
+                                name={question.id}
+                                value="4/5"
                             />
                             <input
                                 type="radio"
                                 id="star3"
-                                name={question.text}
-                                value="3"
+                                name={question.id}
+                                value="3/5"
                             />
                             <input
                                 type="radio"
                                 id="star4"
-                                name={question.text}
-                                value="4"
+                                name={question.id}
+                                value="2/5"
                             />
                             <input
                                 type="radio"
                                 id="star5"
-                                name={question.text}
-                                value="5"
+                                name={question.id}
+                                value="1/5"
                             />
                         </div>
                     </div>
                 )
-            case 'select':
+            case 'single-select':
                 return (
-                    <div className="user-select" id={index}>
+                    <div className="user-single-select" id={index}>
                         <label className="select-question">
                             {question.text}
                         </label>
@@ -89,8 +117,31 @@ const Feedback = ({ questions }) => {
                                 return (
                                     <button
                                         type="button"
-                                        name={question.text}
+                                        name={question.id}
                                         onClick={handleInputChange}
+                                        onFocus={setClicked}
+                                        value={option}
+                                    >
+                                        {option}
+                                    </button>
+                                )
+                            })}
+                        </div>
+                    </div>
+                )
+            case 'multi-select':
+                return (
+                    <div className="user-select" id={index}>
+                        <label className="select-question">
+                            {question.text}
+                        </label>
+                        <div role="group" multiple className="select-buttons">
+                            {question.options.map((option) => {
+                                return (
+                                    <button
+                                        type="button"
+                                        name={question.id}
+                                        onClick={handleMultiselect}
                                         value={option}
                                     >
                                         {option}
@@ -101,6 +152,21 @@ const Feedback = ({ questions }) => {
                     </div>
                 )
         }
+    }
+
+    const composeTweet = () => {
+        const tweet = userAnswers.answers
+            .map((el) => {
+                const text = questions.find((que) => que.id === el.id)
+                return text.text + '\n - ' + el.value
+            })
+            .join('\n')
+        const defaultMessage =
+            'I am a proud @kubevious user and it helps with making #Kubernetes safer and easier to use. Try it yourself: https://kubevious.io'
+        const TweetText = encodeURIComponent(tweet + '\n\n' + defaultMessage)
+        const url = `https://twitter.com/intent/tweet?text=${TweetText}`
+
+        return url
     }
 
     const onSubmit = () => {
@@ -141,7 +207,12 @@ const Feedback = ({ questions }) => {
                     You can also share your feedback on:
                 </div>
                 <div className="share-buttons">
-                    <a type="button" className="btn-twitter" href="/">
+                    <a
+                        type="button"
+                        className="twitter-share-button"
+                        href={composeTweet()}
+                        target="_blank"
+                    >
                         Twitter
                     </a>
                     <a type="button" className="btn-fb" href="/">
@@ -156,12 +227,12 @@ const Feedback = ({ questions }) => {
     }
 
     return (
-        <div className="p-40 feedback-popup">
-            <div>
+        <>
+            <div className="feedback-header">
                 <h3 className="heading-text">Give us your feedback</h3>
             </div>
             <div className="feedback-info overflow-hide">{renderScreens()}</div>
-        </div>
+        </>
     )
 }
 

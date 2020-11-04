@@ -14,6 +14,33 @@ export const ABOUT_DATA = [
     },
 ];
 
+export const FEEDBACK_QUESTIONS = {
+    "id": "1234-1234-123-123",
+    "questions": [
+        {
+            "id": "ease-of-use",
+            "type": "rate",
+            "text": "How do you like the easy of use?"
+        },
+        {
+            "id": "new-functionality",
+            "type": "single-select",
+            "text": "Is there some additional functionality you want to see in Kubevious?",
+            "options": ["Yes", "No"]
+        },
+        {
+            "id": "other-products",
+            "type": "multi-select",
+            "text": "What other tools do you use along with Kubevious? Check all that apply.",
+            "options": ["kubectl", "Dashboard", "Lens", "Octant"]
+        },
+        {
+            "id": "comments",
+            "type": "input",
+            "text": "Comment your Kubevious experience"
+        },
+    ]
+}
 
 export const NEW_VERSION_AVAILABLE_DATA = {
     "newVersionPresent": true,
@@ -34,25 +61,11 @@ export const NEW_VERSION_AVAILABLE_DATA = {
         "Rules editor",
         "Markers editor",
         "Diagram autorefresh"
-    ]
+    ],
+    "feedbackRequest": FEEDBACK_QUESTIONS
 }
 
 export const NO_NEW_VERSION_AVAILABLE_DATA = {
-    "newVersionPresent": false
+    "newVersionPresent": false,
+    "feedbackRequest": FEEDBACK_QUESTIONS
 }
-
-export const FEEDBACK_QUESTIONS = [
-    {
-        "type": "rate",
-        "text": "How do you like the easy of use?"
-    },
-    {
-        "type": "select",
-        "text": "Is there some additional functionality you want to see in Kubevious?",
-        "options": ["Yes", "No"]
-    },
-    {
-        "type": "input",
-        "text": "Comment your Kubevious experience"
-    },
-]

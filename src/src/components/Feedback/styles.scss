@@ -2,6 +2,14 @@
     width: 80%;
 }
 
+.feedback-header {
+    margin-top: 100px;
+    background-color: rgba(204, 204, 204, 0.479);
+    padding: 5px 20px;
+    height: 70px;
+    margin-bottom: 50px;
+}
+
 .feedback-info {
     display: flex;
     flex-direction: column;
@@ -21,20 +29,22 @@
         justify-content: center;
     }
 
-    .input-question, textarea {
+    .input-question,
+    textarea {
         align-self: flex-start;
         margin-left: 20px;
     }
 
     .rate-stars {
         flex-direction: row;
+        direction: rtl;
 
         & input {
             margin-left: 25px;
-            white-space:nowrap;
-            cursor:pointer;
-            font-size:40px;
-            color:#ccc;
+            white-space: nowrap;
+            cursor: pointer;
+            font-size: 40px;
+            color: #ccc;
             width: 20px;
             height: 40px;
             visibility: hidden;
@@ -43,15 +53,23 @@
                 content: '★';
                 visibility: visible;
             }
-            &:checked, &:checked ~ & {
-                color: red;
-            }
+        }
 
-            &:hover, &:hover ~ & {
-                color: #FFC107
-            }
+        & > input:checked ~ input,
+        & > input:checked {
+            color: #ff1700;
+        }
+        &:not(:checked) > input:hover,
+        &:not(:checked) > input:hover ~ input {
+            color: #deb217;
+        }
 
-
+        & > input:checked + input:hover,
+        & > input:checked + input:hover ~ input,
+        & > input:checked ~ input:hover,
+        & > input:checked ~ input:hover ~ input,
+        & > input:hover ~ input:checked ~ input {
+            color: #c59b08;
         }
     }
 
@@ -76,7 +94,7 @@
 
         a:hover {
             text-decoration: none;
-            background: #C4C4C4;
+            background: #c4c4c4;
         }
     }
 
@@ -85,11 +103,11 @@
         border: none;
         width: 90%;
         height: 150px;
-        background-color: #C4C4C4;
+        background-color: #c4c4c4;
 
         &:focus {
-           outline: none;
-           border: none;
+            outline: none;
+            border: none;
         }
     }
 
@@ -99,7 +117,7 @@
         & button {
             min-width: 100px;
             height: 35px;
-            border: 1px solid #FFC107;
+            border: 1px solid #ffc107;
             border-radius: 3px;
             background: transparent;
             color: white;
@@ -108,14 +126,23 @@
 
             &:hover {
                 color: black;
-                background: #FFC107;
+                background: #ffc107;
             }
 
-            &:focus, &:active {
-                color: black;
-                background: #FFC107;
-                border: 1px solid #FFC107;
+            &:active, &:focus {
                 outline: none;
+                border: 1px solid #ffc107;
+            }
+        }
+        .clicked {
+            color: black;
+            background: #ffc107;
+            border: 1px solid #ffc107;
+            outline: none;
+
+            &:hover {
+                background: #ffc107aa;
+                color: white;
             }
         }
     }

@@ -1,5 +1,6 @@
 import React from 'react'
 import _ from 'the-lodash'
+import Feedback from '../Feedback';
 
 import './styles.scss'
 
@@ -42,6 +43,7 @@ const NewVersion = ({ info }) => {
             </ul>
           </>
           }
+        {info.feedbackRequest && <Feedback request={info.feedbackRequest} />}
         </div>
       </div>
     )
