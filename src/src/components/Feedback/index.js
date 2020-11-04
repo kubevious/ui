@@ -185,6 +185,7 @@ const Feedback = ({ request }) => {
     }
 
     const composeLinkedInpost = () => {
+        // Simple text sharing not works more, Linkedin shares only link
         const tweet = userAnswers.answers
             .map((el) => {
                 const text = questions.find((que) => que.id === el.id)
@@ -195,7 +196,6 @@ const Feedback = ({ request }) => {
             'I am a proud @kubevious user and it helps with making #Kubernetes safer and easier to use. Try it yourself: https://kubevious.io'
         const TweetText = encodeURIComponent(tweet + '\n\n' + defaultMessage)
         const url = `https://www.linkedin.com/shareArticle?url=https://kubevious.io&title=Kebevious&summary=${TweetText}&source=https://kubevious.io`
-        console.log('url>>>', url)
         return url
     }
 
@@ -258,7 +258,7 @@ const Feedback = ({ request }) => {
                     <a
                         type="button"
                         className="btn-linkedin"
-                        href={composeLinkedInpost()}
+                        // href={composeLinkedInpost()}  Have to be refactored or rejected, it stays only for testing
                         target="_blank"
                     >
                         Post on LinkedIn
