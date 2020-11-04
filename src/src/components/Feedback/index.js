@@ -155,47 +155,24 @@ const Feedback = ({ request }) => {
     }
 
     const composeTweet = () => {
-        const tweet = userAnswers.answers
-            .map((el) => {
-                const text = questions.find((que) => que.id === el.id)
-                return text.text + '\n - ' + el.value
-            })
-            .join('\n')
-        const defaultMessage =
-            'I am a proud @kubevious user and it helps with making #Kubernetes safer and easier to use. Try it yourself: https://kubevious.io'
-        const TweetText = encodeURIComponent(tweet + '\n\n' + defaultMessage)
-        const url = `https://twitter.com/intent/tweet?text=${TweetText}`
+        const message =
+            'I am a proud @kubevious user and it helps making #Kubernetes easier to use and #DevOps more fun. Now I am an #SRE with extraordinary abilities!\n\nTry it yourself: https://kubevious.io'
+        const text = encodeURIComponent(message)
+        const url = `https://twitter.com/intent/tweet?text=${text}`
 
         return url
     }
 
     const composeFBpost = () => {
-        const tweet = userAnswers.answers
-            .map((el) => {
-                const text = questions.find((que) => que.id === el.id)
-                return text.text + '\n - ' + el.value
-            })
-            .join('\n')
-        const defaultMessage =
-            'I am a proud @kubevious user and it helps with making #Kubernetes safer and easier to use. Try it yourself: https://kubevious.io'
-        const TweetText = encodeURIComponent(tweet + '\n\n' + defaultMessage)
-        const url = `https://www.facebook.com/sharer/sharer.php?u=https://kubevious.io&quote=${TweetText}`
-
+        const message =
+            'I am a proud @kubevious user and it helps making #Kubernetes easier to use and #DevOps more fun. Now I am an #SRE with extraordinary abilities!\n\nTry it yourself: https://kubevious.io'
+        const text = encodeURIComponent(message)
+        const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent('https://kubevious.io')}&quote=${text}`
         return url
     }
 
     const composeLinkedInpost = () => {
-        // Simple text sharing not works more, Linkedin shares only link
-        const tweet = userAnswers.answers
-            .map((el) => {
-                const text = questions.find((que) => que.id === el.id)
-                return text.text + '\n - ' + el.value
-            })
-            .join('\n')
-        const defaultMessage =
-            'I am a proud @kubevious user and it helps with making #Kubernetes safer and easier to use. Try it yourself: https://kubevious.io'
-        const TweetText = encodeURIComponent(tweet + '\n\n' + defaultMessage)
-        const url = `https://www.linkedin.com/shareArticle?url=https://kubevious.io&title=Kebevious&summary=${TweetText}&source=https://kubevious.io`
+        const url = `https://www.linkedin.com/shareArticle?url=${encodeURIComponent('https://kubevious.io')}`
         return url
     }
 
@@ -252,13 +229,13 @@ const Feedback = ({ request }) => {
                         href={composeFBpost()}
                         target="_blank"
                     >
-                        Post on Facebook
+                        Share on Facebook
                         <img src="./img/social/facebook.svg"></img>
                     </a>
                     <a
                         type="button"
                         className="btn-linkedin"
-                        // href={composeLinkedInpost()}  Have to be refactored or rejected, it stays only for testing
+                        href={composeLinkedInpost()}
                         target="_blank"
                     >
                         Post on LinkedIn
