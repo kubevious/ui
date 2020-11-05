@@ -212,6 +212,7 @@ const Feedback = ({ request }) => {
                 </>
             )
         }
+        $('.new-version-inner').detach()
         return (
             <div className="completed-screen">
                 <div className="submit-thank">Thank you for your feedback!</div>
