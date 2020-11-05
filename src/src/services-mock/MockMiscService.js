@@ -32,6 +32,10 @@ class MockMiscService {
         cb(FEEDBACK_QUESTIONS)
     }
 
+    submitFeedback(data, cb) {
+        cb(data)
+    }
+
 }
 
 export default MockMiscService

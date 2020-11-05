@@ -1,6 +1,7 @@
 import React from 'react'
 import _ from 'the-lodash'
-import Feedback from '../Feedback';
+import Feedback from '../Feedback'
+import { isEmptyArray } from '../../utils/util'
 
 import './styles.scss'
 
@@ -26,7 +27,7 @@ const NewVersion = ({ info }) => {
                 {info.url}
               </a>
             </div>
-            { info.features && (info.features.length > 0) && <>
+            { info.features && !isEmptyArray(info.features) && <>
               <h3>Features</h3>
               <ul>
                 {info.features.map((elem, index) => (
@@ -35,7 +36,7 @@ const NewVersion = ({ info }) => {
               </ul>
             </>
             }
-            { info.changes && (info.changes.length > 0) && <>
+            { info.changes && !isEmptyArray(info.changes) && <>
               <h3>Changes</h3>
               <ul>
                 {info.changes.map((elem, index) => (

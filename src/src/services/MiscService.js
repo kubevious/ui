@@ -17,7 +17,7 @@ class MiscService extends BaseService {
             name: 'UI Version',
             value: require('../version')
         })
-                  
+
         return Promise.resolve()
             .then(() => {
                 return this._client.get('/api/v1/version')
@@ -55,11 +55,18 @@ class MiscService extends BaseService {
             });
     }
 
+    submitFeedback(data, cb) {
+        return this._client.post('/api/v1/support/feedback', data)
+            .then(result => {
+                cb(result.data)
+            })
+    }
+
     _setupWebSocket()
     {
         this._subscribeSocketToSharedState(
-            'new_version_info', 
-            { kind: 'new-version' }, 
+            'new_version_info',
+            { kind: 'new-version' },
             {});
     }
 }

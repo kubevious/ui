@@ -39,10 +39,12 @@
     }
 
     .overflow-hide {
-        overflow: hidden;
+        overflow-y: hidden;
+        margin-right: 6px;
 
         &:hover {
-            overflow: auto;
+            overflow-y: auto;
+            margin-right: 0;
         }
     }
 }
