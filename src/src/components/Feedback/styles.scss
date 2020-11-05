@@ -2,18 +2,11 @@
     width: 80%;
 }
 
-.feedback-header {
-    margin-top: 100px;
-    background-color: rgba(204, 204, 204, 0.479);
-    padding: 5px 20px;
-    height: 70px;
-    margin-bottom: 80px;
-}
-
 .feedback-info {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    padding-left: 20px;
 
     & * {
         display: flex;
@@ -80,43 +73,6 @@
         font-weight: 700;
     }
 
-    .share-buttons {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-evenly;
-        margin-left: 70px;
-
-        a {
-            padding: 5px 10px;
-            color: white;
-            flex-direction: row;
-            border-radius: 5px;
-
-            img {
-                width: 20px;
-                margin: 0 0 0 10px;
-            }
-        }
-
-        a:hover {
-            text-decoration: none;
-            background: #c4c4c4;
-        }
-
-        .btn-twitter {
-            background-color: #00acee;
-        }
-
-        .btn-fb {
-            background-color: #3b5998;
-        }
-
-        .btn-linkedin {
-            background-color: #0e76a8;
-        }
-
-    }
-
     .user-input textarea {
         resize: none;
         border: none;
@@ -166,11 +122,67 @@
         }
     }
 
-    .submit-thank {
-        margin-bottom: 80px;
+}
+
+.completed-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px 0 40px;
+
+    & * {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 10px;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 700;
+    }
+}
+
+.share-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-left: 70px;
+
+    a {
+        padding: 5px 10px;
+        color: white;
+        flex-direction: row;
+        border-radius: 5px;
+
+        img {
+            width: 20px;
+            margin: 0 0 0 10px;
+        }
     }
 
-    .submit-share {
-        margin-bottom: 50px;
+    a:hover {
+        text-decoration: none;
+        background: #c4c4c4;
     }
+
+    .btn-twitter {
+        background-color: #00acee;
+    }
+
+    .btn-fb {
+        background-color: #3b5998;
+    }
+
+    .btn-linkedin {
+        background-color: #0e76a8;
+    }
+
+}
+
+.submit-thank {
+    margin-bottom: 80px;
+    font-size: 18px;
+}
+
+.submit-share {
+    margin-bottom: 30px;
+    font-size: 24px;
 }

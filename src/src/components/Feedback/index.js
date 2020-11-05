@@ -194,24 +194,29 @@ const Feedback = ({ request }) => {
         if (swithScreens()) {
             return (
                 <>
-                    {questions.map((question, index) => {
-                        return renderQuestion(question, index)
-                    })}
-                    <button
-                        className="feedback-submit button success"
-                        onClick={onSubmit}
-                        type="submit"
-                    >
-                        Submit Feedback
-                    </button>
+                    <div className="feedback-header">
+                        <h3 className="heading-text">Give us your feedback</h3>
+                    </div>
+                    <div className="feedback-info">
+                        {questions.map((question, index) => {
+                            return renderQuestion(question, index)
+                        })}
+                        <button
+                            className="feedback-submit button success"
+                            onClick={onSubmit}
+                            type="submit"
+                        >
+                            Submit Feedback
+                        </button>
+                    </div>
                 </>
             )
         }
         return (
-            <>
+            <div className="completed-screen">
                 <div className="submit-thank">Thank you for your feedback!</div>
                 <div className="submit-share">
-                    You can also share your feedback on:
+                    You can also tell your friends how you liked Kubevious:
                 </div>
                 <div className="share-buttons">
                     <a
@@ -242,17 +247,14 @@ const Feedback = ({ request }) => {
                         <img src="./img/social/linkedin.svg"></img>
                     </a>
                 </div>
-            </>
+            </div>
         )
     }
 
     return (
-        <>
-            <div className="feedback-header">
-                <h3 className="heading-text">Give us your feedback</h3>
-            </div>
-            <div className="feedback-info overflow-hide">{renderScreens()}</div>
-        </>
+        <div className="separate-container">
+            {renderScreens()}
+        </div>
     )
 }
 
