@@ -15,28 +15,28 @@ export const ABOUT_DATA = [
 ];
 
 export const FEEDBACK_QUESTIONS = {
-    "id": "1234-1234-123-123",
+    "id": "7654e321-e89b-12d3-a456-426614174000",
     "questions": [
         {
             "id": "ease-of-use",
-            "type": "rate",
+            "kind": "rate",
             "text": "How do you like the easy of use?"
         },
         {
             "id": "new-functionality",
-            "type": "single-select",
+            "kind": "single-select",
             "text": "Is there some additional functionality you want to see in Kubevious?",
             "options": ["Yes", "No"]
         },
         {
             "id": "other-products",
-            "type": "multi-select",
+            "kind": "multi-select",
             "text": "What other tools do you use along with Kubevious? Check all that apply.",
             "options": ["kubectl", "Dashboard", "Lens", "Octant"]
         },
         {
             "id": "comments",
-            "type": "input",
+            "kind": "input",
             "text": "Comment your Kubevious experience"
         },
     ]

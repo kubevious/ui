@@ -49,7 +49,7 @@ const Feedback = ({ request }) => {
     }
 
     const renderQuestion = (question, index) => {
-        switch (question.type) {
+        switch (question.kind) {
             case 'input':
                 return (
                     <div className="user-input" id={index}>
