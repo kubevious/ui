@@ -54,9 +54,16 @@ class MiscService extends BaseService {
                 cb(result.data)
             })
     }
-    
+
     submitFeedback(data, cb) {
         return this._client.post('/api/v1/support/feedback', data)
+            .then(result => {
+                cb(result.data)
+            })
+    }
+
+    submitSnooze(data, cb) {
+        return this._client.post('/api/v1/support/notification/snooze', data)
             .then(result => {
                 cb(result.data)
             })

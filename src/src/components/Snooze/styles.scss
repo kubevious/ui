@@ -1,0 +1,19 @@
+.snooze-btn {
+    display: flex;
+    float: right;
+    margin-top: 10px;
+
+    & > *:focus {
+        outline: none;
+        border: 1px solid #4E515B;
+    }
+
+    .left-btn {
+        border-radius: 3px 0 0 3px;
+        margin-right: 0;
+    }
+
+    .right-btn {
+        border-radius: 0 3px 3px 0;
+    }
+}

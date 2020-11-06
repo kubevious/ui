@@ -1,5 +1,6 @@
 import React from 'react'
 import BaseComponent from '../../HOC/BaseComponent'
+import Snooze from '../Snooze'
 import $ from 'jquery'
 import './styles.scss'
 
@@ -189,6 +190,7 @@ class Feedback extends BaseComponent {
             const { questions } = this.props.request
             return (
                 <>
+                    <Snooze id={this.props.request.id} />
                     <div className="feedback-header">
                         <h3 className="heading-text">Give us your feedback</h3>
                     </div>

@@ -65,3 +65,10 @@ export const FEEDBACK_QUESTIONS = {
         },
     ]
 }
+
+export const MESSAGE_DATA = {
+    "kind": "message",
+    "id": "123456-e88e",
+    "title": "Try out moving back in time with our Timeline function!",
+    "content": "You can easily navigate to certain time and watch cluster condition"
+}

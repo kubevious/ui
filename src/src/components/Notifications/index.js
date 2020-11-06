@@ -1,5 +1,6 @@
 import React from 'react'
 import Feedback from '../Feedback'
+import MessageNotification from '../MessageNotification'
 import NewVersion from '../NewVersion'
 
 import './styles.scss'
@@ -15,6 +16,7 @@ const Notifications = ({ list }) => {
             <div key={index}>
               {(item.kind == 'new-version') && <NewVersion info={item} />}
               {(item.kind == 'feedback-request') && <Feedback request={item} />}
+              {(item.kind == 'message') && <MessageNotification request={item} />}
             </div>
           ))}
         </div>

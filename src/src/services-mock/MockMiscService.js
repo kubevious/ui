@@ -1,15 +1,16 @@
 import {
     ABOUT_DATA,
     NEW_VERSION_AVAILABLE_DATA,
-    FEEDBACK_QUESTIONS
+    FEEDBACK_QUESTIONS,
+    MESSAGE_DATA
 } from '../boot/aboutMockData'
 
 class MockMiscService {
     constructor(parent, sharedState) {
         this._sharedState = sharedState;
         this._parent = parent
-        
-        this._updateNotifications([ NEW_VERSION_AVAILABLE_DATA, FEEDBACK_QUESTIONS ]);
+
+        this._updateNotifications([ NEW_VERSION_AVAILABLE_DATA, FEEDBACK_QUESTIONS, MESSAGE_DATA ]);
 
         setInterval(() => {
             this._updateNotifications([ NEW_VERSION_AVAILABLE_DATA ]);
@@ -18,6 +19,10 @@ class MockMiscService {
         setInterval(() => {
             this._updateNotifications([ FEEDBACK_QUESTIONS ]);
         }, 9 * 1000);
+
+        setInterval(() => {
+            this._updateNotifications([ MESSAGE_DATA ]);
+        }, 7 * 1000);
 
         setInterval(() => {
             this._updateNotifications([]);
@@ -44,6 +49,9 @@ class MockMiscService {
         cb(data)
     }
 
+    submitSnooze(data, cb) {
+        cb(data)
+    }
 }
 
 export default MockMiscService
