@@ -12,6 +12,9 @@ const Notifications = ({ list }) => {
           <h3 className="heading-text">Notifications</h3>
         </div>
         <div className="notification-container overflow-hide">
+          {(!list) && <>
+            You have no more notifications.
+          </>}
           {list.map((item, index) => (
             <div key={index}>
               {(item.kind == 'new-version') && <NewVersion info={item} />}

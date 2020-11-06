@@ -1,3 +1,4 @@
+import _ from 'the-lodash'
 import React  from 'react'
 import bugImg from '../../assets/header-btns/bug.svg'
 import slackImg from '../../assets/header-btns/slack.svg'
@@ -28,7 +29,7 @@ class Header extends BaseComponent {
         this.openSearch = this.openSearch.bind(this)
         this.detectIsVisible = this.detectIsVisible.bind(this)
         this.renderSettings = this.renderSettings.bind(this)
-        this.openNewVersionInfo = this.openNewVersionInfo.bind(this)
+        this.openNotifications = this.openNotifications.bind(this)
         this.deactivateTimemachine = this.deactivateTimemachine.bind(this)
     }
 
@@ -48,7 +49,7 @@ class Header extends BaseComponent {
         return document.getElementById(item.id) !== null;
     }
 
-    openNewVersionInfo() {
+    openNotifications() {
         this.props.handleShowPopup()
 
         this.service.fetchNotifications(notifications => {
@@ -111,7 +112,7 @@ class Header extends BaseComponent {
         );
 
         this.subscribeToSharedState('notifications_info', (info) => {
-            const hasNotifications = info && info.count && (info.count > 0);
+            const hasNotifications = info && _.isNotNullOrUndefined(info.count) && (info.count > 0);
             this.setState({ hasNotifications: hasNotifications })
         })
     }
@@ -136,10 +137,10 @@ class Header extends BaseComponent {
 
                     {this.state.hasNotifications &&
                         <div className="btn-container">
-                            <button id="btnHeaderNewVersion" type="button" className="btn btn-new-version" onClick={this.openNewVersionInfo}></button>
+                            <button id="btnNotifications" type="button" className="btn btn-notifications" onClick={this.openNotifications}></button>
                             <span className="tooltiptext">Notifications</span>
-                        </div>}
-
+                        </div>
+                    }
 
                     <div className="btn-container">
                         <button id="btnHeaderSearch" type="button" className="btn btn-search" onClick={this.openSearch} />

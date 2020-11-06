@@ -14,6 +14,27 @@ class Snooze extends BaseComponent {
         }
 
         this.handleSubmit = this.handleSubmit.bind(this)
+        this.handleMarkAsRead = this.handleMarkAsRead.bind(this)
+    }
+
+    get id() {
+        return this.props.id;
+    }
+
+    get kind() {
+        return this.props.kind;
+    }
+
+    handleMarkAsRead(e) {
+        // const id = this.props.id
+        // const delay = e.target.name
+        // const container = $(e.target).parents()[2]
+        // this.service.submitSnooze({ id, delay }, () => {
+        //     if ($(container).siblings().length === 0) {
+        //         $('.close').trigger('click')
+        //     }
+        //     $(container).detach()
+        // })
     }
 
     handleSubmit(e) {
@@ -31,6 +52,15 @@ class Snooze extends BaseComponent {
     render() {
         return (
             <div className="snooze-btn">
+                { (this.kind == 'message') && <>
+                    <button
+                        className="button light"
+                        onClick={this.handleMarkAsRead}
+                    >
+                        Mark as read
+                    </button>
+                </>
+                }
                 {this.state.isSnoozed ? (
                     <>
                         <button

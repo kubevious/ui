@@ -10,23 +10,28 @@ class MockMiscService {
         this._sharedState = sharedState;
         this._parent = parent
 
-        this._updateNotifications([ NEW_VERSION_AVAILABLE_DATA, FEEDBACK_QUESTIONS, MESSAGE_DATA ]);
+        this._notificationScenario = 0;
+        this._applyNotificationScenario();
 
         setInterval(() => {
-            this._updateNotifications([ NEW_VERSION_AVAILABLE_DATA ]);
+            this._applyNotificationScenario();
         }, 5 * 1000);
+    }
 
-        setInterval(() => {
+    _applyNotificationScenario()
+    {
+        if (this._notificationScenario == 0) {
+            this._updateNotifications([ NEW_VERSION_AVAILABLE_DATA, FEEDBACK_QUESTIONS, MESSAGE_DATA ]);
+        } else if (this._notificationScenario == 1) {
+            this._updateNotifications([ ]);
+        } else if (this._notificationScenario == 2) {
+            this._updateNotifications([ NEW_VERSION_AVAILABLE_DATA ]);
+        } else if (this._notificationScenario == 3) {
             this._updateNotifications([ FEEDBACK_QUESTIONS ]);
-        }, 9 * 1000);
-
-        setInterval(() => {
+        } else if (this._notificationScenario == 4) {
             this._updateNotifications([ MESSAGE_DATA ]);
-        }, 7 * 1000);
-
-        setInterval(() => {
-            this._updateNotifications([]);
-        }, 17 * 1000);
+        }
+        this._notificationScenario = (this._notificationScenario + 1) % 5;
     }
 
     _updateNotifications(values)
