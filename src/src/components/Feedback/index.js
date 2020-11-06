@@ -94,36 +94,14 @@ class Feedback extends BaseComponent {
                             className="rate-stars"
                             onChange={this.handleInputChange}
                         >
-                            <input
-                                type="radio"
-                                id="star1"
-                                name={question.id}
-                                value="5/5"
+                            {[5, 4, 3, 2, 1].map(val => (
+                                <input
+                                    type="radio"
+                                    id="star1"
+                                    name={question.id}
+                                    value={val}
                             />
-                            <input
-                                type="radio"
-                                id="star2"
-                                name={question.id}
-                                value="4/5"
-                            />
-                            <input
-                                type="radio"
-                                id="star3"
-                                name={question.id}
-                                value="3/5"
-                            />
-                            <input
-                                type="radio"
-                                id="star4"
-                                name={question.id}
-                                value="2/5"
-                            />
-                            <input
-                                type="radio"
-                                id="star5"
-                                name={question.id}
-                                value="1/5"
-                            />
+                            ))}
                         </div>
                     </div>
                 )
