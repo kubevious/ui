@@ -19,8 +19,12 @@ class Snooze extends BaseComponent {
     handleSubmit(e) {
         const id = this.props.id
         const delay = e.target.name
-        this.service.submitSnooze({id, delay}, () => {
-            $(e.target).parent().parent().detach()
+        const container = $(e.target).parents()[2]
+        this.service.submitSnooze({ id, delay }, () => {
+            if ($(container).siblings().length === 0) {
+                $('.close').trigger('click')
+            }
+            $(container).detach()
         })
     }
 
@@ -29,15 +33,26 @@ class Snooze extends BaseComponent {
             <div className="snooze-btn">
                 {this.state.isSnoozed ? (
                     <>
-                        <button name="tomorrow" className="button light left-btn" onClick={this.handleSubmit}>
+                        <button
+                            name="tomorrow"
+                            className="button light left-btn"
+                            onClick={this.handleSubmit}
+                        >
                             Tomorrow
                         </button>
-                        <button name="week" className="button light right-btn" onClick={this.handleSubmit}>
+                        <button
+                            name="week"
+                            className="button light right-btn"
+                            onClick={this.handleSubmit}
+                        >
                             In a week
                         </button>
                     </>
                 ) : (
-                    <button className="button light" onClick={() => this.setState({ isSnoozed: true })}>
+                    <button
+                        className="button light"
+                        onClick={() => this.setState({ isSnoozed: true })}
+                    >
                         Remind later
                     </button>
                 )}

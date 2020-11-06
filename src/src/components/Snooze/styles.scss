@@ -2,11 +2,15 @@
     display: flex;
     float: right;
     margin-top: 10px;
+    font-family: 'Montserrat', sans-serif;
 
-    & > *:focus {
+    & > * {
+        padding: 0 20px;
+
+        &:focus {
         outline: none;
         border: 1px solid #4E515B;
-    }
+    }}
 
     .left-btn {
         border-radius: 3px 0 0 3px;
