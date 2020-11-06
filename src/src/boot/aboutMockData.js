@@ -14,7 +14,31 @@ export const ABOUT_DATA = [
     },
 ];
 
+
+export const NEW_VERSION_AVAILABLE_DATA = {
+    "kind": "new-version",
+    "name": "Kubevious",
+    "version": "1.6.1",
+    "url": "https://github.com/kubevious/kubevious",
+    "changes": [
+        "Rule editor. Define custom rules to continuously validate Kubernetes cluster and apps configurations.",
+        "Marker editor. Associate custom markers to configurations using smart filters.",
+        "Continuous diagram, properties alerts refresh upon changes.",
+        "Frontend rewritten using React.",
+        "Fixed issue related to preparing sql statements after connection restart. #12, #25",
+        "Fixed issue related to DB initialization. #16",
+        "Fixed issue with timeline contents getting disappeared after window reopen. #17",
+        "Fixed UI crash on startup. kubevious/helm#7",
+    ],
+    "features": [
+        "Rules editor",
+        "Markers editor",
+        "Diagram autorefresh"
+    ]
+}
+
 export const FEEDBACK_QUESTIONS = {
+    "kind": "feedback-request",
     "id": "7654e321-e89b-12d3-a456-426614174000",
     "questions": [
         {
@@ -40,32 +64,4 @@ export const FEEDBACK_QUESTIONS = {
             "text": "Comment your Kubevious experience"
         },
     ]
-}
-
-export const NEW_VERSION_AVAILABLE_DATA = {
-    "newVersionPresent": true,
-    "name": "Kubevious",
-    "version": "1.6.1",
-    "url": "https://github.com/kubevious/kubevious",
-    "changes": [
-        "Rule editor. Define custom rules to continuously validate Kubernetes cluster and apps configurations.",
-        "Marker editor. Associate custom markers to configurations using smart filters.",
-        "Continuous diagram, properties alerts refresh upon changes.",
-        "Frontend rewritten using React.",
-        "Fixed issue related to preparing sql statements after connection restart. #12, #25",
-        "Fixed issue related to DB initialization. #16",
-        "Fixed issue with timeline contents getting disappeared after window reopen. #17",
-        "Fixed UI crash on startup. kubevious/helm#7",
-    ],
-    "features": [
-        "Rules editor",
-        "Markers editor",
-        "Diagram autorefresh"
-    ],
-    "feedbackRequest": FEEDBACK_QUESTIONS
-}
-
-export const NO_NEW_VERSION_AVAILABLE_DATA = {
-    "newVersionPresent": false,
-    "feedbackRequest": FEEDBACK_QUESTIONS
 }

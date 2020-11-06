@@ -4,12 +4,11 @@ import slackImg from '../../assets/header-btns/slack.svg'
 import githubImg from '../../assets/header-btns/github.svg'
 import About from '../About'
 import Search from '../Search'
-import NewVersion from '../NewVersion';
+import Notifications from '../Notifications';
 import BaseComponent from '../../HOC/BaseComponent'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment'
-import Feedback from '../Feedback'
 
 import './styles.scss'
 
@@ -22,7 +21,7 @@ class Header extends BaseComponent {
         this.state = {
             showSettings: false,
             isLoading: false,
-            newVersion: false,
+            hasNotifications: false,
         }
 
         this.openAbout = this.openAbout.bind(this)
@@ -52,8 +51,8 @@ class Header extends BaseComponent {
     openNewVersionInfo() {
         this.props.handleShowPopup()
 
-        this.service.fetchNewVersion(result => {
-            this.props.handlePopupContent(<NewVersion info={result}/>)
+        this.service.fetchNotifications(notifications => {
+            this.props.handlePopupContent(<Notifications list={notifications}/>)
         })
     }
 
@@ -109,9 +108,11 @@ class Header extends BaseComponent {
                     });
                 }
             }
-            );
-        this.subscribeToSharedState('new_version_info', (info) => {
-            this.setState({ newVersion: info.newVersionPresent })
+        );
+
+        this.subscribeToSharedState('notifications_info', (info) => {
+            const hasNotifications = info && info.count && (info.count > 0);
+            this.setState({ hasNotifications: hasNotifications })
         })
     }
 
@@ -133,7 +134,7 @@ class Header extends BaseComponent {
                 }
                 <div className="actions">
 
-                    {this.state.newVersion &&
+                    {this.state.hasNotifications &&
                         <div className="btn-container">
                             <button id="btnHeaderNewVersion" type="button" className="btn btn-new-version" onClick={this.openNewVersionInfo}></button>
                             <span className="tooltiptext">Notifications</span>
