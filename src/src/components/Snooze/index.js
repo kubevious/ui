@@ -13,7 +13,7 @@ class Snooze extends BaseComponent {
             isSnoozed: false,
         }
 
-        this.handleSubmit = this.handleSubmit.bind(this)
+        this.handleSnooze = this.handleSnooze.bind(this)
         this.handleMarkAsRead = this.handleMarkAsRead.bind(this)
     }
 
@@ -26,26 +26,23 @@ class Snooze extends BaseComponent {
     }
 
     handleMarkAsRead(e) {
-        // const id = this.props.id
-        // const delay = e.target.name
-        // const container = $(e.target).parents()[2]
-        // this.service.submitSnooze({ id, delay }, () => {
-        //     if ($(container).siblings().length === 0) {
-        //         $('.close').trigger('click')
-        //     }
-        //     $(container).detach()
-        // })
+        this._submit(e, null);
     }
 
-    handleSubmit(e) {
-        const id = this.props.id
-        const delay = e.target.name
-        const container = $(e.target).parents()[2]
-        this.service.submitSnooze({ id, delay }, () => {
-            if ($(container).siblings().length === 0) {
-                $('.close').trigger('click')
-            }
-            $(container).detach()
+    handleSnooze(e, days) {
+        this._submit(e, days);
+    }
+
+    _submit(e, days)
+    {
+        const data = {
+            kind: this.kind,
+            id: this.id,
+            days: days
+        }
+
+        this.service.submitSnooze(data, () => {
+            
         })
     }
 
@@ -66,14 +63,14 @@ class Snooze extends BaseComponent {
                         <button
                             name="tomorrow"
                             className="button light left-btn"
-                            onClick={this.handleSubmit}
+                            onClick={(e) => this.handleSnooze(e, 1)}
                         >
                             Tomorrow
                         </button>
                         <button
                             name="week"
                             className="button light right-btn"
-                            onClick={this.handleSubmit}
+                            onClick={(e) => this.handleSnooze(e, 7)}
                         >
                             In a week
                         </button>

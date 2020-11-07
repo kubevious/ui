@@ -1,30 +1,34 @@
 import React from 'react'
-import Feedback from '../Feedback'
-import MessageNotification from '../MessageNotification'
-import NewVersion from '../NewVersion'
+import BaseComponent from '../../HOC/BaseComponent'
+import NotificationList from '../NotificationList'
 
 import './styles.scss'
 
-const Notifications = ({ list }) => {
-    return (
-      <div className="p-40">
-        <div>
-          <h3 className="heading-text">Notifications</h3>
-        </div>
-        <div className="notification-container overflow-hide">
-          {(!list) && <>
-            You have no more notifications.
-          </>}
-          {list.map((item, index) => (
-            <div key={index}>
-              {(item.kind == 'new-version') && <NewVersion info={item} />}
-              {(item.kind == 'feedback-request') && <Feedback request={item} />}
-              {(item.kind == 'message') && <MessageNotification request={item} />}
-            </div>
-          ))}
-        </div>
-      </div>
-    )
-}
+class Notifications extends BaseComponent {
+  constructor(props) {
+      super(props)
 
+      this.state = {
+        list: [],
+      }
+
+      this.registerService({ kind: 'misc' })
+  }
+
+  componentDidMount() {
+    this.subscribeToSharedState('notifications', notifications => {
+      if (!notifications) {
+        this.setState({ list: [] })  
+      } else {
+        this.setState({ list: notifications.notifications })
+      }
+    });
+  }
+
+  render() {
+    return (
+      <NotificationList list={this.state.list} />
+    )
+  }
+}
 export default Notifications

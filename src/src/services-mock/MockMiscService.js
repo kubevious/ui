@@ -10,9 +10,17 @@ class MockMiscService {
         this._sharedState = sharedState;
         this._parent = parent
 
-        this._notificationScenario = 0;
-        this._applyNotificationScenario();
+        this._allNotifications = [
+            NEW_VERSION_AVAILABLE_DATA,
+            FEEDBACK_QUESTIONS,
+            MESSAGE_DATA
+        ]
+        this._snoozeDict = {};
 
+        this._isNewVersionPresent = true;
+        this._currentNotifications = [];
+
+        this._updateNotifications();
         setInterval(() => {
             this._applyNotificationScenario();
         }, 5 * 1000);
@@ -20,25 +28,33 @@ class MockMiscService {
 
     _applyNotificationScenario()
     {
-        if (this._notificationScenario == 0) {
-            this._updateNotifications([ NEW_VERSION_AVAILABLE_DATA, FEEDBACK_QUESTIONS, MESSAGE_DATA ]);
-        } else if (this._notificationScenario == 1) {
-            this._updateNotifications([ ]);
-        } else if (this._notificationScenario == 2) {
-            this._updateNotifications([ NEW_VERSION_AVAILABLE_DATA ]);
-        } else if (this._notificationScenario == 3) {
-            this._updateNotifications([ FEEDBACK_QUESTIONS ]);
-        } else if (this._notificationScenario == 4) {
-            this._updateNotifications([ MESSAGE_DATA ]);
-        }
-        this._notificationScenario = (this._notificationScenario + 1) % 5;
+        this._isNewVersionPresent = !this._isNewVersionPresent;
+        this._updateNotifications();
     }
 
-    _updateNotifications(values)
+    _updateNotifications()
     {
-        this._notifications = values;
+        this._notifications = this._allNotifications.filter(x => {
+            if (x.kind == 'new-version') {
+                if (this._isNewVersionPresent) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            const key = `${x.kind}-${x.id}`;
+            if (this._snoozeDict[key]) {
+                return false;
+            }
+            return true;
+        });
+
         this._sharedState.set('notifications_info', {
             count: this._notifications.length
+        });
+        this._sharedState.set('notifications', {
+            notifications: this._notifications
         });
     }
 
@@ -51,11 +67,14 @@ class MockMiscService {
     }
 
     submitFeedback(data, cb) {
-        cb(data)
+        this._snoozeDict[`${data.kind}-${data.id}`] = true;
+        cb()
     }
 
     submitSnooze(data, cb) {
-        cb(data)
+        this._snoozeDict[`${data.kind}-${data.id}`] = true;
+        this._updateNotifications();
+        cb()
     }
 }
 

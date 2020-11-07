@@ -5,7 +5,7 @@ import Config from '../Config'
 import PropertiesTable from '../PropertiesTable'
 
 const PropertyGroup = ({ title, extraClassTitle, extraClassContents, tooltip, dn, groupName, group,
-                           propertyExpanderHandleClick, onPropertyGroupPopup, closePopup }) => {
+                           propertyExpanderHandleClick, onPropertyGroupPopup }) => {
     const renderGroup = (options = {}) => {
         options.relativeTo = dn;
 
@@ -16,7 +16,7 @@ const PropertyGroup = ({ title, extraClassTitle, extraClassContents, tooltip, dn
 
             return <EnvironmentVariables group={group} options={options}/>
         } else if (group.kind === 'dn-list') {
-            return <DnList group={group} options={options} hidePopup={closePopup}/>
+            return <DnList group={group} options={options} />
         } else if (group.kind === 'yaml') {
             return <Config group={group}/>
         } else if (group.kind === 'table') {

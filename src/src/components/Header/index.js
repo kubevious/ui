@@ -34,15 +34,23 @@ class Header extends BaseComponent {
     }
 
     openAbout() {
-        this.props.handleShowPopup()
+        this.sharedState.set('popup_window', {
+            title: 'About'
+        });
+
         this.service.fetchAbout(result => {
-            this.props.handlePopupContent(<About result={result}/>)
+            this.sharedState.set('popup_window', {
+                title: 'About',
+                content: <About result={result}/>
+            });
         })
     }
 
     openSearch() {
-        this.props.handleShowPopup()
-        this.props.handlePopupContent(<Search closePopup={this.props.handleClosePopup}/>)
+        this.sharedState.set('popup_window', {
+            title: 'Search',
+            content: <Search />
+        });
     }
 
     detectIsVisible(item) {
@@ -50,10 +58,9 @@ class Header extends BaseComponent {
     }
 
     openNotifications() {
-        this.props.handleShowPopup()
-
-        this.service.fetchNotifications(notifications => {
-            this.props.handlePopupContent(<Notifications list={notifications}/>)
+        this.sharedState.set('popup_window', {
+            title: 'Notifications',
+            content: <Notifications />
         })
     }
 

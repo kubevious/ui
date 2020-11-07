@@ -1,6 +1,7 @@
 import React from 'react'
 import BaseComponent from '../../HOC/BaseComponent'
 import Snooze from '../Snooze'
+import PostFeedback from '../PostFeedback'
 import $ from 'jquery'
 import './styles.scss'
 
@@ -12,8 +13,7 @@ class Feedback extends BaseComponent {
         this.registerService({ kind: 'misc' })
 
         this.state = {
-            screen: 'questions',
-            userAnswers: { id: props.request.id, answers: [] },
+            userAnswers: { answers: [] },
         }
 
         this.handleInputChange = this.handleInputChange.bind(this)
@@ -23,10 +23,18 @@ class Feedback extends BaseComponent {
     }
 
     handleSubmit() {
-        const userAnswers = this.state.userAnswers
+        
+        const data = {
+            id: this.props.request.id,
+            kind: this.props.request.kind,
+            answers: this.state.userAnswers.answers
+        }
 
-        this.service.submitFeedback(userAnswers, () => {
-            this.setState({ screen: 'share' })
+        this.service.submitFeedback(data, () => {
+            this.sharedState.set('popup_window', {
+                title: 'Post Feedback',
+                content: <PostFeedback />
+            })
         })
     }
 
@@ -154,105 +162,27 @@ class Feedback extends BaseComponent {
         }
     }
 
-    composeTweet() {
-        const message =
-            'I am a proud @kubevious user and it helps making #Kubernetes easier to use and #DevOps more fun. Now I am an #SRE with extraordinary abilities!\n\nTry it yourself: https://kubevious.io'
-        const text = encodeURIComponent(message)
-        const url = `https://twitter.com/intent/tweet?text=${text}`
-
-        return url
-    }
-
-    composeFBpost() {
-        const message =
-            'I am a proud @kubevious user and it helps making #Kubernetes easier to use and #DevOps more fun. Now I am an #SRE with extraordinary abilities!\n\nTry it yourself: https://kubevious.io'
-        const text = encodeURIComponent(message)
-        const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent('https://kubevious.io')}&quote=${text}`
-        return url
-    }
-
-    composeLinkedInpost() {
-        const url = `https://www.linkedin.com/shareArticle?url=${encodeURIComponent('https://kubevious.io')}`
-        return url
-    }
-
-    switchScreens() {
-        switch (this.state.screen) {
-            case 'questions':
-                return true
-            case 'share':
-                return false
-        }
-    }
-
-    renderScreens() {
-        if (this.switchScreens()) {
-            const { questions } = this.props.request
-            return (
-                <>
-                    <div className="feedback-header">
-                        <h3 className="heading-text">Give us your feedback</h3>
-                    </div>
-                    <div className="feedback-info">
-                        {questions.map((question, index) =>
-                            this.renderQuestion(question, index)
-                        )}
-                        <button
-                            className="feedback-submit button success"
-                            onClick={this.handleSubmit}
-                            type="submit"
-                        >
-                            Submit Feedback
-                        </button>
-                    </div>
-                    <Snooze id={this.props.request.id} kind={this.props.request.kind} />
-                </>
-            )
-        }
-        $('.new-version-inner').detach()
-        return (
-            <div className="completed-screen">
-                <div className="submit-thank">Thank you for your feedback!</div>
-                <div className="submit-share">
-                    You can also tell your friends how you liked Kubevious:
-                </div>
-                <div className="share-buttons">
-                    <a
-                        type="button"
-                        className="btn-twitter"
-                        href={this.composeTweet()}
-                        target="_blank"
-                    >
-                        Tweet it
-                        <img src="./img/social/twitter.svg"></img>
-                    </a>
-                    <a
-                        type="button"
-                        className="btn-fb"
-                        href={this.composeFBpost()}
-                        target="_blank"
-                    >
-                        Share on Facebook
-                        <img src="./img/social/facebook.svg"></img>
-                    </a>
-                    <a
-                        type="button"
-                        className="btn-linkedin"
-                        href={this.composeLinkedInpost()}
-                        target="_blank"
-                    >
-                        Post on LinkedIn
-                        <img src="./img/social/linkedin.svg"></img>
-                    </a>
-                </div>
-            </div>
-        )
-    }
-
     render() {
+        const { questions } = this.props.request
+
         return (
             <div className="separate-container">
-                {this.renderScreens()}
+                <div className="feedback-header">
+                    <h3 className="heading-text">Give us your feedback</h3>
+                </div>
+                <div className="feedback-info">
+                    {questions.map((question, index) =>
+                        this.renderQuestion(question, index)
+                    )}
+                    <button
+                        className="feedback-submit button success"
+                        onClick={this.handleSubmit}
+                        type="submit"
+                    >
+                        Submit Feedback
+                    </button>
+                </div>
+                <Snooze id={this.props.request.id} kind={this.props.request.kind} />
             </div>
         )
     }

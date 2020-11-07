@@ -75,6 +75,11 @@ class MiscService extends BaseService {
             'notifications_info',
             { kind: 'notifications-info' },
             { count: 0 });
+
+        this._subscribeSocketToSharedState(
+            'notifications',
+            { kind: 'notifications' },
+            { notifications: []});            
     }
 }
 
