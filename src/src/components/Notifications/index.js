@@ -17,8 +17,9 @@ class Notifications extends BaseComponent {
 
   componentDidMount() {
     this.subscribeToSharedState('notifications', notifications => {
-      if (!notifications) {
-        this.setState({ list: [] })  
+      if (!notifications || notifications.notifications.length == 0) {
+        this.sharedState.set('popup_window', null);
+        // this.setState({ list: [] })  
       } else {
         this.setState({ list: notifications.notifications })
       }
