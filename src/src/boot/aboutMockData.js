@@ -66,9 +66,23 @@ export const FEEDBACK_QUESTIONS = {
     ]
 }
 
+const CONTENT = `
+You can easily navigate to certain time and watch cluster condition
+
+![Kubevious Time Machine screen](https://github.com/kubevious/media/raw/master/screens/time-machine-1.png)
+
+
+### Scheduled updates
+
+| Product           | Dec   | Jan   | Feb   |
+|-------------------|-------|-------|-------|
+| Kubevious UI      | 4.5.7 | 4.5.8 | 4.5.9 |
+| Kubevious backend |       | 1.2.4 |       |
+| Collector         |       |       | 8.8.9 |`
+
 export const MESSAGE_DATA = {
     "kind": "message",
     "id": "123456-e88e",
     "title": "Try out moving back in time with our Timeline function!",
-    "content": "You can easily navigate to certain time and watch cluster condition"
+    "content": CONTENT
 }
