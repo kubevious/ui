@@ -40,11 +40,10 @@
 
     .overflow-hide {
         overflow-y: hidden;
-        margin-right: 6px;
+        padding-right: 6px;
 
         &:hover {
-            overflow-y: auto;
-            margin-right: 0;
+            overflow-y: overlay;
         }
     }
 }
