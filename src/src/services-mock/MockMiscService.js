@@ -23,7 +23,7 @@ class MockMiscService {
         this._updateNotifications();
         setInterval(() => {
             this._applyNotificationScenario();
-        }, 5 * 1000);
+        }, 60 * 1000);
     }
 
     _applyNotificationScenario()
@@ -67,11 +67,13 @@ class MockMiscService {
     }
 
     submitFeedback(data, cb) {
+        console.log("[MockMiscService] Feedback: ", data);
         this._snoozeDict[`${data.kind}-${data.id}`] = true;
         cb()
     }
 
     submitSnooze(data, cb) {
+        console.log("[MockMiscService] Snooze: ", data);
         this._snoozeDict[`${data.kind}-${data.id}`] = true;
         this._updateNotifications();
         cb()

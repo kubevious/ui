@@ -62,26 +62,53 @@ export const FEEDBACK_QUESTIONS = {
     "id": "7654e321-e89b-12d3-a456-426614174000",
     "questions": [
         {
+            "id": "recommend-to-a-friend",
+            "kind": "rate",
+            "text": "How likely are you recommend Kubevious to a friend?",
+        },
+        {
             "id": "ease-of-use",
             "kind": "rate",
-            "text": "How do you like the easy of use?"
+            "text": "How do you like the easy of use?",
+            "optional": true
+        },
+        {
+            "id": "history-feature",
+            "kind": "single-select",
+            "text": "How useful was the TimeMachine capability?",
+            "options": ["Yes", "Somehow", "No"],
+            "optional": false
         },
         {
             "id": "new-functionality",
             "kind": "single-select",
             "text": "Is there some additional functionality you want to see in Kubevious?",
-            "options": ["Yes", "No"]
+            "options": ["Yes", "No"],
+            "optional": true
+        },
+        {
+            "id": "cloud-environments",
+            "kind": "multi-select",
+            "text": "Which cloud environments do you use? Check all that apply.",
+            "options": ["aws", "gcp", "azure", "on-prem"]
         },
         {
             "id": "other-products",
             "kind": "multi-select",
             "text": "What other tools do you use along with Kubevious? Check all that apply.",
-            "options": ["kubectl", "Dashboard", "Lens", "Octant"]
+            "options": ["kubectl", "Dashboard", "Lens", "Octant"],
+            "optional": true
+        },
+        {
+            "id": "best-capability",
+            "kind": "input",
+            "text": "What is the best capability of Kubevious that you liked more?"
         },
         {
             "id": "comments",
             "kind": "input",
-            "text": "Comment your Kubevious experience"
+            "text": "Comment your Kubevious experience",
+            "optional": true
         },
     ]
 }
