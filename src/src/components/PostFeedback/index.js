@@ -43,27 +43,30 @@ class PostFeedback extends BaseComponent {
                             className="btn-twitter"
                             href={this.composeTweet()}
                             target="_blank"
+                            rel="noopener noreferrer"
                         >
                             Tweet it
-                            <img src="./img/social/twitter.svg"></img>
+                            <img src="./img/social/twitter.svg" alt="Tweet it"></img>
                         </a>
                         <a
                             type="button"
                             className="btn-fb"
                             href={this.composeFBpost()}
                             target="_blank"
+                            rel="noopener noreferrer"
                         >
                             Share on Facebook
-                            <img src="./img/social/facebook.svg"></img>
+                            <img src="./img/social/facebook.svg" alt="Share on Facebook"></img>
                         </a>
                         <a
                             type="button"
                             className="btn-linkedin"
                             href={this.composeLinkedInpost()}
                             target="_blank"
+                            rel="noopener noreferrer"
                         >
                             Post on LinkedIn
-                            <img src="./img/social/linkedin.svg"></img>
+                            <img src="./img/social/linkedin.svg" alt="Post on LinkedIn"></img>
                         </a>
                     </div>
                 </div>
