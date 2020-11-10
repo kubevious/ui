@@ -10,7 +10,7 @@ class PostFeedback extends BaseComponent {
 
     composeTweet() {
         const message =
-            'I am a proud @kubevious user and it helps making #Kubernetes easier to use and #DevOps more fun. Now I am an #SRE with extraordinary abilities!\n\nTry it yourself: https://kubevious.io'
+            'I am a proud @kubevious user and it helps making #Kubernetes easier to use and #DevOps more fun. Now I am a #CloudNative #SRE with superpowers!\n\nTry it yourself: https://kubevious.io'
         const text = encodeURIComponent(message)
         const url = `https://twitter.com/intent/tweet?text=${text}`
         return url
@@ -18,7 +18,7 @@ class PostFeedback extends BaseComponent {
 
     composeFBpost() {
         const message =
-            'I am a proud @kubevious user and it helps making #Kubernetes easier to use and #DevOps more fun. Now I am an #SRE with extraordinary abilities!\n\nTry it yourself: https://kubevious.io'
+            'I am a proud @kubevious user and it helps making #Kubernetes easier to use and #DevOps more fun. Now I am a #CloudNative #SRE with superpowers!\n\nTry it yourself: https://kubevious.io'
         const text = encodeURIComponent(message)
         const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent('https://kubevious.io')}&quote=${text}`
         return url
