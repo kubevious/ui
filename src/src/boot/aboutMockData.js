@@ -14,6 +14,17 @@ export const ABOUT_DATA = [
     },
 ];
 
+export const NEW_VERSION_CONTENT = `
+### Other improvements
+
+- Added personal message notification to user
+- Added notification snooze functionality
+- Made improvements to the UI/UX
+
+### Planned in new versions
+
+- Add advanced search filtering
+`
 
 export const NEW_VERSION_AVAILABLE_DATA = {
     "kind": "new-version",
@@ -34,7 +45,8 @@ export const NEW_VERSION_AVAILABLE_DATA = {
         "Rules editor",
         "Markers editor",
         "Diagram autorefresh"
-    ]
+    ],
+    "content": NEW_VERSION_CONTENT
 }
 
 export const FEEDBACK_QUESTIONS = {
