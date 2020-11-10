@@ -381,7 +381,7 @@ class Timeline extends BaseComponent {
     $('.x-brush').detach()
 
     const self = this
-    this._brush = d3.brushX(this._subXScale).on('end', function () {
+    this._brush = d3.brushX(this._subXScale).on('brush end', function () {
 
       if (!d3.event.selection && d3.event.sourceEvent) {
         self._calculateBrushInit()

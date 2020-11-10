@@ -35,15 +35,18 @@ class Properties extends BaseComponent {
 
     onPropertyGroupPopup(event, group) {
         const contentHtml = this._detectGroupContent(group)
-        this.props.handleShowPopup()
-        this.props.handlePopupContent(contentHtml)
+
+        this.sharedState.set('popup_window', {
+            title: 'Properties: ' + group,
+            content: contentHtml
+        });
     }
 
     _detectGroupContent(group) {
         if (group.kind === 'key-value') {
             return <EnvironmentVariables group={group} dn={this.state.selectedDn}/>
         } else if (group.kind === 'dn-list') {
-            return <DnList group={group} hidePopup={this.props.closePopup} dn={this.state.selectedDn}/>
+            return <DnList group={group} dn={this.state.selectedDn}/>
         } else if (group.kind === 'yaml') {
             return <Config group={group} dn={this.state.selectedDn}/>
         } else if (group.kind === 'table') {

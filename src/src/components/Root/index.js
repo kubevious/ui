@@ -23,9 +23,6 @@ class Root extends BaseComponent {
 
         this._fieldsSaver = new FieldsSaver('Diagram')
 
-        this.handleShowPopup = this.handleShowPopup.bind(this)
-        this.handleClosePopup = this.handleClosePopup.bind(this)
-        this.handlePopupContent = this.handlePopupContent.bind(this)
         this.handleLayout = this.handleLayout.bind(this)
         this.handleChangeWindow = this.handleChangeWindow.bind(this)
         this.closeError = this.closeError.bind(this)
@@ -53,18 +50,6 @@ class Root extends BaseComponent {
                     time_machine_duration 
                 })
             })
-    }
-
-    handleShowPopup() {
-        this.setState({ showPopup: true })
-    }
-
-    handleClosePopup() {
-        this.setState({ showPopup: false })
-    }
-
-    handlePopupContent(content) {
-        this.setState({ popupContent: content })
     }
 
     handleLayout(value) {
@@ -120,6 +105,21 @@ class Root extends BaseComponent {
         this.subscribeToSharedState(['is_error', 'error'], ({ is_error, error }) => {
             this.setState({ error: error, isError: is_error})
         })
+
+        this.subscribeToSharedState('popup_window', (popup_window) => {
+            if (popup_window) {
+                this.setState({ 
+                    showPopup: true, 
+                    popupContent: popup_window.content
+                })
+            } else {
+                this.setState({ 
+                    showPopup: false, 
+                    popupContent: null
+                })
+            }
+
+        })
     }
 
     render() {
@@ -138,9 +138,6 @@ class Root extends BaseComponent {
                 </div>
                 <div className="wrapper">
                     <Header
-                        handleShowPopup={this.handleShowPopup}
-                        handlePopupContent={this.handlePopupContent}
-                        handleClosePopup={this.handleClosePopup}
                         handleChangeWindow={this.handleChangeWindow}
                         windows={windows}
                     />
@@ -148,14 +145,9 @@ class Root extends BaseComponent {
                     <GoldenLayoutComponent
                         diagramSource={this.diagramSource}
                         handleLayout={this.handleLayout}
-                        handleShowPopup={this.handleShowPopup}
-                        handlePopupContent={this.handlePopupContent}
-                        closePopup={this.handleClosePopup}
                     />
 
-                    {showPopup && <Popup closePopup={this.handleClosePopup}>
-                        {popupContent}
-                    </Popup>}
+                    {showPopup && <Popup popupContent={popupContent} /> }
 
                     {isError && <ErrorBox error={error} closeError={this.closeError}/>}
                 </div>

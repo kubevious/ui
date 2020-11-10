@@ -1,10 +1,11 @@
+import _ from 'the-lodash'
 import React  from 'react'
 import bugImg from '../../assets/header-btns/bug.svg'
 import slackImg from '../../assets/header-btns/slack.svg'
 import githubImg from '../../assets/header-btns/github.svg'
 import About from '../About'
 import Search from '../Search'
-import NewVersion from '../NewVersion';
+import Notifications from '../Notifications';
 import BaseComponent from '../../HOC/BaseComponent'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
@@ -21,38 +22,45 @@ class Header extends BaseComponent {
         this.state = {
             showSettings: false,
             isLoading: false,
-            newVersion: false,
+            hasNotifications: false,
         }
 
         this.openAbout = this.openAbout.bind(this)
         this.openSearch = this.openSearch.bind(this)
         this.detectIsVisible = this.detectIsVisible.bind(this)
         this.renderSettings = this.renderSettings.bind(this)
-        this.openNewVersionInfo = this.openNewVersionInfo.bind(this)
+        this.openNotifications = this.openNotifications.bind(this)
         this.deactivateTimemachine = this.deactivateTimemachine.bind(this)
     }
 
     openAbout() {
-        this.props.handleShowPopup()
+        this.sharedState.set('popup_window', {
+            title: 'About'
+        });
+
         this.service.fetchAbout(result => {
-            this.props.handlePopupContent(<About result={result}/>)
+            this.sharedState.set('popup_window', {
+                title: 'About',
+                content: <About result={result}/>
+            });
         })
     }
 
     openSearch() {
-        this.props.handleShowPopup()
-        this.props.handlePopupContent(<Search closePopup={this.props.handleClosePopup}/>)
+        this.sharedState.set('popup_window', {
+            title: 'Search',
+            content: <Search />
+        });
     }
 
     detectIsVisible(item) {
         return document.getElementById(item.id) !== null;
     }
 
-    openNewVersionInfo() {
-        this.props.handleShowPopup()
-
-        this.service.fetchNewVersion(result => {
-            this.props.handlePopupContent(<NewVersion info={result}/>)
+    openNotifications() {
+        this.sharedState.set('popup_window', {
+            title: 'Notifications',
+            content: <Notifications />
         })
     }
 
@@ -108,9 +116,11 @@ class Header extends BaseComponent {
                     });
                 }
             }
-            );
-        this.subscribeToSharedState('new_version_info', (info) => {
-            this.setState({ newVersion: info.newVersionPresent })
+        );
+
+        this.subscribeToSharedState('notifications_info', (info) => {
+            const hasNotifications = info && _.isNotNullOrUndefined(info.count) && (info.count > 0);
+            this.setState({ hasNotifications: hasNotifications })
         })
     }
 
@@ -131,12 +141,13 @@ class Header extends BaseComponent {
                     </div>
                 }
                 <div className="actions">
-                    {this.state.newVersion &&
-                        <div className="btn-container">
-                            <button id="btnHeaderNewVersion" type="button" className="btn btn-new-version" onClick={this.openNewVersionInfo}></button>
-                            <span className="tooltiptext">Notifications</span>
-                        </div>}
 
+                    {this.state.hasNotifications &&
+                        <div className="btn-container">
+                            <button id="btnNotifications" type="button" className="btn btn-notifications" onClick={this.openNotifications}></button>
+                            <span className="tooltiptext">Notifications</span>
+                        </div>
+                    }
 
                     <div className="btn-container">
                         <button id="btnHeaderSearch" type="button" className="btn btn-search" onClick={this.openSearch} />

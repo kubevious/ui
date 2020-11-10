@@ -1,6 +1,5 @@
 import React from 'react'
 import DnComponent from '../DnComponent'
-import { popupClose } from '../../utils/ui-utils'
 import BaseComponent from '../../HOC/BaseComponent'
 import { isEmptyArray } from '../../utils/util'
 import MarkerPreview from '../MarkerPreview'
@@ -17,7 +16,7 @@ class DnShortcutComponent extends BaseComponent {
     clickDn() {
         this.sharedState.set('selected_dn', this.props.dn);
         this.sharedState.set('auto_pan_to_selected_dn', true);
-        this.props.hidePopup ? this.props.hidePopup() : popupClose()
+        this.sharedState.set('popup_window', null);
     }
 
     render() {

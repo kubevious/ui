@@ -23,15 +23,6 @@ export function getNodeLogoUrl(kind) {
     return `/img/entities/${kind}.svg`
 }
 
-export function popupClose(event) {
-    if (event) {
-        if (event.target !== event.currentTarget) {
-            return;
-        }
-    }
-    $('#popup').remove()
-}
-
 var todayStr = moment(new Date()).format('YYYY-MM-DD')
 
 export function formatDate(date) {

@@ -5,7 +5,7 @@ import DnComponent from '../../DnComponent'
 
 import './styles.scss'
 
-const DnList = ({ group, options, hidePopup, dn }) => {
+const DnList = ({ group, options, dn }) => {
     return (
         <div className="DnList-wrapper p-40 overflow-hide">
             <div className="DnList-container">
@@ -14,7 +14,7 @@ const DnList = ({ group, options, hidePopup, dn }) => {
                     <h3>Shared With</h3>
                 </div>}
                 {!isEmptyArray(group.config) && group.config.map((item, index) => (
-                    <DnShortcutComponent key={index} dn={item} options={options} hidePopup={hidePopup} />
+                    <DnShortcutComponent key={index} dn={item} options={options} />
                 ))}
             </div>
         </div>

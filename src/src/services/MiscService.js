@@ -17,7 +17,7 @@ class MiscService extends BaseService {
             name: 'UI Version',
             value: require('../version')
         })
-                  
+
         return Promise.resolve()
             .then(() => {
                 return this._client.get('/api/v1/version')
@@ -48,19 +48,38 @@ class MiscService extends BaseService {
             });
     }
 
-    fetchNewVersion(cb) {
-        return this._client.get('/api/v1/new-version')
+    fetchNotifications(cb) {
+        return this._client.get('/api/v1/support/notifications')
             .then(result => {
-                cb(result.data);
-            });
+                cb(result.data)
+            })
+    }
+
+    submitFeedback(data, cb) {
+        return this._client.post('/api/v1/support/feedback', data)
+            .then(result => {
+                cb(result.data)
+            })
+    }
+
+    submitSnooze(data, cb) {
+        return this._client.post('/api/v1/support/notification/snooze', data)
+            .then(result => {
+                cb(result.data)
+            })
     }
 
     _setupWebSocket()
     {
         this._subscribeSocketToSharedState(
-            'new_version_info', 
-            { kind: 'new-version' }, 
-            {});
+            'notifications_info',
+            { kind: 'notifications-info' },
+            { count: 0 });
+
+        this._subscribeSocketToSharedState(
+            'notifications',
+            { kind: 'notifications' },
+            { notifications: []});            
     }
 }
 
