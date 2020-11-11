@@ -47,3 +47,24 @@
     margin: 10px 0 0 30px;
     width: fit-content;
 }
+
+.new-version-inner {
+    div {
+        margin-top: 20px;
+    }
+
+    tbody tr:nth-child(2n + 1) {
+        background-color: rgba(143, 143, 143, 0.205);
+    }
+
+    td,
+    th {
+        border: 2px solid gray;
+        padding: 10px;
+    }
+
+    img {
+        width: 40%;
+        height: 100%;
+    }
+}
