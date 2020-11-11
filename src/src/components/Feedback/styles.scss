@@ -122,6 +122,20 @@
         }
     }
 
+    .non-optional::before {
+        content: '* ';
+        color: red;
+        display: contents;
+    }
+
+    .submit-error {
+        background: #970303aa;
+        width: 350px;
+        color: white;
+        padding: 10px;
+        align-self: center;
+    }
+
 }
 
 .completed-screen {

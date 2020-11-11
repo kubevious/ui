@@ -3,6 +3,7 @@ import BaseComponent from '../../HOC/BaseComponent'
 import Snooze from '../Snooze'
 import PostFeedback from '../PostFeedback'
 import $ from 'jquery'
+import cx from 'classnames'
 import './styles.scss'
 
 
@@ -14,6 +15,7 @@ class Feedback extends BaseComponent {
 
         this.state = {
             userAnswers: { answers: [] },
+            isSubmitAllowed: true,
         }
 
         this.handleInputChange = this.handleInputChange.bind(this)
@@ -22,20 +24,38 @@ class Feedback extends BaseComponent {
         this.handleSubmit = this.handleSubmit.bind(this)
     }
 
+    checkAnswers(questions, answers) {
+        let isQuestionsAnswered = true
+        questions.forEach(question => {
+            if (!question.optional) {
+                const hasAnswer = answers.some(answer => {
+                    return answer.id === question.id
+                })
+                !hasAnswer && (isQuestionsAnswered = false)
+            }
+            return
+        })
+        this.setState({ isSubmitAllowed: isQuestionsAnswered})
+        return isQuestionsAnswered
+    }
+
     handleSubmit() {
-        
+
         const data = {
             id: this.props.request.id,
             kind: this.props.request.kind,
             answers: this.state.userAnswers.answers
         }
 
-        this.service.submitFeedback(data, () => {
-            this.sharedState.set('popup_window', {
-                title: 'Post Feedback',
-                content: <PostFeedback />
+        const checkResult = this.checkAnswers(this.props.request.questions, data.answers)
+        if (checkResult) {
+            this.service.submitFeedback(data, () => {
+                this.sharedState.set('popup_window', {
+                    title: 'Post Feedback',
+                    content: <PostFeedback />
+                })
             })
-        })
+        }
     }
 
     handleInputChange(e) {
@@ -83,7 +103,7 @@ class Feedback extends BaseComponent {
             case 'input':
                 return (
                     <div className="user-input" id={index}>
-                        <label className="input-question">
+                        <label className={cx("input-question", {'non-optional': !question.optional})}>
                             {question.text}
                         </label>
                         <textarea
@@ -97,7 +117,7 @@ class Feedback extends BaseComponent {
             case 'rate':
                 return (
                     <div className="user-rate" id={index}>
-                        <label className="rate-question">{question.text}</label>
+                        <label className={cx("rate-question", {'non-optional': !question.optional})}>{question.text}</label>
                         <div
                             role="group"
                             className="rate-stars"
@@ -118,7 +138,7 @@ class Feedback extends BaseComponent {
             case 'single-select':
                 return (
                     <div className="user-single-select" id={index}>
-                        <label className="select-question">
+                        <label className={cx("select-question", {'non-optional': !question.optional})}>
                             {question.text}
                         </label>
                         <div role="group" className="select-buttons">
@@ -142,7 +162,7 @@ class Feedback extends BaseComponent {
             case 'multi-select':
                 return (
                     <div className="user-select" id={index}>
-                        <label className="select-question">
+                        <label className={cx("select-question", {'non-optional': !question.optional})}>
                             {question.text}
                         </label>
                         <div role="group" multiple className="select-buttons">
@@ -166,6 +186,7 @@ class Feedback extends BaseComponent {
 
     render() {
         const { questions } = this.props.request
+        const { isSubmitAllowed } = this.state
 
         return (
             <div className="separate-container">
@@ -183,6 +204,7 @@ class Feedback extends BaseComponent {
                     >
                         Submit Feedback
                     </button>
+                    {!isSubmitAllowed && <div className="submit-error">Please fill required (*) fields to submit</div>}
                 </div>
                 <Snooze id={this.props.request.id} kind={this.props.request.kind} />
             </div>
