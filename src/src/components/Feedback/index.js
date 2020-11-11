@@ -107,6 +107,7 @@ class Feedback extends BaseComponent {
                                 <input
                                     type="radio"
                                     id="star1"
+                                    key={val}
                                     name={question.id}
                                     value={val}
                             />

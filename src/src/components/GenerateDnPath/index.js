@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { prettyKind, getNodeLogoUrl } from '../../utils/ui-utils'
 import _ from 'the-lodash'
 import cx from 'classnames'
@@ -22,12 +22,12 @@ const DnPath = ({ dnParts, includeLogo, bigLogo }) => {
       {dnParts.map((part) => {
         const kind = prettyKind(part.kind)
         return (
-          <>
+          <Fragment key={part.name} >
             <span className="kind">{kind}</span>
             <span></span>
             <span className="name">{part.name}</span>
             {part !== lastPart && <span className="separator">&gt</span>}
-          </>
+          </Fragment>
         )
       })}
       <div className="clearfix"></div>

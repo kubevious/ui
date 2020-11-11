@@ -104,10 +104,10 @@ class Properties extends BaseComponent {
             return <div className="message-empty">No object selected.</div>
         }
 
-        return [
-            selectedDn && this._renderPropertiesNodeDn(),
-            selectedObjectProps && this._renderContent()
-        ]
+        return <>
+            {selectedDn && this._renderPropertiesNodeDn()}
+            {selectedObjectProps && this._renderContent()}
+        </>
     }
 
     componentDidMount() {
