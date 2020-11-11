@@ -55,7 +55,7 @@ class Feedback extends BaseComponent {
     }
 
     setClicked(e) {
-        $('.user-single-select button').removeClass('clicked')
+        $(`.user-single-select .${e.target.name}`).removeClass('clicked')
         e.target.classList.add('clicked')
     }
 
@@ -126,6 +126,7 @@ class Feedback extends BaseComponent {
                                     <button
                                         type="button"
                                         name={question.id}
+                                        className={question.id}
                                         onClick={this.handleInputChange}
                                         onFocus={this.setClicked}
                                         value={option}

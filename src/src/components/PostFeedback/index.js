@@ -31,7 +31,7 @@ class PostFeedback extends BaseComponent {
 
     render() {
         return (
-            <div className="separate-container">
+            <div className="separate-container post-feedback">
                 <div className="completed-screen">
                     <div className="submit-thank">Thank you for your feedback!</div>
                     <div className="submit-share">
