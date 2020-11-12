@@ -1,4 +1,6 @@
 .has-success {
+  display: flex;
+
   .search-input {
     font-size: 22px;
     font-weight: 700;
@@ -7,7 +9,7 @@
     border-radius: 0;
     color: #FFF;
     padding: 15px;
-    width: calc(100vw - 160px - 80px);
+    width: calc(100vw - 320px - 80px);
 
     &:focus {
       border: 1px solid yellow;
@@ -15,6 +17,53 @@
       color: #FFF;
       outline: none;
     }
+  }
+
+  .filter-list, .filter-list:focus, .filter-list:active {
+    font-size: 22px;
+    font-weight: 700;
+    background: transparent;
+    border: 1px solid #ccc;
+    border-radius: 0;
+    color: #FFFFFF99;
+    width: 160px;
+  }
+
+  .filter-box {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    border-radius: 0;
+    position: absolute;
+    width: 160px;
+
+    button {
+      background-color: #35373E;
+      border: none;
+      border-bottom: 1px solid #ccc;
+      padding: 5px;
+      color: #FFF;
+
+      &:hover {
+      background-color: #4d505a;
+
+      }
+
+      &:focus {
+        border-bottom: 1px solid #ccc;
+        outline: none;
+          }
+    }
+  }
+
+  .user-tip {
+    position: absolute;
+    top: 55px;
+    right: 80px;
+    font-size: 14px;
+    color: #aaa;
+    font-family: 'Montserrat';
   }
 }
 
