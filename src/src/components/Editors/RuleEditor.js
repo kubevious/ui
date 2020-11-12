@@ -56,6 +56,10 @@ class RuleEditor extends BaseComponent {
     }
 
     selectItem(rule) {
+        if (rule.name === 'new rule') {
+            return
+        }
+
         this.setState({
             isNewItem: false,
             isSuccess: false,
@@ -109,7 +113,7 @@ class RuleEditor extends BaseComponent {
     }
 
     createNewItem() {
-        this.sharedState.set('rule_editor_selected_rule_id', null);
+        this.sharedState.set('rule_editor_selected_rule_id', 'new rule');
 
         this.setState(prevState => ({
             isNewItem: true,
