@@ -7,14 +7,16 @@
     flex-direction: column;
     justify-content: center;
     padding-left: 20px;
+    max-width: 900px;
+    margin: auto;
 
     & * {
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin-bottom: 10px;
+        // margin-bottom: 10px;
         font-family: 'Montserrat', sans-serif;
-        font-weight: 700;
+        font-weight: 500;
     }
 
     button {
@@ -22,15 +24,26 @@
         justify-content: center;
     }
 
+    .feedback-question {
+        position: relative;
+        margin-bottom: 15px;
+        width: 100%;
+    }
+
+    .feedback-question > div {
+        position: relative;
+        width: 100%;
+    }
+
     .input-question,
     textarea {
-        align-self: flex-start;
-        margin-left: 20px;
+        align-self: center;
     }
 
     .rate-stars {
         flex-direction: row;
         direction: rtl;
+        margin-top: -10px;
 
         & input {
             margin-left: 25px;
@@ -76,7 +89,8 @@
     .user-input textarea {
         resize: none;
         border: none;
-        width: 90%;
+        margin: auto;
+        // width: 90%;
         height: 150px;
         background-color: #c4c4c4;
 
@@ -88,6 +102,7 @@
 
     .select-buttons {
         flex-direction: row;
+        flex-wrap: wrap;
 
         & button {
             min-width: 100px;
@@ -96,8 +111,9 @@
             border-radius: 3px;
             background: transparent;
             color: white;
-            margin: 0 10px;
+            margin: 0 10px 10px 0;
             font-weight: 700;
+            
 
             &:hover {
                 color: black;
@@ -120,6 +136,25 @@
                 color: white;
             }
         }
+    }
+
+    .non-optional::after {
+        content: ' *';
+        color: #c59b08;
+        display: contents;
+    }
+
+    .submit-error {
+        background: #970303aa;
+        // width: 350px;
+        color: white;
+        padding: 10px;
+        align-self: center;
+    }
+
+    .missing-answer {
+        color: red;
+        font-weight: 600;
     }
 
 }

@@ -64,7 +64,7 @@ export const FEEDBACK_QUESTIONS = {
         {
             "id": "recommend-to-a-friend",
             "kind": "rate",
-            "text": "How likely are you recommend Kubevious to a friend?",
+            "text": "How likely would you recommend Kubevious to a friend?",
         },
         {
             "id": "ease-of-use",
@@ -112,7 +112,6 @@ export const FEEDBACK_QUESTIONS = {
         },
     ]
 }
-
 
 
 export const MESSAGE_DATA = {

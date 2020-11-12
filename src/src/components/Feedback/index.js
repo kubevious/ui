@@ -3,6 +3,8 @@ import BaseComponent from '../../HOC/BaseComponent'
 import Snooze from '../Snooze'
 import PostFeedback from '../PostFeedback'
 import $ from 'jquery'
+import _ from 'the-lodash'
+import cx from 'classnames'
 import './styles.scss'
 
 
@@ -13,7 +15,9 @@ class Feedback extends BaseComponent {
         this.registerService({ kind: 'misc' })
 
         this.state = {
-            userAnswers: { answers: [] },
+            userAnswers: { },
+            missingAnswers: {},
+            isSubmitAllowed: true,
         }
 
         this.handleInputChange = this.handleInputChange.bind(this)
@@ -22,68 +26,118 @@ class Feedback extends BaseComponent {
         this.handleSubmit = this.handleSubmit.bind(this)
     }
 
-    handleSubmit() {
-        
-        const data = {
-            id: this.props.request.id,
-            kind: this.props.request.kind,
-            answers: this.state.userAnswers.answers
-        }
+    checkAnswers() {
+        let missingAnswers = {};
 
-        this.service.submitFeedback(data, () => {
-            this.sharedState.set('popup_window', {
-                title: 'Post Feedback',
-                content: <PostFeedback />
-            })
+        let isQuestionsAnswered = true
+        this.props.request.questions.forEach(question => {
+            if (!question.optional) {
+                const answerInfo = this.state.userAnswers[question.id];
+                if (!answerInfo || !answerInfo.hasValue) {
+                    missingAnswers[question.id] = true;
+                    isQuestionsAnswered = false;
+                }
+            }
+            return
         })
+        this.setState({ 
+            isSubmitAllowed: isQuestionsAnswered,
+            missingAnswers: missingAnswers
+        })
+        return isQuestionsAnswered
+    }
+
+    handleSubmit() {
+        const checkResult = this.checkAnswers();
+        if (checkResult) {
+
+            const answers = _.values(this.state.userAnswers)
+                .filter(x => x.hasValue)
+                .map(x => ({
+                    id: x.id,
+                    value: x.value
+                }));
+
+            const data = {
+                id: this.props.request.id,
+                kind: this.props.request.kind,
+                answers: answers
+            }
+    
+            this.service.submitFeedback(data, () => {
+                this.sharedState.set('popup_window', {
+                    title: 'Post Feedback',
+                    content: <PostFeedback />
+                })
+            })
+        }
     }
 
     handleInputChange(e) {
-        const answer = { id: e.target.name, value: e.target.value }
-        const changedAnswers = this.state.userAnswers.answers
-        const found = changedAnswers.find((item) => item.id === answer.id)
+        const userAnswers = this.state.userAnswers;
+        let value = e.target.value;
+        let hasValue = false;
+        if (_.isNotNullOrUndefined(value)) 
+        {
+            if (value.length > 0)
+            {
+                hasValue = true;
+            }
+        }
 
-        found
-            ? changedAnswers.map((item) => {
-                  if (item.id == answer.id) {
-                      item.value = answer.value
-                  }
-              })
-            : changedAnswers.push(answer)
+        userAnswers[e.target.name] = {
+            id: e.target.name,
+            value: value,
+            hasValue: hasValue
+        }
 
-        this.setState({ ...this.state.userAnswers, answers: changedAnswers })
-    }
-
-    setClicked(e) {
-        $('.user-single-select button').removeClass('clicked')
-        e.target.classList.add('clicked')
+        this.setState({ 
+            userAnswers: userAnswers
+        })
     }
 
     handleMultiselect(e) {
         e.target.classList.toggle('clicked')
 
-        const changedAnswers = this.state.userAnswers.answers
-        const answer = { id: e.target.name, value: [e.target.value] }
-        const found = changedAnswers.find((item) => item.id === answer.id)
-
-        if (!found) {
-            changedAnswers.push(answer)
-        } else {
-            const element = found.value.find((item) => item === e.target.value)
-            found.value = element
-                ? found.value.filter((item) => item !== e.target.value)
-                : found.value.concat(e.target.value)
+        const userAnswers = this.state.userAnswers;
+        let userAnswer = userAnswers[e.target.name];
+        if (!userAnswer) {
+            userAnswer = {
+                id: e.target.name,
+                hasValue: false,
+                options: {}
+            }
+            userAnswers[e.target.name] = userAnswer;
         }
 
-        this.setState({ ...this.state.userAnswers, answers: changedAnswers })
+        if (e.target.value in userAnswer.options) {
+            delete userAnswer.options[e.target.value];
+        } else {
+            userAnswer.options[e.target.value] = true;
+        }
+
+        userAnswer.value = 
+            _.keys(userAnswer.options);
+        userAnswer.hasValue = (userAnswer.value.length > 0);
+      
+        this.setState({ 
+            userAnswers: userAnswers
+        })
     }
 
-    renderQuestion (question, index) {
+    setClicked(e) {
+        $(`.user-single-select .${e.target.name}`).removeClass('clicked')
+        e.target.classList.add('clicked')
+    }
+
+    renderQuestion (question) {
         switch (question.kind) {
             case 'input':
                 return (
-                    <div className="user-input" id={index}>
-                        <label className="input-question">
+                    <div className="user-input">
+                        <label className={cx("input-question", 
+                                            {'non-optional': !question.optional}, 
+                                            {'missing-answer': this.state.missingAnswers[question.id]})}>
                             {question.text}
                         </label>
                         <textarea
@@ -96,8 +150,10 @@ class Feedback extends BaseComponent {
                 )
             case 'rate':
                 return (
-                    <div className="user-rate" id={index}>
-                        <label className="rate-question">{question.text}</label>
+                    <div className="user-rate">
+                        <label className={cx("rate-question", 
+                                          {'non-optional': !question.optional}, 
+                                          {'missing-answer': this.state.missingAnswers[question.id]})}>{question.text}</label>
                         <div
                             role="group"
                             className="rate-stars"
@@ -106,7 +162,8 @@ class Feedback extends BaseComponent {
                             {[5, 4, 3, 2, 1].map(val => (
                                 <input
                                     type="radio"
-                                    id="star1"
+                                    id={`star${val}`}
+                                    key={val}
                                     name={question.id}
                                     value={val}
                             />
@@ -116,16 +173,20 @@ class Feedback extends BaseComponent {
                 )
             case 'single-select':
                 return (
-                    <div className="user-single-select" id={index}>
-                        <label className="select-question">
+                    <div className="user-single-select">
+                        <label className={cx("select-question", 
+                                          {'non-optional': !question.optional}, 
+                                          {'missing-answer': this.state.missingAnswers[question.id]})}>
                             {question.text}
                         </label>
                         <div role="group" className="select-buttons">
-                            {question.options.map((option) => {
+                            {question.options.map((option, index) => {
                                 return (
                                     <button
+                                        key={index}
                                         type="button"
                                         name={question.id}
+                                        className={question.id}
                                         onClick={this.handleInputChange}
                                         onFocus={this.setClicked}
                                         value={option}
@@ -139,14 +200,17 @@ class Feedback extends BaseComponent {
                 )
             case 'multi-select':
                 return (
-                    <div className="user-select" id={index}>
-                        <label className="select-question">
+                    <div className="user-select">
+                        <label className={cx("select-question", 
+                                          {'non-optional': !question.optional}, 
+                                          {'missing-answer': this.state.missingAnswers[question.id]})}>
                             {question.text}
                         </label>
                         <div role="group" multiple className="select-buttons">
-                            {question.options.map((option) => {
+                            {question.options.map((option, index) => {
                                 return (
                                     <button
+                                        key={index}
                                         type="button"
                                         name={question.id}
                                         onClick={this.handleMultiselect}
@@ -164,6 +228,7 @@ class Feedback extends BaseComponent {
 
     render() {
         const { questions } = this.props.request
+        const { isSubmitAllowed } = this.state
 
         return (
             <div className="separate-container">
@@ -172,8 +237,17 @@ class Feedback extends BaseComponent {
                 </div>
                 <div className="feedback-info">
                     {questions.map((question, index) =>
-                        this.renderQuestion(question, index)
+                        <div className="feedback-question" key={index}>
+                            {
+                                this.renderQuestion(question)
+                            }
+                        </div>
                     )}
+                    
+                    {!isSubmitAllowed && <div className="submit-error">
+                        We need your feedback on required (*) fields.
+                    </div>}
+
                     <button
                         className="feedback-submit button success"
                         onClick={this.handleSubmit}

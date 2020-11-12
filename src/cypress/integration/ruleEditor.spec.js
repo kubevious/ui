@@ -8,9 +8,11 @@ describe('Test rule editor', () => {
     })
 
     it('create new rule', () => {
+        cy.wait(1000)
+
         cy.get('.rule-header .new-rule-btn').first().click()
 
-        cy.wait(15000)
+        cy.wait(2000)
 
         cy.get('#rule-editor .field-input.name').type('New super rule')
 
