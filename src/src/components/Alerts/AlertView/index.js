@@ -53,7 +53,7 @@ const AlertView = ({ alerts, clickDn, openRule }) => {
             <>
                 {messages.map((message, index) => (
                     <div className="message-group-container" key={index}>
-                        <div className="message-container" onClick={() => clickMessage(message)}>
+                        <div className={cx('message-container', { 'rule': message.source.kind === 'rule' })} onClick={() => clickMessage(message)}>
                             <div className={'alert-item ' + message.severity} />
                             {message.msg}
                         </div>
