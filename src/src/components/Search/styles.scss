@@ -27,16 +27,23 @@
     border-radius: 0;
     color: #FFFFFF99;
     width: 160px;
+
+  }
+  .inner {
+    padding-left: 10px;
+    font-weight: 500;
+
+    &:focus, &:active {
+      border: 1px solid #ccc;
+      border-radius: 0;
+      outline: none;
+      font-weight: 500;
+    }
   }
 
-  .filter-box {
+  .inner-items {
     display: flex;
     flex-direction: column;
-    border: 1px solid #ccc;
-    border-bottom: none;
-    border-radius: 0;
-    position: absolute;
-    width: 160px;
 
     button {
       background-color: #35373E;
@@ -57,6 +64,32 @@
     }
   }
 
+  .filter-box {
+    display: flex;
+    flex-direction: column;
+    background-color: #35373E;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    border-radius: 0;
+    position: absolute;
+    width: 160px;
+  }
+
+  .clear-input-btn {
+    float: right;
+    border: none;
+    width: 32px;
+    height: 32px;
+    outline: none;
+    opacity: 0.6;
+    font-size: 30px;
+    background: url(/img/close.svg) center center no-repeat;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+  
   .user-tip {
     position: absolute;
     top: 55px;

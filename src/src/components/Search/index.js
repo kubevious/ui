@@ -3,7 +3,6 @@ import { isEmptyArray } from '../../utils/util'
 import DnShortcutComponent from '../DnShortcutComponent'
 import BaseComponent from '../../HOC/BaseComponent'
 import { FILTERS_LIST } from '../../boot/filterData'
-import $ from 'jquery'
 
 import './styles.scss'
 
@@ -15,21 +14,39 @@ class Search extends BaseComponent {
 
         this.state = {
             value: '',
-            result: []
+            result: [],
+            filtered: false
         }
     }
 
-    handleChange(e) {
-        this.setState({ value: e.target.value })
-        this.service.fetchSearchResults(e.target.value, result => {
+    fetchResults(criteria) {
+        this.service.fetchSearchResults(criteria, result => {
             this.setState({ result: result })
         })
     }
 
+    handleChange(e) {
+        this.setState({ value: e.target.value })
+        this.fetchResults(e.target.value)
+    }
+
     handleFilterChange(e) {
-        this.setState({ value: `(${e.target.name}):` })
-        $('details').removeAttr('open')
-        $('.search-input').trigger('focus')
+        this.setState({ filtered: true })
+        const { name, title } = e.target
+        if (this.state.value.includes(name)) {
+            const valueRegexp = new RegExp(`\\((${name}\\):\\w+(\\S|))`, 'ig')
+
+            this.setState(prevState => ({ value: prevState.value.replace(valueRegexp, `(${name}):${title}`) }))
+            setTimeout(() => { this.fetchResults(this.state.value) })
+
+            return
+        }
+        this.setState(prevState => ({ value: `(${name}):${title} ${prevState.value}` }))
+        setTimeout(() => { this.fetchResults(this.state.value) })
+    }
+
+    clearInput() {
+        this.setState({ value: '', filtered: false })
     }
 
     render() {
@@ -39,10 +56,20 @@ class Search extends BaseComponent {
             <div className="Search-wrapper p-40 overflow-hide">
                 <div className="form-group has-success">
                     <details>
-                        <summary className="form-control filter-list" title="Filter">Filter</summary>
+                        <summary className="form-control filter-list" title="Filter">
+                            Filter
+                            {this.state.filtered && <a className="clear-input-btn" title="Clear" onClick={() => this.clearInput()}></a>}
+                        </summary>
                         <div className="filter-box">
                         {FILTERS_LIST.map(el => (
-                            <button name={el.payload} onClick={(e) => this.handleFilterChange(e)}>{el.shownValue}</button>
+                            <details>
+                                <summary className="filter-list inner">{el.shownValue}</summary>
+                                <div className='inner-items'>
+                                {el.values.map(item => (
+                                    <button name={el.payload} title={item.payload} onClick={(e) => this.handleFilterChange(e)}>{item.title}</button>
+                                ))}
+                                </div>
+                            </details>
                         ))}
                         </div>
                         </details>
