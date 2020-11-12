@@ -8,6 +8,8 @@ describe('Test marker editor', () => {
     })
 
     it('create new marker', () => {
+        cy.wait(1000)
+
         cy.get('#markerEditorComponent .new-rule-btn').first().click()
 
         cy.get('.field-input.name').type('New super marker')
