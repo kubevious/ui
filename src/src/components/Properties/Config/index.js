@@ -50,9 +50,9 @@ const Config = ({ group, dn }) => {
     }, [])
 
     useEffect(() => {
-        setCode(jsyaml.safeDump(jsyaml.load(code), { indent }))
+        setCode(jsyaml.safeDump(group.config, { indent }))
         setEditedConfig(jsyaml.safeDump(jsyaml.load(editedConfig), { indent }))
-    }, [indent])
+    }, [indent, group])
 
     const handleEditedMode = () => {
         setEditMode(!editMode)
