@@ -194,14 +194,23 @@ class MockDiagramService {
     }
 
     fetchHistorySnapshot(date, cb) {
+        if (!date) {
+            throw new Error("MISSING DATE");
+        }
         cb(HISTORY_GRAPH_DATA)
     }
 
     fetchHistoryProps(dn, date, cb) {
+        if (!date) {
+            throw new Error("MISSING DATE");
+        }
         cb(_.cloneDeep(HISTORY_PROPERTIES))
     }
 
     fetchHistoryAlerts(dn, date, cb) {
+        if (!date) {
+            throw new Error("MISSING DATE");
+        }
         cb(_.cloneDeep(HISTORY_ALERTS))
     }
 }

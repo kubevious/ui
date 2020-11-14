@@ -147,7 +147,7 @@ class StateHandler {
             ({ selected_dn, time_machine_enabled, time_machine_date }) => {
 
                 if (selected_dn) {
-                    if (time_machine_enabled) {
+                    if (time_machine_enabled && time_machine_date) {
                         this._service.fetchHistoryProps(selected_dn, time_machine_date, (config) => {
                             this.sharedState.set('selected_object_props', config);
                         })
