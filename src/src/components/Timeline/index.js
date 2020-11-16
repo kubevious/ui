@@ -409,6 +409,8 @@ class Timeline extends BaseComponent {
       this._movingTheBrush = true;
       d3.select('.x-brush').call(this._brush.move, [startPos, endPos]);
       this._movingTheBrush = false;
+    } else {
+      d3.select('.x-brush').call(this._brush.move, null);
     }
   }
 
@@ -417,16 +419,17 @@ class Timeline extends BaseComponent {
       return;
     }
 
-    const dateTo = moment(this._subXScale.invert(d3.brushSelection(self)[1]))
-    const dateFrom = moment(this._subXScale.invert(d3.brushSelection(self)[0]))
-    if (dateTo.isSame(dateFrom)) {
-      return
+    if (d3.brushSelection(self)) {
+      const dateTo = moment(this._subXScale.invert(d3.brushSelection(self)[1]))
+      const dateFrom = moment(this._subXScale.invert(d3.brushSelection(self)[0]))
+      if (dateTo.isSame(dateFrom)) {
+        return
+      }
+      this.time_machine_actual_date_range = {
+        from: dateFrom,
+        to: dateTo
+      }
     }
-    this.time_machine_actual_date_range = {
-      from: dateFrom,
-      to: dateTo
-    }
-
     this._activateMainChartDomain()
     this._applyUIRangeChange()
   }
