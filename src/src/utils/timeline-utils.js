@@ -24,9 +24,16 @@ class TimelineUtils {
         }
 
         const durationInSharedState = this._sharedState.get('time_machine_duration')
-        const durationSec = durationInSharedState > 0 ? durationInSharedState : this.getActualInitDuration()
+        const durationSec =
+            this.getActualInitDuration() >= this.dayInSec ||
+            this.getActualInitDuration() > durationInSharedState
+                ? durationInSharedState
+                : this.getActualInitDuration()
 
         let from = to.clone().subtract(durationSec, 'seconds');
+
+        to = moment(to.toDate()) // Needed to swap moment internal _d and _i values
+        from = moment(from.toDate())
 
         return {
             to,
