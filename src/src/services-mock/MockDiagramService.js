@@ -37,6 +37,7 @@ class MockDiagramService {
         this._timelinePreviewHandlers = [];
 
         this._intervals = [];
+
         this._intervals.push(setInterval(() => {
             this._performTimelinePreviewQuery();
         }, 10 * 1000))

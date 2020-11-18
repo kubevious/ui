@@ -18,8 +18,8 @@ class Timeline extends BaseComponent {
     this._isDraggingSelector = false
 
     this.time_machine_actual_date_range = {
-      from: moment().subtract('12', 'hours'),
-      to: moment(),
+      from: null,
+      to: null,
     }
 
     this.dayInSec = 12 * 60 * 60
@@ -409,6 +409,14 @@ class Timeline extends BaseComponent {
       this._movingTheBrush = true;
       d3.select('.x-brush').call(this._brush.move, [startPos, endPos]);
       this._movingTheBrush = false;
+    } else if (endPos > 0 && startPos !== endPos) {
+      this._movingTheBrush = true;
+      d3.select('.x-brush').call(this._brush.move, [0, this._width]);
+      this._movingTheBrush = false;
+    } else {
+      this._movingTheBrush = true;
+      d3.select('.x-brush').call(this._brush.move, null);
+      this._movingTheBrush = false;
     }
   }
 
@@ -417,21 +425,26 @@ class Timeline extends BaseComponent {
       return;
     }
 
-    const dateTo = moment(this._subXScale.invert(d3.brushSelection(self)[1]))
-    const dateFrom = moment(this._subXScale.invert(d3.brushSelection(self)[0]))
-    if (dateTo.isSame(dateFrom)) {
-      return
+    if (d3.brushSelection(self)) {
+      const dateTo = moment(this._subXScale.invert(d3.brushSelection(self)[1]))
+      const dateFrom = moment(this._subXScale.invert(d3.brushSelection(self)[0]))
+      if (dateTo.isSame(dateFrom)) {
+        return
+      }
+      this.time_machine_actual_date_range = {
+        from: dateFrom,
+        to: dateTo
+      }
     }
-    this.time_machine_actual_date_range = {
-      from: dateFrom,
-      to: dateTo
-    }
-
     this._activateMainChartDomain()
     this._applyUIRangeChange()
   }
 
   _applyUIRangeChange() {
+    if (!this.time_machine_actual_date_range.to || !this.time_machine_actual_date_range.from) {
+      return
+    }
+
     let diff = moment.duration(this.time_machine_actual_date_range.to.diff(this.time_machine_actual_date_range.from))
     let durationSeconds = diff.asSeconds().toFixed()
     let lastDate = this.sharedState.get('time_machine_timeline_preview_last_date')

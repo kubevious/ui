@@ -1,8 +1,10 @@
 import moment from 'moment'
 
 export function generateTimelineData() {
-  const startDate = moment().subtract(14, 'days');
+  // const startDate = moment().subtract(14, 'days');
+  const startDate = moment().subtract(10, 'hours');
   const endDate = moment().add(5, 'days');
+
   const duration = moment.duration(endDate.diff(startDate)).asSeconds();
   const results = []
   let currDate = moment(startDate);
