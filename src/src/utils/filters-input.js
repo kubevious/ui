@@ -1,5 +1,5 @@
 export const getFiltersFromInput = (res) => {
-    const newRes = []
+    const newRes = {}
     const filtersInput = res.match(/\((.+\):\w+(\S|))/g)
 
     if (filtersInput && filtersInput[0]) {
@@ -7,9 +7,10 @@ export const getFiltersFromInput = (res) => {
         const filtersArr = filtersInput[0].split(' ')
         filtersArr.forEach((el) => {
             const [filter, value] = el.split(':')
-            newRes.push({ filter: filter.slice(1, -1), value })
+            const filterValue = filter.slice(1, -1)
+            newRes[filterValue] = value
         })
-        keyword && newRes.push({ filter: 'keyword', value: keyword })
+        keyword && (newRes.criteria = keyword)
 
         return newRes
     }

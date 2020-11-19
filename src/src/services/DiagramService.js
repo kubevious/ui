@@ -56,9 +56,8 @@ class DiagramService extends BaseService {
             return;
         }
 
-        const request = getFiltersFromInput(criteria) || criteria
-
-        return this._client.get('/diagram/search', { criteria: request })
+        const request = getFiltersFromInput(criteria) || { criteria }
+        return this._client.get('/diagram/search', request)
             .then(result => {
                 cb(result.data);
             })
