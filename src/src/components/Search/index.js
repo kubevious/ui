@@ -41,7 +41,7 @@ class Search extends BaseComponent {
                 </div>
                 <div className="search-results">
                     {!isEmptyArray(result) && result.map((item, index) => (
-                        <DnShortcutComponent key={index} dn={item.dn} sharedState={this.sharedState} hidePopup={this.props.closePopup}/>
+                        <DnShortcutComponent key={index} dn={item.dn} sharedState={this.sharedState}/>
                     ))}
                 </div>
             </div>

@@ -50,8 +50,10 @@ class RuleEditor extends BaseComponent {
             });
         });
 
-        this.subscribeToSharedState('rule_editor_selected_rule_id', (rule_editor_selected_rule_id) => {
-            this.selectItem({ name: rule_editor_selected_rule_id })
+        this.subscribeToSharedState(['rule_editor_selected_rule_id', 'rule_editor_is_new_rule'], ({rule_editor_selected_rule_id, rule_editor_is_new_rule}) => {
+            if (!rule_editor_is_new_rule) {
+                this.selectItem({ name: rule_editor_selected_rule_id })
+            }
         })
     }
 
@@ -77,6 +79,7 @@ class RuleEditor extends BaseComponent {
 
 
         this.sharedState.set('rule_editor_selected_rule_id', rule.name);
+        this.sharedState.set('rule_editor_is_new_rule', false);
     }
 
     saveItem(data) {
@@ -110,6 +113,7 @@ class RuleEditor extends BaseComponent {
 
     createNewItem() {
         this.sharedState.set('rule_editor_selected_rule_id', null);
+        this.sharedState.set('rule_editor_is_new_rule', true);
 
         this.setState(prevState => ({
             isNewItem: true,

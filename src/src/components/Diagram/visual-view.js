@@ -61,7 +61,7 @@ class VisualView {
     {
         var dict = this.sharedState.get('diagram_expanded_dns');
         dict[dn] = value;
-        this.sharedState.set('diagram_expanded_dns', dict, { skipCompare: true });
+        this.sharedState.set('diagram_expanded_dns', dict);
     }
 
     _measureText(text, fontSpec) {

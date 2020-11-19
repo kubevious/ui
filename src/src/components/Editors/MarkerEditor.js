@@ -113,6 +113,7 @@ class MarkerEditor extends BaseComponent {
                 propagate: false
             },
             isSuccess: false,
+            selectedItemId: null,
             selectedItemData: selectedItemDataInit
         }))
     }

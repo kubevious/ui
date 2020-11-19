@@ -5,7 +5,14 @@ describe('Open application', () => {
         cy.get('#diagram').should('be.visible')
         cy.get('#ruleEditorComponent').should('not.be.visible')
         cy.get('#markerEditorComponent').should('not.be.visible')
-        cy.get('#propertiesComponent').should('be.empty')
+
+        cy.get('#propertiesComponent').should(($el) => {
+            expect($el).to.contain.text('No object selected.')
+        })
+
+        cy.get('#alertsComponent').should(($el) => {
+            expect($el).to.contain.text('No object selected.')
+        })
 
         cy.contains('Rule Editor').click()
         cy.get('#diagram').should('not.be.visible')

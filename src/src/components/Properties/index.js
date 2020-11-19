@@ -1,13 +1,14 @@
 import React from 'react'
 import BaseComponent from '../../HOC/BaseComponent'
 import _ from 'the-lodash'
-import { generateDnPathHtml } from '../../utils/ui-utils'
 import { parseDn } from '../../utils/naming-utils'
 import PropertyGroup from './PropertyGroup'
 import EnvironmentVariables from './EnvironmentVariables'
 import DnList from './DnList'
 import Config from './Config'
 import PropertiesTable from './PropertiesTable'
+import DnPath from '../GenerateDnPath'
+import cx from 'classnames'
 
 import './styles.scss'
 import './obsidian.css'
@@ -34,15 +35,18 @@ class Properties extends BaseComponent {
 
     onPropertyGroupPopup(event, group) {
         const contentHtml = this._detectGroupContent(group)
-        this.props.handleShowPopup()
-        this.props.handlePopupContent(contentHtml)
+
+        this.sharedState.set('popup_window', {
+            title: 'Properties: ' + group,
+            content: contentHtml
+        });
     }
 
     _detectGroupContent(group) {
         if (group.kind === 'key-value') {
             return <EnvironmentVariables group={group} dn={this.state.selectedDn}/>
         } else if (group.kind === 'dn-list') {
-            return <DnList group={group} hidePopup={this.props.closePopup} dn={this.state.selectedDn}/>
+            return <DnList group={group} dn={this.state.selectedDn}/>
         } else if (group.kind === 'yaml') {
             return <Config group={group} dn={this.state.selectedDn}/>
         } else if (group.kind === 'table') {
@@ -56,7 +60,9 @@ class Properties extends BaseComponent {
         const dnParts = parseDn(this.state.selectedDn)
 
         return (
-            <div className="properties-owner" dangerouslySetInnerHTML={{ __html: generateDnPathHtml(dnParts) }}/>
+            <div className="properties-owner">
+                <DnPath dnParts={dnParts} includeLogo bigLogo />
+            </div>
         )
     }
 
@@ -91,6 +97,19 @@ class Properties extends BaseComponent {
         )
     }
 
+    renderUserView() {
+        const { selectedDn, selectedObjectProps } = this.state
+
+        if (!selectedDn && !selectedObjectProps) {
+            return <div className="message-empty">No object selected.</div>
+        }
+
+        return <>
+            {selectedDn && this._renderPropertiesNodeDn()}
+            {selectedObjectProps && this._renderContent()}
+        </>
+    }
+
     componentDidMount() {
         this.subscribeToSharedState(['selected_dn', 'selected_object_props'],
             ({ selected_dn, selected_object_props }) => {
@@ -103,9 +122,13 @@ class Properties extends BaseComponent {
         const { selectedDn, selectedObjectProps } = this.state
 
         return (
-            <div id="propertiesComponent" className="properties">
-                {selectedDn && this._renderPropertiesNodeDn()}
-                {selectedObjectProps && this._renderContent()}
+            <div
+                id="propertiesComponent"
+                className={cx('properties', {
+                'empty': !selectedDn && !selectedObjectProps,
+                })}
+            >
+                {this.renderUserView()}
             </div>
         )
     }

@@ -5,3 +5,4 @@ cd $MY_DIR
 
 cd src
 npm run cy:run
+# -- --spec "cypress/integration/startPage.spec.js"

@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { parseDn } from '../../../utils/naming-utils';
+import { parseDn } from '../../../utils/naming-utils'
 import cx from 'classnames'
-import { prettyKind } from '../../../utils/ui-utils';
 import { sortSeverity, uniqueMessages, uniqueObjects } from '../../../utils/util';
+import DnPath from '../../GenerateDnPath';
 
 const AlertView = ({ alerts, clickDn, openRule }) => {
     const [group, setGroup] = useState('no')
@@ -36,11 +36,7 @@ const AlertView = ({ alerts, clickDn, openRule }) => {
                     <img className="dn-logo" src="/img/entities/ns.svg" alt="logo" />
                 </div>
                 <div className="parts-container">
-                    {dnParts.map((part, index) => (
-                        <span className="dn-part" key={index}>
-                        {prettyKind(part.kind)} {part.name}
-                    </span>
-                    ))}
+                    <DnPath dnParts={dnParts} />
                 </div>
             </div>
         )
@@ -57,7 +53,7 @@ const AlertView = ({ alerts, clickDn, openRule }) => {
             <>
                 {messages.map((message, index) => (
                     <div className="message-group-container" key={index}>
-                        <div className="message-container" onClick={() => clickMessage(message)}>
+                        <div className={cx('message-container', { 'rule': message.source.kind === 'rule' })} onClick={() => clickMessage(message)}>
                             <div className={'alert-item ' + message.severity} />
                             {message.msg}
                         </div>
