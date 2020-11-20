@@ -36,17 +36,12 @@ class Search extends BaseComponent {
             return {
                 value: { ...prevState.value, criteria: input }
             }
-        })
-        setTimeout(() => {
+        }, () => {
             this.fetchResults(this.state.value)
         })
     }
 
     handleFilterChange(e) {
-        const shouldUnselect = e.target.classList.contains('selected-filter')
-        e.target.parentNode.childNodes.forEach(el => el.classList.remove('selected-filter'))
-        !shouldUnselect && e.target.classList.add('selected-filter')
-
         const { name, title } = e.target
         this.setState(prevState => {
             if (prevState.value[name] === title) {
@@ -57,9 +52,8 @@ class Search extends BaseComponent {
             }
             return {
                 value: { ...prevState.value, [name]: title }
-        }})
-
-        setTimeout(() => {
+            }
+        }, () => {
             this.fetchResults(this.state.value)
         })
     }
@@ -79,7 +73,7 @@ class Search extends BaseComponent {
                         className="form-control search-input"
                         placeholder="Search"
                         value={value.criteria}
-                        autoFocus={true}
+                        autoFocus
                         onChange={(e) => this.handleChange(e)}
                     />
                 </div>
@@ -90,7 +84,14 @@ class Search extends BaseComponent {
                                 <summary className="filter-list inner">{el.shownValue}</summary>
                                 <div className='inner-items'>
                                 {el.values.map(item => (
-                                    <button name={el.payload} title={item.payload} onClick={(e) => this.handleFilterChange(e)}>{item.title}</button>
+                                    <button
+                                        name={el.payload}
+                                        title={item.payload}
+                                        className={this.state.value[el.payload] === item.payload ? 'selected-filter' : ''}
+                                        onClick={(e) => this.handleFilterChange(e)}
+                                    >
+                                        {item.title}
+                                    </button>
                                 ))}
                                 </div>
                             </details>
