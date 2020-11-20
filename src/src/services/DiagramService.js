@@ -1,6 +1,5 @@
 import BaseService from './BaseService'
 import moment from 'moment'
-import { getFiltersFromInput } from '../utils/filters-input';
 
 class DiagramService extends BaseService {
 
@@ -51,13 +50,12 @@ class DiagramService extends BaseService {
     }
 
     fetchSearchResults(criteria, cb) {
-        if (!criteria) {
+        if (Object.keys(criteria).length === 0) {
             cb([]);
             return;
         }
 
-        const request = getFiltersFromInput(criteria) || { criteria }
-        return this._client.get('/diagram/search', request)
+        return this._client.get('/diagram/search', criteria)
             .then(result => {
                 cb(result.data);
             })

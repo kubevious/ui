@@ -38,22 +38,22 @@ export const FILTERS_LIST = [
         ]
     },
     {
-        payload: 'api',
-        shownValue: 'Api Group',
+        payload: 'label',
+        shownValue: 'Label',
         values: [
             {
-                title: 'v1',
-                payload: 'v1'
+                title: '1',
+                payload: '1'
             },
             {
-                title: 'api/v1',
-                payload: 'api/v1'
+                title: '2',
+                payload: '2'
             }
         ]
     },
     {
-        payload: 'label',
-        shownValue: 'Label',
+        payload: 'annotations',
+        shownValue: 'Annotations',
         values: [
             {
                 title: '1',
@@ -114,20 +114,6 @@ export const FILTERS_LIST = [
             {
                 title: 'More than 3',
                 payload: '4'
-            }
-        ]
-    },
-    {
-        payload: 'annotations',
-        shownValue: 'Annotations',
-        values: [
-            {
-                title: '1',
-                payload: '1'
-            },
-            {
-                title: '2',
-                payload: '2'
             }
         ]
     },

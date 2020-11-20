@@ -13,9 +13,8 @@ class Search extends BaseComponent {
         this.registerService({ kind: 'diagram' })
 
         this.state = {
-            value: '',
             result: [],
-            filtered: false
+            value: {},
         }
     }
 
@@ -26,43 +25,68 @@ class Search extends BaseComponent {
     }
 
     handleChange(e) {
-        this.setState({ value: e.target.value })
-        this.fetchResults(e.target.value)
+        const input = e.target.value
+        this.setState(prevState => {
+            if (input.length === 0) {
+                delete prevState.value.criteria
+                return {
+                    value: { ...prevState.value }
+                }
+            }
+            return {
+                value: { ...prevState.value, criteria: input }
+            }
+        })
+        setTimeout(() => {
+            this.fetchResults(this.state.value)
+        })
     }
 
     handleFilterChange(e) {
-        this.setState({ filtered: true })
+        const shouldUnselect = e.target.classList.contains('selected-filter')
+        e.target.parentNode.childNodes.forEach(el => el.classList.remove('selected-filter'))
+        !shouldUnselect && e.target.classList.add('selected-filter')
+
         const { name, title } = e.target
-        if (this.state.value.includes(name)) {
-            const valueRegexp = new RegExp(`\\((${name}\\):\\w+(\\S|))`, 'ig')
+        this.setState(prevState => {
+            if (prevState.value[name] === title) {
+                delete prevState.value[name]
+                return {
+                    value: { ...prevState.value }
+                }
+            }
+            return {
+                value: { ...prevState.value, [name]: title }
+        }})
 
-            this.setState(prevState => ({ value: prevState.value.replace(valueRegexp, `(${name}):${title}`) }))
-            setTimeout(() => { this.fetchResults(this.state.value) })
-
-            return
-        }
-        this.setState(prevState => ({ value: `(${name}):${title} ${prevState.value}` }))
-        setTimeout(() => { this.fetchResults(this.state.value) })
+        setTimeout(() => {
+            this.fetchResults(this.state.value)
+        })
     }
 
     clearInput() {
-        this.setState({ value: '', filtered: false })
+        this.setState({ value: {} })
     }
 
     render() {
-        const { value, result } = this.state
+        const { result, value } = this.state
 
         return (
             <div className="Search-wrapper p-40 overflow-hide">
                 <div className="form-group has-success">
-                    <details>
-                        <summary className="form-control filter-list" title="Filter">
-                            Filter
-                            {this.state.filtered && <a className="clear-input-btn" title="Clear" onClick={() => this.clearInput()}></a>}
-                        </summary>
-                        <div className="filter-box">
+                    <input
+                        type="text"
+                        className="form-control search-input"
+                        placeholder="Search"
+                        value={value.criteria}
+                        autoFocus={true}
+                        onChange={(e) => this.handleChange(e)}
+                    />
+                </div>
+                <div className="search-area">
+                    <div className="filter-list filter-box">
                         {FILTERS_LIST.map(el => (
-                            <details>
+                            <details open>
                                 <summary className="filter-list inner">{el.shownValue}</summary>
                                 <div className='inner-items'>
                                 {el.values.map(item => (
@@ -71,22 +95,14 @@ class Search extends BaseComponent {
                                 </div>
                             </details>
                         ))}
-                        </div>
-                        </details>
-                    <input
-                        type="text"
-                        className="form-control search-input"
-                        placeholder="Search"
-                        value={value}
-                        autoFocus={true}
-                        onChange={(e) => this.handleChange(e)}
-                    />
-                    <p className="user-tip">Tip: you can add more filters by typing in format <i>(filter):value</i></p>
-                </div>
-                <div className="search-results">
-                    {!isEmptyArray(result) && result.map((item, index) => (
-                        <DnShortcutComponent key={index} dn={item.dn} sharedState={this.sharedState}/>
-                    ))}
+                    </div>
+                    <div className="search-results">
+                        {isEmptyArray(result)
+                                ? <div className="result-placeholder">No items to show</div>
+                                : result.map((item, index) => (
+                            <DnShortcutComponent key={index} dn={item.dn} sharedState={this.sharedState}/>
+                        ))}
+                    </div>
                 </div>
             </div>
         )
