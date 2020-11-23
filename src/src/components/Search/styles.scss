@@ -6,10 +6,11 @@
 .search-area {
   display: flex;
   height: 100%;
+  overflow-y: hidden;
 
   .filter-box {
     display: flex;
-    flex-flow: column wrap;
+    flex-flow: column;
     flex-basis: 15%;
     margin-right: 50px;
     margin-top: 20px;
@@ -18,6 +19,9 @@
     border-bottom: none;
     border-radius: 0;
     height: fit-content;
+    max-height: -webkit-fill-available;
+    padding-right: 1px;
+    overflow-y: auto;
   }
 }
 
@@ -71,9 +75,9 @@
   font-weight: 700;
   letter-spacing: 1px;
   display: flex;
-  justify-content: center;
+  flex-direction: row-reverse;
+  justify-content: space-between;
   align-items: center;
-  padding-right: 20px;
 
   &:focus, &:active {
     border: 1px solid #CCC;
@@ -85,10 +89,12 @@
 .inner-items {
   display: flex;
   flex-direction: column;
+  max-height: 200px;
+  overflow-y: auto;
 
   button {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     background-color: #35373E;
     border: none;
@@ -96,9 +102,23 @@
     padding: 5px;
     color: #FFF;
 
-    &:hover {
-    background-color: #4D505A;
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+      flex-shrink: 0;
+      flex-grow: 0;
+      border: 1px solid #ADB5BD;
+      border-radius: 0.25em;
+      margin-right: 0.5em;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: 50% 50%;
+    }
 
+    &:hover {
+      background-color: #4D505A;
     }
 
     &:focus {
@@ -108,15 +128,12 @@
   }
 
   .selected-filter {
-    background-color: #CCC;
+    background-color: #ACACAC;
 
     &::before {
-      content: '';
-      border: 5px solid white;
-      border-radius: 20px;
-      margin-right: -10px;
-      position: relative;
-      right: 30px;
+      border-color: #0B76EF;
+      background-color: #0B76EF;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e");
     }
 
     &:hover {
@@ -139,6 +156,7 @@
   display: flex;
   flex-flow: column nowrap;
   flex-basis: 80%;
+  overflow-y: auto;
 
   .result-placeholder {
     font-family: 'Montserrat';
