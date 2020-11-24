@@ -1,5 +1,5 @@
 import React  from 'react'
-import { isEmptyArray } from '../../utils/util'
+import { isEmptyArray, isEmptyObject } from '../../utils/util'
 import DnShortcutComponent from '../DnShortcutComponent'
 import BaseComponent from '../../HOC/BaseComponent'
 import { FILTERS_LIST } from '../../boot/filterData'
@@ -15,6 +15,7 @@ class Search extends BaseComponent {
         this.state = {
             result: [],
             value: {},
+            filtersInput: {}
         }
     }
 
@@ -27,7 +28,7 @@ class Search extends BaseComponent {
     handleChange(e) {
         const input = e.target.value
         this.setState(prevState => {
-            if (input.length === 0) {
+            if (isEmptyArray(input)) {
                 delete prevState.value.criteria
                 return {
                     value: { ...prevState.value }
@@ -58,6 +59,50 @@ class Search extends BaseComponent {
         })
     }
 
+    handleFilterInput(e) {
+        const { value, name, title } = e.target
+        this.setState((prevState) => ({
+            filtersInput: {
+                ...prevState.filtersInput,
+                [name]: { ...prevState.filtersInput[name], [title]: value },
+            },
+        }), () => {
+            this.setFilterInput(name, title)
+        })
+    }
+
+    enableFilterFromInput(e) {
+        const { name, title } = e.target
+
+        this.setFilterInput(name, title)
+    }
+
+    setFilterInput(name, title) {
+        const selectedFilter = this.state.filtersInput[name]
+
+        if (!selectedFilter) {
+            return
+        }
+
+        this.setState(prevState => {
+            const { [name]: prevFilter } = prevState.value
+            const { [title]: prevFilterCond } = prevFilter || {}
+            if (prevFilter && prevFilterCond === selectedFilter[title]) {
+                delete prevState.value[name][title]
+                isEmptyObject(prevFilter) && delete prevState.value[name]
+
+                return {
+                    value: { ...prevState.value }
+                }
+            }
+            return {
+                value: { ...prevState.value, [name]: { ...prevFilter, [title]: selectedFilter[title] } }
+            }
+        }, () => {
+            this.fetchResults(this.state.value)
+        })
+    }
+
     clearInput() {
         this.setState({ value: {} })
     }
@@ -79,30 +124,81 @@ class Search extends BaseComponent {
                 </div>
                 <div className="search-area">
                     <div className="filter-list filter-box">
-                        {FILTERS_LIST.map(el => (
+                        {FILTERS_LIST.map((el) => (
                             <details open>
-                                <summary className="filter-list inner">{el.shownValue}</summary>
-                                <div className='inner-items'>
-                                {el.values.map(item => (
-                                    <button
-                                        name={el.payload}
-                                        title={item.payload}
-                                        className={this.state.value[el.payload] === item.payload ? 'selected-filter' : ''}
-                                        onClick={(e) => this.handleFilterChange(e)}
-                                    >
-                                        {item.title}
-                                    </button>
-                                ))}
+                                <summary className="filter-list inner">
+                                    {el.shownValue}
+                                </summary>
+                                <div className="inner-items">
+                                    {el.values.map((item) =>
+                                        el.payload === 'label' ||
+                                        el.payload === 'annotations' ? (
+                                            <div>
+                                                <input
+                                                    name={el.payload}
+                                                    title={item.payload}
+                                                    id={el.payload + item.payload}
+                                                    checked={this.state.value[el.payload] && this.state.value[el.payload][item.payload]}
+                                                    type="checkbox"
+                                                    onChange={(e) =>
+                                                        this.enableFilterFromInput(
+                                                            e
+                                                        )
+                                                    }
+                                                />
+                                                <label
+                                                    for={el.payload + item.payload}
+                                                >
+                                                    {item.title}
+                                                </label>
+                                                <input
+                                                    name={el.payload}
+                                                    title={item.payload}
+                                                    type="text"
+                                                    onChange={(e) =>
+                                                        this.handleFilterInput(
+                                                            e
+                                                        )
+                                                    }
+                                                />
+                                            </div>
+                                        ) : (
+                                            <button
+                                                name={el.payload}
+                                                title={item.payload}
+                                                className={
+                                                    this.state.value[
+                                                        el.payload
+                                                    ] === item.payload
+                                                        ? 'selected-filter'
+                                                        : ''
+                                                }
+                                                onClick={(e) =>
+                                                    this.handleFilterChange(e)
+                                                }
+                                            >
+                                                {item.title}
+                                            </button>
+                                        )
+                                    )}
                                 </div>
                             </details>
                         ))}
                     </div>
                     <div className="search-results">
-                        {isEmptyArray(result)
-                                ? <div className="result-placeholder">No items to show</div>
-                                : result.map((item, index) => (
-                            <DnShortcutComponent key={index} dn={item.dn} sharedState={this.sharedState}/>
-                        ))}
+                        {isEmptyArray(result) ? (
+                            <div className="result-placeholder">
+                                No items to show
+                            </div>
+                        ) : (
+                            result.map((item, index) => (
+                                <DnShortcutComponent
+                                    key={index}
+                                    dn={item.dn}
+                                    sharedState={this.sharedState}
+                                />
+                            ))
+                        )}
                     </div>
                 </div>
             </div>
