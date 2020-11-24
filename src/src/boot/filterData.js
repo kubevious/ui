@@ -38,8 +38,8 @@ export const FILTERS_LIST = [
         ]
     },
     {
-        payload: 'label',
-        shownValue: 'Label',
+        payload: 'labels',
+        shownValue: 'Labels',
         values: [
             {
                 title: 'Label key',
@@ -56,11 +56,11 @@ export const FILTERS_LIST = [
         shownValue: 'Annotations',
         values: [
             {
-                title: 'Annotations key',
+                title: 'Annotation key',
                 payload: 'key'
             },
             {
-                title: 'Annotations value',
+                title: 'Annotation value',
                 payload: 'value'
             }
         ]

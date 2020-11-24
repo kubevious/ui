@@ -131,7 +131,7 @@ class Search extends BaseComponent {
                                 </summary>
                                 <div className="inner-items">
                                     {el.values.map((item) =>
-                                        el.payload === 'label' ||
+                                        el.payload === 'labels' ||
                                         el.payload === 'annotations' ? (
                                             <div>
                                                 <input
