@@ -14,8 +14,8 @@
     flex-basis: 15%;
     margin-right: 50px;
     margin-top: 20px;
-    background-color: #35373E;
-    border: 1px solid #CCC;
+    background: transparent;
+    border: none;
     border-bottom: none;
     border-radius: 0;
     height: fit-content;
@@ -65,10 +65,23 @@
 .filter-list, .filter-list:focus, .filter-list:active {
   font-size: 18px;
   font-weight: 700;
-  border: 1px solid #CCC;
+  border: none;
   border-radius: 0;
   background: #1C1C1F;
   outline: none;
+
+  details {
+    border: 1px solid #CCC;
+    margin: 10px 0;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
 }
 .inner {
   padding-left: 10px;

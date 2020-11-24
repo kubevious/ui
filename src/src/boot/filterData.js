@@ -66,7 +66,7 @@ export const FILTERS_LIST = [
         ]
     },
     {
-        payload: 'errors',
+        payload: 'error',
         shownValue: 'Errors',
         values: [
             {
@@ -87,12 +87,12 @@ export const FILTERS_LIST = [
             },
             {
                 title: 'More than 3',
-                payload: '4'
+                payload: 'more'
             }
         ]
     },
     {
-        payload: 'warnings',
+        payload: 'warn',
         shownValue: 'Warnings',
         values: [
             {
@@ -113,7 +113,7 @@ export const FILTERS_LIST = [
             },
             {
                 title: 'More than 3',
-                payload: '4'
+                payload: 'more'
             }
         ]
     },
