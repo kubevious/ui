@@ -67,7 +67,6 @@
   font-weight: 700;
   border: none;
   border-radius: 0;
-  background: #1C1C1F;
   outline: none;
 
   details {
@@ -93,8 +92,6 @@
   align-items: center;
 
   &:focus, &:active {
-    border: 1px solid #CCC;
-    border-radius: 0;
     outline: none;
   }
 }
