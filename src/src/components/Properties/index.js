@@ -67,6 +67,8 @@ class Properties extends BaseComponent {
     }
 
     _renderContent() {
+        const { selectedDn } = this.state
+
         const propertyGroups = _.orderBy(this.state.selectedObjectProps, x => {
             if (x.order) {
                 return x.order
@@ -85,7 +87,7 @@ class Properties extends BaseComponent {
                             extraClassTitle={(isExpanded ? 'active' : '')}
                             extraClassContents={(isExpanded ? 'expander-open' : '')}
                             tooltip={item.tooltip}
-                            dn={item.dn}
+                            dn={selectedDn}
                             groupName={item.id}
                             group={item}
                             propertyExpanderHandleClick={this.propertyExpanderHandleClick}
