@@ -59,7 +59,7 @@
   overflow-y: hidden;
 
   &:hover {
-    overflow-y: auto;
+    overflow-y: overlay;
   }
 
   .rule-item-button {
@@ -140,7 +140,7 @@
   padding: 20px 50px 10px;
 
   &:hover {
-    overflow-y: auto;
+    overflow-y: overlay;
   }
 }
 
@@ -581,7 +581,7 @@ input[type="file"] {
   overflow: hidden;
 
   &:hover {
-    overflow-y: auto;
+    overflow-y: overlay;
   }
 
   .area-wrapper {
