@@ -27,6 +27,7 @@
 
 .has-success {
   display: flex;
+  margin-bottom: 30px !important;
 
   .search-input {
     font-size: 22px;
@@ -152,13 +153,23 @@
   }
 }
 
-.user-tip {
+.active-filters {
   position: absolute;
-  top: 55px;
-  right: 80px;
-  font-size: 14px;
-  color: #AAA;
-  font-family: 'Montserrat';
+  top: 100px;
+
+  span {
+    padding: 2px 10px;
+    border-radius: 2px;
+    color: black;
+    background-color: #ccc;
+    margin: 0 10px;
+    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+
+    &:first-child {
+      margin-left: 0;
+    }
+  }
 }
 
 .search-results {

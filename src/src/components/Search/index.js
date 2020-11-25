@@ -122,6 +122,9 @@ class Search extends BaseComponent {
                         onChange={(e) => this.handleChange(e)}
                     />
                 </div>
+                {!isEmptyObject(value) && <div className="active-filters">
+                            {Object.entries(value).map(([key, val]) => key !== 'criteria' && <span>{`${key}: ${val}`}</span>)}
+                        </div>}
                 <div className="search-area">
                     <div className="filter-list filter-box">
                         {FILTERS_LIST.map((el) => (
