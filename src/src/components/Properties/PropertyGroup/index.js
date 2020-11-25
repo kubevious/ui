@@ -33,8 +33,10 @@ const PropertyGroup = ({ title, extraClassTitle, extraClassContents, tooltip, dn
                 <span className="property-group-popup" tag={`${groupName}`}
                       onClick={(e) => onPropertyGroupPopup(e, group)}/>
 
-                {tooltip &&
-                <span className="property-group-info" data-toggle="tooltip" data-placement="top" title={`${tooltip}`}/>}
+                {tooltip && <>
+                    <span className="property-group-info" data-toggle="property-tooltiptext" data-placement="top" />
+                    <span className="property-tooltiptext">{tooltip}</span>
+                </>}
             </button>
             <div className="scrollbar dark">
                 <div className="force-overflow">
