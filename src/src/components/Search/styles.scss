@@ -33,16 +33,16 @@
     font-size: 22px;
     font-weight: 700;
     background: transparent;
-    border: 1px solid #CCC;
+    border: 1px solid #ccc;
     border-radius: 0;
-    color: #FFF;
+    color: #fff;
     padding: 15px;
     width: calc(100vw - 160px - 80px);
 
     &:focus {
       border: 1px solid yellow;
       background: transparent;
-      color: #FFF;
+      color: #fff;
       outline: none;
     }
   }
@@ -63,7 +63,9 @@
   }
 }
 
-.filter-list, .filter-list:focus, .filter-list:active {
+.filter-list,
+.filter-list:focus,
+.filter-list:active {
   font-size: 18px;
   font-weight: 700;
   border: none;
@@ -71,7 +73,7 @@
   outline: none;
 
   details {
-    border: 1px solid #CCC;
+    border: 1px solid #ccc;
     margin: 10px 0;
 
     &:last-child {
@@ -88,12 +90,26 @@
   font-weight: 700;
   letter-spacing: 1px;
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
 
-  &:focus, &:active {
+  &:focus,
+  &:active {
     outline: none;
+  }
+
+  &::-webkit-details-marker {
+    order: 1;
+  }
+
+  &.is-active::after {
+    content: '';
+    position: relative;
+    display: flex;
+    margin: 0 10px 0 auto;
+    border: 6px solid #f2a81c;
+    border-radius: 10px;
   }
 }
 
@@ -107,11 +123,11 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    background-color: #35373E;
+    background-color: #35373e;
     border: none;
-    border-bottom: 1px solid #CCC;
+    border-bottom: 1px solid #ccc;
     padding: 5px;
-    color: #FFF;
+    color: #fff;
 
     &::before {
       content: '';
@@ -120,7 +136,7 @@
       height: 1em;
       flex-shrink: 0;
       flex-grow: 0;
-      border: 1px solid #ADB5BD;
+      border: 1px solid #adb5bd;
       border-radius: 0.25em;
       margin-right: 0.5em;
       background-repeat: no-repeat;
@@ -129,21 +145,21 @@
     }
 
     &:hover {
-      background-color: #4D505A;
+      background-color: #4d505a;
     }
 
     &:focus {
-      border-bottom: 1px solid #CCC;
+      border-bottom: 1px solid #ccc;
       outline: none;
     }
   }
 
   .selected-filter {
-    background-color: #ACACAC;
+    background-color: #acacac;
 
     &::before {
-      border-color: #0B76EF;
-      background-color: #0B76EF;
+      border-color: #0b76ef;
+      background-color: #0b76ef;
       background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e");
     }
 
@@ -156,18 +172,54 @@
 .active-filters {
   position: absolute;
   top: 100px;
+  display: flex;
 
-  span {
-    padding: 2px 10px;
+  .active-filter-box {
+    padding: 0 0 0 10px;
     border-radius: 2px;
     color: black;
     background-color: #ccc;
+    display: flex;
     margin: 0 10px;
     font-weight: 600;
+    line-height: 26px;
     font-family: 'Montserrat', sans-serif;
+
+    .filter-key {
+      padding-right: 5px;
+      font-weight: 800;
+      text-transform: capitalize;
+    }
+
+    .filter-del-btn {
+      display: flex;
+      background: #8d8d8d;
+      color: black;
+      padding: 0 3px;
+      margin-left: 10px;
+      font-size: 26px;
+      line-height: 26px;
+      font-weight: 600;
+      border-radius: 0 2px 2px 0;
+      border: none;
+    }
 
     &:first-child {
       margin-left: 0;
+    }
+
+    &:hover {
+      .filter-del-btn {
+        background: #f2a81c;
+
+        &:hover {
+          background: #ffbd44;
+        }
+
+        &:focus {
+          outline: none;
+        }
+      }
     }
   }
 }

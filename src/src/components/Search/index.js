@@ -3,6 +3,7 @@ import { isEmptyArray, isEmptyObject } from '../../utils/util'
 import DnShortcutComponent from '../DnShortcutComponent'
 import BaseComponent from '../../HOC/BaseComponent'
 import { FILTERS_LIST } from '../../boot/filterData'
+import cx from 'classnames'
 
 import './styles.scss'
 
@@ -22,6 +23,17 @@ class Search extends BaseComponent {
     fetchResults(criteria) {
         this.service.fetchSearchResults(criteria, result => {
             this.setState({ result: result })
+        })
+    }
+
+    deleteFilter(key) {
+        this.setState(prevState => {
+            delete prevState.value[key]
+            return {
+                value: { ...prevState.value }
+            }
+        }, () => {
+            this.fetchResults(this.state.value)
         })
     }
 
@@ -122,14 +134,25 @@ class Search extends BaseComponent {
                         onChange={(e) => this.handleChange(e)}
                     />
                 </div>
-                {!isEmptyObject(value) && <div className="active-filters">
-                            {Object.entries(value).map(([key, val]) => key !== 'criteria' && <span>{`${key}: ${val}`}</span>)}
-                        </div>}
+                {!isEmptyObject(value) && (
+                    <div className="active-filters">
+                        {Object.entries(value).map(
+                            ([key, val]) =>
+                                key !== 'criteria' && (
+                                    <div className="active-filter-box">
+                                        <span className="filter-key">{`${key}: `}</span>
+                                        <span className="filter-val">{val}</span>
+                                        <button className="filter-del-btn" onClick={() => this.deleteFilter(key)}>&times;</button>
+                                    </div>
+                                )
+                        )}
+                    </div>
+                )}
                 <div className="search-area">
                     <div className="filter-list filter-box">
                         {FILTERS_LIST.map((el) => (
                             <details open>
-                                <summary className="filter-list inner">
+                                <summary className={cx("filter-list inner", { 'is-active': !!this.state.value[el.payload]})}>
                                     {el.shownValue}
                                 </summary>
                                 <div className="inner-items">
@@ -140,8 +163,18 @@ class Search extends BaseComponent {
                                                 <input
                                                     name={el.payload}
                                                     title={item.payload}
-                                                    id={el.payload + item.payload}
-                                                    checked={this.state.value[el.payload] && this.state.value[el.payload][item.payload]}
+                                                    id={
+                                                        el.payload +
+                                                        item.payload
+                                                    }
+                                                    checked={
+                                                        this.state.value[
+                                                            el.payload
+                                                        ] &&
+                                                        this.state.value[
+                                                            el.payload
+                                                        ][item.payload]
+                                                    }
                                                     type="checkbox"
                                                     onChange={(e) =>
                                                         this.enableFilterFromInput(
@@ -150,7 +183,10 @@ class Search extends BaseComponent {
                                                     }
                                                 />
                                                 <label
-                                                    for={el.payload + item.payload}
+                                                    for={
+                                                        el.payload +
+                                                        item.payload
+                                                    }
                                                 >
                                                     {item.title}
                                                 </label>
