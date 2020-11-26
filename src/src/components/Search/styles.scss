@@ -22,6 +22,14 @@
     max-height: -webkit-fill-available;
     padding-right: 1px;
     overflow-y: auto;
+
+    .add-filter-btn {
+      margin: 0 5px 10px;
+    }
+
+    button:focus, button:active {
+      outline: none;
+    }
   }
 }
 
@@ -119,7 +127,7 @@
   max-height: 200px;
   overflow-y: auto;
 
-  button {
+  > button {
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -151,6 +159,31 @@
     &:focus {
       border-bottom: 1px solid #ccc;
       outline: none;
+    }
+  }
+
+  .filter-input-box {
+    margin-bottom: 10px;
+    background: #35373e;
+    display: flex;
+    flex-direction: column;
+
+    label {
+      font-size: 16px;
+      margin: 0 0 0 5px;
+    }
+
+    input {
+      margin: 0 5px;
+    }
+
+    & input:last-child {
+      margin-bottom: 10px;
+    }
+
+    button {
+      margin: 5px;
+      align-self: flex-end;
     }
   }
 
@@ -216,7 +249,7 @@
           background: #ffbd44;
         }
 
-        &:focus {
+        &:focus, &:active {
           outline: none;
         }
       }

@@ -42,11 +42,11 @@ export const FILTERS_LIST = [
         shownValue: 'Labels',
         values: [
             {
-                title: 'Label key',
+                title: 'Key',
                 payload: 'key'
             },
             {
-                title: 'Label value',
+                title: 'Value',
                 payload: 'value'
             }
         ]
@@ -56,11 +56,11 @@ export const FILTERS_LIST = [
         shownValue: 'Annotations',
         values: [
             {
-                title: 'Annotation key',
+                title: 'Key',
                 payload: 'key'
             },
             {
-                title: 'Annotation value',
+                title: 'Value',
                 payload: 'value'
             }
         ]
