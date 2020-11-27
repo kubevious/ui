@@ -35,14 +35,14 @@ class Search extends BaseComponent {
         return payload === 'labels' || payload === 'annotations'
     }
 
-    deleteFilter(key, index) {
+    deleteFilter(key, counter) {
         this.setState(
             (prevState) => {
                 const currentFilters = prevState.value[key]
                 const changedCounters = prevState.counters.map(x => {
                     const [type] = Object.keys(x)
                     if (type === key) {
-                        const filteredCounter = x[key].length > 1 ? x[key].filter(x => x !== index) : x[key]
+                        const filteredCounter = x[key].length > 1 ? x[key].filter(x => x !== counter) : x[key]
                         return { [key]: filteredCounter }
                     }
                     return x
@@ -55,7 +55,7 @@ class Search extends BaseComponent {
                     }
                 }
                 return {
-                    value: { ...prevState.value, [key]: currentFilters.filter((x, i) => i !== (index - 1)) },
+                    value: { ...prevState.value, [key]: currentFilters.filter((x, i) => i !== (counter - 1)) },
                     counters: changedCounters
                 }
             },
@@ -110,12 +110,12 @@ class Search extends BaseComponent {
             (prevState) => {
                 const { [name]: prevFilter = [] } = prevState.value
                 if (title === 'key') {
-                    const [prevFilterVal = ''] = Object.values(prevFilter[index - 1] || {})
-                    return (prevFilter && !isEmptyObject(prevFilter[index - 1]))
+                    const [prevFilterVal = ''] = Object.values(prevFilter[index] || {})
+                    return (prevFilter && !isEmptyObject(prevFilter[index]))
                         ? {
                               value: {
                                   ...prevState.value,
-                                [name]: Object.values({ ...prevFilter, [index - 1]: {[value]: prevFilterVal}}),
+                                [name]: Object.values({ ...prevFilter, [index]: {[value]: prevFilterVal}}),
                               },
                           }
                         : {
@@ -125,12 +125,12 @@ class Search extends BaseComponent {
                               },
                           }
                 }
-                const [prevFilterKey] = Object.keys(prevFilter[index - 1] || {})
-                return (prevFilter && prevFilter[index - 1])
+                const [prevFilterKey] = Object.keys(prevFilter[index] || {})
+                return (prevFilter && prevFilter[index])
                     ? {
                         value: {
                             ...prevState.value,
-                            [name]: Object.values({ ...prevFilter, [index - 1]: { [prevFilterKey]: value }})
+                            [name]: Object.values({ ...prevFilter, [index]: { [prevFilterKey]: value }})
                         }
                     }
                     : {
@@ -144,51 +144,6 @@ class Search extends BaseComponent {
                 this.fetchResults(this.state.value)
             }
         )
-    }
-
-    enableFilterFromInput(e) {
-        const { name, title } = e.target
-
-        this.setFilterInput(name, title)
-    }
-
-    setFilterInput(name, title) {
-        const selectedFilter = this.state.value[name]
-
-        if (!selectedFilter) {
-            return
-        }
-
-        this.setState(
-            (prevState) => {
-                const { [name]: prevFilter } = prevState.value
-                const { [title]: prevFilterCond } = prevFilter || {}
-                if (prevFilter && prevFilterCond === selectedFilter[title]) {
-                    delete prevState.value[name][title]
-                    isEmptyObject(prevFilter) && delete prevState.value[name]
-
-                    return {
-                        value: { ...prevState.value },
-                    }
-                }
-                return {
-                    value: {
-                        ...prevState.value,
-                        [name]: {
-                            ...prevFilter,
-                            [title]: selectedFilter[title],
-                        },
-                    },
-                }
-            },
-            () => {
-                this.fetchResults(this.state.value)
-            }
-        )
-    }
-
-    clearInput() {
-        this.setState({ value: {} })
     }
 
     addInputField(type) {
@@ -282,20 +237,22 @@ class Search extends BaseComponent {
                                                               {item.title}
                                                           </label>
                                                           {item.title === 'Key'
-                                                              ? <TextInput options={el.payload === 'labels' ? LABELS : ANNOTATIONS} trigger={''}
+                                                              ? <TextInput
+                                                                  options={el.payload === 'labels' ? LABELS : ANNOTATIONS}
+                                                                  trigger={''}
                                                                   matchAny={true}
                                                                   Component='input'
                                                                   value={value[el.payload] ? value[el.payload][item.payload] : ''}
                                                                   spacer={''}
                                                                   onChange={(e) =>
-                                                                    this.handleFilterInput(e, el.payload, item.payload, current)
+                                                                    this.handleFilterInput(e, el.payload, item.payload, (current - 1))
                                                                   }
                                                               />
                                                               : <input
                                                                   type="text"
                                                                   value={value[el.payload] ? value[el.payload][item.payload] : ''}
                                                                   onChange={(e) =>
-                                                                    this.handleFilterInput(e.target.value, el.payload, item.payload, current)
+                                                                    this.handleFilterInput(e.target.value, el.payload, item.payload, (current - 1))
                                                                   }
                                                               />
                                                         }
