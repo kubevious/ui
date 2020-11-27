@@ -1,8 +1,9 @@
 import React from 'react'
+import TextInput from 'react-autocomplete-input';
 import { isEmptyArray, isEmptyObject } from '../../utils/util'
 import DnShortcutComponent from '../DnShortcutComponent'
 import BaseComponent from '../../HOC/BaseComponent'
-import { FILTERS_LIST } from '../../boot/filterData'
+import { ANNOTATIONS, FILTERS_LIST, LABELS } from '../../boot/filterData'
 import cx from 'classnames'
 
 import './styles.scss'
@@ -104,9 +105,7 @@ class Search extends BaseComponent {
         )
     }
 
-    handleFilterInput(e, index) {
-        const { value, name, title } = e.target
-
+    handleFilterInput(value, name, title, index) {
         this.setState(
             (prevState) => {
                 const { [name]: prevFilter = [] } = prevState.value
@@ -126,7 +125,7 @@ class Search extends BaseComponent {
                               },
                           }
                 }
-                const [prevFilterKey] = Object.keys(prevState.value[name][index - 1] || {})
+                const [prevFilterKey] = Object.keys(prevFilter[index - 1] || {})
                 return (prevFilter && prevFilter[index - 1])
                     ? {
                         value: {
@@ -282,17 +281,24 @@ class Search extends BaseComponent {
                                                           <label>
                                                               {item.title}
                                                           </label>
-                                                          <input
-                                                              name={el.payload}
-                                                              title={
-                                                                  item.payload
-                                                              }
-                                                              type="text"
-                                                              value={value[el.payload] ? value[el.payload][item.payload] : ''}
-                                                              onChange={(e) =>
-                                                                this.handleFilterInput(e, current)
-                                                              }
-                                                          />
+                                                          {item.title === 'Key'
+                                                              ? <TextInput options={el.payload === 'labels' ? LABELS : ANNOTATIONS} trigger={''}
+                                                                  matchAny={true}
+                                                                  Component='input'
+                                                                  value={value[el.payload] ? value[el.payload][item.payload] : ''}
+                                                                  spacer={''}
+                                                                  onChange={(e) =>
+                                                                    this.handleFilterInput(e, el.payload, item.payload, current)
+                                                                  }
+                                                              />
+                                                              : <input
+                                                                  type="text"
+                                                                  value={value[el.payload] ? value[el.payload][item.payload] : ''}
+                                                                  onChange={(e) =>
+                                                                    this.handleFilterInput(e.target.value, el.payload, item.payload, current)
+                                                                  }
+                                                              />
+                                                        }
                                                       </>
                                                   ))}
                                                   {value[el.payload] && <button
