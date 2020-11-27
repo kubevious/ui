@@ -34,12 +34,28 @@ class Search extends BaseComponent {
         return payload === 'labels' || payload === 'annotations'
     }
 
-    deleteFilter(key) {
+    deleteFilter(key, index) {
         this.setState(
             (prevState) => {
-                delete prevState.value[key]
+                const currentFilters = prevState.value[key]
+                const changedCounters = prevState.counters.map(x => {
+                    const [type] = Object.keys(x)
+                    if (type === key) {
+                        const filteredCounter = x[key].length > 1 ? x[key].filter(x => x !== index) : x[key]
+                        return { [key]: filteredCounter }
+                    }
+                    return x
+                })
+                if (currentFilters.length === 1) {
+                    delete prevState.value[key]
+                    return {
+                        value: { ...prevState.value },
+                        counters: changedCounters
+                    }
+                }
                 return {
-                    value: { ...prevState.value },
+                    value: { ...prevState.value, [key]: currentFilters.filter((x, i) => i !== (index - 1)) },
+                    counters: changedCounters
                 }
             },
             () => {
@@ -88,27 +104,41 @@ class Search extends BaseComponent {
         )
     }
 
-    handleFilterInput(e) {
+    handleFilterInput(e, index) {
         const { value, name, title } = e.target
 
         this.setState(
             (prevState) => {
-                const { [name]: prevFilter } = prevState.value
+                const { [name]: prevFilter = [] } = prevState.value
                 if (title === 'key') {
-                    const [prevFilterVal] = Object.values(prevFilter || {})
-                    return {
+                    const [prevFilterVal = ''] = Object.values(prevFilter[index - 1] || {})
+                    return (prevFilter && !isEmptyObject(prevFilter[index - 1]))
+                        ? {
+                              value: {
+                                  ...prevState.value,
+                                [name]: Object.values({ ...prevFilter, [index - 1]: {[value]: prevFilterVal}}),
+                              },
+                          }
+                        : {
+                              value: {
+                                  ...prevState.value,
+                                  [name]: [...prevFilter, { [value]: '' }],
+                              },
+                          }
+                }
+                const [prevFilterKey] = Object.keys(prevState.value[name][index - 1] || {})
+                return (prevFilter && prevFilter[index - 1])
+                    ? {
                         value: {
                             ...prevState.value,
-                            [name]: { [value]: prevFilterVal },
-                        },
+                            [name]: Object.values({ ...prevFilter, [index - 1]: { [prevFilterKey]: value }})
+                        }
                     }
-                }
-                const [prevFilterKey] = Object.keys(prevState.value[name] || {})
-                return {
-                    value: {
-                        ...prevState.value,
-                        [name]: { [prevFilterKey]: value },
-                    },
+                    : {
+                        value: {
+                            ...prevState.value,
+                            [name]: [...prevFilter, { 'key': [value] }],
+                        },
                 }
             },
             () => {
@@ -179,6 +209,13 @@ class Search extends BaseComponent {
         })
     }
 
+    renderPrettyView(val) {
+        return val.map((el, index) => {
+            const [[key, value]] = Object.entries(el)
+            return index === val.length - 1 ? `${key}: ${value}` : `${key}: ${value} | `
+        })
+    }
+
     render() {
         const { result, value, counters } = this.state
 
@@ -204,7 +241,7 @@ class Search extends BaseComponent {
                                         <span className="filter-val">
                                             {typeof val === 'string'
                                                 ? val
-                                                : JSON.stringify(val)}
+                                                : this.renderPrettyView(val)}
                                         </span>
                                         <button
                                             className="filter-del-btn"
@@ -253,7 +290,7 @@ class Search extends BaseComponent {
                                                               type="text"
                                                               value={value[el.payload] ? value[el.payload][item.payload] : ''}
                                                               onChange={(e) =>
-                                                                this.handleFilterInput(e)
+                                                                this.handleFilterInput(e, current)
                                                               }
                                                           />
                                                       </>
@@ -261,7 +298,7 @@ class Search extends BaseComponent {
                                                   {value[el.payload] && <button
                                                       onClick={() =>
                                                           this.deleteFilter(
-                                                              el.payload
+                                                              el.payload, current
                                                           )
                                                       }
                                                   >
