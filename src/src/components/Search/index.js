@@ -1,6 +1,8 @@
 import React from 'react'
 import TextInput from 'react-autocomplete-input';
 import { isEmptyArray, isEmptyObject } from '../../utils/util'
+import DocUtils from 'kubevious-helpers/lib/docs'
+import { prettyKind } from '../../utils/ui-utils'
 import DnShortcutComponent from '../DnShortcutComponent'
 import BaseComponent from '../../HOC/BaseComponent'
 import { ANNOTATIONS, FILTERS_LIST, LABELS } from '../../boot/filterData'
@@ -14,6 +16,8 @@ class Search extends BaseComponent {
 
         this.registerService({ kind: 'diagram' })
 
+        this.kinds = this.getKindsList()
+
         this.state = {
             result: [],
             value: {},
@@ -25,10 +29,23 @@ class Search extends BaseComponent {
         }
     }
 
+
     fetchResults(criteria) {
         this.service.fetchSearchResults(criteria, (result) => {
             this.setState({ result: result })
         })
+    }
+
+    getKindsList() {
+        const kindsArray = Object.entries(
+            DocUtils.KIND_TO_USER_MAPPING
+        ).map(([key, value]) => ({ title: value, payload: key }))
+
+        return {
+            payload: 'kind',
+            shownValue: 'Kind',
+            values: kindsArray,
+        }
     }
 
     checkForInputFilter(payload) {
@@ -194,7 +211,7 @@ class Search extends BaseComponent {
                                         <span className="filter-key">{`${key}: `}</span>
                                         <span className="filter-val">
                                             {typeof val === 'string'
-                                                ? val
+                                                ? prettyKind(val)
                                                 : this.renderPrettyView(val)}
                                         </span>
                                         <button
@@ -212,7 +229,7 @@ class Search extends BaseComponent {
                 )}
                 <div className="search-area">
                     <div className="filter-list filter-box">
-                        {FILTERS_LIST.map((el) => (
+                        {[this.kinds, ...FILTERS_LIST].map((el) => (
                             <details open>
                                 <summary
                                     className={cx('filter-list inner', {
