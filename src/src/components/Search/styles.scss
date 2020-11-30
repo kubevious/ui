@@ -261,6 +261,10 @@
       font-weight: 600;
       border-radius: 0 2px 2px 0;
       border: none;
+
+      &:focus, &:active {
+        outline: none;
+      }
     }
 
     &:first-child {
@@ -273,10 +277,6 @@
 
         &:hover {
           background: #ffbd44;
-        }
-
-        &:focus, &:active {
-          outline: none;
         }
       }
     }
