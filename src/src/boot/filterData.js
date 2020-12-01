@@ -55,14 +55,6 @@ export const FILTERS_LIST = [
             }
         ]
     },
-    {
-        payload: 'markers',
-        shownValue: 'Markers',
-        values: [{
-            title: 'All with markers',
-            payload: 'true'
-        }]
-    },
 ]
 
 export const LABELS = [

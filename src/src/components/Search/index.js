@@ -5,6 +5,7 @@ import DocUtils from 'kubevious-helpers/lib/docs'
 import { prettyKind } from '../../utils/ui-utils'
 import DnShortcutComponent from '../DnShortcutComponent'
 import BaseComponent from '../../HOC/BaseComponent'
+import MarkerPreview from '../MarkerPreview';
 import { ANNOTATIONS, FILTERS_LIST, LABELS } from '../../boot/filterData'
 import cx from 'classnames'
 
@@ -17,6 +18,7 @@ class Search extends BaseComponent {
         this.registerService({ kind: 'diagram' })
 
         this.kinds = this.getKindsList()
+        this.markers = this.getMarkersList()
 
         this.state = {
             result: [],
@@ -44,6 +46,16 @@ class Search extends BaseComponent {
             payload: 'kind',
             shownValue: 'Kind',
             values: kindsArray,
+        }
+    }
+
+    getMarkersList() {
+        const markers = this.sharedState.get('marker_editor_items')
+
+        return {
+            payload: 'markers',
+            shownValue: 'Markers',
+            values: markers
         }
     }
 
@@ -110,11 +122,43 @@ class Search extends BaseComponent {
         )
     }
 
+    handleMarkerFilterChange(e) {
+        const { title } = e.target
+        this.setState(
+            (prevState) => {
+                const markersList = prevState.value.markers || []
+                if (
+                    prevState.value.markers &&
+                    markersList.find((x) => x === title)
+                ) {
+                    const changedMarkers = markersList.filter(
+                        (x) => x !== title
+                    )
+                    if (isEmptyArray(changedMarkers)) {
+                        delete prevState.value.markers
+                        return { value: { ...prevState.value } }
+                    }
+                    return {
+                        value: { ...prevState.value, markers: changedMarkers },
+                    }
+                }
+
+                markersList.push(title)
+                return {
+                    value: { ...prevState.value, markers: markersList },
+                }
+            },
+            () => {
+                this.fetchResults(this.state.value)
+            }
+        )
+    }
+
     handleFilterInput(value, name, title, index) {
         this.setState(
             (prevState) => {
                 const { [name]: prevFilter = [] } = prevState.value
-                const {[index]: selectedKey = ''} = prevState.counters[name]
+                const { [index]: selectedKey = '' } = prevState.counters[name]
 
                 const foundVal =
                     !isEmptyArray(prevFilter) &&
@@ -217,8 +261,11 @@ class Search extends BaseComponent {
 
     renderPrettyView(val) {
         return val.map((el, index) => {
-            const [[key, value]] = Object.entries(el)
-            return index === val.length - 1 ? `${key}: ${value}` : `${key}: ${value} | `
+            if (typeof el === 'object') {
+                const [[key, value]] = Object.entries(el)
+                return index === val.length - 1 ? `${key}: ${value}` : `${key}: ${value} | `
+            }
+            return index === val.length - 1 ? el : `${el} | `
         })
     }
 
@@ -359,6 +406,38 @@ class Search extends BaseComponent {
                                 </div>
                             </details>
                         ))}
+                        {!isEmptyArray(this.markers.values) && (
+                            <details open key={this.markers.payload}>
+                                <summary
+                                    className={cx('filter-list inner', {
+                                        'is-active': !!value[
+                                            this.markers.payload
+                                        ],
+                                    })}
+                                >
+                                    {this.markers.shownValue}
+                                </summary>
+                                <div className="inner-items">
+                                    {this.markers.values.map((item) => (
+                                        <button
+                                            title={item.name}
+                                            key={item.name}
+                                            className={
+                                                value.markers && value.markers.find(x => x === item.name)
+                                                    ? 'selected-filter'
+                                                    : ''
+                                            }
+                                            onClick={(e) =>
+                                                this.handleMarkerFilterChange(e)
+                                            }
+                                        >
+                                            <MarkerPreview shape={item.shape} color={item.color}/>
+                                            {item.name}
+                                        </button>
+                                    ))}
+                                </div>
+                            </details>
+                        )}
                     </div>
                     <div className="search-results">
                         {isEmptyArray(result) ? (
