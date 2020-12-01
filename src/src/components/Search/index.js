@@ -510,13 +510,18 @@ class Search extends BaseComponent {
                                 No items to show
                             </div>
                         ) : (
-                            result.map((item, index) => (
-                                <DnShortcutComponent
-                                    key={index}
-                                    dn={item.dn}
-                                    sharedState={this.sharedState}
-                                />
-                            ))
+                                <>
+                                    {result.map((item, index) => (
+                                        <DnShortcutComponent
+                                            key={index}
+                                            dn={item.dn}
+                                            sharedState={this.sharedState}
+                                        />
+                                    ))}
+                                    {result.length === 200 && <div className="limited-results-msg">
+                                        The first 200 items are shown. Please refine your search query to see more
+                                    </div>}
+                                </>
                         )}
                     </div>
                 </div>

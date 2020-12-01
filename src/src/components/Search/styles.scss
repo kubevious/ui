@@ -353,6 +353,14 @@
     font-family: 'Montserrat';
     font-size: 20px;
   }
+
+  .limited-results-msg {
+    font-family: 'Montserrat';
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+  }
 }
 
 .search-results .dn-logo {
