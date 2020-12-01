@@ -27,6 +27,7 @@ class Search extends BaseComponent {
                 labels: {[+new Date]: ''},
                 annotations: {[+new Date]: ''},
             },
+            savedFilters: {}
         }
     }
 
@@ -67,13 +68,14 @@ class Search extends BaseComponent {
         this.setState(
             (prevState) => {
                 delete prevState.counters[key]
-                delete prevState.value[key]
+                prevState.value[key] ? delete prevState.value[key] : delete prevState.savedFilters[key]
                 return {
                     value: { ...prevState.value },
                     counters: {
                         ...prevState.counters,
                         [key]: { [+new Date()]: '' },
                     },
+                    savedFilters: { ...prevState.savedFilters }
                 }
             },
             () => {
@@ -112,8 +114,10 @@ class Search extends BaseComponent {
                         value: { ...prevState.value },
                     }
                 }
+                prevState.savedFilters[name] && delete prevState.savedFilters[name]
                 return {
                     value: { ...prevState.value, [name]: title },
+                    savedFilters: { ...prevState.savedFilters }
                 }
             },
             () => {
@@ -129,10 +133,10 @@ class Search extends BaseComponent {
                 const markersList = prevState.value.markers || []
                 if (
                     prevState.value.markers &&
-                    markersList.find((x) => x === title)
+                    markersList.find((marker) => marker === title)
                 ) {
                     const changedMarkers = markersList.filter(
-                        (x) => x !== title
+                        (marker) => marker !== title
                     )
                     if (isEmptyArray(changedMarkers)) {
                         delete prevState.value.markers
@@ -162,8 +166,8 @@ class Search extends BaseComponent {
 
                 const foundVal =
                     !isEmptyArray(prevFilter) &&
-                    prevFilter.find((x) => {
-                        const [currentKey] = Object.keys(x)
+                    prevFilter.find((item) => {
+                        const [currentKey] = Object.keys(item)
                         return currentKey === selectedKey
                     })
                 const { [selectedKey]: prevFilterVal } = foundVal
@@ -174,8 +178,8 @@ class Search extends BaseComponent {
                     const changedFilters = isEmptyArray(prevFilter)
                         ? [{ [value]: '' }]
                         : [
-                              ...prevFilter.filter((el) => {
-                                  const [currentKey] = Object.keys(el)
+                              ...prevFilter.filter((item) => {
+                                  const [currentKey] = Object.keys(item)
                                   if (currentKey === selectedKey) {
                                       return false
                                   }
@@ -248,7 +252,7 @@ class Search extends BaseComponent {
                     }
                 }
                 return {
-                    value: { ...prevState.value, [key]: currentFilters.filter(x => !x[deletedCounter]) },
+                    value: { ...prevState.value, [key]: currentFilters.filter(filter => !filter[deletedCounter]) },
                     counters: {...prevState.counters, [key]: currentCounters}
                 }
             },
@@ -259,18 +263,92 @@ class Search extends BaseComponent {
         return false
     }
 
-    renderPrettyView(val) {
+    handleEditFilter(key, val) {
+    }
+
+    toggleFilter(key) {
+        this.setState(
+            (prevState) => {
+                const deleteFromSaved = () => {
+                    prevState.value[key] = prevState.savedFilters[key]
+                    delete prevState.savedFilters[key]
+                }
+
+                const addToSaved = () => {
+                    prevState.savedFilters[key] = prevState.value[key]
+                    delete prevState.value[key]
+                }
+                prevState.savedFilters[key] ? deleteFromSaved() : addToSaved()
+                return {
+                    value: { ...prevState.value },
+                    savedFilters: {...prevState.savedFilters}
+                }
+            },
+            () => {
+                this.fetchResults(this.state.value)
+            }
+        )
+    }
+
+    renderPrettyView(val = []) {
         return val.map((el, index) => {
             if (typeof el === 'object') {
                 const [[key, value]] = Object.entries(el)
-                return index === val.length - 1 ? `${key}: ${value}` : `${key}: ${value} | `
+                const stringified = [key, value].join(' ')
+                this.renderActiveFilters(key, stringified)
+                return `${key}: ${value}`
             }
             return index === val.length - 1 ? el : `${el} | `
         })
     }
 
+    renderActiveFilters(key, val) {
+        const { savedFilters } = this.state
+        return (
+            <div
+                className={cx("active-filter-box", { deactivated: savedFilters[key] })}
+                key={key}
+            >
+                <span className="filter-key">{`${key}: `}</span>
+                <span className="filter-val">
+                    {typeof val === 'string'
+                        ? prettyKind(val)
+                        : this.renderPrettyView(val)}
+                </span>
+                {this.checkForInputFilter(key) && <button
+                    className="filter-btn edit"
+                    onClick={() =>
+                        this.handleEditFilter(key, val)}>
+                </button>}
+                <button
+                    className={cx("filter-btn toggle-show", { hide: savedFilters[key] })}
+                    title="Toggle show/hide"
+                    onClick={() =>
+                        this.toggleFilter(key)}
+                />
+                <button
+                    className="filter-btn del"
+                    title="Delete"
+                    onClick={() =>
+                        this.deleteFilter(key)
+                    }
+                >
+                    &times;
+                </button>
+            </div>
+        )
+    }
+
+    renderDividedActiveFilters(counter, key, val) {
+        const loopCounter = Object.values(counter)
+        return loopCounter.map((el) => {
+            const currentValue = val.find(filter => !!filter[el])
+            return this.renderActiveFilters(key, [currentValue])
+        })
+    }
+
     render() {
-        const { result, value, counters } = this.state
+        const { result, value, counters, savedFilters } = this.state
 
         return (
             <div className="Search-wrapper p-40 overflow-hide">
@@ -284,27 +362,14 @@ class Search extends BaseComponent {
                         onChange={(e) => this.handleChange(e)}
                     />
                 </div>
-                {!isEmptyObject(value) && (
+                {(!isEmptyObject(value) || !isEmptyObject(savedFilters)) && (
                     <div className="active-filters">
-                        {Object.entries(value).map(
+                        {Object.entries(Object.assign({}, value, savedFilters)).map(
                             ([key, val]) =>
                                 key !== 'criteria' && (
-                                    <div className="active-filter-box" key={key}>
-                                        <span className="filter-key">{`${key}: `}</span>
-                                        <span className="filter-val">
-                                            {typeof val === 'string'
-                                                ? prettyKind(val)
-                                                : this.renderPrettyView(val)}
-                                        </span>
-                                        <button
-                                            className="filter-del-btn"
-                                            onClick={() =>
-                                                this.deleteFilter(key)
-                                            }
-                                        >
-                                            &times;
-                                        </button>
-                                    </div>
+                                    this.checkForInputFilter(key)
+                                        ? this.renderDividedActiveFilters(counters[key], key, val)
+                                        : this.renderActiveFilters(key, val)
                                 )
                         )}
                     </div>
@@ -315,7 +380,7 @@ class Search extends BaseComponent {
                             <details open key={el.payload}>
                                 <summary
                                     className={cx('filter-list inner', {
-                                        'is-active': !!this.state.value[
+                                        'is-active': !!value[
                                             el.payload
                                         ],
                                     })}
@@ -423,7 +488,7 @@ class Search extends BaseComponent {
                                             title={item.name}
                                             key={item.name}
                                             className={
-                                                value.markers && value.markers.find(x => x === item.name)
+                                                value.markers && value.markers.find(marker => marker === item.name)
                                                     ? 'selected-filter'
                                                     : ''
                                             }
