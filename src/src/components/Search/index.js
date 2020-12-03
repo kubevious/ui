@@ -22,6 +22,7 @@ class Search extends BaseComponent {
 
         this.state = {
             result: [],
+            totalCount: 0,
             value: {},
             counters: {
                 labels: { [+new Date()]: '' },
@@ -37,8 +38,11 @@ class Search extends BaseComponent {
 
 
     fetchResults(criteria) {
-        this.service.fetchSearchResults(criteria, (result) => {
-            this.setState({ result: result })
+        this.service.fetchSearchResults(criteria, (response) => {
+            this.setState({
+                result: response.results,
+                totalCount: response.totalCount
+            })
         })
     }
 
@@ -482,6 +486,7 @@ class Search extends BaseComponent {
     render() {
         const {
             result,
+            totalCount,
             value,
             counters,
             savedFilters,
@@ -742,7 +747,7 @@ class Search extends BaseComponent {
                                         sharedState={this.sharedState}
                                     />
                                 ))}
-                                {result.length === 200 && (
+                                {result.length < totalCount && (
                                     <div className="limited-results-msg">
                                         The first 200 items are shown. Please
                                         refine your search query to see more
