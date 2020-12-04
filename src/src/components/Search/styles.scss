@@ -23,10 +23,6 @@
     padding-right: 1px;
     overflow-y: auto;
 
-    .add-filter-btn {
-      margin: 0 5px 10px;
-    }
-
     button:focus, button:active {
       outline: none;
     }
@@ -186,11 +182,6 @@
       margin-bottom: 10px;
     }
 
-    button {
-      margin: 5px;
-      align-self: flex-end;
-    }
-
     .react-autocomplete-input {
       background-clip: padding-box;
       border: 1px solid rgba(0,0,0,0.15);
@@ -202,18 +193,34 @@
       padding: 1px;
       text-align: left;
       z-index: 20000;
-   }
+    }
 
-   .react-autocomplete-input > li {
-     cursor: pointer;
-     padding: 10px;
-     min-width: 100px;
-   }
+    .react-autocomplete-input > li {
+      cursor: pointer;
+      padding: 10px;
+      min-width: 100px;
+    }
 
-   .react-autocomplete-input > li.active {
-     background-color: #337ab7;
-     color: #fff;
-   }
+    .react-autocomplete-input > li.active {
+      background-color: #337ab7;
+      color: #fff;
+    }
+
+    .filter-input-btns {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px 5px;
+
+      & button {
+        border: none;
+        border-radius: 2px;
+        padding: 0 10px;
+      }
+
+      .add-filter-btn {
+        background: #f2a81c;
+      }
+    }
 
   }
 

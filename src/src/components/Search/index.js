@@ -24,24 +24,25 @@ class Search extends BaseComponent {
             result: [],
             totalCount: 0,
             value: {},
-            counters: {
-                labels: { [+new Date()]: '' },
-                annotations: { [+new Date()]: '' },
-            },
             savedFilters: {},
-            currentIndexes: {
-                labels: 0,
-                annotations: 0,
+            currentInput: {
+                labels: {
+                    key: '',
+                    value: '',
+                },
+                annotations: {
+                    key: '',
+                    value: '',
+                },
             },
         }
     }
-
 
     fetchResults(criteria) {
         this.service.fetchSearchResults(criteria, (response) => {
             this.setState({
                 result: response.results,
-                totalCount: response.totalCount
+                totalCount: response.totalCount,
             })
         })
     }
@@ -148,58 +149,44 @@ class Search extends BaseComponent {
     }
 
     handleFilterInput(value, name, title, index) {
+        this.setState((prevState) => {
+            if (title === 'key') {
+                prevState.currentInput[name].key = value
+                return {
+                    currentInput: {
+                        ...prevState.currentInput,
+                    },
+                }
+            }
+            prevState.currentInput[name].value = value
+            return {
+                currentInput: {
+                    ...prevState.currentInput,
+                },
+            }
+        })
+    }
+
+    addInputField(type) {
         this.setState(
             (prevState) => {
-                const { [name]: prevFilter = [] } = prevState.value
-                const currentCounters = prevState.counters[name]
-                const currentIndex = prevState.currentIndexes[name]
-                const [selectedKey] = prevFilter[currentIndex]
-                    ? Object.keys(prevFilter[currentIndex])
-                    : ['']
-                const currentCounterValue = Object.keys(currentCounters).find(
-                    (key) => currentCounters[key] === selectedKey
-                )
-                const foundVal =
-                    !isEmptyArray(prevFilter) && prevFilter[currentIndex]
-                const { [selectedKey]: prevFilterVal } = foundVal
-                    ? foundVal
-                    : { [selectedKey]: '' }
-
-                if (title === 'key') {
-                    prevFilter[currentIndex]
-                        ? (prevFilter[currentIndex] = {
-                              [value]: prevFilterVal,
-                          })
-                        : prevFilter.push({ [value]: prevFilterVal })
-
-                    return {
-                        value: {
-                            ...prevState.value,
-                            [name]: prevFilter,
-                        },
-                        counters: {
-                            ...prevState.counters,
-                            [name]: {
-                                ...prevState.counters[name],
-                                [currentCounterValue]: value,
-                            },
-                        },
-                    }
-                }
-                let wasValueChanged = false
-                const changedFilters = prevFilter.map((el) => {
-                    const [currentKey] = Object.keys(el)
-                    if (currentKey === selectedKey) {
-                        el[currentKey] = value
-                        wasValueChanged = true
-                    }
-                    return el
-                })
-                !wasValueChanged && changedFilters.push({ '': value })
+                const {
+                    key: inputKey,
+                    value: inputVal,
+                } = prevState.currentInput[type]
+                const searchValue = prevState.value[type] || []
+                const elementIndex = searchValue.findIndex((el) => el[inputKey])
+                elementIndex !== -1
+                    ? (searchValue[elementIndex] = { [inputKey]: inputVal })
+                    : searchValue.push({ [inputKey]: inputVal })
+                prevState.currentInput[type] = { key: '', value: '' }
                 return {
                     value: {
                         ...prevState.value,
-                        [name]: changedFilters,
+                        [type]: searchValue,
+                    },
+                    currentInput: {
+                        ...prevState.currentInput,
                     },
                 }
             },
@@ -207,73 +194,48 @@ class Search extends BaseComponent {
                 this.fetchResults(this.state.value)
             }
         )
-    }
-
-    addInputField(type) {
-        this.setState((prevState) => {
-            const prevCounters = prevState.counters
-            const prevIndexes = prevState.currentIndexes
-            const current = prevCounters[type]
-            return {
-                counters: {
-                    ...prevCounters,
-                    [type]: { ...current, [+new Date()]: '' },
-                },
-                currentIndexes: { ...prevIndexes, [type]: ++prevIndexes[type] },
-            }
-        })
         return false
     }
 
-    deleteFilter(key, counter) {
+    deleteFilter(key, val) {
         this.setState(
             (prevState) => {
                 const currentFilters = prevState.value[key] || []
                 const currentSavedFilters = prevState.savedFilters[key] || []
                 const sumOfFilters = currentFilters.concat(currentSavedFilters)
-                const currentCounters = prevState.counters[key] || {}
-                const deletedCounter = currentCounters[counter]
+                const [elementKey] = Object.keys(val)
 
-                prevState.value[key] && delete prevState.value[key]
-                prevState.savedFilters[key] &&
-                    delete prevState.savedFilters[key]
-                prevState.counters[key] &&
-                    delete prevState.counters[key][counter]
                 if (
                     typeof currentFilters === 'string' ||
                     typeof currentSavedFilters === 'string'
                 ) {
+                    prevState.value[key] && delete prevState.value[key]
+                    prevState.savedFilters[key] &&
+                        delete prevState.savedFilters[key]
                     return {
                         value: { ...prevState.value },
-                        savedFilters: { ...prevState.savedFilters },
-                    }
-                } else if (sumOfFilters.length === 1) {
-                    return {
-                        value: { ...prevState.value },
-                        counters: {
-                            ...prevState.counters,
-                            [key]: { [+new Date()]: '' },
-                        },
                         savedFilters: { ...prevState.savedFilters },
                     }
                 }
+
+                prevState.value[key] = currentFilters.filter(
+                    (filter) => !filter[elementKey]
+                )
+                prevState.savedFilters[key] = currentSavedFilters.filter(
+                    (filter) => !filter[elementKey]
+                )
+
+                isEmptyArray(prevState.value[key]) &&
+                    delete prevState.value[key]
+                isEmptyArray(prevState.savedFilters[key]) &&
+                    delete prevState.savedFilters[key]
+
                 return {
                     value: {
                         ...prevState.value,
-                        [key]: currentFilters.filter(
-                            (filter) => !filter[deletedCounter]
-                        ),
-                    },
-                    counters: { ...prevState.counters, [key]: currentCounters },
-                    currentIndexes: {
-                        ...prevState.currentIndexes,
-                        [key]: Math.max(--prevState.currentIndexes[key], 0),
                     },
                     savedFilters: {
                         ...prevState.savedFilters,
-                        [key]: currentSavedFilters.filter(
-                            (filter) => !filter[deletedCounter]
-                        ),
                     },
                 }
             },
@@ -284,33 +246,38 @@ class Search extends BaseComponent {
         return false
     }
 
-    handleEditFilter(key, val) {
+    handleEditFilter(type, filterVal) {
         this.setState((prevState) => {
-            const index = prevState.value[key].findIndex((elem) => {
-                const [valueKey] = Object.keys(elem)
-                const [currentKey] = Object.keys(val[0])
-                return valueKey === currentKey
-            })
+            const [[key, value]] = Object.entries(filterVal)
+            prevState.currentInput[type] = {
+                key,
+                value,
+                disabled: true,
+            }
             return {
-                currentIndexes: { ...prevState.currentIndexes, [key]: index },
+                currentInput: {
+                    ...prevState.currentInput,
+                },
             }
         })
     }
 
-    toggleFilter(key, counter) {
+    toggleFilter(type, filterVal) {
+        const [[key, value]] = Object.entries(filterVal)
+
         this.setState(
             (prevState) => {
-                if (!counter) {
+                if (!this.checkForInputFilter(type)) {
                     const deleteFromSaved = () => {
-                        prevState.value[key] = prevState.savedFilters[key]
-                        delete prevState.savedFilters[key]
+                        prevState.value[type] = prevState.savedFilters[type]
+                        delete prevState.savedFilters[type]
                     }
 
                     const addToSaved = () => {
-                        prevState.savedFilters[key] = prevState.value[key]
-                        delete prevState.value[key]
+                        prevState.savedFilters[type] = prevState.value[type]
+                        delete prevState.value[type]
                     }
-                    prevState.savedFilters[key]
+                    prevState.savedFilters[type]
                         ? deleteFromSaved()
                         : addToSaved()
                     return {
@@ -318,86 +285,51 @@ class Search extends BaseComponent {
                         savedFilters: { ...prevState.savedFilters },
                     }
                 }
-                let valueArray = prevState.value[key] || []
-                let savedArray = prevState.savedFilters[key] || []
-                const currentIndex = prevState.currentIndexes[key]
-                const currentKey = prevState.counters[key][counter]
-                const currentValue =
-                    valueArray
-                        .concat(savedArray)
-                        .find((el) => el[currentKey]) || {}
-                let changedValueArray = valueArray.filter(
-                    (el) => !el[currentKey]
-                )
-                let changedSavedArray = savedArray.filter(
-                    (el) => !el[currentKey]
-                )
+                let valueArray = prevState.value[type] || []
+                let savedArray = prevState.savedFilters[type] || []
+                let changedValueArray = valueArray.filter((el) => !el[key])
+                let changedSavedArray = savedArray.filter((el) => !el[key])
 
-                if (prevState.savedFilters[key]) {
+                if (prevState.savedFilters[type]) {
+
                     const compareLength =
                         changedSavedArray.length === savedArray.length
 
                     savedArray = compareLength
-                        ? insertToArray(savedArray, currentIndex, currentValue)
+                        ? [...savedArray, { [key]: value }]
                         : changedSavedArray
                     valueArray = compareLength
                         ? changedValueArray
-                        : insertToArray(valueArray, currentIndex, currentValue)
+                        : [...valueArray, { [key]: value }]
+
+                    prevState.value[type] = valueArray
+                    prevState.savedFilters[type] = savedArray
+
                     if (isEmptyArray(valueArray)) {
-                        delete prevState.value[key]
-                        return {
-                            value: {
-                                ...prevState.value,
-                            },
-                            savedFilters: {
-                                ...prevState.savedFilters,
-                                [key]: savedArray,
-                            },
-                            currentIndexes: {
-                                ...prevState.currentIndexes,
-                                [key]: currentIndex,
-                            },
-                        }
+                        delete prevState.value[type]
+                        return
                     } else if (isEmptyArray(savedArray)) {
-                        delete prevState.savedFilters[key]
-                        return {
-                            value: {
-                                ...prevState.value,
-                                [key]: valueArray,
-                            },
-                            savedFilters: { ...prevState.savedFilters },
-                            currentIndexes: {
-                                ...prevState.currentIndexes,
-                                [key]: ++prevState.currentIndexes[key],
-                            },
-                        }
+
+                        delete prevState.savedFilters[type]
+                        return
                     }
+
                     return {
                         value: {
                             ...prevState.value,
-                            [key]: valueArray,
                         },
                         savedFilters: {
                             ...prevState.savedFilters,
-                            [key]: savedArray,
-                        },
-                        currentIndexes: {
-                            ...prevState.currentIndexes,
-                            [key]: compareLength
-                                ? ++prevState.currentIndexes[key]
-                                : Math.max(--prevState.currentIndexes[key], 0),
                         },
                     }
                 }
+                prevState.value[type] = changedValueArray
+                isEmptyArray(changedValueArray) && delete prevState.value[type]
                 return {
-                    value: { ...prevState.value, [key]: changedValueArray },
+                    value: { ...prevState.value },
                     savedFilters: {
                         ...prevState.savedFilters,
-                        [key]: [currentValue],
-                    },
-                    currentIndexes: {
-                        ...prevState.currentIndexes,
-                        [key]: Math.max(--prevState.currentIndexes[key], 0),
+                        [type]: [{ [key]: value }],
                     },
                 }
             },
@@ -407,42 +339,48 @@ class Search extends BaseComponent {
         )
     }
 
-    renderPrettyView(val = []) {
-        return val.map((el, index) => {
-            if (typeof el === 'object') {
-                const [[key, value]] = Object.entries(el)
-                const stringified = [key, value].join(' ')
-                this.renderActiveFilters(key, stringified)
-                return `${key}: ${value}`
-            }
-            return index === val.length - 1 ? el : `${el} | `
-        })
+    clearFilter(type) {
+        this.setState((prevState) => ({
+            currentInput: {
+                ...prevState.currentInput,
+                [type]: {
+                    key: '',
+                    value: '',
+                },
+            },
+        }))
     }
 
-    renderActiveFilters(key, val, counter) {
+    renderPrettyView(val) {
+        const [[key, value]] = Object.entries(val)
+        return `${key}: ${value}`
+    }
+
+    renderActiveFilters(type, val) {
         const { savedFilters } = this.state
+        const [elementKey] = typeof val === 'string' ? [''] : Object.keys(val)
         const checkInSavedFilters =
-            savedFilters[key] && savedFilters[key].length
-                ? savedFilters[key].find((el) => el === val[0])
-                : savedFilters[key]
+            savedFilters[type] && elementKey
+                ? savedFilters[type].find((el) => el[elementKey])
+                : savedFilters[type]
         if (!val) return
         return (
             <div
                 className={cx('active-filter-box', {
                     deactivated: checkInSavedFilters,
                 })}
-                key={key}
+                key={type}
             >
-                <span className="filter-key">{`${key}: `}</span>
+                <span className="filter-key">{`${type}: `}</span>
                 <span className="filter-val">
                     {typeof val === 'string'
                         ? prettyKind(val)
                         : this.renderPrettyView(val)}
                 </span>
-                {this.checkForInputFilter(key) && !checkInSavedFilters && (
+                {this.checkForInputFilter(type) && !checkInSavedFilters && (
                     <button
                         className="filter-btn edit"
-                        onClick={() => this.handleEditFilter(key, val)}
+                        onClick={() => this.handleEditFilter(type, val)}
                     ></button>
                 )}
                 <button
@@ -450,12 +388,12 @@ class Search extends BaseComponent {
                         hide: checkInSavedFilters,
                     })}
                     title="Toggle show/hide"
-                    onClick={() => this.toggleFilter(key, counter)}
+                    onClick={() => this.toggleFilter(type, val)}
                 />
                 <button
                     className="filter-btn del"
                     title="Delete"
-                    onClick={() => this.deleteFilter(key, counter)}
+                    onClick={() => this.deleteFilter(type, val)}
                 >
                     &times;
                 </button>
@@ -463,23 +401,20 @@ class Search extends BaseComponent {
         )
     }
 
-    renderDividedActiveFilters(counter, key, val) {
+    renderDividedActiveFilters(key, val) {
         if (!val) {
             return
         }
-        const saved = this.state.savedFilters[key] || {}
+        const saved = this.state.savedFilters[key] || []
         const sumOfValues = this.state.value[key]
             ? this.state.value[key].concat(saved)
             : saved
 
-        const loopCounter = Object.entries(counter)
-        return loopCounter.map(([count, el]) => {
-            return sumOfValues.map((filter) => {
-                if (filter[el]) {
-                    return this.renderActiveFilters(key, [filter], count)
-                }
-                return
-            })
+        return sumOfValues.map((filter) => {
+            if (!isEmptyObject(filter)) {
+                return this.renderActiveFilters(key, filter)
+            }
+            return
         })
     }
 
@@ -488,9 +423,8 @@ class Search extends BaseComponent {
             result,
             totalCount,
             value,
-            counters,
             savedFilters,
-            currentIndexes,
+            currentInput,
         } = this.state
 
         return (
@@ -513,16 +447,8 @@ class Search extends BaseComponent {
                             ([key, val]) =>
                                 key !== 'criteria' &&
                                 (this.checkForInputFilter(key)
-                                    ? this.renderDividedActiveFilters(
-                                          counters[key],
-                                          key,
-                                          val
-                                      )
-                                    : this.renderActiveFilters(
-                                          key,
-                                          val,
-                                          counters[key]
-                                      ))
+                                    ? this.renderDividedActiveFilters(key, val)
+                                    : this.renderActiveFilters(key, val))
                         )}
                     </div>
                 )}
@@ -538,158 +464,122 @@ class Search extends BaseComponent {
                                     {el.shownValue}
                                 </summary>
                                 <div className="inner-items">
-                                    {this.checkForInputFilter(el.payload)
-                                        ? Object.keys(counters[el.payload]).map(
-                                              (counter, index) => {
-                                                  const elementIndex =
-                                                      currentIndexes[el.payload]
-                                                  const [
-                                                      [curentKey, currentVal],
-                                                  ] =
-                                                      value[el.payload] &&
-                                                      value[el.payload][
-                                                          elementIndex
-                                                      ]
-                                                          ? Object.entries(
-                                                                value[
+                                    {this.checkForInputFilter(el.payload) ? (
+                                        <div className="filter-input-box">
+                                            {el.values.map((item) => {
+                                                const currentKey =
+                                                    currentInput[el.payload].key
+                                                const currentVal =
+                                                    currentInput[el.payload]
+                                                        .value
+                                                return (
+                                                    <Fragment key={item.title}>
+                                                        <label>
+                                                            {item.title}
+                                                        </label>
+                                                        {item.title ===
+                                                            'Label' ||
+                                                        item.title ===
+                                                            'Annotation' ? (
+                                                            <TextInput
+                                                                options={
+                                                                    el.payload ===
+                                                                    'labels'
+                                                                        ? LABELS
+                                                                        : ANNOTATIONS
+                                                                }
+                                                                trigger={''}
+                                                                matchAny={true}
+                                                                Component="input"
+                                                                disabled={
+                                                                    currentInput[
+                                                                        el
+                                                                            .payload
+                                                                    ].disabled
+                                                                }
+                                                                value={
+                                                                    currentKey
+                                                                }
+                                                                spacer={''}
+                                                                onChange={(e) =>
+                                                                    this.handleFilterInput(
+                                                                        e,
+                                                                        el.payload,
+                                                                        item.payload
+                                                                    )
+                                                                }
+                                                            />
+                                                        ) : (
+                                                            <input
+                                                                type="text"
+                                                                value={
+                                                                    currentVal
+                                                                }
+                                                                disabled={
+                                                                    !currentKey
+                                                                }
+                                                                onChange={(e) =>
+                                                                    this.handleFilterInput(
+                                                                        e.target
+                                                                            .value,
+                                                                        el.payload,
+                                                                        item.payload
+                                                                    )
+                                                                }
+                                                            />
+                                                        )}
+                                                    </Fragment>
+                                                )
+                                            })}
+                                            {currentInput[el.payload].key &&
+                                                currentInput[el.payload]
+                                                    .value && (
+                                                    <div className="filter-input-btns">
+                                                        <button
+                                                            type="button"
+                                                            className="add-filter-btn"
+                                                            onClick={() =>
+                                                                this.addInputField(
                                                                     el.payload
-                                                                ][elementIndex]
-                                                            )
-                                                          : [['', '']]
-                                                  return (
-                                                      elementIndex ===
-                                                          index && (
-                                                          <div
-                                                              className="filter-input-box"
-                                                              key={counter}
-                                                          >
-                                                              {el.values.map(
-                                                                  (item) => (
-                                                                      <Fragment
-                                                                          key={
-                                                                              item.title
-                                                                          }
-                                                                      >
-                                                                          <label>
-                                                                              {
-                                                                                  item.title
-                                                                              }
-                                                                          </label>
-                                                                          {item.title ===
-                                                                              'Label' ||
-                                                                          item.title ===
-                                                                              'Annotation' ? (
-                                                                              <TextInput
-                                                                                  options={
-                                                                                      el.payload ===
-                                                                                      'labels'
-                                                                                          ? LABELS
-                                                                                          : ANNOTATIONS
-                                                                                  }
-                                                                                  trigger={
-                                                                                      ''
-                                                                                  }
-                                                                                  matchAny={
-                                                                                      true
-                                                                                  }
-                                                                                  Component="input"
-                                                                                  value={
-                                                                                      curentKey
-                                                                                  }
-                                                                                  spacer={
-                                                                                      ''
-                                                                                  }
-                                                                                  onChange={(
-                                                                                      e
-                                                                                  ) =>
-                                                                                      this.handleFilterInput(
-                                                                                          e,
-                                                                                          el.payload,
-                                                                                          item.payload,
-                                                                                          counter
-                                                                                      )
-                                                                                  }
-                                                                              />
-                                                                          ) : (
-                                                                              <input
-                                                                                  type="text"
-                                                                                  value={
-                                                                                      currentVal
-                                                                                  }
-                                                                                  onChange={(
-                                                                                      e
-                                                                                  ) =>
-                                                                                      this.handleFilterInput(
-                                                                                          e
-                                                                                              .target
-                                                                                              .value,
-                                                                                          el.payload,
-                                                                                          item.payload,
-                                                                                          counter
-                                                                                      )
-                                                                                  }
-                                                                              />
-                                                                          )}
-                                                                      </Fragment>
-                                                                  )
-                                                              )}
-                                                              {value[
-                                                                  el.payload
-                                                              ] && (
-                                                                  <button
-                                                                      type="button"
-                                                                      onClick={() =>
-                                                                          this.deleteFilter(
-                                                                              el.payload,
-                                                                              counter
-                                                                          )
-                                                                      }
-                                                                  >
-                                                                      &times;
-                                                                  </button>
-                                                              )}
-                                                          </div>
-                                                      )
-                                                  )
-                                              }
-                                          )
-                                        : el.values.map((item) => (
-                                              <button
-                                                  name={el.payload}
-                                                  title={item.payload}
-                                                  key={item.payload}
-                                                  className={
-                                                      this.state.value[
-                                                          el.payload
-                                                      ] === item.payload
-                                                          ? 'selected-filter'
-                                                          : ''
-                                                  }
-                                                  onClick={(e) =>
-                                                      this.handleFilterChange(e)
-                                                  }
-                                              >
-                                                  {item.title}
-                                              </button>
-                                          ))}
-                                    {!!value[el.payload] &&
-                                        this.checkForInputFilter(
-                                            el.payload
-                                        ) && (
-                                            <div>
-                                                <button
-                                                    type="button"
-                                                    className="add-filter-btn"
-                                                    onClick={() =>
-                                                        this.addInputField(
-                                                            el.payload
-                                                        )
-                                                    }
-                                                >
-                                                    +
-                                                </button>
-                                            </div>
-                                        )}
+                                                                )
+                                                            }
+                                                        >
+                                                            Add
+                                                        </button>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() =>
+                                                                this.clearFilter(
+                                                                    el.payload
+                                                                )
+                                                            }
+                                                        >
+                                                            Remove
+                                                        </button>
+                                                    </div>
+                                                )}
+                                        </div>
+                                    ) : (
+                                        el.values.map((item) => (
+                                            <button
+                                                name={el.payload}
+                                                title={item.payload}
+                                                key={item.payload}
+                                                className={
+                                                    this.state.value[
+                                                        el.payload
+                                                    ] === item.payload
+                                                        ? 'selected-filter'
+                                                        : ''
+                                                }
+                                                onClick={(e) =>
+                                                    this.handleFilterChange(e)
+                                                }
+                                            >
+                                                {item.title}
+                                            </button>
+                                        ))
+                                    )}
                                 </div>
                             </details>
                         ))}
