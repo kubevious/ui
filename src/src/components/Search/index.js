@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import TextInput from 'react-autocomplete-input'
-import { isEmptyArray, isEmptyObject, insertToArray } from '../../utils/util'
+import { isEmptyArray, isEmptyObject } from '../../utils/util'
 import DocUtils from 'kubevious-helpers/lib/docs'
 import { prettyKind } from '../../utils/ui-utils'
 import DnShortcutComponent from '../DnShortcutComponent'
@@ -518,6 +518,7 @@ class Search extends BaseComponent {
                                                                     currentKey
                                                                 }
                                                                 spacer={''}
+                                                                regex={/^[a-zA-Z0-9_./\S]+$/}
                                                                 onChange={(e) =>
                                                                     this.handleFilterInput(
                                                                         e,
