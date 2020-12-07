@@ -370,7 +370,9 @@ class Search extends BaseComponent {
 
     renderPrettyView(val) {
         const [[key, value]] = Object.entries(val)
-        return `${key}: ${value}`
+        return val.length
+            ? val.map((criteria, index) => index === val.length - 1 ? criteria : `${criteria} | `)
+            : `${key}: ${value}`
     }
 
     renderActiveFilters(type, val) {
