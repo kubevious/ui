@@ -146,6 +146,12 @@ class DiagramService extends BaseService {
             });
     }
 
+    fetchAutocomplete(type, criteria, cb) {
+        return this._client.post(`/diagram/${type}`, criteria )
+            .then(result =>
+                cb(result.data))
+    }
+
     _setupWebSocket()
     {
         this._setupProperties();

@@ -6,7 +6,7 @@ import { prettyKind } from '../../utils/ui-utils'
 import DnShortcutComponent from '../DnShortcutComponent'
 import BaseComponent from '../../HOC/BaseComponent'
 import MarkerPreview from '../MarkerPreview'
-import { ANNOTATIONS, FILTERS_LIST, LABELS } from '../../boot/filterData'
+import { FILTERS_LIST } from '../../boot/filterData'
 import cx from 'classnames'
 
 import './styles.scss'
@@ -35,6 +35,16 @@ class Search extends BaseComponent {
                     value: '',
                 },
             },
+            autocomplete: {
+                labels: {
+                    keys: [],
+                    values: []
+                },
+                annotations: {
+                    keys: [],
+                    values: []
+                }
+            },
         }
     }
 
@@ -45,6 +55,42 @@ class Search extends BaseComponent {
                 totalCount: response.totalCount,
             })
         })
+    }
+
+    fetchValues(type, key, criteria) {
+        if (!criteria) {
+            return
+        }
+        this.service.fetchAutocomplete(type, { key, criteria }, (response) => {
+            this.setState((prevState) => {
+                prevState.autocomplete[type].values = response
+                return {
+                    autocomplete: {
+                        ...prevState.autocomplete,
+                    },
+                }
+            })
+        })
+    }
+
+    fetchKeys(type, criteria) {
+        if (!criteria) {
+            return
+        }
+        return this.service.fetchAutocomplete(
+            type,
+            { criteria },
+            (response) => {
+                this.setState((prevState) => {
+                    prevState.autocomplete[type].keys = response
+                    return {
+                        autocomplete: {
+                            ...prevState.autocomplete,
+                        },
+                    }
+                })
+            }
+        )
     }
 
     getKindsList() {
@@ -148,9 +194,10 @@ class Search extends BaseComponent {
         )
     }
 
-    handleFilterInput(value, name, title, index) {
+    handleFilterInput(value, name, title) {
         this.setState((prevState) => {
             if (title === 'key') {
+                this.fetchKeys(name, value)
                 prevState.currentInput[name].key = value
                 return {
                     currentInput: {
@@ -158,6 +205,8 @@ class Search extends BaseComponent {
                     },
                 }
             }
+            const currentKey = prevState.currentInput[name].key
+            this.fetchValues(name, currentKey, value)
             prevState.currentInput[name].value = value
             return {
                 currentInput: {
@@ -370,7 +419,7 @@ class Search extends BaseComponent {
 
     renderPrettyView(val) {
         const [[key, value]] = Object.entries(val)
-        return val.length
+        return Array.isArray(val)
             ? val.map((criteria, index) => index === val.length - 1 ? criteria : `${criteria} | `)
             : `${key}: ${value}`
     }
@@ -502,10 +551,7 @@ class Search extends BaseComponent {
                                                             'Annotation' ? (
                                                             <TextInput
                                                                 options={
-                                                                    el.payload ===
-                                                                    'labels'
-                                                                        ? LABELS
-                                                                        : ANNOTATIONS
+                                                                    this.state.autocomplete[el.payload].keys
                                                                 }
                                                                 trigger={''}
                                                                 matchAny={true}
@@ -530,7 +576,15 @@ class Search extends BaseComponent {
                                                                 }
                                                             />
                                                         ) : (
-                                                            <input
+                                                            <TextInput
+                                                                options={
+                                                                    this.state.autocomplete[el.payload].values
+                                                                }
+                                                                trigger={''}
+                                                                matchAny={true}
+                                                                Component="input"
+                                                                spacer={''}
+                                                                regex={/^[a-zA-Z0-9_./\S]+$/}
                                                                 type="text"
                                                                 value={
                                                                     currentVal
@@ -540,8 +594,7 @@ class Search extends BaseComponent {
                                                                 }
                                                                 onChange={(e) =>
                                                                     this.handleFilterInput(
-                                                                        e.target
-                                                                            .value,
+                                                                        e,
                                                                         el.payload,
                                                                         item.payload
                                                                     )

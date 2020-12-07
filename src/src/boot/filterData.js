@@ -56,22 +56,3 @@ export const FILTERS_LIST = [
         ]
     },
 ]
-
-export const LABELS = [
-    'berlioz_managed',
-    'cluster',
-    'deployment',
-    'name',
-    'sector',
-    'service',
-    'addonmanager.kubernetes.io/mode',
-    'k8s-app',
-    'kubernetes.io/cluster-service',
-    'version',
-    'app',
-]
-
-export const ANNOTATIONS = [
-    'deployment.kubernetes.io/revision',
-    'kubectl.kubernetes.io/last-applied-configuration',
-]
