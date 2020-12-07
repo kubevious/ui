@@ -340,15 +340,32 @@ class Search extends BaseComponent {
     }
 
     clearFilter(type) {
-        this.setState((prevState) => ({
-            currentInput: {
-                ...prevState.currentInput,
-                [type]: {
-                    key: '',
-                    value: '',
+        this.setState((prevState) => {
+            const { key } = prevState.currentInput[type]
+            const changedValueArray =
+                prevState.value[type] &&
+                prevState.value[type].filter((elem) => !elem[key])
+
+            isEmptyArray(changedValueArray)
+                ? delete prevState.value[type]
+                : (prevState.value[type] = changedValueArray)
+            return {
+                currentInput: {
+                    ...prevState.currentInput,
+                    [type]: {
+                        key: '',
+                        value: '',
+                    },
+                    value: {
+                        ...prevState.value,
+                    },
                 },
-            },
-        }))
+            }
+        },
+            () => {
+                this.fetchResults(this.state.value)
+            }
+        )
     }
 
     renderPrettyView(val) {
