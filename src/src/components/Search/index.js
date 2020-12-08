@@ -511,7 +511,7 @@ class Search extends BaseComponent {
                     <div className="active-filters">
                         {Object.entries(
                             Object.assign({}, value, savedFilters)
-                        ).map(
+                        ).sort().map(
                             ([key, val]) =>
                                 key !== 'criteria' &&
                                 (this.checkForInputFilter(key)
@@ -555,7 +555,10 @@ class Search extends BaseComponent {
                                                                 }
                                                                 trigger={''}
                                                                 matchAny={true}
+                                                                offsetX="10"
+                                                                offsetY="20"
                                                                 Component="input"
+                                                                passThroughEnter={true}
                                                                 disabled={
                                                                     currentInput[
                                                                         el
@@ -582,7 +585,10 @@ class Search extends BaseComponent {
                                                                 }
                                                                 trigger={''}
                                                                 matchAny={true}
+                                                                offsetX="10"
+                                                                offsetY="20"
                                                                 Component="input"
+                                                                passThroughEnter={true}
                                                                 spacer={''}
                                                                 regex={/^[a-zA-Z0-9_./\S]+$/}
                                                                 type="text"

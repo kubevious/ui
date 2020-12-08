@@ -20,7 +20,7 @@
     border-radius: 0;
     height: fit-content;
     max-height: -webkit-fill-available;
-    padding-right: 1px;
+    padding-right: 5px;
     overflow-y: auto;
 
     button:focus, button:active {
@@ -70,7 +70,7 @@
 .filter-list,
 .filter-list:focus,
 .filter-list:active {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
   border: none;
   border-radius: 0;
@@ -176,6 +176,7 @@
 
     input {
       margin: 0 5px;
+      width: -webkit-fill-available;
     }
 
     & input:last-child {
@@ -186,13 +187,17 @@
       background-clip: padding-box;
       border: 1px solid rgba(0,0,0,0.15);
       bottom: auto;
+      position: absolute;
+      background: #35373E;
       box-shadow: 0 6px 12px rgba(0,0,0,0.175);
       display: block;
-      font-size: 14px;
+      font-size: 12px;
       list-style: none;
       padding: 1px;
       text-align: left;
       z-index: 20000;
+      margin-left: 3px;
+      width: 235px;
     }
 
     .react-autocomplete-input > li {
