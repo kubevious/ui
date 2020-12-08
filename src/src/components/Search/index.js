@@ -530,19 +530,21 @@ class Search extends BaseComponent {
                         onChange={(e) => this.handleChange(e)}
                     />
                 </div>
-                {(!isEmptyObject(value) || !isEmptyObject(savedFilters)) && (
-                    <div className="active-filters">
-                        {Object.entries(
-                            Object.assign({}, value, savedFilters)
-                        ).sort().map(
-                            ([key, val]) =>
-                                key !== 'criteria' &&
-                                (this.checkForInputFilter(key)
-                                    ? this.renderDividedActiveFilters(key, val)
-                                    : this.renderActiveFilters(key, val))
-                        )}
-                    </div>
-                )}
+                <div className="active-filters">
+                    {(!isEmptyObject(value) || !isEmptyObject(savedFilters)) && (
+                        <>
+                            {Object.entries(
+                                Object.assign({}, value, savedFilters)
+                            ).sort().map(
+                                ([key, val]) =>
+                                    key !== 'criteria' &&
+                                    (this.checkForInputFilter(key)
+                                        ? this.renderDividedActiveFilters(key, val)
+                                        : this.renderActiveFilters(key, val))
+                            )}
+                        </>
+                    )}
+                </div>
                 <div className="search-area">
                     <div className="filter-list filter-box">
                         {[this.kinds, ...FILTERS_LIST].map((el) => (
