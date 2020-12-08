@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import TextInput from 'react-autocomplete-input'
+import Autocomplete from 'react-autocomplete';
 import { isEmptyArray, isEmptyObject } from '../../utils/util'
 import DocUtils from 'kubevious-helpers/lib/docs'
 import { prettyKind } from '../../utils/ui-utils'
@@ -549,62 +549,100 @@ class Search extends BaseComponent {
                                                             'Label' ||
                                                         item.title ===
                                                             'Annotation' ? (
-                                                            <TextInput
-                                                                options={
-                                                                    this.state.autocomplete[el.payload].keys
-                                                                }
-                                                                trigger={''}
-                                                                matchAny={true}
-                                                                offsetX="10"
-                                                                offsetY="20"
-                                                                Component="input"
-                                                                passThroughEnter={true}
-                                                                disabled={
-                                                                    currentInput[
-                                                                        el
-                                                                            .payload
-                                                                    ].disabled
-                                                                }
+                                                            <Autocomplete
+                                                                getItemValue={(e) => e}
+                                                                items={this.state.autocomplete[
+                                                                    el.payload
+                                                                ].keys.slice(0, 5)}
                                                                 value={
                                                                     currentKey
                                                                 }
-                                                                spacer={''}
-                                                                regex={/^[a-zA-Z0-9_./\S]+$/}
                                                                 onChange={(e) =>
                                                                     this.handleFilterInput(
-                                                                        e,
+                                                                        e.target
+                                                                            .value,
                                                                         el.payload,
                                                                         item.payload
                                                                     )
                                                                 }
+                                                                onSelect={(val) =>
+                                                                    this.handleFilterInput(
+                                                                        val,
+                                                                        el.payload,
+                                                                        item.payload
+                                                                    )
+                                                                }
+                                                                renderItem={(e) => (
+                                                                    <div>
+                                                                        {e}
+                                                                    </div>
+                                                                )}
+                                                                renderMenu={(items) => (
+                                                                    <div
+                                                                        className="autocomplete"
+                                                                        children={
+                                                                            items
+                                                                        }
+                                                                    />
+                                                                )}
+                                                                renderInput={(props) => (
+                                                                    <input
+                                                                        disabled={
+                                                                            currentInput[
+                                                                                el
+                                                                                    .payload
+                                                                            ]
+                                                                                .disabled
+                                                                        }
+                                                                        {...props}
+                                                                    />
+                                                                )}
                                                             />
                                                         ) : (
-                                                            <TextInput
-                                                                options={
-                                                                    this.state.autocomplete[el.payload].values
-                                                                }
-                                                                trigger={''}
-                                                                matchAny={true}
-                                                                offsetX="10"
-                                                                offsetY="20"
-                                                                Component="input"
-                                                                passThroughEnter={true}
-                                                                spacer={''}
-                                                                regex={/^[a-zA-Z0-9_./\S]+$/}
-                                                                type="text"
+                                                            <Autocomplete
+                                                                getItemValue={(e) => e}
+                                                                items={this.state.autocomplete[
+                                                                    el.payload
+                                                                ].values.slice(0, 5)}
                                                                 value={
                                                                     currentVal
                                                                 }
-                                                                disabled={
-                                                                    !currentKey
-                                                                }
                                                                 onChange={(e) =>
                                                                     this.handleFilterInput(
-                                                                        e,
+                                                                        e.target
+                                                                            .value,
                                                                         el.payload,
                                                                         item.payload
                                                                     )
                                                                 }
+                                                                onSelect={(val) =>
+                                                                    this.handleFilterInput(
+                                                                        val,
+                                                                        el.payload,
+                                                                        item.payload
+                                                                    )
+                                                                }
+                                                                renderItem={(e) => (
+                                                                    <div>
+                                                                        {e}
+                                                                    </div>
+                                                                )}
+                                                                renderMenu={(items) => (
+                                                                    <div
+                                                                        className="autocomplete"
+                                                                        children={
+                                                                            items
+                                                                        }
+                                                                    />
+                                                                )}
+                                                                renderInput={(props) => (
+                                                                    <input
+                                                                        disabled={
+                                                                            !currentKey
+                                                                        }
+                                                                        {...props}
+                                                                    />
+                                                                )}
                                                             />
                                                         )}
                                                     </Fragment>

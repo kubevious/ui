@@ -22,6 +22,7 @@
     max-height: -webkit-fill-available;
     padding-right: 5px;
     overflow-y: auto;
+    position: relative;
 
     button:focus, button:active {
       outline: none;
@@ -175,23 +176,18 @@
     }
 
     input {
-      margin: 0 5px;
+      margin: 0 5px 10px;
       width: -webkit-fill-available;
     }
 
-    & input:last-child {
-      margin-bottom: 10px;
-    }
-
-    .react-autocomplete-input {
+    .autocomplete {
       background-clip: padding-box;
-      border: 1px solid rgba(0,0,0,0.15);
       bottom: auto;
       position: absolute;
       background: #35373E;
       box-shadow: 0 6px 12px rgba(0,0,0,0.175);
       display: block;
-      font-size: 12px;
+      font-size: 14px;
       list-style: none;
       padding: 1px;
       text-align: left;
@@ -200,13 +196,13 @@
       width: 235px;
     }
 
-    .react-autocomplete-input > li {
+    .autocomplete > div {
       cursor: pointer;
       padding: 10px;
       min-width: 100px;
     }
 
-    .react-autocomplete-input > li.active {
+    .autocomplete > div:hover {
       background-color: #337ab7;
       color: #fff;
     }
