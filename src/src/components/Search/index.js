@@ -225,14 +225,22 @@ class Search extends BaseComponent {
                 } = prevState.currentInput[type]
                 const searchValue = prevState.value[type] || []
                 const elementIndex = searchValue.findIndex((el) => el[inputKey])
+                const searchValueInSaved = prevState.savedFilters[type] || []
+                const elementIndexInSaved = searchValueInSaved.findIndex((el) => el[inputKey])
                 elementIndex !== -1
                     ? (searchValue[elementIndex] = { [inputKey]: inputVal })
                     : searchValue.push({ [inputKey]: inputVal })
+                const filteredSaved = searchValueInSaved.filter((el, index) => index !== elementIndexInSaved)
+                prevState.savedFilters[type] = filteredSaved
+                isEmptyArray(filteredSaved) && delete prevState.savedFilters[type]
                 prevState.currentInput[type] = { key: '', value: '' }
                 return {
                     value: {
                         ...prevState.value,
                         [type]: searchValue,
+                    },
+                    savedFilters: {
+                        ...prevState.savedFilters
                     },
                     currentInput: {
                         ...prevState.currentInput,
@@ -445,7 +453,7 @@ class Search extends BaseComponent {
                         ? prettyKind(val)
                         : this.renderPrettyView(val)}
                 </span>
-                {this.checkForInputFilter(type) && !checkInSavedFilters && (
+                {this.checkForInputFilter(type) && (
                     <button
                         className="filter-btn edit"
                         onClick={() => this.handleEditFilter(type, val)}
@@ -469,6 +477,21 @@ class Search extends BaseComponent {
         )
     }
 
+    compareForSort(a, b) {
+        let [valA] = Object.values(a)
+        let [valB] = Object.values(b)
+        valA = valA.toUpperCase()
+        valB = valB.toUpperCase()
+
+        let comparison = 0;
+        if (valA > valB) {
+            comparison = 1;
+        } else if (valA < valB) {
+            comparison = -1;
+        }
+        return comparison;
+    }
+
     renderDividedActiveFilters(key, val) {
         if (!val) {
             return
@@ -478,7 +501,7 @@ class Search extends BaseComponent {
             ? this.state.value[key].concat(saved)
             : saved
 
-        return sumOfValues.map((filter) => {
+        return sumOfValues.sort(this.compareForSort).map((filter) => {
             if (!isEmptyObject(filter)) {
                 return this.renderActiveFilters(key, filter)
             }
