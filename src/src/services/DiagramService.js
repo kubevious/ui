@@ -146,8 +146,15 @@ class DiagramService extends BaseService {
             });
     }
 
-    fetchAutocomplete(type, criteria, cb) {
-        return this._client.post(`/diagram/${type}`, criteria )
+    fetchAutocompleteKeys(type, criteria, cb) {
+        return this._client.post(`/search/${type}`, criteria )
+            .then(result =>
+                cb(result.data)
+            )
+    }
+
+    fetchAutocompleteValues(type, criteria, cb) {
+        return this._client.post(`/search/${type}/values`, criteria )
             .then(result =>
                 cb(result.data))
     }

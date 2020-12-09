@@ -58,26 +58,24 @@ class Search extends BaseComponent {
     }
 
     fetchValues(type, key, criteria) {
-        if (!criteria) {
+        if (!key) {
             return
         }
-        this.service.fetchAutocomplete(type, { key, criteria }, (response) => {
-            this.setState((prevState) => {
-                prevState.autocomplete[type].values = response
-                return {
-                    autocomplete: {
-                        ...prevState.autocomplete,
-                    },
-                }
+        this.service.fetchAutocompleteValues(type, { key, criteria }, (response) => {
+                this.setState((prevState) => {
+                    prevState.autocomplete[type].values = response
+                    return {
+                        autocomplete: {
+                            ...prevState.autocomplete,
+                        },
+                    }
+                })
             })
-        })
+
     }
 
     fetchKeys(type, criteria) {
-        if (!criteria) {
-            return
-        }
-        return this.service.fetchAutocomplete(
+        return this.service.fetchAutocompleteKeys(
             type,
             { criteria },
             (response) => {
@@ -578,7 +576,7 @@ class Search extends BaseComponent {
                                                                 getItemValue={(e) => e}
                                                                 items={this.state.autocomplete[
                                                                     el.payload
-                                                                ].keys.slice(0, 5)}
+                                                                ].keys}
                                                                 value={
                                                                     currentKey
                                                                 }
@@ -628,7 +626,7 @@ class Search extends BaseComponent {
                                                                 getItemValue={(e) => e}
                                                                 items={this.state.autocomplete[
                                                                     el.payload
-                                                                ].values.slice(0, 5)}
+                                                                ].values}
                                                                 value={
                                                                     currentVal
                                                                 }
