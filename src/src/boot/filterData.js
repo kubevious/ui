@@ -1,3 +1,5 @@
+const alertsEnum = Object.freeze({ 0: 'at-most', 1: 'at-least'})
+
 export const FILTERS_LIST = [
     {
         payload: 'labels',
@@ -33,11 +35,17 @@ export const FILTERS_LIST = [
         values: [
             {
                 title: 'With errors',
-                payload: 'true'
+                payload: {
+                    kind: alertsEnum[1],
+                    count: 1
+                }
             },
             {
                 title: 'Without errors',
-                payload: 'false'
+                payload: {
+                    kind: alertsEnum[0],
+                    count: 0
+                }
             }
         ]
     },
@@ -47,11 +55,17 @@ export const FILTERS_LIST = [
         values: [
             {
                 title: 'With warnings',
-                payload: 'true'
+                payload: {
+                    kind: alertsEnum[1],
+                    count: 1
+                }
             },
             {
                 title: 'Without warnings',
-                payload: 'false'
+                payload: {
+                    kind: alertsEnum[0],
+                    count: 0
+                }
             }
         ]
     },

@@ -121,7 +121,7 @@ class Search extends BaseComponent {
         const input = e.target.value
         this.setState(
             (prevState) => {
-                if (isEmptyArray(input)) {
+                if (!input) {
                     delete prevState.value.criteria
                     return {
                         value: { ...prevState.value },
@@ -137,8 +137,7 @@ class Search extends BaseComponent {
         )
     }
 
-    handleFilterChange(e) {
-        const { name, title } = e.target
+    handleFilterChange(name, title) {
         this.setState(
             (prevState) => {
                 if (prevState.value[name] === title) {
@@ -223,31 +222,29 @@ class Search extends BaseComponent {
     addInputField(type) {
         this.setState(
             (prevState) => {
-                const {
-                    key: inputKey,
-                    value: inputVal,
-                } = prevState.currentInput[type]
+                const input = prevState.currentInput[type]
+                const savedInState = prevState.savedFilters
+                const currentInputInState = prevState.currentInput
                 const searchValue = prevState.value[type] || []
-                const elementIndex = searchValue.findIndex((el) => el[inputKey])
-                const searchValueInSaved = prevState.savedFilters[type] || []
-                const elementIndexInSaved = searchValueInSaved.findIndex((el) => el[inputKey])
+                const elementIndex = searchValue.findIndex((el) => el.key === input.key)
+                const searchValueInSaved = savedInState[type] || []
                 elementIndex !== -1
-                    ? (searchValue[elementIndex] = { [inputKey]: inputVal })
-                    : searchValue.push({ [inputKey]: inputVal })
-                const filteredSaved = searchValueInSaved.filter((el, index) => index !== elementIndexInSaved)
-                prevState.savedFilters[type] = filteredSaved
-                isEmptyArray(filteredSaved) && delete prevState.savedFilters[type]
-                prevState.currentInput[type] = { key: '', value: '' }
+                    ? (searchValue[elementIndex] = input)
+                    : searchValue.push(input)
+                const filteredSaved = searchValueInSaved.filter(el => el.key !== input.key)
+                savedInState[type] = filteredSaved
+                isEmptyArray(filteredSaved) && delete savedInState[type]
+                currentInputInState[type] = { key: '', value: '' }
                 return {
                     value: {
                         ...prevState.value,
                         [type]: searchValue,
                     },
                     savedFilters: {
-                        ...prevState.savedFilters
+                        ...savedInState
                     },
                     currentInput: {
-                        ...prevState.currentInput,
+                        ...currentInputInState,
                     },
                 }
             },
@@ -261,42 +258,41 @@ class Search extends BaseComponent {
     deleteFilter(key, val) {
         this.setState(
             (prevState) => {
-                const currentFilters = prevState.value[key] || []
-                const currentSavedFilters = prevState.savedFilters[key] || []
-                const sumOfFilters = currentFilters.concat(currentSavedFilters)
-                const [elementKey] = Object.keys(val)
+                const valueInState = prevState.value
+                const savedInState = prevState.savedFilters
+                const currentFilters = valueInState[key] || []
+                const currentSavedFilters = savedInState[key] || []
 
                 if (
-                    typeof currentFilters === 'string' ||
-                    typeof currentSavedFilters === 'string'
+                    !this.checkForInputFilter(key)
                 ) {
-                    prevState.value[key] && delete prevState.value[key]
-                    prevState.savedFilters[key] &&
-                        delete prevState.savedFilters[key]
+                    valueInState[key] && delete valueInState[key]
+                    savedInState[key] &&
+                        delete savedInState[key]
                     return {
-                        value: { ...prevState.value },
-                        savedFilters: { ...prevState.savedFilters },
+                        value: { ...valueInState },
+                        savedFilters: { ...savedInState },
                     }
                 }
 
-                prevState.value[key] = currentFilters.filter(
-                    (filter) => !filter[elementKey]
+                valueInState[key] = currentFilters.filter(
+                    (filter) => filter.key !== val.key
                 )
-                prevState.savedFilters[key] = currentSavedFilters.filter(
-                    (filter) => !filter[elementKey]
+                savedInState[key] = currentSavedFilters.filter(
+                    (filter) => filter.key !== val.key
                 )
 
-                isEmptyArray(prevState.value[key]) &&
-                    delete prevState.value[key]
-                isEmptyArray(prevState.savedFilters[key]) &&
-                    delete prevState.savedFilters[key]
+                isEmptyArray(valueInState[key]) &&
+                    delete valueInState[key]
+                isEmptyArray(savedInState[key]) &&
+                    delete savedInState[key]
 
                 return {
                     value: {
-                        ...prevState.value,
+                        ...valueInState,
                     },
                     savedFilters: {
-                        ...prevState.savedFilters,
+                        ...savedInState,
                     },
                 }
             },
@@ -309,88 +305,87 @@ class Search extends BaseComponent {
 
     handleEditFilter(type, filterVal) {
         this.setState((prevState) => {
-            const [[key, value]] = Object.entries(filterVal)
-            prevState.currentInput[type] = {
-                key,
-                value,
-                disabled: true,
-            }
+            const { key, value } = filterVal
+
             return {
                 currentInput: {
                     ...prevState.currentInput,
+                    [type]: {
+                        key,
+                        value,
+                        disabled: true,
+                    }
                 },
             }
         })
     }
 
     toggleFilter(type, filterVal) {
-        const [[key, value]] = Object.entries(filterVal)
+        const { key } = filterVal
 
         this.setState(
             (prevState) => {
+                const valueInState = prevState.value
+                const savedInState = prevState.savedFilters
                 if (!this.checkForInputFilter(type)) {
                     const deleteFromSaved = () => {
-                        prevState.value[type] = prevState.savedFilters[type]
-                        delete prevState.savedFilters[type]
+                        valueInState[type] = savedInState[type]
+                        delete savedInState[type]
                     }
 
                     const addToSaved = () => {
-                        prevState.savedFilters[type] = prevState.value[type]
-                        delete prevState.value[type]
+                        savedInState[type] = valueInState[type]
+                        delete valueInState[type]
                     }
-                    prevState.savedFilters[type]
+                    savedInState[type]
                         ? deleteFromSaved()
                         : addToSaved()
                     return {
-                        value: { ...prevState.value },
-                        savedFilters: { ...prevState.savedFilters },
+                        value: { ...valueInState },
+                        savedFilters: { ...savedInState },
                     }
                 }
-                let valueArray = prevState.value[type] || []
-                let savedArray = prevState.savedFilters[type] || []
-                let changedValueArray = valueArray.filter((el) => !el[key])
-                let changedSavedArray = savedArray.filter((el) => !el[key])
+                let valueArray = valueInState[type] || []
+                let savedArray = savedInState[type] || []
+                let changedValueArray = valueArray.filter((el) => el.key !== key)
+                let changedSavedArray = savedArray.filter((el) => el.key !== key)
 
-                if (prevState.savedFilters[type]) {
+                if (savedInState[type]) {
 
                     const compareLength =
                         changedSavedArray.length === savedArray.length
 
-                    savedArray = compareLength
-                        ? [...savedArray, { [key]: value }]
+                    savedInState[type] = compareLength
+                        ? [...savedArray, filterVal]
                         : changedSavedArray
-                    valueArray = compareLength
+                    valueInState[type] = compareLength
                         ? changedValueArray
-                        : [...valueArray, { [key]: value }]
+                        : [...valueArray, filterVal]
 
-                    prevState.value[type] = valueArray
-                    prevState.savedFilters[type] = savedArray
-
-                    if (isEmptyArray(valueArray)) {
-                        delete prevState.value[type]
+                    if (isEmptyArray(changedValueArray)) {
+                        delete valueInState[type]
                         return
-                    } else if (isEmptyArray(savedArray)) {
-
-                        delete prevState.savedFilters[type]
+                    } else if (isEmptyArray(changedSavedArray)) {
+                        delete savedInState[type]
                         return
                     }
 
                     return {
                         value: {
-                            ...prevState.value,
+                            ...valueInState,
                         },
                         savedFilters: {
-                            ...prevState.savedFilters,
+                            ...savedInState,
                         },
                     }
                 }
-                prevState.value[type] = changedValueArray
-                isEmptyArray(changedValueArray) && delete prevState.value[type]
+                valueInState[type] = changedValueArray
+                isEmptyArray(changedValueArray) && delete valueInState[type]
                 return {
-                    value: { ...prevState.value },
+                    value: { ...valueInState },
                     savedFilters: {
-                        ...prevState.savedFilters,
-                        [type]: [{ [key]: value }],
+                        ...savedInState,
+                        [type]: [filterVal],
                     },
                 }
             },
@@ -403,13 +398,14 @@ class Search extends BaseComponent {
     clearFilter(type) {
         this.setState((prevState) => {
             const { key } = prevState.currentInput[type]
+            const valueInState = prevState.value
             const changedValueArray =
-                prevState.value[type] &&
-                prevState.value[type].filter((elem) => !elem[key])
+                valueInState[type] &&
+                valueInState[type].filter((elem) => elem.key !== key)
 
             isEmptyArray(changedValueArray)
-                ? delete prevState.value[type]
-                : (prevState.value[type] = changedValueArray)
+                ? delete valueInState[type]
+                : (valueInState[type] = changedValueArray)
             return {
                 currentInput: {
                     ...prevState.currentInput,
@@ -418,7 +414,7 @@ class Search extends BaseComponent {
                         value: '',
                     },
                     value: {
-                        ...prevState.value,
+                        ...valueInState,
                     },
                 },
             }
@@ -430,7 +426,10 @@ class Search extends BaseComponent {
     }
 
     renderPrettyView(val) {
-        const [[key, value]] = Object.entries(val)
+        const { key, value, kind, count } = val
+        if (kind) {
+            return `${kind}: ${count}`
+        }
         return Array.isArray(val)
             ? val.map((criteria, index) => index === val.length - 1 ? criteria : `${criteria} | `)
             : `${key}: ${value}`
@@ -438,10 +437,10 @@ class Search extends BaseComponent {
 
     renderActiveFilters(type, val) {
         const { savedFilters } = this.state
-        const [elementKey] = typeof val === 'string' ? [''] : Object.keys(val)
+        const { key = null } = val
         const checkInSavedFilters =
-            savedFilters[type] && elementKey
-                ? savedFilters[type].find((el) => el[elementKey])
+            savedFilters[type] && key
+                ? savedFilters[type].find((el) => el.key === key)
                 : savedFilters[type]
         if (!val) return
         return (
@@ -712,9 +711,7 @@ class Search extends BaseComponent {
                                     ) : (
                                         el.values.map((item) => (
                                             <button
-                                                name={el.payload}
-                                                title={item.payload}
-                                                key={item.payload}
+                                                key={item.title}
                                                 className={
                                                     this.state.value[
                                                         el.payload
@@ -722,8 +719,8 @@ class Search extends BaseComponent {
                                                         ? 'selected-filter'
                                                         : ''
                                                 }
-                                                onClick={(e) =>
-                                                    this.handleFilterChange(e)
+                                                onClick={() =>
+                                                    this.handleFilterChange(el.payload, item.payload)
                                                 }
                                             >
                                                 {item.title}
