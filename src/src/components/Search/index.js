@@ -478,8 +478,8 @@ class Search extends BaseComponent {
     }
 
     compareForSort(a, b) {
-        let [valA] = Object.values(a)
-        let [valB] = Object.values(b)
+        let [valA] = Object.keys(a)
+        let [valB] = Object.keys(b)
         valA = valA.toUpperCase()
         valB = valB.toUpperCase()
 
