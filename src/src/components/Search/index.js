@@ -620,6 +620,7 @@ class Search extends BaseComponent {
                                                                         {...props}
                                                                     />
                                                                 )}
+                                                                onMenuVisibilityChange={() => this.fetchKeys(el.payload, currentKey)}
                                                             />
                                                         ) : (
                                                             <Autocomplete
@@ -666,6 +667,7 @@ class Search extends BaseComponent {
                                                                         {...props}
                                                                     />
                                                                 )}
+                                                                onMenuVisibilityChange={() => this.fetchValues(el.payload, currentKey, currentVal)}
                                                             />
                                                         )}
                                                     </Fragment>
