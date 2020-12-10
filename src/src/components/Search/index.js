@@ -572,7 +572,7 @@ class Search extends BaseComponent {
                                                         item.title ===
                                                             'Annotation' ? (
                                                             <Autocomplete
-                                                                getItemValue={(e) => e}
+                                                                getItemValue={(value) => value}
                                                                 items={this.state.autocomplete[
                                                                     el.payload
                                                                 ].keys}
@@ -594,9 +594,9 @@ class Search extends BaseComponent {
                                                                         item.payload,
                                                                     )
                                                                 }
-                                                                renderItem={(e) => (
+                                                                renderItem={(content) => (
                                                                     <div>
-                                                                        {e}
+                                                                        {content}
                                                                     </div>
                                                                 )}
                                                                 renderMenu={(items) => (
@@ -623,7 +623,7 @@ class Search extends BaseComponent {
                                                             />
                                                         ) : (
                                                             <Autocomplete
-                                                                getItemValue={(e) => e}
+                                                                getItemValue={(value) => value}
                                                                 items={this.state.autocomplete[
                                                                     el.payload
                                                                 ].values}
@@ -645,9 +645,9 @@ class Search extends BaseComponent {
                                                                         item.payload,
                                                                     )
                                                                 }
-                                                                renderItem={(e) => (
+                                                                renderItem={(content) => (
                                                                     <div>
-                                                                        {e}
+                                                                        {content}
                                                                     </div>
                                                                 )}
                                                                 renderMenu={(items) => (
