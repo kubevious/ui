@@ -159,14 +159,6 @@ class DiagramService extends BaseService {
                 cb(result.data))
     }
 
-    addToAutocompleteCounter(type, criteria) {
-        return this.client.post(`/search/counters/${type}`, criteria)
-    }
-
-    addToAutocompleteCounterValues(type, criteria) {
-        return this.client.post(`/search/counters/${type}/values`, criteria)
-    }
-
     _setupWebSocket()
     {
         this._setupProperties();

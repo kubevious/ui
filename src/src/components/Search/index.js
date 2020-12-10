@@ -191,13 +191,7 @@ class Search extends BaseComponent {
         )
     }
 
-    handleFilterInput(value, name, title, isSelectedValue) {
-        if (isSelectedValue) {
-            const currentKey = this.state.currentInput[name].key
-            title === 'key'
-                ? this.service.addToAutocompleteCounter(name, {value})
-                : this.service.addToAutocompleteCounterValues(name, { key: currentKey, value })
-        }
+    handleFilterInput(value, name, title) {
         this.setState((prevState) => {
             if (title === 'key') {
                 this.fetchKeys(name, value)
@@ -598,7 +592,6 @@ class Search extends BaseComponent {
                                                                         val,
                                                                         el.payload,
                                                                         item.payload,
-                                                                        true
                                                                     )
                                                                 }
                                                                 renderItem={(e) => (
@@ -650,7 +643,6 @@ class Search extends BaseComponent {
                                                                         val,
                                                                         el.payload,
                                                                         item.payload,
-                                                                        true
                                                                     )
                                                                 }
                                                                 renderItem={(e) => (
