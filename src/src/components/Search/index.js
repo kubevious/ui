@@ -315,8 +315,7 @@ class Search extends BaseComponent {
     }
 
     toggleFilter(type, filterVal) {
-        const { key } = filterVal
-
+        const { key, value } = filterVal
         this.setState(
             (prevState) => {
                 const valueInState = prevState.value
@@ -350,16 +349,15 @@ class Search extends BaseComponent {
                         changedSavedArray.length === savedArray.length
 
                     savedInState[type] = compareLength
-                        ? [...savedArray, filterVal]
+                        ? [...savedArray, {key, value}]
                         : changedSavedArray
                     valueInState[type] = compareLength
                         ? changedValueArray
-                        : [...valueArray, filterVal]
+                        : [...valueArray, {key, value}]
 
-                    if (isEmptyArray(changedValueArray)) {
-                        delete valueInState[type]
+                    if (isEmptyArray(valueInState[type])) {
                         return
-                    } else if (isEmptyArray(changedSavedArray)) {
+                    } else if (isEmptyArray(savedInState[type])) {
                         delete savedInState[type]
                         return
                     }
@@ -373,13 +371,14 @@ class Search extends BaseComponent {
                         },
                     }
                 }
+
                 valueInState[type] = changedValueArray
                 isEmptyArray(changedValueArray) && delete valueInState[type]
                 return {
                     value: { ...valueInState },
                     savedFilters: {
                         ...savedInState,
-                        [type]: [filterVal],
+                        [type]: [{key, value}],
                     },
                 }
             },
@@ -407,7 +406,7 @@ class Search extends BaseComponent {
                         key: '',
                         value: '',
                     },
-                    value: {
+                value: {
                         ...valueInState,
                     },
                 },
@@ -475,10 +474,8 @@ class Search extends BaseComponent {
     }
 
     compareForSort(a, b) {
-        let [valA] = Object.keys(a)
-        let [valB] = Object.keys(b)
-        valA = valA.toUpperCase()
-        valB = valB.toUpperCase()
+        let valA = a.key.toUpperCase()
+        let valB = b.key.toUpperCase()
 
         let comparison = 0;
         if (valA > valB) {
