@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import Autocomplete from 'react-autocomplete';
 import { isEmptyArray, isEmptyObject } from '../../utils/util'
-import DocUtils from 'kubevious-helpers/lib/docs'
+import { KIND_TO_USER_MAPPING } from '@kubevious/helpers/dist/docs'
 import { prettyKind } from '../../utils/ui-utils'
 import DnShortcutComponent from '../DnShortcutComponent'
 import BaseComponent from '../../HOC/BaseComponent'
@@ -93,7 +93,7 @@ class Search extends BaseComponent {
 
     getKindsList() {
         const kindsArray = Object.entries(
-            DocUtils.KIND_TO_USER_MAPPING
+            KIND_TO_USER_MAPPING
         ).map(([key, value]) => ({ title: value, payload: key }))
 
         return {

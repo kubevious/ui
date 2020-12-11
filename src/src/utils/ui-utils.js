@@ -1,10 +1,9 @@
 import _ from 'the-lodash'
-import $ from 'jquery'
-import DocUtils from 'kubevious-helpers/lib/docs'
+import { prettyKind as helperPrettyKind, FLAG_TOOLTIPS } from '@kubevious/helpers/dist/docs'
 import moment from 'moment'
 
 export const prettyKind = (kind) => {
-    var value = DocUtils.prettyKind(kind);
+    var value = helperPrettyKind(kind);
     if (!value) {
         value = _.upperFirst(kind);
     }
@@ -12,7 +11,7 @@ export const prettyKind = (kind) => {
 }
 
 export const flagTooltip = (name) => {
-    var value = DocUtils.FLAG_TOOLTIPS[name];
+    var value = FLAG_TOOLTIPS[name];
     if (!value) {
         value = null;
     }

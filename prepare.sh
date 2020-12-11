@@ -8,6 +8,6 @@ cd src
 rm -rf node_modules/
 
 npm install
-npm update websocket-subscription-client kubevious-helpers the-lodash
+npm update websocket-subscription-client @kubevious/helpers the-lodash
 
 npm install --only=dev
