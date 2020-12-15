@@ -1,6 +1,6 @@
 import _ from 'the-lodash'
 import $ from 'jquery'
-import DocUtils from 'kubevious-helpers/lib/docs'
+import * as DocUtils from '@kubevious/helpers/dist/docs'
 import moment from 'moment'
 
 export const prettyKind = (kind) => {
