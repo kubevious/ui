@@ -55,7 +55,7 @@ class DiagramService extends BaseService {
             return;
         }
 
-        return this._client.get('/diagram/search', criteria)
+        return this._client.post('/diagram/search', criteria)
             .then(result => {
                 cb(result.data);
             })
