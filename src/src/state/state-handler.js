@@ -1,8 +1,9 @@
 import _ from 'the-lodash'
-import { splitDn } from '../utils/naming-utils'
 import FieldsSaver from '../utils/save-fields';
 import moment from 'moment'
 import TimelineUtils from '../utils/timeline-utils'
+
+import * as DnUtils from '@kubevious/helpers/dist/dn-utils';
 
 class StateHandler {
     constructor(sharedState, diagramService) {
@@ -86,7 +87,7 @@ class StateHandler {
             ( selected_dn ) => {
                 if (selected_dn) {
                     var dict = this.sharedState.get('diagram_expanded_dns');
-                    var parts = splitDn(selected_dn);
+                    var parts = DnUtils.splitDn(selected_dn);
                     var dn = parts[0];
                     for(var i = 1; i < parts.length - 1; i++)
                     {

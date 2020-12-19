@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { parseDn } from '../../../utils/naming-utils'
 import cx from 'classnames'
 import { sortSeverity, uniqueMessages, uniqueObjects } from '../../../utils/util';
 import DnPath from '../../GenerateDnPath';
+import * as DnUtils from '@kubevious/helpers/dist/dn-utils'
 
 const AlertView = ({ alerts, clickDn, openRule }) => {
     const [group, setGroup] = useState('no')
@@ -28,7 +28,7 @@ const AlertView = ({ alerts, clickDn, openRule }) => {
     }
 
     const renderDnParts = (dn) => {
-        const dnParts = parseDn(dn).slice(1)
+        const dnParts = DnUtils.parseDn(dn).slice(1)
 
         return (
             <div className="dn-container" key={dn} onClick={() => clickDn(dn)}>
