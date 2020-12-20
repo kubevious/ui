@@ -40,7 +40,7 @@ class Feedback extends BaseComponent {
             }
             return
         })
-        this.setState({ 
+        this.setState({
             isSubmitAllowed: isQuestionsAnswered,
             missingAnswers: missingAnswers
         })
@@ -63,7 +63,7 @@ class Feedback extends BaseComponent {
                 kind: this.props.request.kind,
                 answers: answers
             }
-    
+
             this.service.submitFeedback(data, () => {
                 this.sharedState.set('popup_window', {
                     title: 'Post Feedback',
@@ -77,7 +77,7 @@ class Feedback extends BaseComponent {
         const userAnswers = this.state.userAnswers;
         let value = e.target.value;
         let hasValue = false;
-        if (_.isNotNullOrUndefined(value)) 
+        if (_.isNotNullOrUndefined(value))
         {
             if (value.length > 0)
             {
@@ -91,7 +91,7 @@ class Feedback extends BaseComponent {
             hasValue: hasValue
         }
 
-        this.setState({ 
+        this.setState({
             userAnswers: userAnswers
         })
     }
@@ -116,11 +116,11 @@ class Feedback extends BaseComponent {
             userAnswer.options[e.target.value] = true;
         }
 
-        userAnswer.value = 
+        userAnswer.value =
             _.keys(userAnswer.options);
         userAnswer.hasValue = (userAnswer.value.length > 0);
-      
-        this.setState({ 
+
+        this.setState({
             userAnswers: userAnswers
         })
     }
@@ -135,8 +135,8 @@ class Feedback extends BaseComponent {
             case 'input':
                 return (
                     <div className="user-input">
-                        <label className={cx("input-question", 
-                                            {'non-optional': !question.optional}, 
+                        <label className={cx("input-question",
+                                            {'non-optional': !question.optional},
                                             {'missing-answer': this.state.missingAnswers[question.id]})}>
                             {question.text}
                         </label>
@@ -151,8 +151,8 @@ class Feedback extends BaseComponent {
             case 'rate':
                 return (
                     <div className="user-rate">
-                        <label className={cx("rate-question", 
-                                          {'non-optional': !question.optional}, 
+                        <label className={cx("rate-question",
+                                          {'non-optional': !question.optional},
                                           {'missing-answer': this.state.missingAnswers[question.id]})}>{question.text}</label>
                         <div
                             role="group"
@@ -174,8 +174,8 @@ class Feedback extends BaseComponent {
             case 'single-select':
                 return (
                     <div className="user-single-select">
-                        <label className={cx("select-question", 
-                                          {'non-optional': !question.optional}, 
+                        <label className={cx("select-question",
+                                          {'non-optional': !question.optional},
                                           {'missing-answer': this.state.missingAnswers[question.id]})}>
                             {question.text}
                         </label>
@@ -201,8 +201,8 @@ class Feedback extends BaseComponent {
             case 'multi-select':
                 return (
                     <div className="user-select">
-                        <label className={cx("select-question", 
-                                          {'non-optional': !question.optional}, 
+                        <label className={cx("select-question",
+                                          {'non-optional': !question.optional},
                                           {'missing-answer': this.state.missingAnswers[question.id]})}>
                             {question.text}
                         </label>
@@ -243,7 +243,7 @@ class Feedback extends BaseComponent {
                             }
                         </div>
                     )}
-                    
+
                     {!isSubmitAllowed && <div className="submit-error">
                         We need your feedback on required (*) fields.
                     </div>}

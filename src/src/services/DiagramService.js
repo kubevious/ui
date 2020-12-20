@@ -50,11 +50,12 @@ class DiagramService extends BaseService {
     }
 
     fetchSearchResults(criteria, cb) {
-        if (!criteria) {
+        if (Object.keys(criteria).length === 0) {
             cb([]);
             return;
         }
-        return this._client.get('/diagram/search', { criteria: criteria })
+
+        return this._client.post('/diagram/search', criteria)
             .then(result => {
                 cb(result.data);
             })
@@ -143,6 +144,19 @@ class DiagramService extends BaseService {
             .then(result => {
                 cb(result.data);
             });
+    }
+
+    fetchAutocompleteKeys(type, criteria, cb) {
+        return this._client.post(`/search/${type}`, criteria )
+            .then(result =>
+                cb(result.data)
+            )
+    }
+
+    fetchAutocompleteValues(type, criteria, cb) {
+        return this._client.post(`/search/${type}/values`, criteria )
+            .then(result =>
+                cb(result.data))
     }
 
     _setupWebSocket()
