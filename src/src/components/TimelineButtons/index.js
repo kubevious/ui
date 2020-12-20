@@ -13,8 +13,6 @@ class TimelineButtons extends BaseComponent {
 
     this._timelineUtils = new TimelineUtils(this.sharedState)
 
-    this.dayInSec = 12 * 60 * 60
-
     this.state = {
       time_machine_enabled: false
     }
@@ -47,9 +45,11 @@ class TimelineButtons extends BaseComponent {
 
   _reset()
   {
+    const initDuration = this._timelineUtils.getActualInitDuration()
+
     this.sharedState.set('time_machine_enabled', false)
     this.sharedState.set('time_machine_date_to', null)
-    this.sharedState.set('time_machine_duration', this.dayInSec)
+    this.sharedState.set('time_machine_duration', initDuration)
     this.sharedState.set('time_machine_target_date', null)
   }
 

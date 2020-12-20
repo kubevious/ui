@@ -23,7 +23,7 @@
     overflow-y: hidden;
 
     &:hover {
-      overflow-y: auto;
+      overflow-y: overlay;
     }
 
     &.group-no .alert-detail.even {

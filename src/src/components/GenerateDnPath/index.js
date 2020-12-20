@@ -19,10 +19,10 @@ const DnPath = ({ dnParts, includeLogo, bigLogo }) => {
           src={getNodeLogoUrl(lastPart.kind)}
         />
       )}
-      {dnParts.map((part) => {
+      {dnParts.map((part, index) => {
         const kind = prettyKind(part.kind)
         return (
-          <Fragment key={part.name} >
+          <Fragment key={index} >
             <span className="kind">{kind}</span>
             <span></span>
             <span className="name">{part.name}</span>

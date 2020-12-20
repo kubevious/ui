@@ -1,6 +1,6 @@
 import _ from 'the-lodash'
-import { prettyKind as helperPrettyKind, FLAG_TOOLTIPS } from '@kubevious/helpers/dist/docs'
 import moment from 'moment'
+import { prettyKind as helperPrettyKind, FLAG_TOOLTIPS } from '@kubevious/helpers/dist/docs'
 
 export const prettyKind = (kind) => {
     var value = helperPrettyKind(kind);

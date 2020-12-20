@@ -145,10 +145,29 @@
     border: 0px;
 }
 
+.property-tooltiptext {
+    display: none;
+    width: fit-content;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    padding: 5px 10px;
+    border-radius: 6px;
+    position: absolute;
+    pointer-events: none;
+    z-index: 1000;
+    font-size: 12px;
+}
+
 .property-group-info:hover {
     background: #FCBD3F url("/img/info.svg") center center no-repeat;
     transition: all ease 0.4s;
     background-size: 14px;
+
+    & + .property-tooltiptext {
+        display: flex;
+        right: 0;
+      }
 }
 
 /****** EXPANDER END **********/
@@ -199,6 +218,10 @@ pre {
 .expander {
     padding: 10px 10px 7px;
     transition: none;
+}
+
+button.expander:focus {
+    outline: none;
 }
 
 .expander.active {

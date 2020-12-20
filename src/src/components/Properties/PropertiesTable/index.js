@@ -46,7 +46,7 @@ const PropertiesTable = ({ group, options, state, dn }) => {
 
     const renderColumnFormatter = (formatter, cell) => {
         if (formatter === 'check') return renderRowCheckbox(cell)
-        if (formatter === 'shortcut') return <DnShortcutComponent dn={cell} state={state}/>
+        if (formatter === 'shortcut') return <DnShortcutComponent dn={cell} state={state} options={options} />
     }
 
     const renderRowCheckbox = (value) => (
@@ -56,7 +56,7 @@ const PropertiesTable = ({ group, options, state, dn }) => {
     return (
         <div className="PropertiesTable-wrapper p-40 overflow-hide">
             {dn && <div className="container-header">
-                <DnComponent dn={dn} />
+                <DnComponent dn={dn} options={options} />
                 <h3>Resource Role Matrix</h3>
             </div>}
             <div className="PropertiesTable-container">
