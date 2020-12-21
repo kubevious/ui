@@ -426,7 +426,7 @@ class Search extends BaseComponent {
         }
         return Array.isArray(val)
             ? val.map((criteria, index) => index === val.length - 1 ? criteria : `${criteria} | `)
-            : `${key}: ${value}`
+            : `${key}: ${value.substring(0, 50)}`
     }
 
     renderActiveFilters(type, val) {
@@ -646,7 +646,7 @@ class Search extends BaseComponent {
                                                                 }
                                                                 renderItem={(content) => (
                                                                     <div>
-                                                                        {content}
+                                                                        {content.substring(0, 70)}
                                                                     </div>
                                                                 )}
                                                                 renderMenu={(items) => (
