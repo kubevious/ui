@@ -1,3 +1,4 @@
+import _ from 'the-lodash'
 import React, { Fragment } from 'react'
 import Autocomplete from 'react-autocomplete';
 import { isEmptyArray, isEmptyObject } from '../../utils/util'
@@ -93,9 +94,11 @@ class Search extends BaseComponent {
     }
 
     getKindsList() {
-        const kindsArray = Object.entries(
+        let kindsArray = Object.entries(
             KIND_TO_USER_MAPPING
         ).map(([key, value]) => ({ title: value, payload: key }))
+
+        kindsArray = _.orderBy(kindsArray, x => x.title);
 
         return {
             payload: 'kind',
