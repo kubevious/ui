@@ -53,6 +53,7 @@ class Search extends BaseComponent {
             this.setState({
                 result: response.results,
                 totalCount: response.totalCount,
+                wasFiltered: response.wasFiltered
             })
         })
     }
@@ -510,6 +511,7 @@ class Search extends BaseComponent {
             value,
             savedFilters,
             currentInput,
+            wasFiltered
         } = this.state
 
         return (
@@ -762,7 +764,10 @@ class Search extends BaseComponent {
                     <div className="search-results">
                         {isEmptyArray(result) ? (
                             <div className="result-placeholder">
-                                No items to show
+                                { wasFiltered
+                                    ? 'No items matching search criteria'
+                                    : 'No search criteria defined'
+                                }
                             </div>
                         ) : (
                             <>
