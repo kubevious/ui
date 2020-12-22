@@ -161,8 +161,17 @@ class DiagramService extends BaseService {
 
     _setupWebSocket()
     {
+        this._setupSummary();
         this._setupProperties();
         this._setupAlerts();
+    }
+
+    _setupSummary()
+    {
+        this._subscribeSocketToSharedState(
+            'summary',
+            { kind: 'props', dn: 'summary' },
+            { });       
     }
 
     _setupProperties()
