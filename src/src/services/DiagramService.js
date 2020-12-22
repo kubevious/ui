@@ -168,10 +168,21 @@ class DiagramService extends BaseService {
 
     _setupSummary()
     {
-        this._subscribeSocketToSharedState(
-            'summary',
-            { kind: 'props', dn: 'summary' },
-            { });       
+        var socketScope = this._socketScope((value, target) => {
+            this.sharedState.set('summary', value);
+        });
+
+        this.sharedState.subscribe('time_machine_enabled',
+            ( time_machine_enabled ) => {
+
+                var wsSubscriptions = []
+
+                if (!time_machine_enabled) {
+                    wsSubscriptions.push({ kind: 'props', dn: 'summary' });
+                }
+
+                socketScope.replace(wsSubscriptions);
+            });
     }
 
     _setupProperties()
