@@ -39,6 +39,7 @@ class StateHandler {
 
         this.sharedState.set('time_machine_timeline_preview', []);
 
+        this._handleSummary()
         this._handleDefaultParams()
         this._handleSelectedDnAutoExpandChange()
         this._handleTimeMachineChange()
@@ -46,6 +47,23 @@ class StateHandler {
         this._handleSelectedAlertsChange()
         this._handleTimelineDataChange()
         this._handleMarkerListChange()
+    }
+
+    _handleSummary() {
+
+        this.sharedState.subscribe([ 'time_machine_enabled', 'time_machine_date'],
+            ({ time_machine_enabled, time_machine_date }) => {
+
+                const dn = 'summary';
+
+                if (time_machine_enabled && time_machine_date) {
+                    this._service.fetchHistoryProps(dn, time_machine_date, (config) => {
+                        this.sharedState.set('summary', config);
+                    })
+                }
+               
+            });
+
     }
 
     _handleDefaultParams() {

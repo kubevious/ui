@@ -1,3 +1,4 @@
+import _ from 'the-lodash'
 import React, { Fragment } from 'react'
 import Autocomplete from 'react-autocomplete';
 import { isEmptyArray, isEmptyObject } from '../../utils/util'
@@ -53,6 +54,7 @@ class Search extends BaseComponent {
             this.setState({
                 result: response.results,
                 totalCount: response.totalCount,
+                wasFiltered: response.wasFiltered
             })
         })
     }
@@ -92,9 +94,11 @@ class Search extends BaseComponent {
     }
 
     getKindsList() {
-        const kindsArray = Object.entries(
+        let kindsArray = Object.entries(
             KIND_TO_USER_MAPPING
         ).map(([key, value]) => ({ title: value, payload: key }))
+
+        kindsArray = _.orderBy(kindsArray, x => x.title);
 
         return {
             payload: 'kind',
@@ -425,7 +429,7 @@ class Search extends BaseComponent {
         }
         return Array.isArray(val)
             ? val.map((criteria, index) => index === val.length - 1 ? criteria : `${criteria} | `)
-            : `${key}: ${value}`
+            : `${key}: ${value.substring(0, 50)}`
     }
 
     renderActiveFilters(type, val) {
@@ -510,6 +514,7 @@ class Search extends BaseComponent {
             value,
             savedFilters,
             currentInput,
+            wasFiltered
         } = this.state
 
         return (
@@ -644,7 +649,7 @@ class Search extends BaseComponent {
                                                                 }
                                                                 renderItem={(content) => (
                                                                     <div>
-                                                                        {content}
+                                                                        {content.substring(0, 70)}
                                                                     </div>
                                                                 )}
                                                                 renderMenu={(items) => (
@@ -762,7 +767,10 @@ class Search extends BaseComponent {
                     <div className="search-results">
                         {isEmptyArray(result) ? (
                             <div className="result-placeholder">
-                                No items to show
+                                { wasFiltered
+                                    ? 'No items matching search criteria'
+                                    : 'No search criteria defined'
+                                }
                             </div>
                         ) : (
                             <>

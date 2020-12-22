@@ -161,8 +161,28 @@ class DiagramService extends BaseService {
 
     _setupWebSocket()
     {
+        this._setupSummary();
         this._setupProperties();
         this._setupAlerts();
+    }
+
+    _setupSummary()
+    {
+        var socketScope = this._socketScope((value, target) => {
+            this.sharedState.set('summary', value);
+        });
+
+        this.sharedState.subscribe('time_machine_enabled',
+            ( time_machine_enabled ) => {
+
+                var wsSubscriptions = []
+
+                if (!time_machine_enabled) {
+                    wsSubscriptions.push({ kind: 'props', dn: 'summary' });
+                }
+
+                socketScope.replace(wsSubscriptions);
+            });
     }
 
     _setupProperties()
