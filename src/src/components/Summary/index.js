@@ -38,7 +38,7 @@ class Summary extends BaseComponent {
                 </>
             )
         }
-        return <div className='loading-placeholder'>Loading...</div>
+        return <div className="loading-placeholder">Loading...</div>
     }
 }
 

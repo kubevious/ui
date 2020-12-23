@@ -9,12 +9,7 @@ import PropertiesObjectList from '../PropertiesObjectList'
 import PropertiesAlertList from '../PropertiesAlertList'
 
 const PropertiesContents = ({ group, ...rest }) => {
-    console.log('contents>>>', rest, ' GROUP >>>>>>>>', group)
     if (group.kind === 'key-value') {
-        // if (group.id === 'env') {
-        //     rest.options.keyLabel = 'Variable'
-        // }
-
         return (
             <PropertyGroup
                 Component={<EnvironmentVariables group={group} />}
