@@ -4,15 +4,23 @@ import MarkerEditor from '../Editors/MarkerEditor';
 import Properties from '../Properties';
 import Alerts from '../Alerts';
 import Timeline from '../Timeline';
+import Summary from '../Summary';
 
 class RegisterComponents {
     constructor(parent) {
         this._parent = parent
-        
+
         this.setupComponents()
     }
 
     setupComponents() {
+        this._parent._register({
+            name: 'Summary',
+            component: Summary,
+            location: 'main',
+            title: 'Summary',
+            allowVerticalScroll: true
+        })
         this._parent._register({
             name: 'Universe',
             component: Diagram,

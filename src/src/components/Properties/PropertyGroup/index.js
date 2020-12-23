@@ -1,29 +1,14 @@
 import React from 'react'
-import EnvironmentVariables from '../EnvironmentVariables'
-import DnList from '../DnList'
-import Config from '../Config'
-import PropertiesTable from '../PropertiesTable'
 
-const PropertyGroup = ({ title, extraClassTitle, extraClassContents, tooltip, dn, groupName, group,
-                           propertyExpanderHandleClick, onPropertyGroupPopup }) => {
-    const renderGroup = (options = {}) => {
-        options.relativeTo = dn;
+const PropertyGroup = ({ group, Component, props }) => {
+    const { extraClassTitle, extraClassContents, tooltip, groupName,
+        propertyExpanderHandleClick, onPropertyGroupPopup } = props
+    const title = props.title ? props.title : group.title
 
-        if (group.kind === 'key-value') {
-            if (group.id === 'env') {
-                options.keyLabel = 'Variable'
-            }
+    const renderGroup = () => {
 
-            return <EnvironmentVariables group={group} options={options}/>
-        } else if (group.kind === 'dn-list') {
-            return <DnList group={group} options={options} />
-        } else if (group.kind === 'yaml') {
-            return <Config group={group}/>
-        } else if (group.kind === 'table') {
-            return <PropertiesTable group={group} options={options}/>
-        }
+        return Component
     }
-
     return (
         <div className="property-group">
             <button id="expander" className={`expander ${extraClassTitle}`} tag={`${groupName}`}
@@ -31,7 +16,7 @@ const PropertyGroup = ({ title, extraClassTitle, extraClassContents, tooltip, dn
                 {title}
                 <span className="property-group-openclose"/>
                 <span className="property-group-popup" tag={`${groupName}`}
-                      onClick={(e) => onPropertyGroupPopup(e, group)}/>
+                    onClick={(e) => onPropertyGroupPopup(e, group, Component)}/>
 
                 {tooltip && <>
                     <span className="property-group-info" data-toggle="property-tooltiptext" data-placement="top" />
