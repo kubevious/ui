@@ -125,14 +125,15 @@ class Search extends BaseComponent {
         const input = e.target.value
         this.setState(
             (prevState) => {
+                const valueInState = prevState.value || {}
                 if (!input) {
-                    delete prevState.value.criteria
+                    delete valueInState.criteria
                     return {
-                        value: { ...prevState.value },
+                        value: { ...valueInState },
                     }
                 }
                 return {
-                    value: { ...prevState.value, criteria: input },
+                    value: { ...valueInState, criteria: input },
                 }
             },
             () => {
@@ -144,17 +145,19 @@ class Search extends BaseComponent {
     handleFilterChange(name, title) {
         this.setState(
             (prevState) => {
+                const valueInState = prevState.value || {}
+                const savedFilters = prevState.savedFilters || {}
                 if (prevState.value[name] === title) {
-                    delete prevState.value[name]
+                    delete valueInState[name]
                     return {
-                        value: { ...prevState.value },
+                        value: { ...valueInState },
                     }
                 }
                 prevState.savedFilters[name] &&
-                    delete prevState.savedFilters[name]
+                    delete savedFilters[name]
                 return {
-                    value: { ...prevState.value, [name]: title },
-                    savedFilters: { ...prevState.savedFilters },
+                    value: { ...valueInState, [name]: title },
+                    savedFilters: { ...savedFilters },
                 }
             },
             () => {
@@ -167,7 +170,9 @@ class Search extends BaseComponent {
         const { title } = e.target
         this.setState(
             (prevState) => {
-                const markersList = prevState.value.markers || []
+                const valueInState = prevState.value || {}
+                const savedFilters = prevState.savedFilters || {}
+                const markersList = valueInState.markers || []
                 if (
                     prevState.value.markers &&
                     markersList.find((marker) => marker === title)
@@ -176,22 +181,22 @@ class Search extends BaseComponent {
                         (marker) => marker !== title
                     )
                     if (isEmptyArray(changedMarkers)) {
-                        delete prevState.value.markers
-                        return { value: { ...prevState.value } }
+                        delete valueInState.markers
+                        return { value: { ...valueInState } }
                     }
                     return {
-                        value: { ...prevState.value, markers: changedMarkers },
+                        value: { ...valueInState, markers: changedMarkers },
                     }
                 } else if (
                     prevState.savedFilters.markers
                 ) {
-                    delete prevState.savedFilters.markers
+                    delete savedFilters.markers
                 }
 
                 markersList.push(title)
                 return {
-                    value: { ...prevState.value, markers: markersList },
-                    savedFilters: { ...prevState.savedFilters }
+                    value: { ...valueInState, markers: markersList },
+                    savedFilters: { ...savedFilters }
                 }
             },
             () => {
