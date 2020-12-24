@@ -182,11 +182,16 @@ class Search extends BaseComponent {
                     return {
                         value: { ...prevState.value, markers: changedMarkers },
                     }
+                } else if (
+                    prevState.savedFilters.markers
+                ) {
+                    delete prevState.savedFilters.markers
                 }
 
                 markersList.push(title)
                 return {
                     value: { ...prevState.value, markers: markersList },
+                    savedFilters: { ...prevState.savedFilters }
                 }
             },
             () => {
