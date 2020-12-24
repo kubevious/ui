@@ -9,7 +9,6 @@ class Summary extends BaseComponent {
     constructor(props) {
         super(props)
 
-        this.registerService({ kind: 'diagram' })
         this.state = {
             data: {},
         }
@@ -22,11 +21,10 @@ class Summary extends BaseComponent {
     }
 
     render() {
-        console.log('Summary==', this.state.data)
         const { data } = this.state
         if (!isEmptyObject(data)) {
             return (
-                <>
+                <div className="summary">
                     {Object.values(data).map((block) => (
                         <div className="summary-container" key={block.id}>
                             <label>{block.title}</label>
@@ -35,7 +33,7 @@ class Summary extends BaseComponent {
                             </div>
                         </div>
                     ))}
-                </>
+                </div>
             )
         }
         return <div className="loading-placeholder">Loading...</div>

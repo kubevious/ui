@@ -47,7 +47,7 @@ class PropertiesAlertList extends BaseComponent {
                 alerts={parsedAlerts}
                 clickDn={this.clickDn}
                 openRule={this.openRule}
-                groupPreset={'message'}
+                groupPreset="message"
             />
         )
     }

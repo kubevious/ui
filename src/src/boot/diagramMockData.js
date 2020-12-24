@@ -20615,3 +20615,185 @@ export const HISTORY_PROPERTIES = [
         'tooltip': 'Kubernetes YAML Configuration'
     }
 ];
+
+export const SUMMARY_DATA = {
+    "app-counters": {
+      "kind": "counters",
+      "id": "app-counters",
+      "title": "Configuration Summary",
+      "order": 10,
+      "config": [
+        {
+          "title": "Namespaces",
+          "value": 30
+        },
+        {
+          "title": "Applications",
+          "value": 54
+        },
+        {
+          "title": "Pods",
+          "value": 3
+        }
+      ]
+    },
+    "infra-counters": {
+      "kind": "counters",
+      "id": "infra-counters",
+      "title": "Infrastructure Summary",
+      "order": 11,
+      "config": [
+        {
+          "title": "Nodes",
+          "value": 3
+        },
+        {
+          "title": "Volumes",
+          "value": 52
+        },
+        {
+          "title": "Cluster CPU",
+          "value": 3.86,
+          "unit": "cores"
+        },
+        {
+          "title": "Cluster RAM",
+          "value": 11831631872,
+          "unit": "bytes"
+        }
+      ]
+    },
+    "top-issue-namespaces": {
+      "kind": "object-list",
+      "id": "top-issue-namespaces",
+      "title": "Top Namespaces with Issues",
+      "order": 12,
+      "config": [
+        {
+          "dn": "root/ns-[kube-system]",
+          "alertCount": {
+            "error": 11,
+            "warn": 19
+          }
+        },
+        {
+          "dn": "root/ns-[addr]",
+          "alertCount": {
+            "error": 16,
+            "warn": 1
+          }
+        },
+        {
+          "dn": "root/ns-[test-webapp-backend]",
+          "alertCount": {
+            "error": 6,
+            "warn": 3
+          }
+        }
+      ]
+    },
+    "top-issues": {
+      "kind": "alert-target-list",
+      "id": "top-issues",
+      "title": "Top Issues",
+      "order": 13,
+      "config": [
+        {
+          "alert": {
+            "id": "rule-container-memory-usage",
+            "severity": "warn",
+            "msg": "Rule container-memory-usage failed. Memory request is not set. This is not a good practice. Please correct ASAP.",
+            "source": {
+              "kind": "rule",
+              "id": "container-memory-usage"
+            }
+          },
+          "targets": [
+            "root/ns-[kube-system]/app-[fluentd-gcp-v3.2.0]/cont-[prometheus-to-sd-exporter]",
+            "root/ns-[kube-system]/app-[prometheus-to-sd]/cont-[prometheus-to-sd]",
+            "root/ns-[kube-system]/app-[event-exporter-v0.2.4]/cont-[event-exporter]",
+            "root/ns-[kube-system]/app-[event-exporter-v0.2.4]/cont-[prometheus-to-sd-exporter]",
+            "root/ns-[kube-system]/app-[fluentd-gcp-scaler]/cont-[fluentd-gcp-scaler]",
+            "root/ns-[kube-system]/app-[heapster]/cont-[heapster]",
+            "root/ns-[kube-system]/app-[heapster]/cont-[prom-to-sd]",
+            "root/ns-[kube-system]/app-[kube-dns]/cont-[prometheus-to-sd]",
+            "root/ns-[addr]/app-[gprod-addr-main-app]/cont-[cloudsql-proxy-gprod-addr-uswest1c-main-book]",
+            "root/ns-[test-ingress-isolated-ns-01]/app-[nginx]/cont-[nginx]",
+            "root/ns-[test-ingress-isolated-ns-02]/app-[nginx]/cont-[nginx]",
+            "root/ns-[test-ingress-isolated-pod]/app-[isolated-nginx]/cont-[nginx]",
+            "root/ns-[test-ingress-isolated-pod]/app-[open-nginx]/cont-[nginx]",
+            "root/ns-[test-egress-isolated-ns]/app-[nginx]/cont-[nginx]",
+            "root/ns-[test-egress-isolated-pod]/app-[isolated-nginx]/cont-[nginx]",
+            "root/ns-[test-egress-isolated-pod]/app-[open-nginx]/cont-[nginx]",
+            "root/ns-[test-webapp-backend]/app-[db]/cont-[nginx]",
+            "root/ns-[test-webapp-backend]/app-[backend]/cont-[nginx]",
+            "root/ns-[test-webapp-backend]/app-[logger]/cont-[nginx]",
+            "root/ns-[test-webapp-frontend]/app-[frontend]/cont-[nginx]"
+          ]
+        },
+        {
+          "alert": {
+            "id": "Unused",
+            "severity": "warn",
+            "msg": "ConfigMap not used.",
+            "source": {
+              "kind": "parser"
+            }
+          },
+          "targets": [
+            "root/ns-[berlioz]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[sql-schema]",
+            "root/ns-[istio-system]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[istio-crd-10]",
+            "root/ns-[istio-system]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[istio-crd-11]",
+            "root/ns-[istio-system]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[istio-crd-12]",
+            "root/ns-[istio-system]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[istio-galley-configuration]",
+            "root/ns-[istio-system]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[istio-security-custom-resources]",
+            "root/ns-[istio-system]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[istio-security]",
+            "root/ns-[istio-system]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[istio-sidecar-injector]",
+            "root/ns-[istio-system]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[istio]",
+            "root/ns-[istio-system]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[prometheus]",
+            "root/ns-[kube-system]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[berlioz.v1]",
+            "root/ns-[kube-system]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[cluster-autoscaler-status]",
+            "root/ns-[kube-system]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[extension-apiserver-authentication]",
+            "root/ns-[kube-system]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[fluentd-gcp-config-v1.2.5]",
+            "root/ns-[kube-system]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[gke-common-webhook-lock]",
+            "root/ns-[kube-system]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[ingress-gce-lock]",
+            "root/ns-[kube-system]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[ingress-uid]",
+            "root/ns-[kube-system]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[istio-init.v1]",
+            "root/ns-[kube-system]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[istio.v1]",
+            "root/ns-[kube-system]/raw-[Raw Configs]/raw-[ConfigMaps]/configmap-[kube-dns-autoscaler]"
+          ]
+        },
+        {
+          "alert": {
+            "id": "Missing",
+            "severity": "error",
+            "msg": "Service account default is not found.",
+            "source": {
+              "kind": "parser"
+            }
+          },
+          "targets": [
+            "root/ns-[berlioz]/app-[gprod-berlioz-main-agent]",
+            "root/ns-[kube-system]/app-[nvidia-gpu-device-plugin]",
+            "root/ns-[addr]/app-[gprod-addr-main-app]",
+            "root/ns-[addr]/app-[gprod-addr-main-web]",
+            "root/ns-[sprt]/app-[gprod-sprt-main-dtrace]",
+            "root/ns-[sprt]/app-[gprod-sprt-main-grfna]",
+            "root/ns-[sprt]/app-[gprod-sprt-main-prmts]",
+            "root/ns-[kube-system]/app-[l7-default-backend]",
+            "root/ns-[test-ingress-isolated-ns-01]/app-[nginx]",
+            "root/ns-[test-ingress-isolated-ns-02]/app-[nginx]",
+            "root/ns-[test-ingress-isolated-pod]/app-[isolated-nginx]",
+            "root/ns-[test-ingress-isolated-pod]/app-[open-nginx]",
+            "root/ns-[test-egress-isolated-ns]/app-[nginx]",
+            "root/ns-[test-egress-isolated-pod]/app-[isolated-nginx]",
+            "root/ns-[test-egress-isolated-pod]/app-[open-nginx]",
+            "root/ns-[test-webapp-backend]/app-[db]",
+            "root/ns-[test-webapp-backend]/app-[backend]",
+            "root/ns-[test-webapp-backend]/app-[logger]",
+            "root/ns-[test-webapp-frontend]/app-[frontend]"
+          ]
+        }
+      ]
+    }
+}

@@ -5,9 +5,10 @@ import {
     GRAPH_DATA, HISTORY_GRAPH_DATA, HISTORY_ALERTS, HISTORY_PROPERTIES,
     HISTORY_RANGE,
     PROPERTIES_DATA,
-    DN_LIST
+    DN_LIST,
+    SUMMARY_DATA
 } from '../boot/diagramMockData'
-import { generateTimelineData } from '../boot/timelineBoot' 
+import { generateTimelineData } from '../boot/timelineBoot'
 
 class MockDiagramService {
     constructor(sharedState) {
@@ -19,7 +20,7 @@ class MockDiagramService {
 
         this.sharedState.subscribe(['selected_dn', 'time_machine_enabled'],
             ({ selected_dn, time_machine_enabled }) => {
-                
+
                 if (selected_dn) {
                     if (!time_machine_enabled) {
                         this.fetchProperties(selected_dn, (data) => {
@@ -96,7 +97,7 @@ class MockDiagramService {
 
     _randomInt(x)
     {
-        return Math.floor(Math.random() * x); 
+        return Math.floor(Math.random() * x);
     }
 
     fetchHistoryRange(cb) {
@@ -205,7 +206,9 @@ class MockDiagramService {
         if (!date) {
             throw new Error("MISSING DATE");
         }
-        cb(_.cloneDeep(HISTORY_PROPERTIES))
+        dn === 'summary'
+            ? cb(_.cloneDeep(SUMMARY_DATA))
+            : cb(_.cloneDeep(HISTORY_PROPERTIES))
     }
 
     fetchHistoryAlerts(dn, date, cb) {

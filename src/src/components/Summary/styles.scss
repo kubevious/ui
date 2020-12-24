@@ -1,13 +1,43 @@
-.summary-container {
-    margin: 20px 20px 0 50px;
-    font-family: 'Montserrat', sans-serif;
+.summary {
+    height: 100%;
+    overflow: hidden;
 
-    .summary-container-inner {
-        margin-left: 50px;
+    &:hover {
+        overflow-y: overlay;
     }
 
-    .AlertView-container .alerts {
-        width: 100%;
+    .summary-container {
+        margin: 20px 20px 0 50px;
+        font-family: 'Montserrat', sans-serif;
+
+        > label {
+            color: #AAAAAA;
+            font-size: 14px;
+        }
+
+        .summary-container-inner {
+            margin-left: 50px;
+        }
+
+        .AlertView-container .alerts {
+            width: 100%;
+        }
+
+        .dn-shortcut .dn-alert .indicator {
+            width: auto;
+            border-radius: 10px;
+            padding: 0 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+
+            &:empty {
+
+                &::before {
+                    content: '0';
+                }
+            }
+        }
     }
 }
 

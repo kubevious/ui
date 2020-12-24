@@ -19,7 +19,7 @@ class RegisterComponents {
             component: Summary,
             location: 'main',
             title: 'Summary',
-            allowVerticalScroll: true
+            allowVerticalScroll: false
         })
         this._parent._register({
             name: 'Universe',
