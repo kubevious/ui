@@ -61,7 +61,7 @@ class StateHandler {
                         this.sharedState.set('summary', config);
                     })
                 }
-               
+
             });
 
     }
@@ -256,8 +256,8 @@ class StateHandler {
             this.sharedState.set('time_machine_timeline_preview_raw', data);
         })
 
-        this.sharedState.subscribe('time_machine_timeline_preview_raw', 
-            time_machine_timeline_preview_raw => 
+        this.sharedState.subscribe('time_machine_timeline_preview_raw',
+            time_machine_timeline_preview_raw =>
             {
                 const massagedData = this._massageTimelineData(time_machine_timeline_preview_raw);
                 const lastDate = _.last(massagedData).dateMoment;
@@ -274,7 +274,7 @@ class StateHandler {
             ],
             () => {
                 let actual = this._timelineUtils.getActualRange();
-               
+
                 this.sharedState.set('time_machine_actual_date_to', actual.to);
                 this.sharedState.set('time_machine_actual_date_from', actual.from);
             }

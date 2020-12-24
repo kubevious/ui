@@ -2,10 +2,6 @@ import React from 'react'
 import BaseComponent from '../../HOC/BaseComponent'
 import _ from 'the-lodash'
 import PropertyGroup from './PropertyGroup'
-import EnvironmentVariables from './EnvironmentVariables'
-import DnList from './DnList'
-import Config from './Config'
-import PropertiesTable from './PropertiesTable'
 import DnPath from '../GenerateDnPath'
 import cx from 'classnames'
 import { propertyGroupTooltip } from '@kubevious/helpers/dist/docs'
@@ -36,27 +32,12 @@ class Properties extends BaseComponent {
         contentsElem.classList.toggle('expander-open')
     }
 
-    onPropertyGroupPopup(event, group) {
-        const contentHtml = this._detectGroupContent(group)
+    onPropertyGroupPopup(event, group, Component) {
 
         this.sharedState.set('popup_window', {
             title: 'Properties: ' + group,
-            content: contentHtml
+            content: <Component.type {...Component.props} dn={this.state.selectedDn} />
         });
-    }
-
-    _detectGroupContent(group) {
-        if (group.kind === 'key-value') {
-            return <EnvironmentVariables group={group} dn={this.state.selectedDn}/>
-        } else if (group.kind === 'dn-list') {
-            return <DnList group={group} dn={this.state.selectedDn}/>
-        } else if (group.kind === 'yaml') {
-            return <Config group={group} dn={this.state.selectedDn}/>
-        } else if (group.kind === 'table') {
-            return <PropertiesTable group={group} dn={this.state.selectedDn}/>
-        }
-
-        return ''
     }
 
     _renderPropertiesNodeDn() {
@@ -78,12 +59,12 @@ class Properties extends BaseComponent {
             return 100
         })
 
-        
+
         return (
             <>
                 {propertyGroups.map((item, index) => {
                     const isExpanded = index === 0
-                  
+
                     let tooltip = null;
                     let tooltipInfo = propertyGroupTooltip(item.id);
                     if (tooltipInfo) {
@@ -98,7 +79,7 @@ class Properties extends BaseComponent {
                             tooltip = tooltipInfo;
                         }
                     }
-                        
+
                     return (
                         <PropertyGroup
                             key={index}
@@ -145,8 +126,8 @@ class Properties extends BaseComponent {
                     dnKind = _.last(dnParts).kind;
                 }
 
-                this.setState({ 
-                    selectedDn: selected_dn, 
+                this.setState({
+                    selectedDn: selected_dn,
                     dnParts: dnParts,
                     dnKind: dnKind,
                     selectedObjectProps: selected_object_props

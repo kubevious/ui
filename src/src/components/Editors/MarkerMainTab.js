@@ -57,10 +57,10 @@ const MarkerMainTab = ({ selectedItem, isSuccess, deleteItem, openSummary, creat
                     </div>
                     <div className="marker-area">
                         <div className="area-wrapper">
-                            {SHAPES.map(item => (
+                            {SHAPES.map((item, index) => (
                                     <div
                                         className={cx('marker-wrapper', { 'selected': item === shape })}
-                                        key={item}
+                                        key={`${item}-${index}`}
                                         onClick={() => handleChangeShape(item)}
                                     >
                                         <div key={item}

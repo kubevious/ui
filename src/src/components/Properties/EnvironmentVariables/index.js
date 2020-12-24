@@ -1,7 +1,10 @@
+import _ from 'the-lodash'
 import React from 'react'
 
 import './styles.scss'
 import DnComponent from '../../DnComponent'
+
+import PropertiesValue from '../helpers';
 
 const EnvironmentVariables = ({ group, options, dn }) => {
     return (
@@ -16,12 +19,16 @@ const EnvironmentVariables = ({ group, options, dn }) => {
                         <div className="name">
                             {item[0]}:
                         </div>
-                        <div className="value" dangerouslySetInnerHTML={{ __html: item[1] }}/>
+                        <div className="value">
+                            { PropertiesValue(item[1]) }
+                        </div>
                     </div>
                 ))}
             </div>
         </div>
     )
 }
+
+// dangerouslySetInnerHTML={{ __html: item[1] }}
 
 export default EnvironmentVariables
