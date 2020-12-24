@@ -19,10 +19,10 @@ class PropertiesAlertList extends BaseComponent {
     }
 
     configureAlerts() {
-        const { options } = this.props
+        const { config } = this.props
         let alerts = []
 
-        options.map((elem) => {
+        config.map((elem) => {
             alerts = [
                 ...alerts,
                 ...elem.targets.map((dn) => ({

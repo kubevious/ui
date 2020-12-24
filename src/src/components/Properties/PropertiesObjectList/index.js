@@ -1,11 +1,11 @@
 import React from 'react'
 import DnShortcutComponent from '../../DnShortcutComponent'
 
-const PropertiesObjectList = ({ options }) => {
+const PropertiesObjectList = ({ config }) => {
     return (
         <>
-            {options.map((element) => (
-                <div>
+            {config.map((element) => (
+                <div key={element.dn}>
                     <DnShortcutComponent
                         dn={element.dn}
                         errors={element.alertCount.error}

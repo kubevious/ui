@@ -3,11 +3,11 @@ import './styles.scss'
 
 import PropertiesValue from '../helpers'
 
-const PropertiesCounters = ({ options }) => {
+const PropertiesCounters = ({ config }) => {
     return (
         <div className="counters-container">
-            {options.map(element => (
-                <div className="counter-block">
+            {config.map(element => (
+                <div className="counter-block" key={element.title}>
                     <label>{element.title}</label>
                     <div className="counter-value">
                         {PropertiesValue(element)}

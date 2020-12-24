@@ -1,7 +1,7 @@
 import React from 'react'
 import BaseComponent from '../../HOC/BaseComponent'
 import _ from 'the-lodash'
-import PropertiesContents from './PropertiesContents'
+import PropertyGroup from './PropertyGroup'
 import DnPath from '../GenerateDnPath'
 import cx from 'classnames'
 import { propertyGroupTooltip } from '@kubevious/helpers/dist/docs'
@@ -79,9 +79,9 @@ class Properties extends BaseComponent {
                             tooltip = tooltipInfo;
                         }
                     }
-                        
+
                     return (
-                        <PropertiesContents
+                        <PropertyGroup
                             key={index}
                             title={item.title}
                             extraClassTitle={(isExpanded ? 'active' : '')}

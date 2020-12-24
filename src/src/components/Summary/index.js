@@ -1,6 +1,5 @@
 import React from 'react'
 import BaseComponent from '../../HOC/BaseComponent'
-import PropertyGroup from '../Properties/PropertyGroup'
 import PropertiesContents from '../Properties/PropertiesContents'
 import './styles.scss'
 import { isEmptyObject } from '../../utils/util'
