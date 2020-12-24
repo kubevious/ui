@@ -20653,7 +20653,7 @@ export const SUMMARY_DATA = {
         },
         {
           "title": "Cluster CPU",
-          "value": 3.86,
+          "value": 3123.86,
           "unit": "cores"
         },
         {
