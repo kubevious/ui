@@ -6,6 +6,8 @@ import DnShortcutComponent from '../../DnShortcutComponent'
 import './styles.scss'
 import DnComponent from '../../DnComponent'
 
+import PropertiesValue from '../helpers';
+
 const PropertiesTable = ({ group, options, state, dn }) => {
     const tableData = group.config
 
@@ -39,7 +41,7 @@ const PropertiesTable = ({ group, options, state, dn }) => {
 
         return (
             <td key={column.name}>
-                {column.formatter ? renderColumnFormatter(column.formatter, cell) : cell}
+                {column.formatter ? renderColumnFormatter(column.formatter, cell) : PropertiesValue(cell)}
             </td>
         )
     }
