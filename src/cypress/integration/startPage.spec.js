@@ -2,7 +2,8 @@ describe('Open application', () => {
     it('Open diagram', () => {
         cy.visit('/')
 
-        cy.get('#diagram').should('be.visible')
+        cy.get('#summary').should('be.visible')
+        cy.get('#diagram').should('not.be.visible')
         cy.get('#ruleEditorComponent').should('not.be.visible')
         cy.get('#markerEditorComponent').should('not.be.visible')
 

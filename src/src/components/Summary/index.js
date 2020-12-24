@@ -23,7 +23,7 @@ class Summary extends BaseComponent {
         const { data } = this.state
         if (!isEmptyObject(data)) {
             return (
-                <div className="summary">
+                <div id="summary" className="summary">
                     {Object.values(data).map((block) => (
                         <div className="summary-container" key={block.id}>
                             <label>{block.title}</label>
