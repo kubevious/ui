@@ -17,6 +17,7 @@ class MockDiagramService {
         this.sharedState = sharedState;
 
         this.sharedState.set('time_machine_timeline_data', [])
+        this.sharedState.set('summary', SUMMARY_DATA);
 
         this.sharedState.subscribe(['selected_dn', 'time_machine_enabled'],
             ({ selected_dn, time_machine_enabled }) => {
@@ -206,9 +207,7 @@ class MockDiagramService {
         if (!date) {
             throw new Error("MISSING DATE");
         }
-        dn === 'summary'
-            ? cb(_.cloneDeep(SUMMARY_DATA))
-            : cb(_.cloneDeep(HISTORY_PROPERTIES))
+        cb(_.cloneDeep(HISTORY_PROPERTIES))
     }
 
     fetchHistoryAlerts(dn, date, cb) {

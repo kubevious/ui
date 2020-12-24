@@ -56,7 +56,7 @@ class StateHandler {
 
                 const dn = 'summary';
 
-                if (time_machine_date) {
+                if (time_machine_enabled && time_machine_date) {
                     this._service.fetchHistoryProps(dn, time_machine_date, (config) => {
                         this.sharedState.set('summary', config);
                     })
