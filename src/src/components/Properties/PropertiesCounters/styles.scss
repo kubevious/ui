@@ -20,9 +20,19 @@
             align-items: baseline;
             font-family: 'Montserrat';
 
-            p {
-                padding-left: 5px;
+            span {
+                font-weight: 600;
+                font-size: 32px;
+                
+                span {
+                    color: #AAAAAA;
+                    font-weight: 400;
+                    font-size: 16px;
+                    padding-left: 5px;
+                }
             }
+
+            
         }
 
         label {

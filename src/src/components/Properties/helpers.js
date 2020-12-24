@@ -10,9 +10,10 @@ const PropertiesValue = (value) => {
 
     if (_.isObject(value) && _.isNotNullOrUndefined(value.value)) {
         return <>
-            <span>{formatValue(value.value, value.unit)}</span>
+            <span>{formatValue(value.value, value.unit)}
             {value.unit &&
-                <span> {value.unit}</span>}
+                <span>{value.unit}</span>}
+            </span>
         </>
     } else {
         return (

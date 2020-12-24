@@ -1,6 +1,8 @@
 import React from 'react'
 import './styles.scss'
 
+import PropertiesValue from '../helpers'
+
 const PropertiesCounters = ({ options }) => {
     console.log('properygroup COUNTERS', options);
     return (
@@ -9,8 +11,9 @@ const PropertiesCounters = ({ options }) => {
                 <div className='counter-block'>
                     <label>{element.title}</label>
                     <div className='counter-value'>
-                        <h3>{element.value}</h3>
-                        {element.unit && <p>{element.unit}</p>}
+                        { PropertiesValue(element) }
+                        {/* <h3>{element.value}</h3>
+                        {element.unit && <p>{element.unit}</p>} */}
                     </div>
             </div>
         ))}
