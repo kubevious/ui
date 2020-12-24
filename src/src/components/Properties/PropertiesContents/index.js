@@ -12,7 +12,7 @@ const PropertiesContents = ({ group }) => {
         case 'alert-target-list':
             return <PropertiesAlertList config={group.config} />
         default:
-            return null
+            return <div>No data presented</div>
     }
 }
 

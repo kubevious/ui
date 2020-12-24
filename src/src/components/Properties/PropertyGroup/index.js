@@ -22,14 +22,14 @@ const PropertyGroup = ({
                 <button
                     id="expander"
                     className={`expander ${extraClassTitle}`}
-                    tag={`${groupName}`}
+                    tag={groupName}
                     onClick={propertyExpanderHandleClick}
                 >
                     {title}
                     <span className="property-group-openclose" />
                     <span
                         className="property-group-popup"
-                        tag={`${groupName}`}
+                        tag={groupName}
                         onClick={(e) =>
                             onPropertyGroupPopup(e, group, Component)
                         }
