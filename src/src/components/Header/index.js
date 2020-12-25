@@ -130,7 +130,7 @@ class Header extends BaseComponent {
 
         return (
             <div className="header">
-                <div className="logo"/>
+                <a className="logo" href="/"/>
                 <div className="loading-icon">
                     {isLoading && <FontAwesomeIcon icon={faSpinner} spin />}
                 </div>
