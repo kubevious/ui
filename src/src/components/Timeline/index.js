@@ -18,7 +18,7 @@ class Timeline extends BaseComponent {
     this._isDraggingSelector = false
 
     this.time_machine_actual_date_range = {
-      from: null,
+      from: moment().subtract(this.dayInSec, 'seconds'),
       to: null,
     }
 
