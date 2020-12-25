@@ -23,7 +23,7 @@ class TimelineUtils {
             }
         }
 
-        const durationInSharedState = this._sharedState.get('time_machine_duration')
+        const durationInSharedState = this._sharedState.get('time_machine_duration') || this.dayInSec
         const durationSec =
             this.getActualInitDuration() >= this.dayInSec ||
             this.getActualInitDuration() > durationInSharedState

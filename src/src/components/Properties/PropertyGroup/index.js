@@ -1,21 +1,28 @@
 import React from 'react'
+import { propertyGroupTooltip } from '@kubevious/helpers/dist/docs'
+import _ from 'the-lodash'
 import PropertiesContents from '../PropertiesContents'
-import EnvironmentVariables from '../EnvironmentVariables'
-import DnList from '../DnList'
-import Config from '../Config'
-import PropertiesTable from '../PropertiesTable'
 
 const PropertyGroup = ({
     title,
     extraClassTitle,
     extraClassContents,
-    tooltip,
     dn,
+    dnKind,
     groupName,
     group,
     propertyExpanderHandleClick,
     onPropertyGroupPopup,
 }) => {
+    let tooltip = null;
+    const tooltipInfo = propertyGroupTooltip(group.id);
+    if (tooltipInfo && _.isObject(tooltipInfo)) {
+        const str = _.get(tooltipInfo, 'owner.' + dnKind);
+        tooltip = str ? str : _.get(tooltipInfo, 'default')
+    } else if (tooltipInfo && _.isString(tooltipInfo))  {
+        tooltip = tooltipInfo;
+    }
+
     const renderPropertyGroup = (Component) => {
         return (
             <div className="property-group">
@@ -60,18 +67,7 @@ const PropertyGroup = ({
         )
     }
 
-    switch (group.kind) {
-        case 'key-value':
-            return renderPropertyGroup(<EnvironmentVariables group={group} />)
-        case 'dn-list':
-            return renderPropertyGroup(<DnList group={group} />)
-        case 'yaml':
-            return renderPropertyGroup(<Config group={group} />)
-        case 'table':
-            return renderPropertyGroup(<PropertiesTable group={group} />)
-        default:
-            return <PropertiesContents group={group} />
-    }
+    return <PropertiesContents renderGroup={renderPropertyGroup} group={group} />
 }
 
 export default PropertyGroup

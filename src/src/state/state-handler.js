@@ -80,22 +80,25 @@ class StateHandler {
 
         if (tme) {
             this.sharedState.set('time_machine_enabled', tme === 'true')
+            if (!tmtd) {
+                this.sharedState.set('time_machine_target_date', Date.parse(new Date()));
+            }
         }
 
         if (tmtd) {
-            this.sharedState.set('time_machine_target_date', Date.parse(tmtd))
+            const date = typeof tmtd === 'string' ? tmtd : Date.parse(tmtd)
+            this.sharedState.set('time_machine_target_date', date)
         }
 
         if (tmdt) {
-            this.sharedState.set('time_machine_date_to', Date.parse(tmdt))
+            const date = typeof tmdt === 'string' ? tmdt : Date.parse(tmdt)
+            this.sharedState.set('time_machine_date_to', date)
         } else {
             this.sharedState.set('time_machine_date_to', null);
         }
 
         if (tmd) {
             this.sharedState.set('time_machine_duration', tmd)
-        } else {
-            this.sharedState.set('time_machine_duration', 12 * 60 * 60)
         }
     }
 

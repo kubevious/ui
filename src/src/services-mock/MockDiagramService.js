@@ -207,7 +207,9 @@ class MockDiagramService {
         if (!date) {
             throw new Error("MISSING DATE");
         }
-        cb(_.cloneDeep(HISTORY_PROPERTIES))
+        dn !== 'summary'
+            ? cb(_.cloneDeep(HISTORY_PROPERTIES))
+            : cb(_.cloneDeep(SUMMARY_DATA))
     }
 
     fetchHistoryAlerts(dn, date, cb) {

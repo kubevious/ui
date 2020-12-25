@@ -11,7 +11,7 @@ const EnvironmentVariables = ({ group, options, dn }) => {
         <div className="EnvironmentVariables-wrapper p-40 overflow-hide">
             {dn && <div className="container-header">
                 <DnComponent dn={dn}/>
-                <h3>Environment Variables</h3>
+                <h3>{group.title}</h3>
             </div>}
             <div className="EnvironmentVariables-container">
                 {group && Object.entries(group.config).map((item, index) => (

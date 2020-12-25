@@ -59,7 +59,7 @@ const PropertiesTable = ({ group, options, state, dn }) => {
         <div className="PropertiesTable-wrapper p-40 overflow-hide">
             {dn && <div className="container-header">
                 <DnComponent dn={dn} options={options} />
-                <h3>Resource Role Matrix</h3>
+                <h3>{group.title}</h3>
             </div>}
             <div className="PropertiesTable-container">
                 <table className="table table-striped table-dark">
