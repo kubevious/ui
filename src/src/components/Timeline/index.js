@@ -258,7 +258,9 @@ class Timeline extends BaseComponent {
           .x((d) => {
             return this._xScale(d.dateMoment)
           })
-          .y0(this._height)
+          .y0(() => {
+            return this._yScaleErrorsWarnings(0)
+          })
           .y1((d) => {
             return this._yScaleErrorsWarnings(d.warn)
           })
