@@ -4,7 +4,6 @@ import _ from 'the-lodash'
 import PropertyGroup from './PropertyGroup'
 import DnPath from '../GenerateDnPath'
 import cx from 'classnames'
-import { propertyGroupTooltip } from '@kubevious/helpers/dist/docs'
 import * as DnUtils from '@kubevious/helpers/dist/dn-utils'
 
 import './styles.scss'
@@ -50,7 +49,7 @@ class Properties extends BaseComponent {
     }
 
     _renderContent() {
-        const { selectedDn } = this.state
+        const { selectedDn, dnKind } = this.state
 
         const propertyGroups = _.orderBy(this.state.selectedObjectProps, x => {
             if (x.order) {
@@ -65,29 +64,14 @@ class Properties extends BaseComponent {
                 {propertyGroups.map((item, index) => {
                     const isExpanded = index === 0
 
-                    let tooltip = null;
-                    let tooltipInfo = propertyGroupTooltip(item.id);
-                    if (tooltipInfo) {
-                        if (_.isObject(tooltipInfo)) {
-                            let str = _.get(tooltipInfo, 'owner.' + this.state.dnKind);
-                            if (str) {
-                                tooltip = str;
-                            } else {
-                                tooltip = _.get(tooltipInfo, 'default');
-                            }
-                        } else if (_.isString(tooltipInfo))  {
-                            tooltip = tooltipInfo;
-                        }
-                    }
-
                     return (
                         <PropertyGroup
                             key={index}
                             title={item.title}
                             extraClassTitle={(isExpanded ? 'active' : '')}
                             extraClassContents={(isExpanded ? 'expander-open' : '')}
-                            tooltip={tooltip}
                             dn={selectedDn}
+                            dnKind={dnKind}
                             groupName={item.id}
                             group={item}
                             propertyExpanderHandleClick={this.propertyExpanderHandleClick}

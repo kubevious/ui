@@ -20,17 +20,19 @@
             align-items: baseline;
             font-family: 'Montserrat';
             word-break: break-all;
-            padding: 0 5px;
+            padding: 0 10px;
 
             span {
                 font-weight: 600;
                 font-size: 32px;
+                line-height: 24px;
 
                 span {
                     color: #AAAAAA;
                     font-weight: 400;
                     font-size: 16px;
                     padding-left: 5px;
+                    word-break: keep-all;
                 }
             }
         }
