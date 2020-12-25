@@ -211,7 +211,7 @@ pre {
     overflow-y: hidden;
 
     &:hover {
-        overflow-y: auto;
+        overflow-y: overlay;
     }
 }
 
