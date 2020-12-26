@@ -1,23 +1,21 @@
 import React from 'react'
 import DnShortcutComponent from '../../DnShortcutComponent'
 import { isEmptyArray } from '../../../utils/util'
-import DnComponent from '../../DnComponent'
 
 import './styles.scss'
 
-const DnList = ({ group, options, dn }) => {
+const DnList = ({ group, options }) => {
     return (
-        <div className="DnList-wrapper p-40 overflow-hide">
-            <div className="DnList-container">
-                {dn && <div className="container-header">
-                    <DnComponent dn={dn} />
-                    <h3>Shared With</h3>
-                </div>}
-                {!isEmptyArray(group.config) && group.config.map((item, index) => (
-                    <DnShortcutComponent key={index} dn={item} options={options} />
+        <>
+            {!isEmptyArray(group.config) &&
+                group.config.map((item, index) => (
+                    <DnShortcutComponent
+                        key={index}
+                        dn={item}
+                        options={options}
+                    />
                 ))}
-            </div>
-        </div>
+        </>
     )
 }
 

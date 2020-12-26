@@ -7,7 +7,8 @@ import DnList from '../DnList'
 import Config from '../Config'
 import PropertiesTable from '../PropertiesTable'
 
-const PropertiesContents = ({ group, renderGroup }) => {
+const PropertiesContents = ({ group, dn }) => {
+
     switch (group.kind) {
         case 'counters':
             return <PropertiesCounters config={group.config} />
@@ -16,13 +17,13 @@ const PropertiesContents = ({ group, renderGroup }) => {
         case 'alert-target-list':
             return <PropertiesAlertList config={group.config} />
         case 'key-value':
-            return renderGroup(<EnvironmentVariables group={group} />)
+            return <EnvironmentVariables group={group} />
         case 'dn-list':
-            return renderGroup(<DnList group={group} />)
+            return <DnList group={group} />
         case 'yaml':
-            return renderGroup(<Config group={group} />)
+            return <Config group={group} dn={dn} />
         case 'table':
-            return renderGroup(<PropertiesTable group={group} />)
+            return <PropertiesTable group={group} />
         default:
             return <div>No data presented</div>
     }

@@ -21,7 +21,6 @@ class Properties extends BaseComponent {
         }
 
         this._renderContent = this._renderContent.bind(this)
-        this.onPropertyGroupPopup = this.onPropertyGroupPopup.bind(this)
     }
 
     propertyExpanderHandleClick(event) {
@@ -29,14 +28,6 @@ class Properties extends BaseComponent {
         target.classList.toggle('active')
         var contentsElem = target.parentElement.getElementsByClassName('expander-contents')[0]
         contentsElem.classList.toggle('expander-open')
-    }
-
-    onPropertyGroupPopup(event, group, Component) {
-
-        this.sharedState.set('popup_window', {
-            title: 'Properties: ' + group,
-            content: <Component.type {...Component.props} dn={this.state.selectedDn} />
-        });
     }
 
     _renderPropertiesNodeDn() {
@@ -75,7 +66,6 @@ class Properties extends BaseComponent {
                             groupName={item.id}
                             group={item}
                             propertyExpanderHandleClick={this.propertyExpanderHandleClick}
-                            onPropertyGroupPopup={this.onPropertyGroupPopup}
                         />
                     )
                 })}
