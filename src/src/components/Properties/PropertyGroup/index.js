@@ -36,12 +36,42 @@ class PropertyGroup extends BaseComponent {
         }
     }
 
+    openMaximized()
+    {
+        const {
+            dn,
+            group,
+        } = this.props
+
+        this.sharedState.set('popup_window', {
+            title: 'Properties: ' + group,
+            content:
+                group.kind !== 'yaml' ? (
+                    <div
+                        className={`Property-wrapper p-40 overflow-hide`}
+                    >
+                        {dn && (
+                            <div className="container-header">
+                                <DnComponent dn={dn} />
+                                <h3>{group.title}</h3>
+                            </div>
+                        )}
+                        <PropertiesContents group={group} />
+                    </div>
+                ) : (
+                    <PropertiesContents
+                        group={group}
+                        dn={dn}
+                    />
+                ),
+        })
+    }
+
     render() {
         const {
             title,
             extraClassTitle,
             extraClassContents,
-            dn,
             groupName,
             group,
             propertyExpanderHandleClick,
@@ -61,28 +91,7 @@ class PropertyGroup extends BaseComponent {
                         className="property-group-popup"
                         tag={groupName}
                         onClick={(e) => {
-                            this.sharedState.set('popup_window', {
-                                title: 'Properties: ' + group,
-                                content:
-                                    group.kind !== 'yaml' ? (
-                                        <div
-                                            className={`Property-wrapper p-40 overflow-hide`}
-                                        >
-                                            {dn && (
-                                                <div className="container-header">
-                                                    <DnComponent dn={dn} />
-                                                    <h3>{group.title}</h3>
-                                                </div>
-                                            )}
-                                            <PropertiesContents group={group} />
-                                        </div>
-                                    ) : (
-                                        <PropertiesContents
-                                            group={group}
-                                            dn={dn}
-                                        />
-                                    ),
-                            })
+                            this.openMaximized();
                         }}
                     />
                     {this.tooltip && (

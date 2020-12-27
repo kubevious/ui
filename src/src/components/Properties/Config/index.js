@@ -15,22 +15,22 @@ import 'codemirror/theme/darcula.css'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/mode/yaml/yaml'
 
-const Config = ({ group, dn }) => {
+const Config = ({ config, dn, language }) => {
     const [indent, setIndent] = useState(2)
     const [editMode, setEditMode] = useState(false)
 
-    const [code, setCode] = useState(jsyaml.safeDump(group.config, { indent }))
+    const [code, setCode] = useState(jsyaml.safeDump(config, { indent }))
     const [editedConfig, setEditedConfig] = useState(code)
 
     const [fileName, setFileName] = useState('config.yaml')
     const [kubectlCommand, setKubectlCommand] = useState('')
 
     useEffect(() => {
-        var namespace = _.get(group.config, 'metadata.namespace');
+        var namespace = _.get(config, 'metadata.namespace');
         var nameParts = [];
-        nameParts.push(_.get(group.config, 'kind'));
+        nameParts.push(_.get(config, 'kind'));
         nameParts.push(namespace);
-        nameParts.push(_.get(group.config, 'metadata.name'));
+        nameParts.push(_.get(config, 'metadata.name'));
         nameParts = nameParts.filter(x => x);
 
         if (nameParts.length === 0) {
@@ -50,9 +50,9 @@ const Config = ({ group, dn }) => {
     }, [])
 
     useEffect(() => {
-        setCode(jsyaml.safeDump(group.config, { indent }))
+        setCode(jsyaml.safeDump(config, { indent }))
         setEditedConfig(jsyaml.safeDump(jsyaml.load(editedConfig), { indent }))
-    }, [indent, group])
+    }, [indent, config])
 
     const handleEditedMode = () => {
         setEditMode(!editMode)
@@ -68,7 +68,7 @@ const Config = ({ group, dn }) => {
         ]
 
         if (!editMode) {
-            const conf = _.cloneDeep(group.config)
+            const conf = _.cloneDeep(config)
             for(let p of PATHS_TO_UNSET)
             {
                 _.unset(conf, p);
@@ -78,7 +78,7 @@ const Config = ({ group, dn }) => {
     }
 
     const renderCode = () => {
-        const result = hljs.highlight(group.kind, code)
+        const result = hljs.highlight(language, code)
 
         return (
             <pre>

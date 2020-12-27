@@ -7,11 +7,10 @@ import './styles.scss'
 
 import PropertiesValue from '../helpers'
 
-const PropertiesTable = ({ group, options, state }) => {
-    const tableData = group.config
+const PropertiesTable = ({ config, options, state }) => {
 
     const tableHeaders = () => {
-        return tableData.headers.map((x) => {
+        return config.headers.map((x) => {
             let column = {}
             if (_.isObject(x)) {
                 column.name = x.id
@@ -79,8 +78,8 @@ const PropertiesTable = ({ group, options, state }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {tableData &&
-                        tableData.rows.map((row, index) => (
+                    {config &&
+                        config.rows.map((row, index) => (
                             <tr key={index}>
                                 {tableHeaders().map((column) =>
                                     renderRow(row, column)

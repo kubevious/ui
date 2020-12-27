@@ -2,7 +2,7 @@ import React from 'react'
 import PropertiesCounters from '../PropertiesCounters'
 import PropertiesObjectList from '../PropertiesObjectList'
 import PropertiesAlertList from '../PropertiesAlertList'
-import EnvironmentVariables from '../EnvironmentVariables'
+import KeyValueList from '../KeyValueList'
 import DnList from '../DnList'
 import Config from '../Config'
 import PropertiesTable from '../PropertiesTable'
@@ -17,13 +17,13 @@ const PropertiesContents = ({ group, dn }) => {
         case 'alert-target-list':
             return <PropertiesAlertList config={group.config} />
         case 'key-value':
-            return <EnvironmentVariables group={group} />
+            return <KeyValueList config={group.config} />
         case 'dn-list':
-            return <DnList group={group} />
+            return <DnList config={group.config} />
         case 'yaml':
-            return <Config group={group} dn={dn} />
+            return <Config config={group.config} language={group.kind} dn={dn} />
         case 'table':
-            return <PropertiesTable group={group} />
+            return <PropertiesTable config={group.config} />
         default:
             return <div>No data presented</div>
     }
