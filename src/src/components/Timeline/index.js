@@ -98,7 +98,11 @@ class Timeline extends BaseComponent {
 
   _setupDimentions(size) {
     if (!size) {
-      size = this._parentElem.node().getBoundingClientRect()
+      if (this._parentElem.node()){
+        size = this._parentElem.node().getBoundingClientRect()
+      } else {
+        return
+      }
     }
 
     var margin = this._getMargin()
