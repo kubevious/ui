@@ -1,8 +1,11 @@
+import { Service } from './types';
 import _ from 'the-lodash'
 
 class BaseRootApiService {
+    private _sharedState: any
+    private _servicesDict: Object
 
-    constructor(sharedState)
+    constructor(sharedState: any)
     {
         this._sharedState = sharedState;
         this._servicesDict = {};
@@ -16,25 +19,25 @@ class BaseRootApiService {
         return _.keys(this._servicesDict);
     }
 
-    registerService(info, cb)
+    registerService(info: { kind: string }, cb?: Service | never): void
     {
         if (!info.kind) {
             throw new Error("Service kind not set");
         }
 
-        var svcInfo = {
+        const svcInfo = {
             info: info,
-            cb: cb
+            cb: cb,
+            services: {}
         };
-        svcInfo.services = {};
         this._servicesDict[info.kind] = svcInfo;
     }
 
-    closeServicesByKind(kind)
+    closeServicesByKind(kind: string): void
     {
-        var svcInfo = this._servicesDict[kind];
+        const svcInfo = this._servicesDict[kind];
         if (svcInfo) {
-            for(var service of _.values(svcInfo.services))
+            for(let service of _.values(svcInfo.services))
             {
                 service.close()
             }
@@ -42,22 +45,22 @@ class BaseRootApiService {
         }
     }
 
-    resolveService(info)
+    resolveService(info: { kind: string }): Service | never
     {
         if (!info.kind) {
             throw new Error("Service kind not set");
         }
-        var svcInfo = this._servicesDict[info.kind];
+        const svcInfo = this._servicesDict[info.kind];
         if (!svcInfo) {
             throw new Error("Unknown service: " + info.kind);
         }
 
-        var key = _.stableStringify(info);
+        const key: string = _.stableStringify(info);
         if (key in svcInfo.services) {
             return svcInfo.services[key];
         }
 
-        var service = svcInfo.cb({
+        let service = svcInfo.cb({
             info, 
             sharedState: this.sharedState,
             parent: this
@@ -86,4 +89,3 @@ class BaseRootApiService {
 }
 
 export default BaseRootApiService
-
