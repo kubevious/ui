@@ -56,7 +56,6 @@ class BaseRootApiService {
             throw new Error("Unknown service: " + info.kind);
         }
         
-        // tslint:disable-next-line no-empty-interface (This will be augmented)
         const key: string = stableStringify(info);
         if (key in svcInfo.services) {
             return svcInfo.services[key];
