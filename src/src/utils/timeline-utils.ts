@@ -1,4 +1,4 @@
-import moment from 'moment'
+import moment, { Moment } from 'moment'
 
 class TimelineUtils {
     private _sharedState: any
@@ -10,8 +10,8 @@ class TimelineUtils {
     }
 
     getActualRange(): {
-        to: moment.Moment;
-        from: moment.Moment;
+        to: Moment;
+        from: Moment;
     } {
         const time_machine_date_to: string = this._sharedState.get('time_machine_date_to');
 
@@ -19,7 +19,7 @@ class TimelineUtils {
         if (time_machine_date_to) {
             to = moment(time_machine_date_to);
         } else {
-            const time_machine_timeline_preview_last_date: moment.Moment =
+            const time_machine_timeline_preview_last_date: Moment =
                 this._sharedState.get('time_machine_timeline_preview_last_date');
             if (time_machine_timeline_preview_last_date)
             {
@@ -49,9 +49,9 @@ class TimelineUtils {
         let initDuration: number = this.dayInSec
         this._sharedState.subscribe(
             'time_machine_timeline_preview',
-            (time_machine_timeline_preview: { dateMoment: moment.Moment; }[]) => {
-                const lastDate: moment.Moment = this._sharedState.get('time_machine_timeline_preview_last_date')
-                const firstDate: moment.Moment = time_machine_timeline_preview[0].dateMoment
+            (time_machine_timeline_preview: { dateMoment: Moment; }[]) => {
+                const lastDate: Moment = this._sharedState.get('time_machine_timeline_preview_last_date')
+                const firstDate: Moment = time_machine_timeline_preview[0].dateMoment
                 const previewDuration: number = lastDate.diff(firstDate, 'seconds')
                 initDuration = Math.min(previewDuration, this.dayInSec)
             }
