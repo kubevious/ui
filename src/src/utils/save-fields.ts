@@ -1,13 +1,16 @@
+import { Field, Params } from './../types';
 import _ from 'the-lodash'
 
 class FieldsSaver {
-    constructor(title) {
+    private _title: string
+    fields: {};
+    constructor(title: string) {
         this._title = title
         this.fields = {}
     }
 
-    setValue(values) {
-        let params = _.clone(values)
+    setValue(values: Field): void {
+        let params: Field = _.clone(values)
         let fields = {}
 
         for (let key in params) {
@@ -32,7 +35,7 @@ class FieldsSaver {
         this.setHistory(fields)
     }
 
-    generateUrl(fields) {
+    generateUrl(fields: {}): string {
         let url = '/'
         const firstKey = Object.keys(fields)[0]
 
@@ -43,22 +46,22 @@ class FieldsSaver {
         return url
     }
 
-    setHistory(fields) {
+    setHistory(fields: {}): void {
         const url = this.generateUrl(fields)
         window.history.pushState(fields, this._title, url)
     }
 
-    decodeParams(params) {
-        let obj = {}
+    decodeParams(params: URLSearchParams): Params {
+        let obj: Params = {}
+
         switch (this._title) {
             case 'Diagram':
-                obj.sd = params.get('sd') ? atob(params.get('sd')) : params.get('sd')
+                obj.sd = params.get('sd') ? atob(params.get('sd') || '') : params.get('sd')
                 obj.tme = params.get('tme')
-                obj.tmtd = params.get('tmtd') ? atob(params.get('tmtd')) : params.get('tmtd')
-                obj.tmdt = params.get('tmdt') ? atob(params.get('tmdt')) : params.get('tmdt')
-                obj.tmd = params.get('tmd') ? atob(params.get('tmd')) : params.get('tmd')
+                obj.tmtd = params.get('tmtd') ? atob(params.get('tmtd') || '') : params.get('tmtd')
+                obj.tmdt = params.get('tmdt') ? atob(params.get('tmdt') || '') : params.get('tmdt')
+                obj.tmd = params.get('tmd') ? atob(params.get('tmd') || '') : params.get('tmd')
         }
-
         return obj
     }
 }

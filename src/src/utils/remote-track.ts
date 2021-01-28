@@ -1,13 +1,26 @@
+import { AxiosRequestConfig } from 'axios'
 import { v4 as uuidv4 } from 'uuid';
 import { isEmptyObject } from './util';
 
 class RemoteTrack {
-    constructor(sharedState) {
+    private _sharedState: any
+    _requests: {};
+    constructor(sharedState: {}) {
         this._sharedState = sharedState
         this._requests = {}
     }
 
-    start({ action, options }) {
+    start({
+        action,
+        options
+    }: {
+        action: string
+        options: AxiosRequestConfig,
+    }):{
+        request: string;
+        complete: () => void;
+        fail: (error: any) => void;
+    } {
         this._sharedState.set('is_loading', true)
 
         const request = {
@@ -36,7 +49,7 @@ class RemoteTrack {
         }
     }
 
-    detectLoading(id) {
+    detectLoading(id: string): void {
         delete this._requests[id];
 
         if (isEmptyObject(this._requests)) {

@@ -1,5 +1,6 @@
 import { Service } from './types';
-import _ from 'the-lodash'
+import _ from "lodash";
+import stableStringify from 'json-stable-stringify' 
 
 class BaseRootApiService {
     private _sharedState: any
@@ -54,8 +55,9 @@ class BaseRootApiService {
         if (!svcInfo) {
             throw new Error("Unknown service: " + info.kind);
         }
-
-        const key: string = _.stableStringify(info);
+        
+        // tslint:disable-next-line no-empty-interface (This will be augmented)
+        const key: string = stableStringify(info);
         if (key in svcInfo.services) {
             return svcInfo.services[key];
         }
