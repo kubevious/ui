@@ -1,4 +1,6 @@
-export const isEmptyObject = (obj) => {
+import { Dn, Messages } from '../types';
+
+export const isEmptyObject = (obj: any[]): boolean => {
     for (let key in obj) {
         if (Object.prototype.hasOwnProperty.call(obj, key))
             return false
@@ -6,18 +8,18 @@ export const isEmptyObject = (obj) => {
     return true
 }
 
-export const isEmptyArray = (arr) => {
+export const isEmptyArray = (arr: []): boolean => {
     return !arr || arr.length === 0;
 }
 
-export const getRandomInt = () => {
-    return Math.floor(Math.random(1) * Math.floor(1048576));
+export const getRandomInt = (): number => {
+    return Math.floor(Math.random() * Math.floor(1048576));
 }
 
-export const uniqueMessages = (messages) => {
-    let temp = []
+export const uniqueMessages = (messages: Messages[]): Messages[] => {
+    let temp: Messages[] = []
 
-    messages.map(item => {
+    messages?.map(item => {
         const element = temp.find(tempI => tempI.severity === item.severity && tempI.msg === item.msg)
 
         if (!element) {
@@ -28,10 +30,10 @@ export const uniqueMessages = (messages) => {
     return temp
 }
 
-export const uniqueObjects = (objects) => {
-    let temp = []
+export const uniqueObjects = (objects: Dn[]): Dn[] => {
+    let temp: Dn[] = []
 
-    objects.map(item => {
+    objects?.map(item => {
         const element = temp.find(tempI => tempI.dn === item.dn)
 
         if (!element) {
@@ -42,7 +44,7 @@ export const uniqueObjects = (objects) => {
     return temp
 }
 
-export const sortSeverity = (a, b) => {
+export const sortSeverity = (a: Messages, b: Messages): number => {
     if (a.severity === 'error' && b.severity === 'warn') {
         return -1
     }
@@ -54,7 +56,7 @@ export const sortSeverity = (a, b) => {
     return 0
 }
 
-export const insertToArray = (arr, index, item) => [
+export const insertToArray = (arr: any[], index: number, item: any) => [
     ...arr.slice(0, index),
     item,
     ...arr.slice(index)

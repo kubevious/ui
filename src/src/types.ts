@@ -22,3 +22,30 @@ export type Params = {
     tmdt?: string | null,
     tmd?: string | null
 }
+
+export interface Messages {
+    id: string,
+    msg: string,
+    dn?: string,
+    source: {
+        id: string,
+        kind: string,
+    },
+    severity: string,
+}
+
+export type Dn = {
+    dn: string,
+    alertCount: {
+        error: number,
+        warn: number
+    }
+}
+
+export interface TopIssueNamespaces {
+    kind: string,
+    id: string,
+    title: string,
+    order: number,
+    config: Dn[]
+}

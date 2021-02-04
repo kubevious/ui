@@ -190,7 +190,7 @@ class DiagramService extends BaseService {
         var socketScope = this._socketScope((value, target) => {
             if (!this.sharedState.get('time_machine_enabled'))
             {
-                if (target.dn == this.sharedState.get('selected_dn'))
+                if (target.dn === this.sharedState.get('selected_dn'))
                 {
                     this.sharedState.set('selected_object_props', value);
                 }
@@ -218,7 +218,7 @@ class DiagramService extends BaseService {
         var socketScope = this._socketScope((value, target) => {
             if (!this.sharedState.get('time_machine_enabled'))
             {
-                if (target.dn == this.sharedState.get('selected_dn'))
+                if (target.dn === this.sharedState.get('selected_dn'))
                 {
                     this.sharedState.set('selected_raw_alerts', value);
                 }

@@ -141,7 +141,7 @@ class VisualNode {
     }
 
     get isSelected() {
-        return this.id == this.view._currentSelectedNodeDn;
+        return this.id === this.view._currentSelectedNodeDn;
     }
 
     get visibleChildren() {
@@ -210,7 +210,7 @@ class VisualNode {
     }
 
     findChildByRn(rn) {
-        for (var x of this._children) {
+        for (let x of this._children) {
             if (x.data.rn === rn) {
                 return x
             }
