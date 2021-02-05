@@ -1,3 +1,4 @@
+import React from 'react'
 import BaseComponent from '../../HOC/BaseComponent'
 import AlertView from './AlertView'
 import { isEmptyArray, sortSeverity } from '../../utils/util'

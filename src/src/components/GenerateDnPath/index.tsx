@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import React, { Fragment } from 'react'
 import { prettyKind, getNodeLogoUrl } from '../../utils/ui-utils'
 import _ from 'the-lodash'
 import cx from 'classnames'
