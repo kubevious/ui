@@ -1,8 +1,10 @@
-import React from 'react'
 import { isEmptyArray } from '../../utils/util'
+import { AboutItem } from '../../types'
 
-const About = ({ result }) => {
-    return(
+const About = ({ result } : {
+    result: AboutItem[],
+}): JSX.Element => {
+    return (
         <div className="About-wrapper p-40 overflow-hide">
             <div className="container-header">
                 <h3>About Kubevious</h3>
@@ -15,7 +17,7 @@ const About = ({ result }) => {
                 </tr>
                 </thead>
                 <tbody>
-                {!isEmptyArray(result) && result.map((item, index) => (
+                {!isEmptyArray(result) && result.map((item: AboutItem, index: number) => (
                     <tr key={index}>
                         <td>{(item.category ? item.category + ' :: ' : '' ) + item.name}</td>
                         <td>{item.value}</td>

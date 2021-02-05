@@ -1,5 +1,11 @@
 export type Service = new (...args: any) => Service;
 
+export interface AboutItem {
+    category: string,
+    name: string,
+    value: string
+  }
+  
 export type Montserrat = {
     defaultWidth: number;
     height: number;
