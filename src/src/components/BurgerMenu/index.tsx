@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './styles.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -8,48 +8,56 @@ import {
     faFileImport,
 } from '@fortawesome/free-solid-svg-icons';
 import cx from 'classnames'
+import MarkerService from '../../services/MarkerService';
+import { Marker } from '../../types';
 
-const BurgerMenu = ({ type, service }) => {
-    const [isMenuVisible, setIsMenuVisible] = useState(false)
-    const [deleteExtra, setDeleteExtra] = useState(false)
+const BurgerMenu = ({ type, service }: { type: string, service: MarkerService }): JSX.Element => {
+    const [isMenuVisible, setIsMenuVisible] = useState<boolean>(false)
+    const [deleteExtra, setDeleteExtra] = useState<boolean>(false)
 
-    const exportItems = () => {
-        service.backendExportItems(response => {
-            const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(response))
-            const exportElem = document.getElementById('exportAnchor')
-            exportElem.setAttribute('href', dataStr)
-            exportElem.setAttribute('download', `${response.kind}.json`)
-            exportElem.click()
+    const exportItems = (): void => {
+        service.backendExportItems((response: Marker) => {
+            const dataStr: string = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(response))
+            const exportElem: HTMLElement | null = document.getElementById('exportAnchor')
+            if (exportElem) {
+                exportElem.setAttribute('href', dataStr)
+                exportElem.setAttribute('download', `${response.kind}.json`)
+                exportElem.click()
+            }
         })
     }
 
-    const uploadFile = () => {
-        const input = document.getElementById(`upload-${type}`)
+    const uploadFile = (): void => {
+        const input = document.getElementById(`upload-${type}`) as HTMLInputElement
 
-        if (input.files.length === 0) {
+        if (input?.files?.length === 0) {
             console.error('No file selected.');
             return;
         }
 
-        const reader = new FileReader();
+        const reader: FileReader = new FileReader();
+        const strData: string = reader.result?.toString() || '';
         reader.onload = () => {
-            const importData = {
-                data: JSON.parse(reader.result),
+            const importData: {
+                data: {},
+                deleteExtra: boolean
+            } = {
+                data: JSON.parse(strData),
                 deleteExtra,
             };
             service.backendImportItems(importData, () => {
-                input.value = null
+                input.value = ''
             })
         };
 
-        reader.readAsText(input.files[0]);
+        input.files && reader.readAsText(input.files[0]);
     }
 
     return (
         <div className="BurgerMenu-container" onMouseEnter={() => setIsMenuVisible(true)}
-             onMouseLeave={() => setIsMenuVisible(false)}>
+            onMouseLeave={() => setIsMenuVisible(false)}>
 
-            <input type='file' id={`upload-${type}`} name={`upload-${type}`} onChange={() => uploadFile(type)} />
+            <input type='file' id={`upload-${type}`} name={`upload-${type}`} onChange={() => uploadFile()} />
 
             <div className={cx('button-wrapper', { 'hovered': isMenuVisible })}>
                 <FontAwesomeIcon icon={faBars} />

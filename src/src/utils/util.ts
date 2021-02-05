@@ -8,7 +8,7 @@ export const isEmptyObject = (obj: any[]): boolean => {
     return true
 }
 
-export const isEmptyArray = (arr: any[]): boolean => {
+export const isEmptyArray = (arr: any[]): boolean => { // Later will be corrected on other type
     return !arr || arr.length === 0;
 }
 

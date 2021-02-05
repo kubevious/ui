@@ -4,8 +4,13 @@ export interface AboutItem {
     category: string,
     name: string,
     value: string
-  }
-  
+}
+
+export type Marker = {
+    kind: string,
+    items: Record<string, any>[]
+}
+
 export type Montserrat = {
     defaultWidth: number;
     height: number;

@@ -7,7 +7,7 @@ import './styles.scss'
 import { Messages } from '../../types'
 
 class Alerts extends BaseComponent {
-    constructor(props: any) {
+    constructor(props) {
         super(props)
 
         this.state = {
