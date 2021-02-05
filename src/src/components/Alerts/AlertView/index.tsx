@@ -4,6 +4,7 @@ import { sortSeverity, uniqueMessages, uniqueObjects } from '../../../utils/util
 import DnPath from '../../GenerateDnPath';
 import * as DnUtils from '@kubevious/helpers/dist/dn-utils'
 import { Messages } from '../../../types';
+import { RnInfo } from '@kubevious/helpers/dist/dn-utils';
 
 const AlertView = ({ alerts, clickDn, openRule, groupPreset }: {
     alerts: Messages[];
@@ -34,7 +35,7 @@ const AlertView = ({ alerts, clickDn, openRule, groupPreset }: {
     }
 
     const renderDnParts = (dn: string): JSX.Element => {
-        const dnParts = DnUtils.parseDn(dn).slice(1)
+        const dnParts: RnInfo[] = DnUtils.parseDn(dn).slice(1)
 
         return (
             <div className="dn-container" key={dn} onClick={() => clickDn(dn)}>
