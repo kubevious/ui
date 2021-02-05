@@ -1,5 +1,48 @@
 export type Service = new (...args: any) => Service;
 
+export type AlertCount = {
+    error?: number,
+    warn?: number
+}
+
+export type Flag = {
+    propagatable?: boolean,
+    name: string
+}
+
+export type Flags = {
+    shared: Flag,
+    xnamespace: Flag,
+    radioactive: Flag,
+
+}
+
+export type DiagramDataItem = {
+    rn: string,
+    name: string,
+    kind: string,
+    order?: number,
+    alertCount?: AlertCount,
+    errorCount: number,
+    flags?: Flags,
+    children?: DiagramDataItem[]
+}
+
+export type Block = {
+    w: number,
+    h: number
+}
+
+export interface DiagramData {
+    dn?: string,
+    rn?: string,
+    kind?: string,
+    order?: number,
+    alertCount?: AlertCount,
+    errorCount?: number,
+    children?: DiagramDataItem[]
+}
+
 export interface AboutItem {
     category: string,
     name: string,
@@ -48,10 +91,7 @@ export interface Messages {
 
 export type Dn = {
     dn?: string,
-    alertCount?: {
-        error: number,
-        warn: number
-    }
+    alertCount?: AlertCount,
 }
 
 export interface TopIssueNamespaces {
