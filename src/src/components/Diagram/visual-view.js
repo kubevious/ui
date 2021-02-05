@@ -380,7 +380,7 @@ class VisualView {
         return newPos;
     }
 
-    acceptSourceData(sourceData) {
+    acceptSourceData(sourceData) { //DiagramData
         this._nodeDict = {};
         this._visualRoot = this._packSourceData(sourceData)
         this._massageSourceData()
@@ -950,7 +950,7 @@ class VisualView {
         this._activatePanning();
     }
 
-    updateAll(isFullUpdate) {
+    updateAll(isFullUpdate) { // bool
 
         this._massageSourceData()
         this._applyPanTransform()

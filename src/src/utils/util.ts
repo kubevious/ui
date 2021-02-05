@@ -1,6 +1,6 @@
 import { Dn, Messages } from '../types';
 
-export const isEmptyObject = (obj: any[]): boolean => {
+export const isEmptyObject = (obj: {}): boolean => {
     for (let key in obj) {
         if (Object.prototype.hasOwnProperty.call(obj, key))
             return false
