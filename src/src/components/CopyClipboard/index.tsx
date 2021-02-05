@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { faClone as farClone } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import './styles.scss'
 
-const CopyClipboard = ({ text }) => {
-    const [copied, setCopied] = useState(false)
+const CopyClipboard = ({ text }: {text: string}): JSX.Element => {
+    const [copied, setCopied] = useState<boolean>(false)
 
-    const copyText = () => {
-        const textField = document.createElement('textarea')
+    const copyText = (): void => {
+        const textField: HTMLTextAreaElement = document.createElement('textarea')
         textField.value = text
         document.body.appendChild(textField)
         textField.select()
@@ -29,7 +29,7 @@ const CopyClipboard = ({ text }) => {
             </div>}
 
             <FontAwesomeIcon className="copy-icon" icon={farClone} onClick={() => copyText()}
-                             title="Copy to clipboard" />
+                title="Copy to clipboard" />
         </div>
     )
 }
