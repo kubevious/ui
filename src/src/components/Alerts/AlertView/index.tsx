@@ -10,7 +10,7 @@ const AlertView = ({ alerts, clickDn, openRule, groupPreset }: {
     alerts: Messages[];
     clickDn: (dn: string) => void;
     openRule: (ruleName: string) => void;
-    groupPreset: string;
+    groupPreset?: string;
 }): JSX.Element => {
     const [group, setGroup] = useState<string>(groupPreset || 'no')
 
