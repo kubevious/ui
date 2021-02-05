@@ -1,33 +1,39 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import cx from 'classnames'
 import { sortSeverity, uniqueMessages, uniqueObjects } from '../../../utils/util';
 import DnPath from '../../GenerateDnPath';
 import * as DnUtils from '@kubevious/helpers/dist/dn-utils'
+import { Messages } from '../../../types';
 
-const AlertView = ({ alerts, clickDn, openRule, groupPreset }) => {
-    const [group, setGroup] = useState(groupPreset || 'no')
+const AlertView = ({ alerts, clickDn, openRule, groupPreset }: {
+    alerts: Messages[];
+    clickDn: (dn: string) => void;
+    openRule: (ruleName: string) => void;
+    groupPreset: string;
+}): JSX.Element => {
+    const [group, setGroup] = useState<string>(groupPreset || 'no')
 
-    const clickMessage = (alert) => {
+    const clickMessage = (alert: Messages) => {
         if (alert.source.kind === 'rule') {
             openRule(alert.source.id)
         }
     }
 
-    const renderAlert = ({ alert, index, shouldRenderDn = true }) => {
+    const renderAlert = ({ alert, index, shouldRenderDn = true } : {alert: Messages, index?: number, shouldRenderDn?: boolean}): JSX.Element => {
         return (
-            <div className={cx('alert-detail', { 'even': index % 2 !== 0 })} key={alert.uiKey}>
+            <div className={cx('alert-detail', { 'even': index && index % 2 !== 0 })} key={alert.uiKey}>
                 <div className={cx('message-container', { 'rule': alert.source.kind === 'rule' })}
-                     onClick={() => clickMessage(alert)}>
+                    onClick={() => clickMessage(alert)}>
                     <div className={'alert-item ' + alert.severity} />
                     {alert.msg}
                 </div>
 
-                {shouldRenderDn && renderDnParts(alert.dn)}
+                {shouldRenderDn && alert.dn && renderDnParts(alert.dn)}
             </div>
         )
     }
 
-    const renderDnParts = (dn) => {
+    const renderDnParts = (dn: string): JSX.Element => {
         const dnParts = DnUtils.parseDn(dn).slice(1)
 
         return (
@@ -42,7 +48,7 @@ const AlertView = ({ alerts, clickDn, openRule, groupPreset }) => {
         )
     }
 
-    const renderMessageGroup = () => {
+    const renderMessageGroup = (): JSX.Element => {
         const messages = uniqueMessages(alerts.map(({ msg, severity, source }) => ({ msg, severity, source })))
             .map(m => ({
                 ...m,
@@ -59,7 +65,7 @@ const AlertView = ({ alerts, clickDn, openRule, groupPreset }) => {
                         </div>
 
                         <div className="message-objects">
-                            {message.alerts.map(alert => renderDnParts(alert.dn))}
+                            {message.alerts.map(alert => alert.dn ? renderDnParts(alert.dn) : null)}
                         </div>
                     </div>
                 ))}
@@ -67,7 +73,7 @@ const AlertView = ({ alerts, clickDn, openRule, groupPreset }) => {
         )
     }
 
-    const renderObjectGroup = () => {
+    const renderObjectGroup = (): JSX.Element => {
         const objects = uniqueObjects(alerts.map(({ dn }) => ({ dn })))
             .map(o => ({
                 ...o,
@@ -79,7 +85,7 @@ const AlertView = ({ alerts, clickDn, openRule, groupPreset }) => {
                 {objects.map((object, index) => (
                     <div className="message-group-container" key={index}>
                         <div className="object-container">
-                            {renderDnParts(object.dn)}
+                            {object.dn && renderDnParts(object.dn)}
                         </div>
 
                         <div className="message-objects">

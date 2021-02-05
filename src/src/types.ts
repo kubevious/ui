@@ -30,9 +30,10 @@ export type Params = {
 }
 
 export interface Messages {
-    id: string,
+    id?: string,
     msg: string,
     dn?: string,
+    uiKey?: string,
     source: {
         id: string,
         kind: string,
@@ -41,8 +42,8 @@ export interface Messages {
 }
 
 export type Dn = {
-    dn: string,
-    alertCount: {
+    dn?: string,
+    alertCount?: {
         error: number,
         warn: number
     }
