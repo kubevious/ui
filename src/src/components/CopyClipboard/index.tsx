@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react'
 import { faClone as farClone } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 

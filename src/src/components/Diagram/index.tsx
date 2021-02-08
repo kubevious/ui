@@ -1,3 +1,4 @@
+import React from 'react'
 import BaseComponent from '../../HOC/BaseComponent'
 import VisualView from './visual-view'
 import * as d3 from 'd3'
