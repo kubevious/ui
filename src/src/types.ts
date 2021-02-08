@@ -28,10 +28,29 @@ export type DiagramDataItem = {
     children?: DiagramDataItem[]
 }
 
+export type Coordinates = {
+    x: number;
+    y: number;
+    w: number;
+    h: number;
+}
+
+export interface NodeDiagrams extends Coordinates {
+    used?: boolean;
+    right?: Coordinates,
+    down?: Coordinates,
+}
+
 export type Block = {
     w: number,
-    h: number
+    h: number,
+    fit: {
+        x: number,
+        y: number
+    }
 }
+
+
 
 export interface DiagramData {
     dn?: string,

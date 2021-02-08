@@ -57,12 +57,14 @@
 
  ******************************************************************************/
 
+import { Block, NodeDiagrams } from "../../types"
+
 var GrowingPacker = function () {}
 
 GrowingPacker.prototype = {
 
-    fit: function (blocks) {
-        var n, node, block, len = blocks.length
+    fit: function (blocks: Block[]) {
+        var n: number, node: NodeDiagrams, block: Block, len: number = blocks.length
         var w = len > 0 ? blocks[0].w : 0
         var h = len > 0 ? blocks[0].h : 0
         this.root = { x: 0, y: 0, w: w, h: h }
@@ -76,7 +78,7 @@ GrowingPacker.prototype = {
         }
     },
 
-    findNode: function (root, w, h) {
+    findNode: function (root: NodeDiagrams, w: number, h: number) {
         if (root.used)
             return this.findNode(root.right, w, h) || this.findNode(root.down, w, h)
         else if ((w <= root.w) && (h <= root.h))
@@ -85,14 +87,14 @@ GrowingPacker.prototype = {
             return null
     },
 
-    splitNode: function (node, w, h) {
+    splitNode: function (node: NodeDiagrams, w: number, h: number) {
         node.used = true
         node.down = { x: node.x, y: node.y + h, w: node.w, h: node.h - h }
         node.right = { x: node.x + w, y: node.y, w: node.w - w, h: h }
         return node
     },
 
-    growNode: function (w, h) {
+    growNode: function (w: number, h: number) {
         var canGrowDown = (w <= this.root.w)
         var canGrowRight = (h <= this.root.h)
 
@@ -111,8 +113,8 @@ GrowingPacker.prototype = {
             return null // need to ensure sensible root starting size to avoid this happening
     },
 
-    growRight: function (w, h) {
-        var node
+    growRight: function (w: number, h: number) {
+        var node: NodeDiagrams
         this.root = {
             used: true,
             x: 0,
@@ -129,8 +131,8 @@ GrowingPacker.prototype = {
             return null
     },
 
-    growDown: function (w, h) {
-        var node
+    growDown: function (w: number, h: number) {
+        var node: NodeDiagrams
         this.root = {
             used: true,
             x: 0,

@@ -1,4 +1,3 @@
-import React from 'react'
 import BaseComponent from '../../HOC/BaseComponent'
 import VisualView from './visual-view'
 import * as d3 from 'd3'
@@ -13,9 +12,8 @@ class Diagram extends BaseComponent {
     constructor(props) {
         super(props)
 
-        this.view = new VisualView(d3.select('#diagram'), this.sharedState);
-
         this.registerService({ kind: 'diagram' })
+        this.view = new VisualView(d3.select('#diagram'), this.sharedState);
 
         this.subscribeToSharedState('diagram_data',
             (diagram_data: DiagramData) => {
@@ -65,6 +63,7 @@ class Diagram extends BaseComponent {
     }
 
     _setupView(): void {
+        this.view = new VisualView(d3.select('#diagram'), this.sharedState);
         this.view.skipShowRoot()
         this.view.setup()
         this._renderData()
