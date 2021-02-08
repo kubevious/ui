@@ -1,11 +1,49 @@
 import _ from 'the-lodash'
 import GrowingPacker from './packer.growing'
 import { prettyKind } from '../../utils/ui-utils'
-import { MONTSERRAT_12PX_500, MONTSERRAT_10PX_500, MONTSERRAT_14PX_500 } from '../../utils/constants'
+import { MONTSERRAT_12PX_500, MONTSERRAT_10PX_500, MONTSERRAT_14PX_500, NODE_RENDER_METADATA, SEVERITY_BG_COLOR_ERROR, SEVERITY_BG_COLOR_WARN, VISUAL_NODE_COLOR_TABLE } from '../../utils/constants'
+import VisualView from './visual-view'
+import { DiagramData, Flag, Flags, Header, NODE_RENDER_METADATA_NAME, Block } from '../../types'
+import BaseVisualNodeHeader from './base-visual-node-header'
+import { VisualNodeHeaderExpander } from './visual-node-header-expander'
+import { VisualNodeHeaderFlag } from './visual-node-header-flag'
+import { VisualNodeHeaderMarker } from './visual-node-header-marker'
+import { VisualNodeSeverity } from './visual-node-severity'
+import { VisualNodeText } from './visual-node-text'
 
-class VisualNode {
+export default class VisualNode {
+    _view: VisualView
+    _data: DiagramData
+    _parent: VisualNode
+    _children: VisualNode[]
+    _x: number
+    _y: number
+    _absX: number
+    _absY: number
+    _width: number
+    _height: number
+    _padding: number
+    _paddingLeft: number
+    _headerPadding: number
+    _headerWidth: number
+    _headerHeight: number
+    _depth: number
+    _expanderNodes: BaseVisualNodeHeader[]
+    _flagNodes: VisualNodeHeaderFlag[]
+    _markerNodes: VisualNodeHeaderMarker[]
+    _severityNodes: VisualNodeSeverity[]
+    _severityTextNodes: VisualNodeText[]
+    _selectedHeaderFillColor!: string
+    _headerFillColor!: string
+    _headerBgFillColor!: string
+    _selectedBgFillColor!: string
+    _bgFillColor!: string
+    _selectedStrokeColor!: string
+    _strokeColor!: string
+    _headers: Header
+    _headersOrder: Header[]
 
-    constructor(view, data, parent) {
+    constructor(view: VisualView, data: DiagramData, parent: VisualNode) {
         if (!view) {
             throw new Error('View Not Set');
         }
@@ -20,7 +58,7 @@ class VisualNode {
         this._width = 0
         this._height = 0
 
-        this._padding = this._resolveValue('padding')
+        this._padding = this._resolveValue(NODE_RENDER_METADATA_NAME.padding)
         this._paddingLeft = this._padding//this._resolveValue("paddingLeft");
 
         this._headerPadding = 5
@@ -40,62 +78,64 @@ class VisualNode {
         this._severityNodes = []
         this._severityTextNodes = []
 
+        this._headers = {}
+        this._headersOrder = []
         this._setupTheme()
     }
 
-    get view() {
+    get view(): VisualView {
         return this._view
     }
 
-    get node() {
+    get node(): [] {
         return this.view._d3NodeDict[this.id]
     }
 
-    get smallNode() {
+    get smallNode(): [] {
         return this.view._d3SmallNodeDict[this.id]
     }
 
-    get id() {
-        return this._data.dn
+    get id(): string {
+        return this._data.dn || ''
     }
 
-    get x() {
+    get x(): number {
         return this._x
     }
 
-    get y() {
+    get y(): number {
         return this._y
     }
 
-    get absX() {
+    get absX(): number {
         return this._absX
     }
 
-    get absY() {
+    get absY(): number {
         return this._absY
     }
 
-    get width() {
+    get width(): number {
         return this._width
     }
 
-    get height() {
+    get height(): number {
         return this._height
     }
 
-    get headerHeight() {
+    get headerHeight(): number {
         return this._headerHeight
     }
 
-    get depth() {
+    get depth(): number {
         return this._depth
     }
 
-    get data() {
+    get data(): DiagramData {
         return this._data
     }
 
-    get flags() {
+    get flags(): string[] | Flags {
         if (!this.data.flags) {
             return []
         }
@@ -105,73 +145,73 @@ class VisualNode {
         return this.data.flags;
     }
 
-    get markers() {
+    get markers(): string[] {
         if (!this.data.markers) {
             return []
         }
         return this.data.markers;
     }
 
-    get expanderNodes() {
+    get expanderNodes(): BaseVisualNodeHeader[] {
         return this._expanderNodes
     }
 
-    get flagNodes() {
+    get flagNodes(): VisualNodeHeaderFlag[] {
         return this._flagNodes
     }
 
-    get markerNodes() {
+    get markerNodes(): VisualNodeHeaderMarker[] {
         return this._markerNodes;
     }
 
-    get severityNodes() {
+    get severityNodes(): VisualNodeSeverity[] {
         return this._severityNodes
     }
 
-    get severityTextNodes() {
+    get severityTextNodes(): VisualNodeText[] {
         return this._severityTextNodes
     }
 
-    get isExpanded() {
+    get isExpanded(): boolean {
         return this.view.getExpanded(this.id);
     }
 
-    set isExpanded(value) {
+    set isExpanded(value: boolean) {
         this.view.setExpanded(this.id, value);
     }
 
-    get isSelected() {
+    get isSelected(): boolean {
         return this.id === this.view._currentSelectedNodeDn;
     }
 
-    get visibleChildren() {
+    get visibleChildren(): VisualNode[] {
         if (this.isExpanded) {
             return this._children
         }
         return []
     }
 
-    get hasChildren() {
+    get hasChildren(): boolean {
         return this._data.childrenCount > 0
     }
 
-    get isExpandable() {
+    get isExpandable(): boolean {
         return this.hasChildren
     }
 
-    get parent() {
+    get parent(): VisualNode {
         return this._parent
     }
 
-    get errorCount() {
+    get errorCount(): number {
         return this._getAlertCount('error');
     }
 
-    get warnCount() {
+    get warnCount(): number {
         return this._getAlertCount('warn');
     }
 
-    _getAlertCount(severity)
+    _getAlertCount(severity: string): number
     {
         if (this.data.alertCount) {
             return this.data.alertCount[severity];
@@ -179,37 +219,37 @@ class VisualNode {
         return 0;
     }
 
-    get headerFillColor() {
+    get headerFillColor(): string {
         if (this.isSelected) {
             return this._selectedHeaderFillColor
         }
         return this._headerFillColor
     }
 
-    get headerBgFillColor() {
+    get headerBgFillColor(): string {
         return this._headerBgFillColor
     }
 
-    get bgFillColor() {
+    get bgFillColor(): string {
         if (this.isSelected) {
             return this._selectedBgFillColor
         }
         return this._bgFillColor
     }
 
-    get strokeColor() {
+    get strokeColor(): string {
         if (this.isSelected) {
             return this._selectedStrokeColor
         }
         return this._strokeColor
     }
 
-    prepare() {
+    prepare(): void {
         this._sortChildren()
         this._determineHeader()
     }
 
-    findChildByRn(rn) {
+    findChildByRn(rn: string): VisualNode | null {
         for (let x of this._children) {
             if (x.data.rn === rn) {
                 return x
@@ -218,7 +258,7 @@ class VisualNode {
         return null
     }
 
-    _determineHeader() {
+    _determineHeader(): void {
         this._headers = {}
         this._headersOrder = []
 
@@ -241,7 +281,7 @@ class VisualNode {
                 {
                     name: 'kind',
                     kind: 'text',
-                    text: prettyKind(this.data.kind),
+                    text: prettyKind(this.data.kind || ''),
                     fontSpec: MONTSERRAT_10PX_500
                 },
                 {
@@ -306,14 +346,14 @@ class VisualNode {
             this._severityTextNodes.push(new VisualNodeText(this, 'errors'))
         }
 
-        for (var flag of this.flags) {
+        for (var flag of _.keys(this.flags)) {
             this._addToHeader('flag-' + flag, {
                 kind: 'icon',
                 icon: flag,
                 location: 'right'
             })
         }
-        this._flagNodes = this.flags.map(x => new VisualNodeHeaderFlag(this, x))
+        this._flagNodes = _.keys(this.flags).map((x: Flag) => new VisualNodeHeaderFlag(this, x))
 
         for (var marker of this.markers) {
             this._addToHeader('marker-' + marker, {
@@ -327,7 +367,7 @@ class VisualNode {
         this._measureHeaders()
     }
 
-    _measureHeaders() {
+    _measureHeaders(): void {
         var left = this._headerPadding //this._paddingLeft;
         var right = this._headerPadding //this._padding;
         for (var header of this._headersOrder) {
@@ -343,68 +383,79 @@ class VisualNode {
                     if (header.bounding.sidesPadding) {
                         header.left += header.bounding.sidesPadding
                     }
-                    left += header.bounding.width
-                    left += this._headerPadding
+                    if (header.bounding.width) {
+                        left += header.bounding.width
+                        left += this._headerPadding
+                    }
                 } else if (header.location === 'right') {
                     if (header.padding) {
                         right += header.padding
                     }
-                    right += header.bounding.width
-                    header.bounding.right = right
+                    if (header.bounding.width) {
+                        right += header.bounding.width
+                        header.bounding.right = right
+                    }
                     header.right = header.bounding.right
-                    if (header.bounding.sidesPadding) {
+                    if (header.bounding.sidesPadding && header.right) {
                         header.right -= header.bounding.sidesPadding
                     }
                     right += this._headerPadding
                 }
-
-                header.bounding.centerY = (this._headerHeight + header.bounding.height) / 2
-                header.bounding.top = (this._headerHeight - header.bounding.height) / 2
+                if (header.bounding.height) {
+                    header.bounding.centerY = (this._headerHeight + header.bounding.height) / 2
+                    header.bounding.top = (this._headerHeight - header.bounding.height) / 2
+                }
             } else {
                 if (header.location === 'left') {
                     if (header.padding) {
                         left += header.padding
                     }
-                    header.left = left
-                    left += header.width
-                    left += this._headerPadding
+                    if (header.width) {
+                        header.left = left
+                        left += header.width
+                        left += this._headerPadding
+                    }
                 } else if (header.location === 'right') {
                     if (header.padding) {
                         right += header.padding
                     }
-                    right += header.width
-                    header.right = right
-                    right += this._headerPadding
+                    if (header.width) {
+                        right += header.width
+                        header.right = right
+                        right += this._headerPadding
+                    }
                 }
             }
+            const h = header.height || 0
 
             if (!header.centerY) {
-                header.centerY = (this._headerHeight + header.height) / 2
+                header.centerY = (this._headerHeight + h) / 2
             }
-            header.top = (this._headerHeight - header.height) / 2
+            header.top = (this._headerHeight - h) / 2
 
-            if (header.kind === 'column') {
+            if (header.kind === 'column' && header.cells) {
                 var top = header.top
                 for (var cell of header.cells) {
                     cell.top = top
                     cell.left = header.left
                     cell.right = header.right
-
-                    top += cell.height
+                    if(cell.height) {
+                        top += cell.height
+                    }
                 }
             }
         }
         this._headerWidth = left + right
     }
 
-    hasHeader(name) {
+    hasHeader(name: string): boolean {
         if (this.getHeader(name)) {
             return true
         }
         return false
     }
 
-    getHeader(name) {
+    getHeader(name: string): Header | null {
         var header = this._headers[name]
         if (!header) {
             return null
@@ -412,77 +463,81 @@ class VisualNode {
         return header
     }
 
-    getHeaderX(name, flavor) {
+    getHeaderX(name: string, flavor?: string): number {
         var header = this.getHeader(name)
         if (!header) {
             // TODO: Error
             return 0
         }
         var value = 0
-        if (header.location === 'left') {
+        if (header.location === 'left' && header.left) {
             value = header.left
-        } else if (header.location === 'right') {
+        } else if (header.location === 'right' && header.right) {
             value = this.width - header.right
         }
-        if (flavor === 'center') {
+        if (flavor === 'center' && header.width) {
             value += header.width / 2
         }
-        if (flavor === 'bounding') {
-            if (header.location === 'left') {
+        if (flavor === 'bounding' && header.bounding) {
+            if (header.location === 'left' && header.bounding.left) {
                 value = header.bounding.left
-            } else if (header.location === 'right') {
+            } else if (header.location === 'right' && header.bounding.right) {
                 value = this.width - header.bounding.right
             }
         }
         return value
     }
 
-    getHeaderY(name, flavor) {
+    getHeaderY(name: string, flavor?: string): number {
         var header = this.getHeader(name)
         if (!header) {
             // TODO: Error
             return 0
         }
+        const top = header.top || 0
+        const centerY = header.centerY || 0
+        const height = header.height || 0
+        const boundingTop = header.bounding?.top || 0
         if (flavor === 'center') {
-            return header.centerY;
+            return centerY;
         }
         if (flavor === 'bounding') {
-            return header.bounding.top
+            return boundingTop
         }
         if (header.kind === 'text') {
-            return header.top + header.height / 2 + header.height / 4
+            return top + height / 2 + height / 4
         }
-        if (header.kind === 'marker') {
-            return header.top;
-        }
-        return header.top
+        return top
     }
 
-    getHeaderCenterX(name) {
+    getHeaderCenterX(name: string): number {
         var header = this.getHeader(name)
         if (!header) {
             // TODO: Error
             return 0
         }
-        return this.getHeaderX(name) + header.width / 2
+        const width = header.width || 0
+        return this.getHeaderX(name) + width / 2
     }
 
-    getHeaderCenterY(name) {
+    getHeaderCenterY(name: string): number {
         var header = this.getHeader(name)
         if (!header) {
             // TODO: Error
             return 0
         }
-        return header.top + header.height / 2
+        const height = header.height || 0
+        const top = header.top || 0
+        return top + height / 2
     }
 
-    _measureHeader(header) {
-        if (header.kind === 'column') {
+    _measureHeader(header: Header): void {
+        if (header.kind === 'column' && header.cells) {
             for (var cell of header.cells) {
                 this._measureHeader(cell)
             }
             header.width = _.max(header.cells.map(x => x.width))
-            header.height = _.sumBy(header.cells, x => x.height)
+            header.height = _.sumBy(header.cells, (x: { height: number }) => x.height)
         } else if (header.kind === 'text') {
             var textDimentions =
                 this._view._measureText(header.text, header.fontSpec)
@@ -497,26 +552,28 @@ class VisualNode {
         }
 
         if (header.bounding) {
+            const width = header.width || 0
             if (!header.bounding.height) {
                 header.bounding.height = header.height
             }
             if (!header.bounding.width) {
-                header.bounding.width = header.width
+                header.bounding.width = width
             }
             if (header.bounding.sidesPadding) {
-                header.bounding.width = header.width + header.bounding.sidesPadding * 2
+                header.bounding.width = width + header.bounding.sidesPadding * 2
+                header.width = width
                 header.width += header.bounding.sidesPadding * 2
             }
         }
     }
 
-    _addToHeader(name, info) {
+    _addToHeader(name: string, info: Header): void {
         info.id = name
         info.name = info.id
         this._headers[name] = info
         this._headersOrder.push(info)
 
-        if (info.kind === 'column') {
+        if (info.kind === 'column', info.cells) {
             for (var cell of info.cells) {
                 cell.id = name + '-' + cell.name
                 cell.location = info.location
@@ -525,20 +582,20 @@ class VisualNode {
         }
     }
 
-    _sortChildren() {
+    _sortChildren(): void {
         var result = []
-        var groups = _.groupBy(this._children, x => x.data.order)
+        var groups = _.groupBy(this._children, (x: VisualNode) => x.data.order)
         var groupIds = _.keys(groups)
-        groupIds = _.orderBy(groupIds, x => parseInt(x))
+        groupIds = _.orderBy(groupIds, (x: string) => parseInt(x))
         for (var x of groupIds) {
             var innerList = groups[x]
-            innerList = _.orderBy(innerList, x => x.data.rn)
+            innerList = _.orderBy(innerList, (x: VisualNode) => x.data.rn)
             result = _.concat(result, innerList)
         }
         this._children = result
     }
 
-    measureAndArrange() {
+    measureAndArrange(): void {
         this._x = 0
         this._y = 0
         this._width = this._headerWidth
@@ -568,32 +625,32 @@ class VisualNode {
         this._fitChildrenWidthToParent()
     }
 
-    _resolveValue(name) {
-        return resolveValue(name, this.data.kind)
+    _resolveValue(name: string) {
+        return resolveValue(NODE_RENDER_METADATA_NAME[name], this.data.kind)
     }
 
-    _getIsArrangedVertically() {
-        if (this._resolveValue('arrange') === 'vertically') {
+    _getIsArrangedVertically(): boolean {
+        if (this._resolveValue(NODE_RENDER_METADATA_NAME.arrange) === 'vertically') {
             return true
         }
         return false
     }
 
-    _getIsArrangedHorizontally() {
-        if (this._resolveValue('arrange') === 'horizontally') {
+    _getIsArrangedHorizontally(): boolean {
+        if (this._resolveValue(NODE_RENDER_METADATA_NAME.arrange) === 'horizontally') {
             return true
         }
         return false
     }
 
-    _getIsArrangedPack() {
-        if (this._resolveValue('arrange') === 'pack') {
+    _getIsArrangedPack(): boolean {
+        if (this._resolveValue(NODE_RENDER_METADATA_NAME.arrange) === 'pack') {
             return true
         }
         return false
     }
 
-    _arrangeChildrenHorizontally() {
+    _arrangeChildrenHorizontally(): void {
         var i = this._paddingLeft
         for (var child of this.visibleChildren) {
             child._x = i
@@ -602,7 +659,7 @@ class VisualNode {
         }
     }
 
-    _arrangeChildrenVertically() {
+    _arrangeChildrenVertically(): void {
         var i = this._headerHeight + this._padding
         for (var child of this.visibleChildren) {
             child._x = this._paddingLeft
@@ -611,15 +668,15 @@ class VisualNode {
         }
     }
 
-    _arrangeChildrenPack() {
+    _arrangeChildrenPack(): void {
         var packer = new GrowingPacker()
-        var blocks = this.visibleChildren.map(x => ({
+        var blocks: Block[] = this.visibleChildren.map(x => ({
             w: x.width + this._padding,
             h: x.height + this._padding,
             item: x
         }))
-        blocks = _.orderBy(blocks, x => Math.max(x.h, x.w), 'desc')
-        // blocks.sort(function(a,b) { return (Math.max(b.h, b.w) < Math.max(a.h, a.w)); }); // sort inputs for best results
+        blocks = _.orderBy(blocks, (x: Block) => Math.max(x.h, x.w), 'desc')
+
         packer.fit(blocks)
 
         for (var block of blocks) {
@@ -632,7 +689,7 @@ class VisualNode {
         }
     }
 
-    _fitChildrenWidthToParent() {
+    _fitChildrenWidthToParent(): void {
         if (!this._getIsArrangedVertically()) {
             return
         }
@@ -643,11 +700,11 @@ class VisualNode {
         }
     }
 
-    _getInnerCompontents() {
+    _getInnerCompontents(): VisualNode[] {
         return this.visibleChildren
     }
 
-    calculateAbsolutePos() {
+    calculateAbsolutePos(): void {
         if (this._parent) {
             this._absX = this._parent.absX + this._x
             this._absY = this._parent.absY + this._y
@@ -660,14 +717,14 @@ class VisualNode {
         }
     }
 
-    autoexpand() {
-        var nodes = []
+    autoexpand(): VisualNode[] {
+        var nodes: VisualNode[] = []
 
-        let recurse = function (node) {
+        let recurse = function (node: VisualNode) {
 
             if (!node.view._existingNodeIds[node.id]) {
                 node.view._existingNodeIds[node.id] = true
-                if (node._resolveValue('expanded')) {
+                if (node._resolveValue(NODE_RENDER_METADATA_NAME.expanded)) {
                     node.isExpanded = true
                 }
             }
@@ -682,10 +739,10 @@ class VisualNode {
         return nodes
     }
 
-    extract() {
-        var nodes = []
+    extract(): VisualNode[] {
+        var nodes: VisualNode[] = []
 
-        let recurse = function (node) {
+        let recurse = function (node: VisualNode) {
             nodes.push(node)
             for (var child of node.visibleChildren) {
                 recurse(child)
@@ -697,7 +754,7 @@ class VisualNode {
         return nodes
     }
 
-    _setupTheme() {
+    _setupTheme(): void {
         var x = VISUAL_NODE_COLOR_TABLE[this.depth % VISUAL_NODE_COLOR_TABLE.length]
         this._headerFillColor = x
         this._headerBgFillColor = '#35373E'
@@ -709,238 +766,18 @@ class VisualNode {
         this._selectedStrokeColor = this._selectedHeaderFillColor
 
     }
-
-}
-
-
-/*
- *
- */
-class BaseVisualNodeHeader {
-    constructor(node, headerName, flavor) {
-        this._node = node
-        this._headerName = headerName
-        this._flavor = flavor
-    }
-
-    get view() {
-        return this._node.view;
-    }
-
-    get node() {
-        return this._node
-    }
-
-    get headerName() {
-        return this._headerName
-    }
-
-    get header() {
-        return this.node.getHeader(this.headerName)
-    }
-
-    x() {
-        return this.node.getHeaderX(this.headerName, this._flavor)
-    }
-
-    y() {
-        return this.node.getHeaderY(this.headerName, this._flavor)
-    }
-
-    translateTransform() {
-        return 'translate(' + this.x() + ',' + this.y() + ')';
-    }
-
-    width() {
-        var header = this.header
-        if (!header) {
-            // TODO: Error
-            return 0
-        }
-        if (this._flavor) {
-            return header[this._flavor].width
-        }
-        return header.width
-    }
-
-    height() {
-        var header = this.header
-        if (!header) {
-            // TODO: Error
-            return 0
-        }
-        if (this._flavor) {
-            return header[this._flavor].height
-        }
-        return header.height
-    }
-
-    transform() {
-        return 'translate(' +
-            this.node.getHeaderX(this.headerName, this._flavor) + ',' +
-            this.node.getHeaderY(this.headerName, this._flavor) + ')'
-    }
 }
 
 /*
- *
- */
-class VisualNodeText extends BaseVisualNodeHeader {
-    constructor(node, headerName, flavor) {
-        super(node, headerName, flavor)
-    }
+'arrange': 
+    return string
+'padding': 
+    return number
+'expanded': 
+    return boolean
+*/
+function resolveValue(name: NODE_RENDER_METADATA_NAME, kind: string = '') {
 
-    text() {
-        var header = this.header
-        if (!header) {
-            // TODO: Error
-            return ''
-        }
-        return header.text
-    }
-}
-
-/*
- *
- */
-class VisualNodeSeverity extends BaseVisualNodeHeader {
-    constructor(node, headerName, flavor, fill) {
-        super(node, headerName, flavor)
-        this._fill = fill
-    }
-
-    get fill() {
-        return this._fill
-    }
-}
-
-/*
- *
- */
-class VisualNodeHeaderFlag extends BaseVisualNodeHeader {
-    constructor(node, flag) {
-        super(node, 'flag-' + flag, null)
-
-        this._flag = flag
-    }
-
-    get flag() {
-        return this._flag
-    }
-
-    get imgSrc() {
-        var header = this.header
-        if (!header) {
-            // TODO: Error
-            return ''
-        }
-        return '/img/flags/' + header.icon + '.svg'
-    }
-}
-
-/*
- *
- */
-class VisualNodeHeaderMarker extends BaseVisualNodeHeader {
-    constructor(node, marker) {
-        super(node, 'marker-' + marker, null)
-
-        this._marker = marker;
-        this._flavor = 'marker';
-    }
-
-    get marker() {
-        return this._marker
-    }
-
-    fill() {
-        var marker = this.view._markerData[this.marker];
-        if (marker) {
-            return marker.color;
-        }
-        return 'white';
-    }
-
-    html() {
-        var marker = this.view._markerData[this.marker];
-        if (marker) {
-            if (marker.shape) {
-                return '&#x' + marker.shape + ';';
-            }
-        }
-        return '';
-    }
-}
-
-/*
- *
- */
-
-class VisualNodeHeaderExpander extends BaseVisualNodeHeader {
-    constructor(node, headerName) {
-        super(node, headerName, null)
-    }
-
-    get imgSrc() {
-        if (this.node.isExpanded) {
-            return '/img/collapse.svg'
-        } else {
-            return '/img/expand.svg'
-        }
-    }
-}
-
-/*
- *
- */
-const VISUAL_NODE_COLOR_TABLE = [
-    '#7C90BF',
-    '#F58D61',
-    '#66C2A5',
-    '#80B1D2',
-    '#A6D853',
-    '#E2A78E',
-    '#E789C2',
-    '#BDB9DA',
-    '#BD7637',
-    '#D23AEE',
-    '#8331CB',
-    '#BBBBBB',
-]
-
-/*
- *
- */
-const SEVERITY_BG_COLOR_ERROR = 'red'
-const SEVERITY_BG_COLOR_WARN = '#f58142'
-
-
-const NODE_RENDER_METADATA = {
-    default: {
-        arrange: 'vertically',
-        padding: 15,
-        expanded: false
-    },
-    per_kind: {
-        root: {
-            arrange: 'horizontally',
-            expanded: true
-        },
-        ns: {
-            expanded: true,
-        },
-        app: {},
-        cont: {
-            arrange: 'pack',
-        },
-        replicaset: {
-            arrange: 'pack',
-        },
-        raw: {}
-    }
-}
-
-function resolveValue(name, kind) {
     var valuesDefault = NODE_RENDER_METADATA.default
     var valuesKind = NODE_RENDER_METADATA.per_kind[kind]
 
@@ -949,7 +786,12 @@ function resolveValue(name, kind) {
         values = _.defaults(valuesKind, values)
     }
 
-    return values[name]
+    switch(name) {
+        case 'arrange': 
+            return values[name]
+        case 'padding': 
+            return values[name]
+        case 'expanded': 
+            return values[name]
+    }
 }
-
-export default VisualNode

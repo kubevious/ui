@@ -6,7 +6,7 @@ import 'bootstrap/js/dist/tooltip'
 import VisualNode from './visual-node'
 import { flagTooltip } from '../../utils/ui-utils'
 
-class VisualView {
+export default class VisualView {
 
     constructor(parentElem, sharedState, source) {
         this._parentElem = parentElem;
@@ -30,6 +30,8 @@ class VisualView {
         this._existingNodeIds = {}
         
         this._markerData = {}
+        this._d3NodeDict = {}
+        this._d3SmallNodeDict = {}
 
         sharedState.subscribe("selected_dn",
             (selected_dn) => {
@@ -99,9 +101,6 @@ class VisualView {
     }
 
     setup() {
-        this._d3NodeDict = {}
-        this._d3SmallNodeDict = {}
-
         this._svgElem = this._parentElem
             .append('svg')
             .attr('position', 'absolute')
@@ -167,7 +166,7 @@ class VisualView {
 
     setupDimentions(size) {
         if (!size) {
-            size = this._parentElem.node().getBoundingClientRect()
+            size = this._parentElem?.node().getBoundingClientRect()
         }
         this._width = size.width
         this._height = size.height
@@ -1088,5 +1087,3 @@ function nodeHeaderText(headerName) {
 function getNodeLogoUrl(kind) {
     return '/img/entities/' + kind + '.svg'
 }
-
-export default VisualView

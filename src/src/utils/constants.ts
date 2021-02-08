@@ -18,3 +18,46 @@ export const MONTSERRAT_14PX_500: Montserrat = {
     'startCode': 32,
     'widths': [3.77, 3.76, 5.48, 9.84, 8.7, 11.8, 9.6, 2.95, 4.72, 4.74, 5.6, 8.16, 3.19, 5.36, 3.19, 4.94, 9.34, 5.19, 8.04, 8.01, 9.38, 8.04, 8.65, 8.38, 9.02, 8.65, 3.19, 3.19, 8.16, 8.16, 8.16, 8.03, 14.48, 10.25, 10.6, 10.13, 11.57, 9.39, 8.9, 10.81, 11.38, 4.34, 7.19, 10.07, 8.32, 13.38, 11.38, 11.76, 10.11, 11.76, 10.19, 8.7, 8.22, 11.08, 9.97, 15.77, 9.43, 9.06, 9.21, 4.67, 4.94, 4.67, 8.17, 7, 8.41, 8.38, 9.55, 8, 9.55, 8.57, 4.95, 9.67, 9.54, 3.91, 3.98, 8.63, 3.91, 14.8, 9.54, 8.9, 9.55, 9.55, 5.75, 7.02, 5.8, 9.48, 7.83, 12.59, 7.73, 7.83, 7.3, 4.92, 4.19, 4.92, 8.16]
 }
+
+export const VISUAL_NODE_COLOR_TABLE = [
+    '#7C90BF',
+    '#F58D61',
+    '#66C2A5',
+    '#80B1D2',
+    '#A6D853',
+    '#E2A78E',
+    '#E789C2',
+    '#BDB9DA',
+    '#BD7637',
+    '#D23AEE',
+    '#8331CB',
+    '#BBBBBB',
+]
+
+export const SEVERITY_BG_COLOR_ERROR = 'red'
+export const SEVERITY_BG_COLOR_WARN = '#f58142'
+
+export const NODE_RENDER_METADATA = {
+    default: {
+        arrange: 'vertically',
+        padding: 15,
+        expanded: false
+    },
+    per_kind: {
+        root: {
+            arrange: 'horizontally',
+            expanded: true
+        },
+        ns: {
+            expanded: true,
+        },
+        app: {},
+        cont: {
+            arrange: 'pack',
+        },
+        replicaset: {
+            arrange: 'pack',
+        },
+        raw: {}
+    }
+}
