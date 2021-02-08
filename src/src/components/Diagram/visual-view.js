@@ -3,7 +3,7 @@ import $ from 'jquery'
 import _ from 'the-lodash'
 import 'bootstrap/js/dist/tooltip'
 
-import VisualNode from './visual-node'
+import VisualNode from './visual-node/visual-node'
 import { flagTooltip } from '../../utils/ui-utils'
 
 export default class VisualView {

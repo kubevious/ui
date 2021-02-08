@@ -1,9 +1,9 @@
 import _ from 'the-lodash'
-import GrowingPacker from './packer.growing'
-import { prettyKind } from '../../utils/ui-utils'
-import { MONTSERRAT_12PX_500, MONTSERRAT_10PX_500, MONTSERRAT_14PX_500, NODE_RENDER_METADATA, SEVERITY_BG_COLOR_ERROR, SEVERITY_BG_COLOR_WARN, VISUAL_NODE_COLOR_TABLE } from '../../utils/constants'
-import VisualView from './visual-view'
-import { DiagramData, Flag, Flags, Header, NODE_RENDER_METADATA_NAME, Block } from '../../types'
+import GrowingPacker from '../packer.growing'
+import { prettyKind } from '../../../utils/ui-utils'
+import { MONTSERRAT_12PX_500, MONTSERRAT_10PX_500, MONTSERRAT_14PX_500, NODE_RENDER_METADATA, SEVERITY_BG_COLOR_ERROR, SEVERITY_BG_COLOR_WARN, VISUAL_NODE_COLOR_TABLE } from '../../../utils/constants'
+import VisualView from '../visual-view'
+import { DiagramData, Flag, Flags, Header, NODE_RENDER_METADATA_NAME, Block } from '../../../types'
 import BaseVisualNodeHeader from './base-visual-node-header'
 import { VisualNodeHeaderExpander } from './visual-node-header-expander'
 import { VisualNodeHeaderFlag } from './visual-node-header-flag'
@@ -485,6 +485,7 @@ export default class VisualNode {
                 value = this.width - header.bounding.right
             }
         }
+
         return value
     }
 
@@ -764,7 +765,6 @@ export default class VisualNode {
         this._selectedHeaderFillColor = '#FCBD3F'
         this._selectedBgFillColor = '#43454D'
         this._selectedStrokeColor = this._selectedHeaderFillColor
-
     }
 }
 

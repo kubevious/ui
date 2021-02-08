@@ -1,4 +1,4 @@
-import VisualNode from "./components/Diagram/visual-node";
+import VisualNode from "./components/Diagram/visual-node/visual-node";
 
 export type Service = new (...args: any) => Service;
 
@@ -17,7 +17,6 @@ export type Flags = {
     xnamespace: Flag,
     radioactive: Flag,
 };
-
 
 export enum NODE_RENDER_METADATA_NAME {
     arrange = "arrange",

@@ -1,4 +1,4 @@
-import { Flag } from "../../types"
+import { Flag } from "../../../types"
 import BaseVisualNodeHeader from "./base-visual-node-header"
 import VisualNode from "./visual-node"
 
