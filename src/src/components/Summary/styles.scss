@@ -11,7 +11,7 @@
         font-family: 'Montserrat', sans-serif;
 
         > label {
-            color: #AAAAAA;
+            color: #aaaaaa;
             font-size: 14px;
         }
 
@@ -33,7 +33,6 @@
             font-weight: 500;
 
             &:empty {
-
                 &::before {
                     content: '0';
                 }
@@ -42,7 +41,20 @@
     }
 }
 
+.loading-icon {
+    color: white;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding-right: 10px;
+}
+
 .loading-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: -webkit-fill-available;
     font-size: 18px;
     margin: 30px 50px;
     font-family: 'Montserrat', sans-serif;

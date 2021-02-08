@@ -1,6 +1,8 @@
 import React from 'react'
 import BaseComponent from '../../HOC/BaseComponent'
 import PropertiesContents from '../Properties/PropertiesContents'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 import './styles.scss'
 import { isEmptyObject } from '../../utils/util'
 
@@ -23,11 +25,11 @@ class Summary extends BaseComponent {
         const { data } = this.state
         if (!isEmptyObject(data)) {
             return (
-                <div id="summaryComponent" className="summary">
+                <div id='summaryComponent' className='summary'>
                     {Object.values(data).map((block) => (
-                        <div className="summary-container" key={block.id}>
+                        <div className='summary-container' key={block.id}>
                             <label>{block.title}</label>
-                            <div className="summary-container-inner">
+                            <div className='summary-container-inner'>
                                 <PropertiesContents group={block} />
                             </div>
                         </div>
@@ -35,7 +37,14 @@ class Summary extends BaseComponent {
                 </div>
             )
         }
-        return <div id="summaryComponent" className="loading-placeholder">Loading...</div>
+        return (
+            <div id='summaryComponent' className='loading-placeholder'>
+                <div className='loading-icon'>
+                    <FontAwesomeIcon icon={faSpinner} spin />
+                </div>
+                Loading...
+            </div>
+        )
     }
 }
 
