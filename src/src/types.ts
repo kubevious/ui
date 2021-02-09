@@ -86,7 +86,7 @@ export type Block = {
 };
 
 export interface DiagramData {
-    flags: Flags,
+    flags?: Flags,
     dn?: string,
     rn?: string,
     kind?: string,
@@ -95,15 +95,9 @@ export interface DiagramData {
     errorCount?: number,
     children?: DiagramDataItem[],
     markers?: string[],
-    childrenCount: number,
-    name: string,
+    childrenCount?: number,
+    name?: string,
 };
-
-export interface AboutItem {
-    category: string,
-    name: string,
-    value: string
-}
 
 export type Marker = {
     kind: string,

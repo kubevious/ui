@@ -1,6 +1,6 @@
 import React from 'react'
 import { isEmptyArray } from '../../utils/util'
-import { AboutItem } from '../../types'
+import { AboutItem } from './types'
 
 const About = ({ result } : {
     result: AboutItem[],
