@@ -9,7 +9,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import cx from 'classnames'
 import MarkerService from '../../services/MarkerService';
-import { Marker } from '../../types';
+import { Marker } from './types';
 
 const BurgerMenu = ({ type, service }: { type: string, service: MarkerService }): JSX.Element => {
     const [isMenuVisible, setIsMenuVisible] = useState<boolean>(false)

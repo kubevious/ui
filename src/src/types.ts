@@ -99,11 +99,6 @@ export interface DiagramData {
     name?: string,
 };
 
-export type Marker = {
-    kind: string,
-    items: Record<string, any>[],
-};
-
 export type Montserrat = {
     defaultWidth: number,
     height: number,
