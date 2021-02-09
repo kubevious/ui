@@ -1,11 +1,11 @@
-import { Header } from "../../../types"
+import { Header } from "../types"
 import VisualNode from "./visual-node"
 import VisualView from "../visual-view"
 
 export default class BaseVisualNodeHeader {
   _node: VisualNode
   _headerName: string
-  _flavor?: string
+  _flavor: string | undefined
   constructor(node: VisualNode, headerName: string, flavor?: string) {
       this._node = node
       this._headerName = headerName

@@ -57,7 +57,7 @@
 
  ******************************************************************************/
 
-import { Block, NodeDiagrams } from "../../types"
+import { Block, NodeDiagrams } from "./types"
 
 var GrowingPacker = function () {}
 

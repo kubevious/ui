@@ -9,7 +9,7 @@ import { DiagramData } from '../../types'
 
 class Diagram extends BaseComponent {
     view: VisualView
-    private _sourceData: DiagramData = {}
+    private _sourceData: DiagramData | undefined
     constructor(props) {
         super(props)
 

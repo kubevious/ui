@@ -1,5 +1,3 @@
-import VisualNode from "./components/Diagram/visual-node/visual-node";
-
 export type Service = new (...args: any) => Service;
 
 export type AlertCount = {
@@ -18,73 +16,6 @@ export type Flags = {
     radioactive: Flag,
 };
 
-export enum NODE_RENDER_METADATA_NAME {
-    arrange = "arrange",
-    padding = "padding",
-    expanded = "expanded",
-};
-
-export interface Header {
-    id?: string,
-    name?: string,
-    kind?: string,
-    location?: string,
-    width?: number,
-    height?: number,
-    padding?: number,
-    text?: string | number,
-    left?: number,
-    fontSpec?: Montserrat,
-    right?: number,
-    centerY?: number,
-    top?: number,
-    bounding?: {
-        height?: number,
-        sidesPadding: number,
-        width?: number,
-        left?: number,
-        right?: number,
-        centerY?: number,
-        top?: number,
-    },
-    icon?: string,
-    cells?: Header[],
-};
-
-export type DiagramDataItem = {
-    rn: string,
-    name: string,
-    kind: string,
-    order?: number,
-    alertCount?: AlertCount,
-    errorCount: number,
-    flags?: Flags,
-    children?: DiagramDataItem[],
-};
-
-export type Coordinates = {
-    x: number,
-    y: number,
-    w: number,
-    h: number,
-};
-
-export interface NodeDiagrams extends Coordinates {
-    used?: boolean,
-    right?: Coordinates,
-    down?: Coordinates,
-};
-
-export type Block = {
-    w: number,
-    h: number,
-    fit?: {
-        x: number,
-        y: number,
-    },
-    item: VisualNode,
-};
-
 export interface DiagramData {
     flags?: Flags,
     dn?: string,
@@ -93,9 +24,9 @@ export interface DiagramData {
     order?: number,
     alertCount?: AlertCount,
     errorCount?: number,
-    children?: DiagramDataItem[],
+    children: DiagramData[],
     markers?: string[],
-    childrenCount?: number,
+    childrenCount: number,
     name?: string,
 };
 
