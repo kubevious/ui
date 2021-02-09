@@ -7,13 +7,13 @@ import MarkerPreview from '../MarkerPreview'
 import './styles.scss'
 
 class DnShortcutComponent extends BaseComponent {
-    constructor(props) {
+    constructor(props: any) {
         super(props);
 
         this.clickDn = this.clickDn.bind(this);
     }
 
-    clickDn() {
+    clickDn(): void {
         this.sharedState.set('selected_dn', this.props.dn);
         this.sharedState.set('auto_pan_to_selected_dn', true);
         this.sharedState.set('popup_window', null);
@@ -29,12 +29,12 @@ class DnShortcutComponent extends BaseComponent {
 
         var markerItems = [];
         if (markers) {
-            markerItems = markers.map(x => markerDict[x]);
+            markerItems = markers.map((x: React.Key) => markerDict[x]);
             markerItems = markerItems.filter(x => x);
         }
 
         return (
-            <div className="dn-shortcut" dn={dn} onClick={this.clickDn}>
+            <div className="dn-shortcut" onClick={this.clickDn}>
                 <DnComponent dn={dn} options={options} />
 
                 <div className="dn-alert">
