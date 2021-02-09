@@ -3,10 +3,10 @@ import { faChevronDown, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './styles.scss'
 
-const ErrorBox = ({ error, closeError }) => {
-    const [expanded, setExpanded] = useState(false)
+const ErrorBox = ({ error, closeError }): JSX.Element => {
+    const [expanded, setExpanded] = useState<boolean>(false)
 
-    const { data: { message, stack }, status } = error
+    const { data: { message, stack }, status } : { data: { message: string, stack: string }, status: number }  = error
 
     return (
         <div className="ErrorBox-container">
