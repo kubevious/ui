@@ -56,3 +56,19 @@ export interface Header {
   icon?: string,
   cells?: Header[],
 };
+
+export type ViewPosition = {
+  x: number,
+  y: number,
+}
+
+export interface SharedUserState {
+  user: () => SharedUserState;
+    close: () => void;
+    subscribe: (keyOrKeys: string | string[], cb: any) => {
+        id: string;
+        close: () => void;
+    };
+    get: (name: string) => any;
+    set: (name: string, value: any, options?: any) => void;
+}

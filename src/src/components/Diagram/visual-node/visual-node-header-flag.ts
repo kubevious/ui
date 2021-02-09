@@ -1,16 +1,15 @@
-import { Flag } from "../../../types"
 import BaseVisualNodeHeader from "./base-visual-node-header"
 import VisualNode from "./visual-node"
 
 export class VisualNodeHeaderFlag extends BaseVisualNodeHeader {
-  _flag: Flag
-  constructor(node: VisualNode, flag: Flag) {
+  _flag: string
+  constructor(node: VisualNode, flag: string) {
       super(node, 'flag-' + flag)
 
       this._flag = flag
   }
 
-  get flag(): Flag {
+  get flag(): string {
       return this._flag
   }
 

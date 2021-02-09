@@ -3,7 +3,7 @@ import GrowingPacker from '../packer.growing'
 import { prettyKind } from '../../../utils/ui-utils'
 import { MONTSERRAT_12PX_500, MONTSERRAT_10PX_500, MONTSERRAT_14PX_500 } from '../../../utils/constants'
 import { NODE_RENDER_METADATA, SEVERITY_BG_COLOR_ERROR, SEVERITY_BG_COLOR_WARN, VISUAL_NODE_COLOR_TABLE } from '../constants'
-import VisualView from '../visual-view'
+import VisualView from './visual-view/visual-view'
 import { DiagramData, Flag, Flags } from '../../../types'
 import { NODE_RENDER_METADATA_NAME, Header, Block } from '../types'
 import BaseVisualNodeHeader from './base-visual-node-header'
@@ -14,9 +14,10 @@ import { VisualNodeSeverity } from './visual-node-severity'
 import { VisualNodeText } from './visual-node-text'
 
 export default class VisualNode {
+    [x: string]: any
     _view: VisualView
     _data: DiagramData
-    _parent: VisualNode
+    _parent: VisualNode | null
     _children: VisualNode[]
     _x: number
     _y: number
@@ -30,7 +31,7 @@ export default class VisualNode {
     _headerWidth: number
     _headerHeight: number
     _depth: number
-    _expanderNodes: BaseVisualNodeHeader[]
+    _expanderNodes: VisualNodeHeaderExpander[]
     _flagNodes: VisualNodeHeaderFlag[]
     _markerNodes: VisualNodeHeaderMarker[]
     _severityNodes: VisualNodeSeverity[]
@@ -45,7 +46,7 @@ export default class VisualNode {
     _headers: Header
     _headersOrder: Header[]
 
-    constructor(view: VisualView, data: DiagramData, parent: VisualNode) {
+    constructor(view: VisualView, data: DiagramData, parent: VisualNode | null) {
         if (!view) {
             throw new Error('View Not Set');
         }
@@ -89,11 +90,11 @@ export default class VisualNode {
         return this._view
     }
 
-    get node(): [] {
+    get node(): string {
         return this.view._d3NodeDict[this.id]
     }
 
-    get smallNode(): [] {
+    get smallNode() {
         return this.view._d3SmallNodeDict[this.id]
     }
 
@@ -154,7 +155,7 @@ export default class VisualNode {
         return this.data.markers;
     }
 
-    get expanderNodes(): BaseVisualNodeHeader[] {
+    get expanderNodes(): VisualNodeHeaderExpander[] {
         return this._expanderNodes
     }
 
@@ -201,7 +202,7 @@ export default class VisualNode {
         return this.hasChildren
     }
 
-    get parent(): VisualNode {
+    get parent(): VisualNode| null {
         return this._parent
     }
 
@@ -355,7 +356,7 @@ export default class VisualNode {
                 location: 'right'
             })
         }
-        this._flagNodes = _.keys(this.flags).map((x: Flag) => new VisualNodeHeaderFlag(this, x))
+        this._flagNodes = _.keys(this.flags).map((x: string) => new VisualNodeHeaderFlag(this, x))
 
         for (var marker of this.markers) {
             this._addToHeader('marker-' + marker, {

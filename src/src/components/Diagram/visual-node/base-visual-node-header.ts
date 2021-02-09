@@ -1,6 +1,6 @@
 import { Header } from "../types"
 import VisualNode from "./visual-node"
-import VisualView from "../visual-view"
+import VisualView from "./visual-view/visual-view"
 
 export default class BaseVisualNodeHeader {
   _node: VisualNode

@@ -10,10 +10,10 @@ export const prettyKind = (kind: string): string => {
     return value;
 }
 
-export const flagTooltip = (name: string): string | null => {
-    var value: string | null = FLAG_TOOLTIPS[name];
+export const flagTooltip = (name: string): string => {
+    var value: string = FLAG_TOOLTIPS[name];
     if (!value) {
-        value = null;
+        value = '';
     }
     return value;
 }
