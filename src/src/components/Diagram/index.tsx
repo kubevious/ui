@@ -1,6 +1,6 @@
 import React from 'react'
 import BaseComponent from '../../HOC/BaseComponent'
-import VisualView from './visual-node/visual-view/visual-view'
+import VisualView from './visual-view/visual-view'
 import * as d3 from 'd3'
 import $ from 'jquery'
 

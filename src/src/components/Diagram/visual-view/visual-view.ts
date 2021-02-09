@@ -3,13 +3,13 @@ import $ from 'jquery'
 import _ from 'the-lodash'
 import 'bootstrap/js/dist/tooltip'
 
-import VisualNode from '../visual-node'
-import { flagTooltip, getNodeLogoUrl } from '../../../../utils/ui-utils'
-import { SharedUserState, ViewPosition } from '../../types'
-import { DiagramData, Montserrat } from '../../../../types'
-import { VisualNodeText } from '../visual-node-text'
-import { VisualNodeHeaderMarker } from '../visual-node-header-marker'
-import { VisualNodeHeaderFlag } from '../visual-node-header-flag'
+import VisualNode from '../visual-node/visual-node'
+import { flagTooltip, getNodeLogoUrl } from '../../../utils/ui-utils'
+import { SharedUserState, ViewPosition } from '../types'
+import { DiagramData, Montserrat } from '../../../types'
+import { VisualNodeText } from '../visual-node/visual-node-text'
+import { VisualNodeHeaderMarker } from '../visual-node/visual-node-header-marker'
+import { VisualNodeHeaderFlag } from '../visual-node/visual-node-header-flag'
 import {
     nodeGroupTransform,
     nodeWidth,
