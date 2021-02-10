@@ -1,6 +1,6 @@
 import React from 'react'
 
-const StartPage = ({ type, createNewItem }) => {
+const StartPage = ({ type, createNewItem }: {type: string, createNewItem: () => void}): JSX.Element => {
     return (
         <div className="start-rule-container">
             <div className="start-wrapper">
@@ -19,7 +19,7 @@ const StartPage = ({ type, createNewItem }) => {
 
                 <div className="links-container">
                     <a href="https://github.com/kubevious/kubevious/blob/master/docs/rules-engine.md#rules-engine" target="_blank"
-                       className="start-text">Learn more about rules engine</a>
+                    className="start-text">Learn more about rules engine</a>
                     <a href="https://github.com/kubevious/rules-library#kubevious-rules-library" target="_blank" className="start-text">Browse rules library</a>
                     <a href="https://kubevious.io/slack/" target="_blank" className="start-text">Get help in slack channel</a>
                 </div>
