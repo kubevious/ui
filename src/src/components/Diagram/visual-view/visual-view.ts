@@ -174,7 +174,6 @@ export default class VisualView {
 
     _renderControl(): void {
         var self = this
-
         this._controlInfo.previewGroupElem = this._svgElem.append('g')
             .attr('class', 'preview')
 
@@ -192,10 +191,12 @@ export default class VisualView {
             .attr('class', 'preview-visible-rect')
 
         this._controlInfo.previewGroupElem
-            .on('click', (event: React.MouseEvent<HTMLDivElement>) => {
+            .on('click', () => {
                 let pt = this._svgElem.node().createSVGPoint()
-                pt.x = event.clientX
-                pt.y = event.clientY
+                // @ts-ignore: Unreachable code error
+                pt.x = d3.event.clientX
+                // @ts-ignore: Unreachable code error
+                pt.y = d3.event.clientY
                 var target = self._controlInfo.previewFullRectElem._groups[0][0]
                 var cursorpt = pt.matrixTransform(target.getScreenCTM().inverse())
 
@@ -204,10 +205,12 @@ export default class VisualView {
                     cursorpt.y / self._controlInfo.scale - this._height / 2);
             })
             .call(d3.drag()
-                .on('drag', (event: React.DragEvent<HTMLDivElement>) => {
+                .on('drag', () => {
                     this._userPanTo(
-                        this._viewPos.x + event.clientX / this._controlInfo.scale, 
-                        this._viewPos.y + event.clientY / this._controlInfo.scale,
+                        // @ts-ignore: Unreachable code error
+                        this._viewPos.x + d3.event.dx / this._controlInfo.scale, 
+                        // @ts-ignore: Unreachable code error
+                        this._viewPos.y + d3.event.dy / this._controlInfo.scale,
                         true);
                 }))
     }
@@ -288,11 +291,14 @@ export default class VisualView {
 
     _setupPanningByMouseDrag(): void {
         var drag = d3.drag()
-            .on('drag', (event: React.DragEvent<HTMLDivElement>) => {
+            .on('drag', () => {
                 this._userPanTo(
-                    this._viewPos.x - event.clientX,
-                    this._viewPos.y - event.clientY,
-                    true);
+                    // @ts-ignore: Unreachable code error
+                    this._viewPos.x - d3.event.dx,
+                    // @ts-ignore: Unreachable code error
+                    this._viewPos.y - d3.event.dy,
+                    true
+                );
             })
 
         this._svgElem.call(drag)
@@ -512,7 +518,8 @@ export default class VisualView {
                 return d.id
             })
             .attr('transform', nodeGroupTransform)
-            .each((d: VisualNode) => {
+            .each(function(d: VisualNode) {
+                // @ts-ignore: Unreachable code error
                 self._d3NodeDict[d.id] = this
             })
 
@@ -546,7 +553,8 @@ export default class VisualView {
             .append('image')
             .attr('class', 'node-logo')
             .attr('xlink:href', function (d: VisualNode) {
-                return getNodeLogoUrl(d.data.kind || '')
+                // @ts-ignore: Unreachable code error
+                return getNodeLogoUrl(d.data.kind)
             })
             .attr('x', nodeHeaderX('logo'))
             .attr('y', nodeHeaderY('logo'))
@@ -585,9 +593,9 @@ export default class VisualView {
         var selection =
             d3.select(visualNode.node)
                 .selectAll('.node-expander')
-                .data(visualNode.expanderNodes, ((x: any) => { //x: VisualNodeHeaderExpander
+                .data(visualNode.expanderNodes, function (x: any) { //x: VisualNodeHeaderExpander
                     return x.headerName
-                }))
+                })
 
         selection
             .exit()
@@ -611,9 +619,9 @@ export default class VisualView {
             var selection: any = // d3 type Selection <BaseType, VisualNodeSeverity, BaseType, unknown>
                 d3.select(visualNode.node)
                     .selectAll('.node-severity')
-                    .data(visualNode.severityNodes, ((x: any) => { //x: VisualNodeSeverity
+                    .data(visualNode.severityNodes, function (x: any) { //x: VisualNodeSeverity
                         return x.headerName
-                    }))
+                    })
 
             selection
                 .exit()
@@ -641,9 +649,9 @@ export default class VisualView {
             var selection: any = //d3 type Selection <BaseType, VisualNodeText, BaseType, unknown>
                 d3.select(visualNode.node)
                     .selectAll('.node-severity-text')
-                    .data(visualNode.severityTextNodes, ((x: any) => { // x: VisualNodeText
+                    .data(visualNode.severityTextNodes, function(x: any) { // x: VisualNodeText
                         return x.headerName
-                    }))
+                    })
 
             selection
                 .exit()
@@ -665,9 +673,9 @@ export default class VisualView {
         var selection =
             d3.select(visualNode.node)
                 .selectAll('.node-flag')
-                .data(visualNode.flagNodes, ((x: any) => { // x: VisualNodeHeaderFlag
+                .data(visualNode.flagNodes, function(x: any) { // x: VisualNodeHeaderFlag
                     return x.headerName
-                }))
+                })
 
         selection
             .exit()
@@ -682,9 +690,10 @@ export default class VisualView {
             .attr('y', x => x.y())
             .attr('width', x => x.width())
             .attr('height', x => x.height())
-            .on('mouseover', ((d: VisualNodeHeaderFlag) => {
+            .on('mouseover', function (d: VisualNodeHeaderFlag) {
+                // @ts-ignore: Unreachable code error
                 self._showFlagTooltip(this, d.flag)
-            }))
+            })
     }
 
     _renderNodeMarkers(visualNode: VisualNode): void {
@@ -692,9 +701,9 @@ export default class VisualView {
         var selection: any = // d3 type Selection<d3.BaseType, VisualNodeHeaderMarker, d3.BaseType, unknown>
             d3.select(visualNode.node)
                 .selectAll('.node-marker')
-                .data(visualNode.markerNodes, ((x: any) => { // x: VisualNodeHeaderMarker
+                .data(visualNode.markerNodes, function (x: any) { // x: VisualNodeHeaderMarker
                     return x.headerName
-                }))
+                })
 
         selection
             .exit()
@@ -708,9 +717,10 @@ export default class VisualView {
                 return d.id
             })
             .attr('transform', (x: VisualNodeHeaderMarker) => x.transform())
-            .on('mouseover',  ((d: VisualNodeHeaderMarker) => {
+            .on('mouseover',  function (d: VisualNodeHeaderMarker) {
+                // @ts-ignore: Unreachable code error
                 self._showMarkerTooltip(this, d.marker)
-            }))
+            })
 
         selection
             .append('rect')
@@ -806,7 +816,7 @@ export default class VisualView {
             .selectAll('.node-severity')
             .transition()
             .duration(duration)
-            .attr('x', (x: any) => { // x: VisualNodeSeverity
+            .attr('x', function(x: any) { // x: VisualNodeSeverity
                 return x.x()
             })
 
@@ -834,60 +844,35 @@ export default class VisualView {
                 }
                 return 'node'
             })
-            .attr('transform', function (d: any) { // d: VisualNode
-                return 'translate(' + d.absX + ',' + d.absY + ')'
-            })
+            .attr('transform', nodeGroupTransform(visualNode))
 
         d3
             .select(visualNode.node)
             .select('.node-bg')
             .transition()
             .duration(duration)
-            .attr('width', (d: any) => { // d: VisualNode
-                return d.width
-            })
-            .attr('height', (d: any) => { // d: VisualNode
-                return d.height
-            })
-            .style('fill', (d: any) => { // d: VisualNode
-                return d.bgFillColor
-            })
-            .style('stroke', (d: any) => { // d: VisualNode
-                return d.strokeColor
-            })
+            .attr('width', nodeWidth(visualNode))
+            .attr('height', nodeHeight(visualNode))
+            .style('fill', nodeBgFillColor(visualNode))
+            .style('stroke', nodeStrokeColor(visualNode))
 
         d3
             .select(visualNode.node)
             .select('.node-header')
             .transition()
             .duration(duration)
-            .attr('width', (d: any) => { // d: VisualNode
-                return d.width
-            })
-            .attr('height', (d: any) => { // d: VisualNode
-                return d.headerHeight
-            })
-            .style('fill', (d: any) => { // d: VisualNode
-                return d.headerFillColor
-            })
+            .attr('width', nodeWidth(visualNode))
+            .attr('height', nodeHeaderBgHeight(visualNode))
+            .style('fill', nodeHeaderBgFillColor(visualNode))
 
         d3
             .select(visualNode.node)
             .select('.node-header-hl')
             .transition()
             .duration(duration)
-            .attr('width', function (d: any) { // d: VisualNode
-                if (d.isSelected) {
-                    return d.width
-                }
-                return d.headerHeight
-            })
-            .attr('height', function (d: any) { // d: VisualNode
-                return d.headerHeight
-            })
-            .style('fill', (d: any) => { // d: VisualNode
-                return d.headerFillColor
-            })
+            .attr('width', nodeHeaderBgWidth(visualNode))
+            .attr('height', nodeHeaderBgHeight(visualNode))
+            .style('fill', nodeHeaderHlFillColor(visualNode))
 
         d3
             .select(visualNode.node)
@@ -936,7 +921,8 @@ export default class VisualView {
                 return d.id
             })
             .attr('transform', nodeGroupTransform)
-            .each((d: VisualNode) => {
+            .each(function(d: VisualNode){
+                // @ts-ignore: Unreachable code error
                 self._d3SmallNodeDict[d.id] = this
             })
 
@@ -974,9 +960,7 @@ export default class VisualView {
             .select(visualNode.smallNode)
             .transition()
             .duration(duration)
-            .attr('transform', function (d: any) { // x: VisualNode
-                return 'translate(' + d.absX + ',' + d.absY + ')'
-            })
+            .attr('transform', nodeGroupTransform(visualNode))
 
         d3
             .select(visualNode.smallNode)
@@ -998,9 +982,7 @@ export default class VisualView {
             .attr('width', function (d: any) { // x: VisualNode
                 return d.width
             })
-            .style('fill', (d: any) => { // d: VisualNode
-                return d.headerFillColor
-            })
+            .style('fill', nodeHeaderHlFillColor(visualNode))
     }
 
     _updateNodeR(visualNode: VisualNode, isFullUpdate?: boolean): void {

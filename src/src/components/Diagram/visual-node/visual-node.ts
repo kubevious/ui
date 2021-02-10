@@ -4,7 +4,7 @@ import { prettyKind } from '../../../utils/ui-utils'
 import { MONTSERRAT_12PX_500, MONTSERRAT_10PX_500, MONTSERRAT_14PX_500 } from '../../../utils/constants'
 import { NODE_RENDER_METADATA, SEVERITY_BG_COLOR_ERROR, SEVERITY_BG_COLOR_WARN, VISUAL_NODE_COLOR_TABLE } from '../constants'
 import VisualView from '../visual-view/visual-view'
-import { DiagramData, Flag, Flags } from '../../../types'
+import { DiagramData, Flags } from '../../../types'
 import { NODE_RENDER_METADATA_NAME, Header, Block } from '../types'
 import BaseVisualNodeHeader from './base-visual-node-header'
 import { VisualNodeHeaderExpander } from './visual-node-header-expander'
@@ -138,7 +138,7 @@ export default class VisualNode {
         return this._data
     }
 
-    get flags(): string[] | Flags {
+    get flags(): Flags {
         if (!this.data.flags) {
             return []
         }
@@ -349,14 +349,14 @@ export default class VisualNode {
             this._severityTextNodes.push(new VisualNodeText(this, 'errors'))
         }
 
-        for (var flag of _.keys(this.flags)) {
+        for (var flag of this.flags) {
             this._addToHeader('flag-' + flag, {
                 kind: 'icon',
                 icon: flag,
                 location: 'right'
             })
         }
-        this._flagNodes = _.keys(this.flags).map((x: string) => new VisualNodeHeaderFlag(this, x))
+        this._flagNodes = this.flags.map((x: string) => new VisualNodeHeaderFlag(this, x))
 
         for (var marker of this.markers) {
             this._addToHeader('marker-' + marker, {

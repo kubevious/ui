@@ -5,16 +5,7 @@ export type AlertCount = {
     warn?: number,
 };
 
-export type Flag = {
-    propagatable?: boolean,
-    name: string,
-};
-
-export type Flags = {
-    shared: Flag,
-    xnamespace: Flag,
-    radioactive: Flag,
-};
+export type Flags = string[];
 
 export interface DiagramData {
     flags?: Flags,
