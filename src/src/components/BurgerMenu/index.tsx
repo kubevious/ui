@@ -10,6 +10,7 @@ import {
 import cx from 'classnames'
 import MarkerService from '../../services/MarkerService';
 import { Marker } from './types';
+import { render } from 'react-dom';
 
 const BurgerMenu = ({ type, service }: { type: string, service: MarkerService }): JSX.Element => {
     const [isMenuVisible, setIsMenuVisible] = useState<boolean>(false)

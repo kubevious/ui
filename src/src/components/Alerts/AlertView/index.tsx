@@ -13,7 +13,7 @@ const AlertView = ({ alerts, clickDn, openRule, groupPreset }: {
 }): JSX.Element => {
     const [group, setGroup] = useState<string>(groupPreset || 'no')
 
-    const clickMessage = (alert: Messages) => {
+    const clickMessage = (alert: Messages): void => {
         if (alert.source.kind === 'rule') {
             openRule(alert.source.id)
         }

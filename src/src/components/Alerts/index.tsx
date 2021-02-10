@@ -50,11 +50,11 @@ class Alerts extends BaseComponent {
         }
         
         return (
-          <AlertView
-            alerts={alerts.sort(sortSeverity)}
-            clickDn={this.clickDn}
-            openRule={this.openRule}
-          />
+            <AlertView
+                alerts={alerts.sort(sortSeverity)}
+                clickDn={this.clickDn}
+                openRule={this.openRule}
+            />
         )
     }
 
