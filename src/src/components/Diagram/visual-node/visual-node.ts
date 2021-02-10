@@ -285,7 +285,7 @@ export default class VisualNode {
                     name: 'kind',
                     kind: 'text',
                     text: prettyKind(this.data.kind || ''),
-                    fontSpec: MONTSERRAT_10PX_500
+                    fontSpec: MONTSERRAT_10PX_500,
                 },
                 {
                     name: 'name',
@@ -429,7 +429,7 @@ export default class VisualNode {
                     }
                 }
             }
-            const h = header.height || 0
+            const h = header.height || 40 // min height
 
             if (!header.centerY) {
                 header.centerY = (this._headerHeight + h) / 2
@@ -498,40 +498,40 @@ export default class VisualNode {
             // TODO: Error
             return 0
         }
-        const top = header.top || 0
-        const centerY = header.centerY || 0
-        const height = header.height || 0
-        const boundingTop = header.bounding?.top || 0
-        if (flavor === 'center') {
+        const top = header.top
+        const centerY = header.centerY
+        const height = header.height
+        const boundingTop = header.bounding?.top
+        if (flavor === 'center' && centerY) {
             return centerY;
         }
-        if (flavor === 'bounding') {
+        if (flavor === 'bounding' && boundingTop) {
             return boundingTop
         }
-        if (header.kind === 'text') {
+        if (header.kind === 'text' && top && height) {
             return top + height / 2 + height / 4
         }
-        return top
+        return top || 0
     }
 
     getHeaderCenterX(name: string): number {
         var header = this.getHeader(name)
-        if (!header) {
+        if (!header || !header.width) {
             // TODO: Error
             return 0
         }
-        const width = header.width || 0
+        const width = header.width
         return this.getHeaderX(name) + width / 2
     }
 
     getHeaderCenterY(name: string): number {
         var header = this.getHeader(name)
-        if (!header) {
+        if (!header || !header.top || !header.height) {
             // TODO: Error
             return 0
         }
-        const height = header.height || 0
-        const top = header.top || 0
+        const height = header.height
+        const top = header.top
         return top + height / 2
     }
 
@@ -555,8 +555,8 @@ export default class VisualNode {
             header.height = 20
         }
 
-        if (header.bounding) {
-            const width = header.width || 0
+        if (header.bounding && header.width) {
+            const width = header.width
             if (!header.bounding.height) {
                 header.bounding.height = header.height
             }

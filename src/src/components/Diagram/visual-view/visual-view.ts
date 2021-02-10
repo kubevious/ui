@@ -119,12 +119,8 @@ export default class VisualView {
         if (!fontSpec) {
             throw new Error('MISSING FONT SPEC')
         }
+        text = _.isNil(text) ? '' : text ? text.toString() : ''
         
-        if (!_.isString(text) && text) {
-            text = text.toString()
-        } else {
-            text = ''
-        }
 
         var totalWidth = 0
         var totalHeight = fontSpec.height
@@ -216,16 +212,16 @@ export default class VisualView {
     }
 
     setupDimentions(size?: { width: number, height: number }): void {
-        if (!!size) {
+        if (!size) {
+            size = this._parentElem.node().getBoundingClientRect()
+        }
+        if (size) {
             this._width = size.width
             this._height = size.height
 
             this._setupControl()
             this._applyPanTransform()
-        } else {
-            size = this._parentElem?.node().getBoundingClientRect()
         }
-
     }
 
     _setupControl(): void {
