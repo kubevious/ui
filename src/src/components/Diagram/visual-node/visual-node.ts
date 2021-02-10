@@ -61,7 +61,7 @@ export default class VisualNode {
         this._width = 0
         this._height = 0
 
-        this._padding = this._resolveValue(NODE_RENDER_METADATA_NAME.padding)
+        this._padding = Number(this._resolveValue(NODE_RENDER_METADATA_NAME.padding))
         this._paddingLeft = this._padding//this._resolveValue("paddingLeft");
 
         this._headerPadding = 5
@@ -541,7 +541,7 @@ export default class VisualNode {
                 this._measureHeader(cell)
             }
             header.width = _.max(header.cells.map(x => x.width))
-            header.height = _.sumBy(header.cells, (x: { height: number }) => x.height)
+            header.height = _.sumBy(header.cells, (x: Header) => x.height)
         } else if (header.kind === 'text') {
             var textDimentions =
                 this._view._measureText(header.text, header.fontSpec)
@@ -791,10 +791,10 @@ function resolveValue(name: NODE_RENDER_METADATA_NAME, kind: string = '') {
 
     switch(name) {
         case 'arrange': 
-            return values[name]
+            return values.arrange
         case 'padding': 
-            return values[name]
+            return values.padding
         case 'expanded': 
-            return values[name]
+            return values.expanded
     }
 }

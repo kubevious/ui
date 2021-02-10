@@ -10,6 +10,7 @@ import { DiagramData, Montserrat } from '../../../types'
 import { VisualNodeText } from '../visual-node/visual-node-text'
 import { VisualNodeHeaderMarker } from '../visual-node/visual-node-header-marker'
 import { VisualNodeHeaderFlag } from '../visual-node/visual-node-header-flag'
+import { VisualNodeHeaderExpander } from '../visual-node/visual-node-header-expander'
 import {
     nodeGroupTransform,
     nodeWidth,
@@ -51,7 +52,7 @@ export default class VisualView {
     _panInterpolator: any // (t: number) => { x: number; y: number} - d3 function
     _panAnimationDuration!: number | null
     _panInterpolatorStartTime!: Date | null
-    _panAnimationTimer!: NodeJS.Timeout | null
+    _panAnimationTimer!: ReturnType<typeof setTimeout> | null
     
 
     constructor(parentElem: any, sharedState: SharedUserState) {
@@ -894,14 +895,14 @@ export default class VisualView {
             .transition()
             .duration(duration)
             .attr('x', (x: any) => { // x: VisualNodeHeaderExpander
-                var expanderNode = _.head(x.expanderNodes)
+                var expanderNode = _.head<VisualNodeHeaderExpander>(x.expanderNodes)
                 if (expanderNode) {
                     return expanderNode.x()
                 }
                 return 0
             })
             .attr('xlink:href', (x: any) => { // x: VisualNodeHeaderExpander
-                var expanderNode = _.head(x.expanderNodes)
+                var expanderNode = _.head<VisualNodeHeaderExpander>(x.expanderNodes)
                 if (expanderNode) {
                     return expanderNode.imgSrc
                 }
