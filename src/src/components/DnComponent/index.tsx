@@ -26,10 +26,8 @@ export const DnComponent: React.FunctionComponent<DnComponentProps> = ({ dn, opt
         }
     }
 
-    if (dnParts.length > 0) {
-        if (dnParts[0].kind === 'root') {
-            dnParts = dnParts.splice(1)
-        }
+    if (dnParts.length > 0 && dnParts[0].kind === 'root') {
+        dnParts = dnParts.splice(1)
     }
 
     return (
