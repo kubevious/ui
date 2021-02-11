@@ -60,5 +60,4 @@ class DnShortcutComponent extends BaseComponent {
 
 }
 
-
 export default DnShortcutComponent

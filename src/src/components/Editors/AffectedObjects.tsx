@@ -13,4 +13,3 @@ const AffectedObjects = ({ selectedItemData }:  { selectedItemData: SelectedItem
     )
 }
 export default AffectedObjects
-
