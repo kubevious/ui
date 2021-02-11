@@ -1,4 +1,4 @@
 export type MarkerDict = {
-  shape: string,
-  color: string,
+    shape: string
+    color: string
 }

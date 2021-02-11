@@ -10,7 +10,7 @@ export type Flags = string[];
 
 export interface SelectedData {
     dn: string,
-    id: number,
+    id?: number,
     errors: number,
     warnings: number,
     options?: DnOptions,
@@ -22,12 +22,7 @@ export type Markers = {
     items: Marker[],
 };
 
-export type Marker = {
-    name: string,
-    shape: string,
-    color: string,
-    propagate: boolean
-} 
+export type Marker = Record<string, any>;
 
 export interface DiagramData {
     flags?: Flags,
@@ -90,3 +85,14 @@ export interface TopIssueNamespaces {
     order: number,
     config: Dn[],
 };
+
+export interface SharedUserState {
+    user: () => SharedUserState;
+    close: () => void;
+    subscribe: (keyOrKeys: string | string[], cb: any) => {
+        id: string;
+        close: () => void;
+    };
+    get: (name: string) => any;
+    set: (name: string, value: any, options?: any) => void;
+}
