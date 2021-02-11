@@ -3,6 +3,7 @@ import { isEmptyArray } from '../../utils/util'
 import cx from 'classnames'
 import MarkerPreview from '../MarkerPreview'
 import BurgerMenu from '../BurgerMenu';
+import { Type } from './types';
 
 const ItemsList = ({ type, items, selectedItemId, selectItem, createNewItem, service }) => {
 
@@ -31,20 +32,20 @@ const ItemsList = ({ type, items, selectedItemId, selectItem, createNewItem, ser
                 </div>
             </div>
 
-            <div className={cx('rules', { 'markers': type === 'marker' })}>
+            <div className={cx('rules', { 'markers': type === Type.marker })}>
                 {!isEmptyArray(items) && items.map(item => (
                     <button key={item.name}
                             className={cx('rule-item-button', { 'selected': item.name === selectedItemId })}
                             onClick={() => selectItem(item)}
                     >
                         <div className="item">
-                            {type === 'marker' && <div className="shape-wrapper">
+                            {type === Type.marker && <div className="shape-wrapper">
                                 <MarkerPreview shape={item.shape} color={item.color} />
                             </div>}
 
                             <div className="indicators">
-                                {type === 'rule' && <div className={cx('indicator', ruleIndicatorClass(item))} />}
-                                {type === 'rule' && !item.is_current && <div className="busy-rule-indicator" />}
+                                {type === Type.rule && <div className={cx('indicator', ruleIndicatorClass(item))} />}
+                                {type === Type.rule && !item.is_current && <div className="busy-rule-indicator" />}
                             </div>
 
                             {item.name}
