@@ -7,6 +7,11 @@ import cx from 'classnames'
 import './styles.scss'
 import { Messages } from '../../types'
 
+interface AlertsState {
+    alerts: Messages[],
+    isDnSelected: boolean
+}
+
 class Alerts extends BaseComponent {
     constructor(props) {
         super(props)
@@ -59,10 +64,10 @@ class Alerts extends BaseComponent {
     }
 
     render() {
-        const alerts: Messages[] = this.state.alerts
+        const self = this.state as AlertsState
         return (
-            <div id="alertsComponent" className={cx({'empty': isEmptyArray(alerts)})}>
-                {this.renderAlerts(alerts)}
+            <div id="alertsComponent" className={cx({'empty': isEmptyArray(self.alerts)})}>
+                {this.renderAlerts(self.alerts)}
             </div>
         )
     }
