@@ -6,9 +6,9 @@ import { Service, SharedUserState } from '../types';
 import { Info, Subscriber } from './types';
 
 class BaseComponent extends PureComponent {
-    _service: Service | null;
-    _sharedState: SharedUserState
-    _subscribers: Subscriber[];
+    private _service: Service | null;
+    private _sharedState: SharedUserState
+    private _subscribers: Subscriber[];
     constructor(props) {
         super(props);
 

@@ -11,42 +11,42 @@ class MarkerService extends BaseService {
     backendFetchMarkerList(cb) {
         return this._client.get('/markers')
             .then(result => {
-                cb(result.data);
+                cb(result.data); //Marker[]
             });
     }
 
     backendFetchMarker(id, cb) {
         return this._client.get('/marker/' + id)
-            .then(result => {
-                cb(result.data);
+            .then((result) => {
+                cb(result.data); //Marker | null
             });
     }
 
     backendCreateMarker(config, targetName, cb) {
         return this._client.post('/marker/' + targetName, config)
             .then(result => {
-                cb(result.data)
+                cb(result.data) //any
             });
     }
 
     backendDeleteMarker(id, cb) {
         return this._client.delete('/marker/' + id)
             .then(result => {
-                cb(result.data);
+                cb(result.data); //any
             });
     }
 
     backendExportItems(cb) {
         return this._client.get('/markers/export')
             .then(result => {
-                cb(result.data);
+                cb(result.data); //{ kind: string; items: DataItem[]; }
             });
     }
 
     backendImportItems(markers, cb) {
         return this._client.post('/markers/import', markers)
             .then(result => {
-                cb(result.data);
+                cb(result.data); // any
             });
     }
 

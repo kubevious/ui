@@ -84,7 +84,7 @@ class SharedState
             console.log(key2);
        })
     */
-    subscribe(keyOrKeys, cb)
+    subscribe(keyOrKeys, cb) //string, cb: () => void
     {
         var subscriber = {
             id: uuidv4(),
