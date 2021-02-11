@@ -26,15 +26,11 @@ export const DnShortcutComponent: React.FunctionComponent<SelectedData> = ({
     //   markerName: MarkerDict
     // }
     // ***
-    let markerDict: {} = sharedState.get('markers_dict')
-    if (!markerDict) {
-        markerDict = {}
-    }
+    const markerDict = sharedState.get('markers_dict') || {}
 
     let markerItems: MarkerDict[] = []
     if (markers) {
-        markerItems = markers.map((x: React.Key) => markerDict[x])
-        markerItems = markerItems.filter((x) => x)
+        markerItems = markers.map((x: React.Key) => markerDict[x]).filter((x) => x)
     }
 
     return (
