@@ -5,9 +5,11 @@ import { isEmptyArray } from '../../utils/util'
 import MarkerPreview from '../MarkerPreview'
 
 import './styles.scss'
+import { MarkerDict } from './types'
+import { SelectedData } from '../../types'
 
 class DnShortcutComponent extends BaseComponent {
-    constructor(props: any) {
+    constructor(props) {
         super(props);
 
         this.clickDn = this.clickDn.bind(this);
@@ -20,14 +22,20 @@ class DnShortcutComponent extends BaseComponent {
     }
 
     render() {
-        const { dn, options, errors, warnings, markers } = this.props
+        const { dn, options, errors, warnings, markers } = this.props as SelectedData
 
-        var markerDict = this.sharedState.get('markers_dict');
+        // ***
+        // Example markerDict
+        // markerDict = {
+        //   markerName: MarkerDict
+        // }
+        // ***
+        var markerDict: {} = this.sharedState.get('markers_dict');
         if (!markerDict) {
             markerDict = {};
         }
 
-        var markerItems = [];
+        var markerItems: MarkerDict[] = [];
         if (markers) {
             markerItems = markers.map((x: React.Key) => markerDict[x]);
             markerItems = markerItems.filter(x => x);
