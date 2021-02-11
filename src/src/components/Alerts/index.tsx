@@ -64,10 +64,10 @@ class Alerts extends BaseComponent {
     }
 
     render() {
-        const self = this.state as AlertsState
+        const { alerts } = this.state as AlertsState
         return (
-            <div id="alertsComponent" className={cx({'empty': isEmptyArray(self.alerts)})}>
-                {this.renderAlerts(self.alerts)}
+            <div id="alertsComponent" className={cx({'empty': isEmptyArray(alerts)})}>
+                {this.renderAlerts(alerts)}
             </div>
         )
     }
