@@ -2,7 +2,6 @@ import { PureComponent } from 'react'
 import { api, sharedState } from '../configureService'
 import MockRootApiService from '../services-mock/MockRootApiService';
 import RootApiService from '../services/RootApiService';
-import SharedState from '../state/shared-state';
 import { Service, SharedUserState } from '../types';
 import { Info, Subscriber } from './types';
 

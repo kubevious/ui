@@ -6,7 +6,6 @@ import { NODE_RENDER_METADATA, SEVERITY_BG_COLOR_ERROR, SEVERITY_BG_COLOR_WARN, 
 import VisualView from '../visual-view/visual-view'
 import { DiagramData, Flags } from '../../../types'
 import { NODE_RENDER_METADATA_NAME, Header, Block } from '../types'
-import BaseVisualNodeHeader from './base-visual-node-header'
 import { VisualNodeHeaderExpander } from './visual-node-header-expander'
 import { VisualNodeHeaderFlag } from './visual-node-header-flag'
 import { VisualNodeHeaderMarker } from './visual-node-header-marker'
