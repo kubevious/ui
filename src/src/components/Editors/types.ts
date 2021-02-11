@@ -20,3 +20,8 @@ export type SelectedItem = {
     shape: string
     propagate: boolean
 }
+
+export enum Type {
+    rule = "rule",
+    marker = "marker",
+}
