@@ -1,7 +1,15 @@
 import { PureComponent } from 'react'
 import { api, sharedState } from '../configureService'
+import MockRootApiService from '../services-mock/MockRootApiService';
+import RootApiService from '../services/RootApiService';
+import SharedState from '../state/shared-state';
+import { Service, SharedUserState } from '../types';
+import { Info, Subscriber } from './types';
 
 class BaseComponent extends PureComponent {
+    _service: Service | null;
+    _sharedState: SharedUserState
+    _subscribers: Subscriber[];
     constructor(props) {
         super(props);
 
@@ -12,35 +20,35 @@ class BaseComponent extends PureComponent {
         console.log('[BaseComponent] ' + this.constructor.name + ' constructor. Props:', this.props);
     }
 
-    get rootApi() {
+    get rootApi():  MockRootApiService | RootApiService {
         return api;
     }
 
-    get service() {
+    get service(): Service | null {
         return this._service
     }
 
-    get sharedState() {
+    get sharedState(): SharedUserState {
         return this._sharedState
     }
 
-    registerService(info) {
+    registerService(info: Info): void {
         this._service = api.resolveService(info);
     }
 
-    subscribeToSharedState(subscribers, cb) {
+    subscribeToSharedState(subscribers: string, cb: any): void {
         var subscriber = this._sharedState.subscribe(subscribers, cb);
         this._subscribers.push(subscriber);
     }
 
-    unsubscribeFromSharedState() {
+    unsubscribeFromSharedState(): void {
         for(var x of this._subscribers) {
             x.close();
         }
         this._subscribers = [];
     }
 
-    componentWillUnmount() {
+    componentWillUnmount(): void {
         this.unsubscribeFromSharedState()
     }
 }
