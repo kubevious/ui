@@ -9,15 +9,14 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import cx from 'classnames'
 import MarkerService from '../../services/MarkerService';
-import { Marker } from './types';
-import { render } from 'react-dom';
+import { Markers } from '../../types';
 
 const BurgerMenu = ({ type, service }: { type: string, service: MarkerService }): JSX.Element => {
     const [isMenuVisible, setIsMenuVisible] = useState<boolean>(false)
     const [deleteExtra, setDeleteExtra] = useState<boolean>(false)
 
     const exportItems = (): void => {
-        service.backendExportItems((response: Marker) => {
+        service.backendExportItems((response: Markers) => {
             const dataStr: string = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(response))
             const exportElem: HTMLElement | null = document.getElementById('exportAnchor')
             if (exportElem) {

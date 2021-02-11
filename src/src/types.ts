@@ -1,3 +1,4 @@
+import { DnOptions } from './components/DnComponent/types';
 export type Service = new (...args: any) => Service;
 
 export type AlertCount = {
@@ -6,6 +7,27 @@ export type AlertCount = {
 };
 
 export type Flags = string[];
+
+export interface SelectedData {
+    dn: string,
+    id: number,
+    errors: number,
+    warnings: number,
+    options?: DnOptions,
+    markers: string[]
+}
+
+export type Markers = {
+    kind: string,
+    items: Marker[],
+};
+
+export type Marker = {
+    name: string,
+    shape: string,
+    color: string,
+    propagate: boolean
+} 
 
 export interface DiagramData {
     flags?: Flags,
