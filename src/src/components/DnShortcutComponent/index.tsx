@@ -1,63 +1,58 @@
 import React from 'react'
-import DnComponent from '../DnComponent'
-import BaseComponent from '../../HOC/BaseComponent'
 import { isEmptyArray } from '../../utils/util'
+import { MarkerDict } from './types'
+import { SelectedData } from '../../types'
+import { sharedState } from '../../configureService'
+import DnComponent from '../DnComponent'
 import MarkerPreview from '../MarkerPreview'
 
 import './styles.scss'
-import { MarkerDict } from './types'
-import { SelectedData } from '../../types'
 
-class DnShortcutComponent extends BaseComponent {
-    constructor(props) {
-        super(props);
-
-        this.clickDn = this.clickDn.bind(this);
+export const DnShortcutComponent: React.FunctionComponent<SelectedData> = ({
+    dn,
+    options,
+    errors,
+    warnings,
+    markers,
+}) => {
+    const clickDn = (): void => {
+        sharedState.set('selected_dn', dn)
+        sharedState.set('auto_pan_to_selected_dn', true)
+        sharedState.set('popup_window', null)
+    }
+    // ***
+    // Example markerDict
+    // markerDict = {
+    //   markerName: MarkerDict
+    // }
+    // ***
+    let markerDict: {} = sharedState.get('markers_dict')
+    if (!markerDict) {
+        markerDict = {}
     }
 
-    clickDn(): void {
-        this.sharedState.set('selected_dn', this.props.dn);
-        this.sharedState.set('auto_pan_to_selected_dn', true);
-        this.sharedState.set('popup_window', null);
+    let markerItems: MarkerDict[] = []
+    if (markers) {
+        markerItems = markers.map((x: React.Key) => markerDict[x])
+        markerItems = markerItems.filter((x) => x)
     }
 
-    render() {
-        const { dn, options, errors, warnings, markers } = this.props as SelectedData
+    return (
+        <div className='dn-shortcut' onClick={() => clickDn()}>
+            <DnComponent dn={dn} options={options} />
 
-        // ***
-        // Example markerDict
-        // markerDict = {
-        //   markerName: MarkerDict
-        // }
-        // ***
-        var markerDict: {} = this.sharedState.get('markers_dict');
-        if (!markerDict) {
-            markerDict = {};
-        }
-
-        var markerItems: MarkerDict[] = [];
-        if (markers) {
-            markerItems = markers.map((x: React.Key) => markerDict[x]);
-            markerItems = markerItems.filter(x => x);
-        }
-
-        return (
-            <div className="dn-shortcut" onClick={this.clickDn}>
-                <DnComponent dn={dn} options={options} />
-
-                <div className="dn-alert">
-                    {!isEmptyArray(markers) && markerItems.map(({ shape, color }) => (
-                        <div className="marker">
+            <div className='dn-alert'>
+                {!isEmptyArray(markers) &&
+                    markerItems.map(({ shape, color }) => (
+                        <div className='marker'>
                             <MarkerPreview key={shape} shape={shape} color={color} />
                         </div>
                     ))}
-                    {errors > 0 && <div className="indicator error-object">{errors > 1 && errors}</div>}
-                    {warnings > 0 && <div className="indicator warning-object">{warnings > 1 && warnings}</div>}
-                </div>
+                {errors > 0 && <div className='indicator error-object'>{errors > 1 && errors}</div>}
+                {warnings > 0 && <div className='indicator warning-object'>{warnings > 1 && warnings}</div>}
             </div>
-        );
-    }
-
+        </div>
+    )
 }
 
 export default DnShortcutComponent
