@@ -22,7 +22,6 @@ import { VisualNodeSeverity } from "./visual-node-severity"
 import { VisualNodeText } from "./visual-node-text"
 
 export default class VisualNode {
-    [x: string]: any
     private _view: VisualView
     private _data: DiagramData
     private _parent: VisualNode | null
@@ -104,7 +103,7 @@ export default class VisualNode {
         return this._view
     }
 
-    get node(): string {
+    get node(): VisualNode {
         return this.view.d3NodeDict[this.id]
     }
 

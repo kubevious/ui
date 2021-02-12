@@ -6,10 +6,11 @@ import "bootstrap/js/dist/tooltip"
 import VisualNode from "../visual-node/visual-node"
 import { flagTooltip, getNodeLogoUrl } from "../../../utils/ui-utils"
 import { ViewPosition } from "../types"
-import { DiagramData, Montserrat, SharedUserState } from "../../../types"
+import { DiagramData, Montserrat } from "../../../types"
 import { VisualNodeText } from "../visual-node/visual-node-text"
 import { VisualNodeHeaderMarker } from "../visual-node/visual-node-header-marker"
 import { VisualNodeHeaderFlag } from "../visual-node/visual-node-header-flag"
+import { ISharedState } from '@kubevious/ui-framework'
 import { VisualNodeHeaderExpander } from "../visual-node/visual-node-header-expander"
 import {
     nodeGroupTransform,
@@ -42,8 +43,8 @@ export default class VisualView {
     private _controlInfo: any
     private _flatVisualNodes: VisualNode[]
     private _existingNodeIds: {}
-    private _markerData: {}
-    private _d3NodeDict: {}
+    private _markerData: Record<string, any>
+    private _d3NodeDict: Record<string, VisualNode>
     private _d3SmallNodeDict: {}
     private _svgElem: any // Selection<BaseType, unknown, HTMLElement, any>
     private _rootElem: any // d3 element
@@ -52,9 +53,9 @@ export default class VisualView {
     private _panAnimationDuration!: number | null
     private _panInterpolatorStartTime!: Date | null
     private _panAnimationTimer!: ReturnType<typeof setTimeout> | null
-    sharedState: SharedUserState
+    sharedState: ISharedState
 
-    constructor(parentElem: any, sharedState: SharedUserState) {
+    constructor(parentElem: any, sharedState: ISharedState) {
         this._parentElem = parentElem
         this.sharedState = sharedState
 
@@ -90,7 +91,7 @@ export default class VisualView {
         })
     }
     
-    get markerData(): {} {
+    get markerData(): Record<string, any> {
         return this._markerData
     }
 
@@ -102,7 +103,7 @@ export default class VisualView {
         return this._currentSelectedNodeDn
     }
 
-    get d3NodeDict(): {} {
+    get d3NodeDict(): Record<string, VisualNode> {
         return this._d3NodeDict
     }
 
@@ -612,6 +613,7 @@ export default class VisualView {
 
     _renderNodeExpander(visualNode: VisualNode) {
         var selection = d3
+            // @ts-ignore: Unreachable code error
             .select(visualNode.node)
             .selectAll(".node-expander")
             .data(visualNode.expanderNodes, function (x: any) {
@@ -636,6 +638,7 @@ export default class VisualView {
     _renderNodeSeverity(visualNode: VisualNode): void {
         {
             var selection: any = d3 // d3 type Selection <BaseType, VisualNodeSeverity, BaseType, unknown>
+                // @ts-ignore: Unreachable code error
                 .select(visualNode.node)
                 .selectAll(".node-severity")
                 .data(visualNode.severityNodes, function (x: any) {
@@ -664,6 +667,7 @@ export default class VisualView {
         {
             // eslint-disable-next-line no-redeclare
             var selection: any = d3 //d3 type Selection <BaseType, VisualNodeText, BaseType, unknown>
+                // @ts-ignore: Unreachable code error
                 .select(visualNode.node)
                 .selectAll(".node-severity-text")
                 .data(visualNode.severityTextNodes, function (x: any) {
@@ -687,6 +691,7 @@ export default class VisualView {
     _renderNodeFlags(visualNode: VisualNode): void {
         var self = this
         var selection = d3
+            // @ts-ignore: Unreachable code error
             .select(visualNode.node)
             .selectAll(".node-flag")
             .data(visualNode.flagNodes, function (x: any) {
@@ -714,6 +719,7 @@ export default class VisualView {
     _renderNodeMarkers(visualNode: VisualNode): void {
         var self = this
         var selection: any = d3 // d3 type Selection<d3.BaseType, VisualNodeHeaderMarker, d3.BaseType, unknown>
+            // @ts-ignore: Unreachable code error
             .select(visualNode.node)
             .selectAll(".node-marker")
             .data(visualNode.markerNodes, function (x: any) {
@@ -799,6 +805,7 @@ export default class VisualView {
             this._renderNodeMarkers(visualNode)
         }
 
+        // @ts-ignore: Unreachable code error
         d3.select(visualNode.node)
             .selectAll(".node-flag")
             .transition()
@@ -809,12 +816,14 @@ export default class VisualView {
             })
             .attr("y", (x: any) => x.y()) // x: VisualNodeHeaderFlag
 
+        // @ts-ignore: Unreachable code error
         d3.select(visualNode.node)
             .selectAll(".node-marker")
             .transition()
             .duration(duration)
             .attr("transform", (x: any) => x.transform()) // x: VisualNodeHeaderMarker
 
+        // @ts-ignore: Unreachable code error
         d3.select(visualNode.node)
             .selectAll(".node-marker")
             .selectAll(".marker-text")
@@ -823,6 +832,7 @@ export default class VisualView {
             .duration(duration)
             .attr("fill", (x: any) => x.fill()) // x: VisualNodeHeaderMarker
 
+        // @ts-ignore: Unreachable code error
         d3.select(visualNode.node)
             .selectAll(".node-severity")
             .transition()
@@ -832,6 +842,7 @@ export default class VisualView {
                 return x.x()
             })
 
+        // @ts-ignore: Unreachable code error
         d3.select(visualNode.node)
             .selectAll(".node-severity-text")
             .text((x: any) => {
@@ -845,6 +856,7 @@ export default class VisualView {
                 return x.transform()
             })
 
+        // @ts-ignore: Unreachable code error
         d3.select(visualNode.node)
             .transition()
             .duration(duration)
@@ -857,6 +869,7 @@ export default class VisualView {
             })
             .attr("transform", nodeGroupTransform(visualNode))
 
+        // @ts-ignore: Unreachable code error
         d3.select(visualNode.node)
             .select(".node-bg")
             .transition()
@@ -866,6 +879,7 @@ export default class VisualView {
             .style("fill", nodeBgFillColor(visualNode))
             .style("stroke", nodeStrokeColor(visualNode))
 
+        // @ts-ignore: Unreachable code error
         d3.select(visualNode.node)
             .select(".node-header")
             .transition()
@@ -874,6 +888,7 @@ export default class VisualView {
             .attr("height", nodeHeaderBgHeight(visualNode))
             .style("fill", nodeHeaderBgFillColor(visualNode))
 
+        // @ts-ignore: Unreachable code error
         d3.select(visualNode.node)
             .select(".node-header-hl")
             .transition()
@@ -882,6 +897,7 @@ export default class VisualView {
             .attr("height", nodeHeaderBgHeight(visualNode))
             .style("fill", nodeHeaderHlFillColor(visualNode))
 
+        // @ts-ignore: Unreachable code error
         d3.select(visualNode.node)
             .select(".node-expander")
             .transition()
@@ -913,6 +929,7 @@ export default class VisualView {
     _renderItemsSmall(parentNode: VisualNode, items: VisualNode[]): void {
         var self = this
         var node = parentNode
+            // @ts-ignore: Unreachable code error
             .selectAll("g")
             .data(items, function (d: VisualNode) {
                 return d.id
