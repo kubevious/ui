@@ -12,7 +12,7 @@ export class FieldsSaver {
     setValue(values: PersistableFields): void {
         let params: PersistableFields = _.clone(values)
         let fields = {}
-
+        
         for (let key in params) {
             if (params[key] === null || params[key] === undefined) {
                 delete params[key]
@@ -52,7 +52,7 @@ export class FieldsSaver {
     }
 
     decodeParams(params: URLSearchParams): PersistableParams {
-        let obj: PersistableParams = {}
+        const obj: PersistableParams = {}
 
         switch (this._title) {
             case 'Diagram':
