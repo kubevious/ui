@@ -10,7 +10,7 @@ import { DiagramData, FontSpec } from "../../../types"
 import { VisualNodeText } from "../visual-node/visual-node-text"
 import { VisualNodeHeaderMarker } from "../visual-node/visual-node-header-marker"
 import { VisualNodeHeaderFlag } from "../visual-node/visual-node-header-flag"
-import { ISharedState } from '@kubevious/ui-framework'
+import { ISharedState } from "@kubevious/ui-framework"
 import { VisualNodeHeaderExpander } from "../visual-node/visual-node-header-expander"
 import {
     nodeGroupTransform,
@@ -90,7 +90,7 @@ export class VisualView {
             this.updateAll(true)
         })
     }
-    
+
     get markerData(): Record<string, any> {
         return this._markerData
     }
@@ -1019,22 +1019,18 @@ export class VisualView {
     }
 
     _updateSelection(selected_dn: string): void {
-        if (this._currentSelectedNodeDn) {
-            if (this._currentSelectedNodeDn != selected_dn) {
-                var node: VisualNode = this._nodeDict[
-                    this._currentSelectedNodeDn
-                ]
-                this._currentSelectedNodeDn = null
-                if (node) {
-                    this._updateNode(node)
-                }
-            }
-        }
-
         if (
             this._currentSelectedNodeDn &&
             this._currentSelectedNodeDn != selected_dn
         ) {
+            var node: VisualNode = this._nodeDict[this._currentSelectedNodeDn]
+            this._currentSelectedNodeDn = null
+            if (node) {
+                this._updateNode(node)
+            }
+        }
+
+        if (this._currentSelectedNodeDn != selected_dn) {
             this._currentSelectedNodeDn = selected_dn
             var node = this._nodeDict[selected_dn]
             if (node) {
