@@ -4,7 +4,7 @@ import NotificationList from '../NotificationList'
 
 import './styles.scss'
 
-class Notifications extends BaseComponent<IMiscService> {
+export class Notifications extends BaseComponent<IMiscService> {
   constructor(props) {
       super(props, { kind: 'misc' })
 
@@ -35,4 +35,3 @@ class Notifications extends BaseComponent<IMiscService> {
     )
   }
 }
-export default Notifications

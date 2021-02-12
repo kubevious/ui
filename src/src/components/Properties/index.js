@@ -9,7 +9,7 @@ import * as DnUtils from '@kubevious/helpers/dist/dn-utils'
 import './styles.scss'
 import './obsidian.css'
 
-class Properties extends BaseComponent {
+export class Properties extends BaseComponent {
     constructor(props) {
         super(props)
 
@@ -124,5 +124,3 @@ class Properties extends BaseComponent {
         )
     }
 }
-
-export default Properties

@@ -3,7 +3,7 @@ import { BaseComponent } from '@kubevious/ui-framework'
 
 import './styles.scss'
 
-class PostFeedback extends BaseComponent {
+export class PostFeedback extends BaseComponent {
     constructor(props) {
         super(props)
     }
@@ -74,5 +74,3 @@ class PostFeedback extends BaseComponent {
         )
     }
 }
-
-export default PostFeedback

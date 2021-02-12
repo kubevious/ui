@@ -6,7 +6,7 @@ import PropertiesContents from '../PropertiesContents'
 import DnComponent from '../../DnComponent'
 import { BaseComponent, IService } from '@kubevious/ui-framework'
 
-class PropertyGroup extends BaseComponent<IService> {
+export class PropertyGroup extends BaseComponent<IService> {
     constructor(props) {
         super(props)
 
@@ -120,5 +120,3 @@ class PropertyGroup extends BaseComponent<IService> {
         )
     }
 }
-
-export default PropertyGroup

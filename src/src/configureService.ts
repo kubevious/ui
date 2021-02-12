@@ -1,6 +1,6 @@
 import { MockRootApiService } from './services-mock/MockRootApiService'
 import { RootApiService } from './services/RootApiService'
-import KubeviousHandler from './state/kubevious-handler'
+import { KubeviousHandler } from './state/kubevious-handler'
 
 import { app } from '@kubevious/ui-framework';
 

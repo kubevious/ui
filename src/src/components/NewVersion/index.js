@@ -5,7 +5,7 @@ import { isEmptyArray } from '../../utils/util'
 
 import './styles.scss'
 
-const NewVersion = ({ info }) => {
+export const NewVersion = ({ info }) => {
     let version = info.version
     if (!_.startsWith(version, 'v')) {
         version = 'v' + version
@@ -52,5 +52,3 @@ const NewVersion = ({ info }) => {
         </div>
     )
 }
-
-export default NewVersion

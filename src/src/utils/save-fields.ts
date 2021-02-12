@@ -1,7 +1,7 @@
 import { Field, Params } from './../types';
 import _ from 'the-lodash'
 
-class FieldsSaver {
+export class FieldsSaver {
     private _title: string
     fields: {};
     constructor(title: string) {
@@ -65,5 +65,3 @@ class FieldsSaver {
         return obj
     }
 }
-
-export default FieldsSaver

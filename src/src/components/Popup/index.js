@@ -4,7 +4,7 @@ import { BaseComponent } from '@kubevious/ui-framework'
 import './styles.scss'
 
 
-class Popup extends BaseComponent {
+export class Popup extends BaseComponent {
     constructor(props) {
         super(props)
   
@@ -26,5 +26,3 @@ class Popup extends BaseComponent {
         )
     }
 }
-
-export default Popup

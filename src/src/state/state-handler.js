@@ -5,7 +5,7 @@ import TimelineUtils from '../utils/timeline-utils'
 
 import * as DnUtils from '@kubevious/helpers/dist/dn-utils';
 
-class StateHandler {
+export class StateHandler {
     constructor(sharedState, diagramService) {
         if (!sharedState) {
             throw new Error("SharedState not provided");
@@ -346,5 +346,3 @@ class StateHandler {
     }
 
 }
-
-export default StateHandler;

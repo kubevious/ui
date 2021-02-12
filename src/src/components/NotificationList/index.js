@@ -5,7 +5,7 @@ import NewVersion from '../NewVersion'
 
 import './styles.scss'
 
-const NotificationList = ({ list }) => {
+export const NotificationList = ({ list }) => {
     return (
       <div className="p-40">
         <div>
@@ -26,5 +26,3 @@ const NotificationList = ({ list }) => {
       </div>
     )
 }
-
-export default NotificationList

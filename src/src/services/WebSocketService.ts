@@ -29,5 +29,3 @@ export class WebSocketService implements IWebSocketService
         return this._socket.scope(cb);
     }
 }
-
-export default WebSocketService;

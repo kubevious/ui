@@ -3,7 +3,7 @@ import Snooze from '../Snooze'
 import Markdown from 'markdown-to-jsx'
 import './styles.scss'
 
-const MessageNotification = ({ request }) => {
+export const MessageNotification = ({ request }) => {
     return (
         <div className="separate-container message-block">
             <h3>{request.title}</h3>
@@ -12,5 +12,3 @@ const MessageNotification = ({ request }) => {
         </div>
     )
 }
-
-export default MessageNotification

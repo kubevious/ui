@@ -1,6 +1,6 @@
 import _ from 'the-lodash'
 
-class DiagramSource
+export class DiagramSource
 {
     constructor(sharedState, socket)
     {
@@ -201,5 +201,3 @@ class DiagramSource
         traverseNode('root', null);
     }
 }
-
-export default DiagramSource;

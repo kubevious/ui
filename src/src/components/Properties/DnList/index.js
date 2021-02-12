@@ -4,7 +4,7 @@ import { isEmptyArray } from '../../../utils/util'
 
 import './styles.scss'
 
-const DnList = ({ config, options }) => {
+export const DnList = ({ config, options }) => {
     return (
         <>
             {!isEmptyArray(config) &&
@@ -18,5 +18,3 @@ const DnList = ({ config, options }) => {
         </>
     )
 }
-
-export default DnList

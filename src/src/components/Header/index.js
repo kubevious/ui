@@ -13,7 +13,7 @@ import moment from 'moment'
 
 import './styles.scss'
 
-class Header extends BaseComponent<IMiscService> {
+export class Header extends BaseComponent<IMiscService> {
     constructor(props) {
         super(props, { kind: 'misc' });
 
@@ -190,5 +190,3 @@ class Header extends BaseComponent<IMiscService> {
         )
     }
 }
-
-export default Header

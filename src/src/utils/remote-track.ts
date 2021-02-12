@@ -2,7 +2,7 @@ import { AxiosRequestConfig } from 'axios'
 import { v4 as uuidv4 } from 'uuid';
 import { isEmptyObject } from './util';
 
-class RemoteTrack {
+export class RemoteTrack {
     private _sharedState: any
     _requests: {};
     constructor(sharedState: {}) {
@@ -57,5 +57,3 @@ class RemoteTrack {
         }
     }
 }
-
-export default RemoteTrack

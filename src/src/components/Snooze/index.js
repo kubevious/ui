@@ -3,7 +3,7 @@ import { BaseComponent } from '@kubevious/ui-framework'
 import $ from 'jquery'
 import './styles.scss'
 
-class Snooze extends BaseComponent<IMiscService> {
+export class Snooze extends BaseComponent<IMiscService> {
     constructor(props) {
         super(props, { kind: 'misc' })
 
@@ -85,5 +85,3 @@ class Snooze extends BaseComponent<IMiscService> {
         )
     }
 }
-
-export default Snooze

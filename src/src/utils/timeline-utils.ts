@@ -1,6 +1,6 @@
 import moment, { Moment } from 'moment'
 
-class TimelineUtils {
+export class TimelineUtils {
     private _sharedState: any
     private dayInSec: number
     constructor(sharedState: {}) {
@@ -60,5 +60,3 @@ class TimelineUtils {
     }
 
 }
-
-export default TimelineUtils

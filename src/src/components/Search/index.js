@@ -12,7 +12,7 @@ import cx from 'classnames'
 
 import './styles.scss'
 
-class Search extends BaseComponent<IDiagramService> {
+export class Search extends BaseComponent<IDiagramService> {
     constructor(props) {
         super(props, { kind: 'diagram' })
 
@@ -803,5 +803,3 @@ class Search extends BaseComponent<IDiagramService> {
         )
     }
 }
-
-export default Search

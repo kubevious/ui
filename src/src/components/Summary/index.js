@@ -4,7 +4,7 @@ import PropertiesContents from '../Properties/PropertiesContents'
 import './styles.scss'
 import { isEmptyObject } from '../../utils/util'
 
-class Summary extends BaseComponent {
+export class Summary extends BaseComponent {
     constructor(props) {
         super(props)
 
@@ -38,5 +38,3 @@ class Summary extends BaseComponent {
         return <div id="summaryComponent" className="loading-placeholder">Loading...</div>
     }
 }
-
-export default Summary

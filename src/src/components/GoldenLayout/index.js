@@ -10,7 +10,7 @@ import RegisterComponents from './register-components';
 
 import './styles.scss'
 
-class GoldenLayoutComponent extends BaseComponent {
+export class GoldenLayoutComponent extends BaseComponent {
     constructor(props) {
         super(props)
         this._components = []
@@ -187,5 +187,3 @@ class GoldenLayoutComponent extends BaseComponent {
         $(document).trigger(id);
     }
 }
-
-export default GoldenLayoutComponent

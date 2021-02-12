@@ -3,7 +3,7 @@ import './styles.scss'
 
 import PropertiesValue from '../helpers'
 
-const PropertiesCounters = ({ config }) => {
+export const PropertiesCounters = ({ config }) => {
     return (
         <div className="counters-container">
             {config.map(element => (
@@ -17,5 +17,3 @@ const PropertiesCounters = ({ config }) => {
         </div>
     )
 }
-
-export default PropertiesCounters

@@ -15,7 +15,7 @@ import 'codemirror/theme/darcula.css'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/mode/yaml/yaml'
 
-const Config = ({ config, dn, language }) => {
+export const Config = ({ config, dn, language }) => {
     const [indent, setIndent] = useState(2)
     const [editMode, setEditMode] = useState(false)
 
@@ -173,5 +173,3 @@ const Config = ({ config, dn, language }) => {
         </div>
     )
 }
-
-export default Config

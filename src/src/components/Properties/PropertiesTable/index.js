@@ -1,14 +1,13 @@
-import React from 'react'
-import _ from 'the-lodash'
-import cx from 'classnames'
-import DnShortcutComponent from '../../DnShortcutComponent'
+import React from "react"
+import _ from "the-lodash"
+import cx from "classnames"
+import DnShortcutComponent from "../../DnShortcutComponent"
 
-import './styles.scss'
+import "./styles.scss"
 
-import PropertiesValue from '../helpers'
+import PropertiesValue from "../helpers"
 
-const PropertiesTable = ({ config, options, state }) => {
-
+export const PropertiesTable = ({ config, options, state }) => {
     const tableHeaders = () => {
         return config.headers.map((x) => {
             let column = {}
@@ -47,8 +46,8 @@ const PropertiesTable = ({ config, options, state }) => {
     }
 
     const renderColumnFormatter = (formatter, cell) => {
-        if (formatter === 'check') return renderRowCheckbox(cell)
-        if (formatter === 'shortcut')
+        if (formatter === "check") return renderRowCheckbox(cell)
+        if (formatter === "shortcut")
             return (
                 <DnShortcutComponent
                     dn={cell}
@@ -60,7 +59,7 @@ const PropertiesTable = ({ config, options, state }) => {
 
     const renderRowCheckbox = (value) => (
         <div
-            className={cx('properties-checkbox', {
+            className={cx("properties-checkbox", {
                 checked: value,
                 unchecked: !value,
             })}
@@ -91,5 +90,3 @@ const PropertiesTable = ({ config, options, state }) => {
         </div>
     )
 }
-
-export default PropertiesTable

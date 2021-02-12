@@ -5,7 +5,7 @@ import './styles.scss'
 
 import PropertiesValue from '../helpers'
 
-const KeyValueList = ({ config }) => {
+export const KeyValueList = ({ config }) => {
     return (
         <div className="KeyValueList-container">
             {config &&
@@ -18,5 +18,3 @@ const KeyValueList = ({ config }) => {
         </div>
     )
 }
-
-export default KeyValueList

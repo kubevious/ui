@@ -5,9 +5,7 @@ import { BaseComponent } from '@kubevious/ui-framework'
 import moment from 'moment'
 import TimelineUtils from '../../utils/timeline-utils'
 
-
-
-class TimelineButtons extends BaseComponent {
+export class TimelineButtons extends BaseComponent {
   constructor(props) {
     super(props)
 
@@ -91,5 +89,3 @@ class TimelineButtons extends BaseComponent {
     )
   }
 }
-
-export default TimelineButtons

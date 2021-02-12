@@ -1,7 +1,7 @@
 import React from 'react'
 import DnShortcutComponent from '../../DnShortcutComponent'
 
-const PropertiesObjectList = ({ config }) => {
+export const PropertiesObjectList = ({ config }) => {
     return (
         <>
             {config.map((element) => (
@@ -16,5 +16,3 @@ const PropertiesObjectList = ({ config }) => {
         </>
     )
 }
-
-export default PropertiesObjectList

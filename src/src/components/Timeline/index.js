@@ -10,7 +10,7 @@ import TimelineUtils from '../../utils/timeline-utils'
 
 import './styles.scss'
 
-class Timeline extends BaseComponent {
+export class Timeline extends BaseComponent {
   constructor(props) {
     super(props)
 
@@ -767,5 +767,3 @@ class Timeline extends BaseComponent {
     )
   }
 }
-
-export default Timeline

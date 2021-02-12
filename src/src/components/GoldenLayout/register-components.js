@@ -6,7 +6,7 @@ import Alerts from '../Alerts';
 import Timeline from '../Timeline';
 import Summary from '../Summary';
 
-class RegisterComponents {
+export class RegisterComponents {
     constructor(parent) {
         this._parent = parent
 
@@ -64,5 +64,3 @@ class RegisterComponents {
         })
     }
 }
-
-export default RegisterComponents

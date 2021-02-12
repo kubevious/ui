@@ -3,7 +3,7 @@ import React from 'react'
 
 import './styles.scss'
 
-const PropertiesValue = (value) => {
+export const PropertiesValue = (value) => {
     if (_.isObject(value) && _.isNotNullOrUndefined(value.value)) {
         value = formatValue(value);
     }
@@ -52,5 +52,3 @@ function formatMemory(value, decimals) {
         unit: MEMORY_SIZES[i]
     };
 }
-
-export default PropertiesValue

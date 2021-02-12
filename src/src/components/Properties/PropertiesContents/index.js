@@ -7,7 +7,7 @@ import DnList from '../DnList'
 import Config from '../Config'
 import PropertiesTable from '../PropertiesTable'
 
-const PropertiesContents = ({ group, dn }) => {
+export const PropertiesContents = ({ group, dn }) => {
 
     switch (group.kind) {
         case 'counters':
@@ -28,5 +28,3 @@ const PropertiesContents = ({ group, dn }) => {
             return <div>No data presented</div>
     }
 }
-
-export default PropertiesContents

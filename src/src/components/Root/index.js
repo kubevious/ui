@@ -8,7 +8,7 @@ import SEO from "../SEO"
 import FieldsSaver from "../../utils/save-fields"
 import ErrorBox from "../ErrorBox"
 
-class Root extends BaseComponent {
+export class Root extends BaseComponent {
     constructor(props) {
         super(props)
 
@@ -177,5 +177,3 @@ class Root extends BaseComponent {
         )
     }
 }
-
-export default Root

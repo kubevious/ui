@@ -1,10 +1,10 @@
-import StateHandler from './state-handler'
-import DiagramSource from './diagram-source'
+import { StateHandler } from './state-handler'
+import { DiagramSource } from './diagram-source'
 
 import { app } from '@kubevious/ui-framework';
 import { IDiagramService, IWebSocketService } from '@kubevious/ui-middleware/dist';
 
-class KubeviousHandler
+export class KubeviousHandler
 {
     _stateHandler: StateHandler;
     _diagramSource: DiagramSource;
@@ -31,5 +31,3 @@ class KubeviousHandler
     }
 
 }
-
-export default KubeviousHandler;
