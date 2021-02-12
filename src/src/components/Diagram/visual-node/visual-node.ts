@@ -836,11 +836,11 @@ function resolveValue(name: NODE_RENDER_METADATA_NAME, kind: string = "") {
     }
 
     switch (name) {
-        case "arrange":
+        case values.arrange:
             return values.arrange
-        case "padding":
+        case values.padding:
             return values.padding
-        case "expanded":
+        case values.expanded:
             return values.expanded
     }
 }
