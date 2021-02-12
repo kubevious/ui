@@ -11,7 +11,9 @@ export interface MarkerStatus {
     shape?: string
     color?: string
     item_count?: number
+    error_count?: number
     is_current?: boolean
+    enabled?: boolean
 }
 
 export type SelectedItem = {
@@ -24,4 +26,10 @@ export type SelectedItem = {
 export enum EditorType {
     rule = "rule",
     marker = "marker",
+}
+
+export enum IndicatorType {
+    disabled = "disabled",
+    invalid = "invalid",
+    enabled = "enabled"
 }
