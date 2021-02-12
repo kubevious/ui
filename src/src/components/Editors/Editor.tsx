@@ -5,20 +5,19 @@ import { AffectedObjects } from "./AffectedObjects"
 import { StartPage } from "./StartPage"
 import { RuleMainTab } from "./RuleMainTab"
 import { MarkerMainTab } from "./MarkerMainTab"
-import { SelectedItem, SelectedItemData, EditorType } from "./types"
-import { SelectedData } from "../../types"
+import { Marker, SelectedItemData, EditorType } from "./types"
 
 type EditorProps = {
     type: string
-    items: SelectedData[]
+    items: Marker[]
     isNewItem: boolean
-    selectedItem: SelectedItem
+    selectedItem: Marker
     selectedItemData: SelectedItemData
     selectedItemId: string
     createNewItem: () => void
-    saveItem: () => void
-    deleteItem: () => void
-    createItem: () => void
+    saveItem: (data: Marker) => void
+    deleteItem: (data: Marker) => void
+    createItem: (data: Marker) => void
     openSummary: () => void
     isSuccess: boolean
 }
@@ -49,7 +48,9 @@ export const Editor: React.FunctionComponent<EditorProps> = ({
     if (type === EditorType.marker) {
         if (selectedItemData.items) {
             for (var item of selectedItemData.items) {
-                item.markers = [selectedItem.name]
+                if (selectedItem.name) {
+                    item.markers = [selectedItem.name]
+                }
             }
         }
     }

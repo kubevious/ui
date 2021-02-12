@@ -3,13 +3,12 @@ import { isEmptyArray } from "../../utils/util"
 import cx from "classnames"
 import { MarkerPreview } from "../MarkerPreview"
 import { BurgerMenu } from "../BurgerMenu"
-import { EditorType, IndicatorType, MarkerStatus } from "./types"
-import { Marker } from "../../types"
+import { EditorType, IndicatorType, Marker } from "./types"
 import { IMarkerService } from "@kubevious/ui-middleware"
 
 type ItemsListProps = {
     type: string
-    items: MarkerStatus[]
+    items: Marker[]
     selectedItemId: string
     selectItem: (marker: Marker) => void
     createNewItem: () => void
@@ -24,7 +23,7 @@ export const ItemsList: React.FunctionComponent<ItemsListProps> = ({
     createNewItem,
     service,
 }) => {
-    const ruleIndicatorClass = (x: MarkerStatus): string => {
+    const ruleIndicatorClass = (x: Marker): string => {
         let indicatorClass: string
         if (!x.enabled) {
             indicatorClass = IndicatorType.disabled

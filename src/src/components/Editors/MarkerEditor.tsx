@@ -1,28 +1,39 @@
 import React from 'react'
-import { BaseComponent } from '@kubevious/ui-framework'
-import Editor from './Editor'
-import ItemsList from './ItemsList'
+import { Editor } from './Editor.jsx'
+import { ItemsList } from './ItemsList'
 import { COLORS, SHAPES } from '../../boot/markerData'
+import { Marker, SelectedItemData } from './types';
+import { BaseComponent } from '@kubevious/ui-framework'
 
 import { IMarkerService } from '@kubevious/ui-middleware'
 
 const selectedItemInit = {}
-const selectedItemDataInit = {
+const selectedItemDataInit: SelectedItemData = {
     status: {},
-    items: []
+    items: [],
+    item_count: 0
 }
 
-class MarkerEditor extends BaseComponent<IMarkerService> {
+type MarkerEditorState = {
+    items: Marker[]
+    selectedItem: Marker
+    selectedItemData: SelectedItemData
+    selectedItemId: string
+    isSuccess: boolean
+    isNewItem: boolean
+}
+
+export class MarkerEditor extends BaseComponent<IMarkerService> {
+    private _markerService: IMarkerService;
     constructor(props) {
         super(props, { kind: 'marker' });
-
         this.state = {
             items: [],
             selectedItem: selectedItemInit,
             selectedItemData: selectedItemDataInit,
             isSuccess: false
         }
-
+        this._markerService = this.service as IMarkerService
         this.openSummary = this.openSummary.bind(this)
         this.saveItem = this.saveItem.bind(this)
         this.deleteItem = this.deleteItem.bind(this)
@@ -31,14 +42,14 @@ class MarkerEditor extends BaseComponent<IMarkerService> {
         this.createNewItem = this.createNewItem.bind(this)
     }
 
-    componentDidMount() {
-        this.subscribeToSharedState('marker_editor_items', (value) => {
+    componentDidMount(): void {
+        this.subscribeToSharedState('marker_editor_items', (value: Marker[]) => {
             this.setState({
                 items: value
             });
         });
 
-        this.subscribeToSharedState('rule_editor_selected_marker_status', (value) => {
+        this.subscribeToSharedState('rule_editor_selected_marker_status', (value: SelectedItemData) => {
             if (!value) {
                 value = selectedItemDataInit;
             }
@@ -48,31 +59,36 @@ class MarkerEditor extends BaseComponent<IMarkerService> {
         });
     }
 
-    selectItem(marker) {
+    selectItem(marker: Marker): void {
         this.setState({
             isNewItem: false,
             isSuccess: false,
             selectedItemId: marker.name
         })
+        if (marker.name) {
+            this._markerService.backendFetchMarker(marker.name, data => {
+                if (data === null) {
+                    this.openSummary()
+                    return
+                }
+                const { selectedItemId } = this.state as MarkerEditorState
+    
+                if (data.name === selectedItemId) {
+                    this.setState({
+                        selectedItem: data
+                    })
+                }
+            })
 
-        this.service.backendFetchMarker(marker.name, data => {
-            if (data === null) {
-                this.openSummary()
-                return
-            }
-
-            if (data.name === this.state.selectedItemId) {
-                this.setState({
-                    selectedItem: data
-                })
-            }
-        })
+        }
 
         this.sharedState.set('marker_editor_selected_marker_id', marker.name);
     }
 
-    saveItem(data) {
-        this.service.backendCreateMarker(data, this.state.selectedItemId, () => {
+    saveItem(data: Marker): void {
+        const { selectedItemId } = this.state as MarkerEditorState
+
+        this._markerService.backendCreateMarker(data, selectedItemId, () => {
             this.setState({ isSuccess: true })
 
             setTimeout(() => {
@@ -82,29 +98,31 @@ class MarkerEditor extends BaseComponent<IMarkerService> {
         })
     }
 
-    deleteItem(data) {
-        this.service.backendDeleteMarker(data.name, () => {
-            this.setState({ selectedItem: selectedItemInit, selectedItemId: null })
-            this.sharedState.set('marker_editor_selected_marker_id', null);
-        })
+    deleteItem(data: Marker): void {
+        if (data.name) {    
+            this._markerService.backendDeleteMarker(data.name, () => {
+                this.setState({ selectedItem: selectedItemInit, selectedItemId: null })
+                this.sharedState.set('marker_editor_selected_marker_id', null);
+            })
+        }
     }
 
-    openSummary() {
+    openSummary(): void {
         this.setState({ selectedItem: selectedItemInit, selectedItemId: null })
         this.sharedState.set('marker_editor_selected_marker_id', null);
     }
 
-    createItem(data) {
-        this.service.backendCreateMarker(data, null, (marker) => {
+    createItem(data: Marker): void {
+        this._markerService.backendCreateMarker(data, '', (marker) => {
             this.setState({ isSuccess: true })
             this.selectItem(marker)
         })
     }
 
-    createNewItem() {
+    createNewItem(): void {
         this.sharedState.set('marker_editor_selected_marker_id', null);
 
-        this.setState(prevState => ({
+        this.setState(() => ({
             isNewItem: true,
             selectedItem: {
                 name: '',
@@ -119,7 +137,7 @@ class MarkerEditor extends BaseComponent<IMarkerService> {
     }
 
     render() {
-        const { items, isNewItem, selectedItem, selectedItemData, selectedItemId, isSuccess } = this.state
+        const { items, isNewItem, selectedItem, selectedItemData, selectedItemId, isSuccess } = this.state as MarkerEditorState
 
         return (
             <div className="RuleEditor-container" id="markerEditorComponent">
@@ -129,7 +147,7 @@ class MarkerEditor extends BaseComponent<IMarkerService> {
                     selectedItemId={selectedItemId}
                     selectItem={this.selectItem}
                     createNewItem={this.createNewItem}
-                    service={this.service}
+                    service={this._markerService}
                 />
 
                 <Editor type='marker'
@@ -149,5 +167,3 @@ class MarkerEditor extends BaseComponent<IMarkerService> {
         );
     }
 }
-
-export default MarkerEditor
