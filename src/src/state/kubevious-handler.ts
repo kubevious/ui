@@ -1,27 +1,25 @@
 import StateHandler from './state-handler'
 import DiagramSource from './diagram-source'
-import RootApiService from '../services/RootApiService';
-import MockRootApiService from '../services-mock/MockRootApiService';
+
+import { app } from '@kubevious/ui-framework';
+import { IDiagramService, IWebSocketService } from '@kubevious/ui-middleware/dist';
 
 class KubeviousHandler
 {
-    _api: RootApiService | MockRootApiService;
     _stateHandler: StateHandler;
     _diagramSource: DiagramSource;
 
-    constructor(api: RootApiService | MockRootApiService)
+    constructor()
     {
-        this._api = api;
-
         console.log("[KubeviousHandler] :: create");
 
         this._stateHandler = new StateHandler(
-            api.sharedState,
-            api.diagramService());
+            app.sharedState,
+            app.serviceRegistry.resolveService<IDiagramService>({ kind: 'diagram'}));
 
         this._diagramSource = new DiagramSource(
-            api.sharedState,
-            api.socketService());
+            app.sharedState,
+            app.serviceRegistry.resolveService<IWebSocketService>({ kind: 'socket'}));
     }
 
     close(): void

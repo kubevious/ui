@@ -1,6 +1,9 @@
-import BaseService from './BaseService'
+import _ from 'the-lodash';
+import { BaseService } from './BaseService'
 
-class MarkerService extends BaseService {
+import { IMarkerService } from '@kubevious/ui-middleware/dist';
+
+export class MarkerService extends BaseService implements IMarkerService {
     constructor(client, sharedState, socket)
     {
         super(client, sharedState, socket)
@@ -8,49 +11,54 @@ class MarkerService extends BaseService {
         this._setupWebSocket();
     }
 
-    backendFetchMarkerList(cb) {
-        return this._client.get('/markers')
+    backendFetchMarkerList(cb: (data: any) => any) : void {
+        this.client.get('/markers')
             .then(result => {
                 cb(result.data); //Marker[]
+                return null;
             });
     }
 
-    backendFetchMarker(id, cb) {
-        return this._client.get('/marker/' + id)
+    backendFetchMarker(id: string, cb: (data: any) => any) : void {
+        this.client.get('/marker/' + id)
             .then((result) => {
                 cb(result.data); //Marker | null
+                return null;
             });
     }
 
-    backendCreateMarker(config, targetName, cb) {
-        return this._client.post('/marker/' + targetName, config)
+    backendCreateMarker(config: any, targetName: string, cb: (data: any) => any) : void {
+        this.client.post('/marker/' + targetName, config)
             .then(result => {
                 cb(result.data) //any
+                return null;
             });
     }
 
-    backendDeleteMarker(id, cb) {
-        return this._client.delete('/marker/' + id)
+    backendDeleteMarker(id: string, cb: (data: any) => any) : void {
+        this.client.delete('/marker/' + id)
             .then(result => {
                 cb(result.data); //any
+                return null;
             });
     }
 
-    backendExportItems(cb) {
-        return this._client.get('/markers/export')
+    backendExportItems(cb: (data: any) => any) : void {
+        this.client.get('/markers/export')
             .then(result => {
                 cb(result.data); //{ kind: string; items: DataItem[]; }
             });
     }
 
-    backendImportItems(markers, cb) {
-        return this._client.post('/markers/import', markers)
+    backendImportItems(markers: any, cb: (data: any) => any) : void {
+        this.client.post('/markers/import', markers)
             .then(result => {
                 cb(result.data); // any
+                return null;
             });
     }
 
-    _setupWebSocket()
+    private _setupWebSocket()
     {
         this.sharedState.set('marker_editor_items', []);
 
@@ -83,5 +91,3 @@ class MarkerService extends BaseService {
             });
     }
 }
-
-export default MarkerService

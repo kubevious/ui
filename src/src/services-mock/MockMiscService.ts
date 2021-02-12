@@ -5,20 +5,34 @@ import {
     MESSAGE_DATA
 } from '../boot/aboutMockData'
 
-class MockMiscService {
-    constructor(parent, sharedState) {
-        this._sharedState = sharedState;
-        this._parent = parent
+import { RemoteTrack } from '@kubevious/ui-framework/dist/remote-track'
+import { ISharedState } from '@kubevious/ui-framework'
+import { MockRootApiService } from './MockRootApiService';
 
-        this._allNotifications = [
-            NEW_VERSION_AVAILABLE_DATA,
-            FEEDBACK_QUESTIONS,
-            MESSAGE_DATA
-        ]
-        this._snoozeDict = {};
 
-        this._isNewVersionPresent = true;
-        this._currentNotifications = [];
+import { IMiscService } from '@kubevious/ui-middleware'
+
+export class MockMiscService implements IMiscService {
+
+    private parent: MockRootApiService;
+    private sharedState : ISharedState;
+
+    private _allNotifications = [
+        NEW_VERSION_AVAILABLE_DATA,
+        FEEDBACK_QUESTIONS,
+        MESSAGE_DATA
+    ]
+    private _snoozeDict : Record<string, boolean> = {};
+
+    private _isNewVersionPresent : boolean = true;
+    private _currentNotifications : any[] = [];
+    private _notifications : any[] = [];
+
+
+    constructor(parent: MockRootApiService, sharedState: ISharedState)
+    {
+        this.parent = parent;
+        this.sharedState = sharedState;
 
         this._updateNotifications();
         setInterval(() => {
@@ -26,13 +40,18 @@ class MockMiscService {
         }, 60 * 1000);
     }
 
-    _applyNotificationScenario()
+    close()
+    {
+        
+    }
+
+    private _applyNotificationScenario()
     {
         this._isNewVersionPresent = !this._isNewVersionPresent;
         this._updateNotifications();
     }
 
-    _updateNotifications()
+    private _updateNotifications()
     {
         this._notifications = this._allNotifications.filter(x => {
             if (x.kind == 'new-version') {
@@ -50,34 +69,32 @@ class MockMiscService {
             return true;
         });
 
-        this._sharedState.set('notifications_info', {
+        this.sharedState.set('notifications_info', {
             count: this._notifications.length
         });
-        this._sharedState.set('notifications', {
+        this.sharedState.set('notifications', {
             notifications: this._notifications
         });
     }
 
-    fetchAbout(cb) {
+    fetchAbout(cb: (data: any) => any) : void {
         cb(ABOUT_DATA);
     }
 
-    fetchNotifications(cb) {
+    fetchNotifications(cb: (data: any) => any) : void {
         cb(this._notifications);
     }
 
-    submitFeedback(data, cb) {
+    submitFeedback(data: any, cb: (data: any) => any) : void {
         console.log("[MockMiscService] Feedback: ", data);
         this._snoozeDict[`${data.kind}-${data.id}`] = true;
-        cb()
+        cb({})
     }
 
-    submitSnooze(data, cb) {
+    submitSnooze(data: any, cb: (data: any) => any) : void {
         console.log("[MockMiscService] Snooze: ", data);
         this._snoozeDict[`${data.kind}-${data.id}`] = true;
         this._updateNotifications();
-        cb()
+        cb({})
     }
 }
-
-export default MockMiscService

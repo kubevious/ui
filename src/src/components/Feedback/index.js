@@ -1,5 +1,5 @@
 import React from 'react'
-import BaseComponent from '../../HOC/BaseComponent'
+import { BaseComponent } from '@kubevious/ui-framework'
 import Snooze from '../Snooze'
 import PostFeedback from '../PostFeedback'
 import $ from 'jquery'
@@ -8,11 +8,9 @@ import cx from 'classnames'
 import './styles.scss'
 
 
-class Feedback extends BaseComponent {
+class Feedback extends BaseComponent<IMiscService> {
     constructor(props) {
-        super(props)
-
-        this.registerService({ kind: 'misc' })
+        super(props, { kind: 'misc' })
 
         this.state = {
             userAnswers: { },

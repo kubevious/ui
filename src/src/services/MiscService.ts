@@ -1,7 +1,8 @@
-import BaseService from './BaseService'
-const _ = require('the-lodash');
+import _ from 'the-lodash';
+import { BaseService } from './BaseService'
+import { IMiscService } from '@kubevious/ui-middleware/dist';
 
-class MiscService extends BaseService {
+export class MiscService extends BaseService implements IMiscService {
 
     constructor(client, sharedState, socket)
     {
@@ -10,17 +11,17 @@ class MiscService extends BaseService {
         this._setupWebSocket();
     }
 
-    fetchAbout(cb) {
-        let info = [];
+    fetchAbout(cb: (data: any) => any) : void {
+        let info : any[] = [];
 
         info.push({
             name: 'UI Version',
             value: require('../version')
         })
 
-        return Promise.resolve()
+        Promise.resolve()
             .then(() => {
-                return this._client.get('/api/v1/version')
+                return this.client.get('/api/v1/version')
                     .then(result => {
                         return result.data.version;
                     })
@@ -35,7 +36,7 @@ class MiscService extends BaseService {
                 })
             })
             .then(() => {
-                return this._client.get('/api/v1/metrics')
+                return this.client.get('/api/v1/metrics')
                     .then(result => {
                         info = _.concat(info, result.data.metrics);
                     })
@@ -45,31 +46,35 @@ class MiscService extends BaseService {
             })
             .then(() => {
                 cb(info);
+                return null;
             });
     }
 
-    fetchNotifications(cb) {
-        return this._client.get('/api/v1/support/notifications')
+    fetchNotifications(cb: (data: any) => any) : void {
+        this.client.get('/api/v1/support/notifications')
             .then(result => {
                 cb(result.data)
+                return null;
             })
     }
 
-    submitFeedback(data, cb) {
-        return this._client.post('/api/v1/support/feedback', data)
+    submitFeedback(data: any, cb: (data: any) => any) : void {
+        this.client.post('/api/v1/support/feedback', data)
             .then(result => {
                 cb(result.data)
+                return null;
             })
     }
 
-    submitSnooze(data, cb) {
-        return this._client.post('/api/v1/support/notification/snooze', data)
+    submitSnooze(data: any, cb: (data: any) => any) : void {
+        this.client.post('/api/v1/support/notification/snooze', data)
             .then(result => {
                 cb(result.data)
+                return null;
             })
     }
 
-    _setupWebSocket()
+    private _setupWebSocket()
     {
         this._subscribeSocketToSharedState(
             'notifications_info',
@@ -82,5 +87,3 @@ class MiscService extends BaseService {
             { notifications: []});            
     }
 }
-
-export default MiscService

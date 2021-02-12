@@ -1,9 +1,15 @@
-import BaseService from './BaseService'
+import { BaseService } from './BaseService'
 import moment from 'moment'
+import { BackendClient, ISharedState } from '@kubevious/ui-framework';
+import { IDiagramService, IWebSocketService } from '@kubevious/ui-middleware';
 
-class DiagramService extends BaseService {
+export class DiagramService extends BaseService implements IDiagramService {
 
-    constructor(client, sharedState, socket)
+    private _latestTimelinePreviewData : any[] = [];
+    private _timelinePreviewHandlers : any[] = [];
+    private _intervals : any[] = [];
+
+    constructor(client: BackendClient, sharedState: ISharedState, socket: IWebSocketService)
     {
         super(client, sharedState, socket)
 
@@ -29,21 +35,21 @@ class DiagramService extends BaseService {
     }
 
     fetchDiagram(cb) {
-        return this._client.get('/diagram/tree')
+        return this.client.get('/diagram/tree')
             .then(result => {
                 cb(result.data);
             })
     }
 
     fetchProperties(dn, cb) {
-        return this._client.get('/diagram/props', { dn: dn })
+        return this.client.get('/diagram/props', { dn: dn })
             .then(result => {
                 cb(result.data);
             })
     }
 
     fetchAlerts(dn, cb) {
-        return this._client.get('/diagram/alerts', { dn: dn })
+        return this.client.get('/diagram/alerts', { dn: dn })
             .then(result => {
                 cb(result.data);
             })
@@ -55,14 +61,14 @@ class DiagramService extends BaseService {
             return;
         }
 
-        return this._client.post('/diagram/search', criteria)
+        return this.client.post('/diagram/search', criteria)
             .then(result => {
                 cb(result.data);
             })
     }
 
     fetchHistoryRange(cb) {
-        return this._client.get('/history/range')
+        return this.client.get('/history/range')
             .then(result => {
                 cb(result.data);
             });
@@ -73,7 +79,7 @@ class DiagramService extends BaseService {
             from: moment(from).toISOString(),
             to: moment(to).toISOString()
         };
-        return this._client.get('/history/timeline', params)
+        return this.client.get('/history/timeline', params)
             .then(result => {
                 let data = result.data;
                 for(let x of data)
@@ -103,7 +109,7 @@ class DiagramService extends BaseService {
     fetchHistoryTimelinePreview(cb) {
         var params = {
         };
-        return this._client.get('/history/timeline', params)
+        return this.client.get('/history/timeline', params)
             .then(result => {
                 let data = result.data;
                 for(let x of data)
@@ -118,7 +124,7 @@ class DiagramService extends BaseService {
         var params = {
             date: date
         };
-        return this._client.get('/history/snapshot', params)
+        return this.client.get('/history/snapshot', params)
             .then(result => {
                 cb(result.data);
             });
@@ -129,7 +135,7 @@ class DiagramService extends BaseService {
             dn: dn,
             date: date
         };
-        return this._client.get('/history/props', params)
+        return this.client.get('/history/props', params)
             .then(result => {
                 cb(result.data);
             });
@@ -140,33 +146,33 @@ class DiagramService extends BaseService {
             dn: dn,
             date: date
         };
-        return this._client.get('/history/alerts', params)
+        return this.client.get('/history/alerts', params)
             .then(result => {
                 cb(result.data);
             });
     }
 
     fetchAutocompleteKeys(type, criteria, cb) {
-        return this._client.post(`/search/${type}`, criteria )
+        return this.client.post(`/search/${type}`, criteria )
             .then(result =>
                 cb(result.data)
             )
     }
 
     fetchAutocompleteValues(type, criteria, cb) {
-        return this._client.post(`/search/${type}/values`, criteria )
+        return this.client.post(`/search/${type}/values`, criteria )
             .then(result =>
                 cb(result.data))
     }
 
-    _setupWebSocket()
+    private _setupWebSocket()
     {
         this._setupSummary();
         this._setupProperties();
         this._setupAlerts();
     }
 
-    _setupSummary()
+    private _setupSummary()
     {
         var socketScope = this._socketScope((value, target) => {
             this.sharedState.set('summary', value);
@@ -175,7 +181,7 @@ class DiagramService extends BaseService {
         this.sharedState.subscribe('time_machine_enabled',
             ( time_machine_enabled ) => {
 
-                var wsSubscriptions = []
+                var wsSubscriptions : any[] = []
 
                 if (!time_machine_enabled) {
                     wsSubscriptions.push({ kind: 'props', dn: 'summary' });
@@ -185,7 +191,7 @@ class DiagramService extends BaseService {
             });
     }
 
-    _setupProperties()
+    private _setupProperties()
     {
         var socketScope = this._socketScope((value, target) => {
             if (!this.sharedState.get('time_machine_enabled'))
@@ -200,7 +206,7 @@ class DiagramService extends BaseService {
         this.sharedState.subscribe(['selected_dn', 'time_machine_enabled'],
             ({ selected_dn, time_machine_enabled }) => {
 
-                var wsSubscriptions = []
+                var wsSubscriptions : any[] = []
 
                 if (selected_dn) {
                     if (!time_machine_enabled) {
@@ -213,7 +219,7 @@ class DiagramService extends BaseService {
     }
 
 
-    _setupAlerts()
+    private _setupAlerts()
     {
         var socketScope = this._socketScope((value, target) => {
             if (!this.sharedState.get('time_machine_enabled'))
@@ -228,7 +234,7 @@ class DiagramService extends BaseService {
         this.sharedState.subscribe(['selected_dn', 'time_machine_enabled'],
             ({ selected_dn, time_machine_enabled }) => {
 
-                var wsSubscriptions = []
+                var wsSubscriptions : any[] = []
 
                 if (selected_dn) {
                     if (!time_machine_enabled) {
@@ -240,5 +246,3 @@ class DiagramService extends BaseService {
             })
     }
 }
-
-export default DiagramService

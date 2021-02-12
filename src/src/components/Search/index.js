@@ -5,18 +5,16 @@ import { isEmptyArray, isEmptyObject } from '../../utils/util'
 import { KIND_TO_USER_MAPPING } from '@kubevious/helpers/dist/docs'
 import { prettyKind } from '../../utils/ui-utils'
 import DnShortcutComponent from '../DnShortcutComponent'
-import BaseComponent from '../../HOC/BaseComponent'
+import { BaseComponent } from '@kubevious/ui-framework'
 import MarkerPreview from '../MarkerPreview'
 import { FILTERS_LIST } from '../../boot/filterData'
 import cx from 'classnames'
 
 import './styles.scss'
 
-class Search extends BaseComponent {
+class Search extends BaseComponent<IDiagramService> {
     constructor(props) {
-        super(props)
-
-        this.registerService({ kind: 'diagram' })
+        super(props, { kind: 'diagram' })
 
         this.kinds = this.getKindsList()
         this.markers = this.getMarkersList()

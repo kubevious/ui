@@ -1,5 +1,5 @@
 import React from 'react'
-import BaseComponent from '../../HOC/BaseComponent'
+import { BaseComponent } from '@kubevious/ui-framework'
 import ReactDOM from 'react-dom'
 import $ from 'jquery'
 import _ from 'the-lodash'

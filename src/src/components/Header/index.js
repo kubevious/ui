@@ -6,18 +6,16 @@ import githubImg from '../../assets/header-btns/github.svg'
 import About from '../About'
 import Search from '../Search'
 import Notifications from '../Notifications';
-import BaseComponent from '../../HOC/BaseComponent'
+import { BaseComponent } from '@kubevious/ui-framework'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment'
 
 import './styles.scss'
 
-class Header extends BaseComponent {
+class Header extends BaseComponent<IMiscService> {
     constructor(props) {
-        super(props);
-
-        this.registerService({ kind: 'misc' })
+        super(props, { kind: 'misc' });
 
         this.state = {
             showSettings: false,

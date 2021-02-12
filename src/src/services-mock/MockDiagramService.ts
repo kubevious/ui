@@ -1,17 +1,28 @@
 import _ from 'the-lodash'
 import moment from 'moment'
-import {
-    ALERTS_DATA,
-    GRAPH_DATA, HISTORY_GRAPH_DATA, HISTORY_ALERTS, HISTORY_PROPERTIES,
-    HISTORY_RANGE,
-    PROPERTIES_DATA,
-    DN_LIST,
-    SUMMARY_DATA
-} from '../boot/diagramMockData'
 import { generateTimelineData } from '../boot/timelineBoot'
 
-class MockDiagramService {
-    constructor(sharedState) {
+import { getRandomDnList } from './utils';
+
+
+import { RemoteTrack } from '@kubevious/ui-framework/dist/remote-track'
+import { ISharedState } from '@kubevious/ui-framework'
+
+import { IDiagramService } from '@kubevious/ui-middleware'
+import { MockRootApiService } from './MockRootApiService';
+
+export class MockDiagramService implements IDiagramService {
+    
+    private sharedState: ISharedState;
+
+    private dateInit : any;
+    private timelineData : any;
+
+    private _latestTimelinePreviewData : any[] = [];
+    private _timelinePreviewHandlers : any[] = [];
+    private _intervals : any[] = [];
+
+    constructor(parent: MockRootApiService, sharedState: ISharedState) {
         this.dateInit = moment();
         this.timelineData = generateTimelineData();
         this.sharedState = sharedState;
@@ -34,11 +45,6 @@ class MockDiagramService {
                     }
                 }
             });
-
-        this._latestTimelinePreviewData = [];
-        this._timelinePreviewHandlers = [];
-
-        this._intervals = [];
 
         this._intervals.push(setInterval(() => {
             this._performTimelinePreviewQuery();
@@ -71,34 +77,17 @@ class MockDiagramService {
         }, 200);
     }
 
-    getRandomDnList()
-    {
-        const count = this._randomInt(10) + 3;
-        var res = [];
-
-        for(var i = 0; i < count; i++)
-        {
-            var dn = DN_LIST[this._randomInt(DN_LIST.length)];
-            res.push(dn)
-        }
-        return res;
-    }
 
     fetchSearchResults(criteria, cb) {
         if (!criteria) {
             cb([]);
             return;
         }
-        var res = this.getRandomDnList();
-        res = res.map(x => ({
+        let res = getRandomDnList();
+        let res2 = res.map(x => ({
             dn: x
         }));
-        cb(res);
-    }
-
-    _randomInt(x)
-    {
-        return Math.floor(Math.random() * x);
+        cb(res2);
     }
 
     fetchHistoryRange(cb) {
@@ -114,7 +103,7 @@ class MockDiagramService {
 
         console.time("PERF::fetchHistoryTimeline")
 
-        const filteredData = [];
+        const filteredData : any[] = [];
         const fromMoment = moment(from);
         const toMoment = moment(to);
         for(let x of this.timelineData)
@@ -157,7 +146,7 @@ class MockDiagramService {
         diffSec = diffSec * 20 * 60;
         const adjustedNow = moment(this.dateInit).add(diffSec, 'seconds');
 
-        const filteredData = [];
+        const filteredData : any[] = [];
         for(let x of this.timelineData)
         {
             if (x.dateMoment.isSameOrBefore(adjustedNow))
@@ -174,14 +163,14 @@ class MockDiagramService {
         }, 500)
     }
 
-    _resampleTimelineData(data)
+    private _resampleTimelineData(data: any[])
     {
         if (data.length <= 200) {
             return data;
         }
         const index_delta = (data.length - 2) / (200 - 2);
 
-        let resampled = [];
+        let resampled : any[] = [];
         resampled.push(data[0]);
         let latest_index = 0;
         for(let i = 0; i < 200 - 2; i++)
@@ -218,6 +207,15 @@ class MockDiagramService {
         }
         cb(_.cloneDeep(HISTORY_ALERTS))
     }
-}
 
-export default MockDiagramService;
+    fetchAutocompleteKeys(type: string, criteria: any, cb: (data: any) => any) : void
+    {
+
+    }
+
+    fetchAutocompleteValues(type: string, criteria: any, cb: (data: any) => any) : void
+    {
+
+    }
+
+}

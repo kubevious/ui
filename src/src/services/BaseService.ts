@@ -1,12 +1,21 @@
-const _ = require('the-lodash');
+import _ from 'the-lodash';
 
-class BaseService {
-    constructor(client, sharedState, socket, options)
+import { BackendClient, ISharedState } from '@kubevious/ui-framework'
+import { IWebSocketService } from '@kubevious/ui-middleware/dist';
+
+export class BaseService
+{
+    private _client: BackendClient;
+    private _sharedState: ISharedState;
+    private _socket: IWebSocketService;
+
+
+    private _socketHandlers : any [] = [];
+    private _socketScopes : any [] = [];
+
+    constructor(client: BackendClient, sharedState: ISharedState, socket: IWebSocketService)
     {
         console.log('[BaseService] ' + this.constructor.name + ' :: create');
-
-        options = options || {}
-        this._options = options;
 
         this._client = client;
         this._sharedState = sharedState;
@@ -18,16 +27,6 @@ class BaseService {
         if (!this.sharedState) {
             throw new Error("SharedState not provided");
         }
-
-        if (!this.socket) {
-            if (!this._options.allowNoSocket)
-            {
-                throw new Error("Socket not provided");
-            }
-        }
-
-        this._socketHandlers = [];
-        this._socketScopes = [];
     }
 
     get client() {
@@ -82,5 +81,3 @@ class BaseService {
         return scope;
     }
 }
-
-export default BaseService

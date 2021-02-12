@@ -1,8 +1,11 @@
 import WebSocketSubscriptionClient from 'websocket-subscription-client';
 import _ from 'the-lodash'
+import { IWebSocketService } from '@kubevious/ui-middleware';
 
-class WebSocketService
+export class WebSocketService implements IWebSocketService
 {
+    private _socket: any;
+
     constructor()
     {
         this._socket = new WebSocketSubscriptionClient('/socket');
@@ -14,14 +17,14 @@ class WebSocketService
         this._socket.close();
     }
 
-    subscribe(target, cb)
+    subscribe(target: any, cb: (data: any) => any) : any
     {
         return this._socket.subscribe(target, value => {
             cb(value);
         });
     }
 
-    scope(cb)
+    scope(cb: (data: any) => any) : any
     {
         return this._socket.scope(cb);
     }

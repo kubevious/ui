@@ -1,9 +1,11 @@
 import React from 'react'
 import AlertView from '../../Alerts/AlertView'
 
-import BaseComponent from '../../../HOC/BaseComponent'
+import { BaseComponent, IService } from '@kubevious/ui-framework'
 
-class PropertiesAlertList extends BaseComponent {
+
+
+class PropertiesAlertList extends BaseComponent<IService> {
     clickDn = (dn) => {
         this.sharedState.set('selected_dn', dn)
         this.sharedState.set('auto_pan_to_selected_dn', true)

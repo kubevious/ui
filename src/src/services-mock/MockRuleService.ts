@@ -1,8 +1,15 @@
 import _ from 'the-lodash'
 import { MOCK_MARKERS } from './MockMarkerService'
-import RemoteTrack from '../utils/remote-track';
+import { MockRootApiService } from './MockRootApiService';
 
-var MOCK_RULES = [
+import { RemoteTrack } from '@kubevious/ui-framework/dist/remote-track'
+import { ISharedState } from '@kubevious/ui-framework'
+
+import { getRandomDnList } from './utils';
+
+import { IRuleService } from '@kubevious/ui-middleware'
+
+let MOCK_RULES_ARRAY : any[] = [
     {
         enabled: true,
         name: 'rule 1',
@@ -22,7 +29,7 @@ var MOCK_RULES = [
         script: 'script-3'
     },
 ];
-MOCK_RULES = _.makeDict(MOCK_RULES, x => x.name);
+let MOCK_RULES = _.makeDict(MOCK_RULES_ARRAY, x => x.name);
 for(var x of _.values(MOCK_RULES))
 {
     x.items = [];
@@ -30,13 +37,18 @@ for(var x of _.values(MOCK_RULES))
     x.is_current = (Math.random() * 10 % 2 === 0);
 }
 
-class MockRuleService {
+export class MockRuleService implements IRuleService {
 
-    constructor(parent, sharedState)
+    private parent: MockRootApiService;
+    private sharedState : ISharedState;
+    private _remoteTrack : RemoteTrack;
+
+    constructor(parent: MockRootApiService, sharedState: ISharedState)
     {
-        this._parent = parent;
+        this.parent = parent;
         this.sharedState = sharedState;
         this._remoteTrack = new RemoteTrack(sharedState)
+
         this._notifyRules();
 
         setInterval(() => {
@@ -67,7 +79,7 @@ class MockRuleService {
                     }
                     else
                     {
-                        var dnList = this._parent.diagramService().getRandomDnList();
+                        var dnList = getRandomDnList();
                         rule.items = dnList.map(x => ({
                             dn: x,
                             id: Math.floor(Math.random() * 10),
@@ -89,11 +101,14 @@ class MockRuleService {
             })
     }
 
-    _notifyRules()
+    close()
     {
-        const operation = this._remoteTrack.start({
-            action: `notifyRules`
-        })
+        
+    }
+    
+    private _notifyRules()
+    {
+        const operation = this._remoteTrack.start(`notifyRules`)
 
         this.backendFetchRuleList((result) => {
             this.sharedState.set('rule_editor_items', result);
@@ -109,10 +124,10 @@ class MockRuleService {
         }, 1000)
     }
 
-    _notifyRuleStatus(name)
+    private _notifyRuleStatus(name: string)
     {
         var rule = MOCK_RULES[name];
-        var data = null;
+        var data : any = null;
         if (rule) {
             data = {
                 name: rule.name,
@@ -125,7 +140,7 @@ class MockRuleService {
         this.sharedState.set('rule_editor_selected_rule_status', data);
     }
 
-    _makeRuleListItem(x)
+    private _makeRuleListItem(x)
     {
         if (!x) {
             return null;
@@ -139,9 +154,9 @@ class MockRuleService {
         }
     }
 
-    _makeRuleItem(x)
+    private _makeRuleItem(x)
     {
-        var item = this._makeRuleListItem(x);
+        var item : any = this._makeRuleListItem(x);
         if (!item) {
             return null;
         }
@@ -151,7 +166,7 @@ class MockRuleService {
         return item;
     }
 
-    backendFetchRuleList(cb) {
+    backendFetchRuleList(cb: (data: any) => any) : void {
         var list = _.values(MOCK_RULES);
         list = list.map(x => this._makeRuleListItem(x));
         setTimeout(() => {
@@ -159,19 +174,19 @@ class MockRuleService {
         }, 100);
     }
 
-    backendFetchRule(name, cb) {
+    backendFetchRule(name: string, cb: (data: any) => any) : void {
         var item = MOCK_RULES[name];
-        item = this._makeRuleItem(item);
+        let ruleItem = this._makeRuleItem(item);
         setTimeout(() => {
-            cb(item);
+            cb(ruleItem);
         }, 500);
     }
 
-    backendCreateRule(rule, name, cb) {
+    backendCreateRule(rule: any, name: string, cb: (data: any) => any) : void {
         rule = _.clone({ ...rule, items: [], logs: [] });
 
         if (MOCK_RULES[name]) {
-            this.backendUpdateRule(rule, name, cb)
+            this._backendUpdateRule(rule, name, cb)
             return
         }
 
@@ -181,7 +196,7 @@ class MockRuleService {
         this._notifyRules();
     }
 
-    backendUpdateRule(rule, name, cb) {
+    _backendUpdateRule(rule, name, cb) {
         MOCK_RULES[rule.name] = _.clone({ ...rule, items: [], logs: [] });
 
         delete MOCK_RULES[name]
@@ -190,13 +205,13 @@ class MockRuleService {
         this._notifyRules();
     }
 
-    backendDeleteRule(name, cb) {
-        delete MOCK_RULES[name];
-        cb();
+    backendDeleteRule(id: string, cb: (data: any) => any) : void {
+        delete MOCK_RULES[id];
+        cb({});
         this._notifyRules();
     }
 
-    backendExportItems(cb) {
+    backendExportItems(cb: (data: any) => any) : void {
         var data = {
             kind: 'rules',
             items: _.cloneDeep(_.values(MOCK_RULES))
@@ -204,9 +219,9 @@ class MockRuleService {
         cb(data);
     }
 
-    backendImportItems(rules, cb) {
+    backendImportItems(rules: any, cb: (data: any) => any) : void {
         if (rules.deleteExtra) {
-            MOCK_RULES = {};
+            MOCK_RULES = [];
         }
 
         for (var x of rules.data.items) {
@@ -215,9 +230,7 @@ class MockRuleService {
             MOCK_RULES[x.name] = x;
         }
 
-        cb();
+        cb({});
         this._notifyRules();
     }
 }
-
-export default MockRuleService

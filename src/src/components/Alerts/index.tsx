@@ -1,5 +1,5 @@
 import React from 'react'
-import BaseComponent from '../../HOC/BaseComponent'
+import { BaseComponent } from '@kubevious/ui-framework'
 import AlertView from './AlertView'
 import { isEmptyArray, sortSeverity } from '../../utils/util'
 import cx from 'classnames'
@@ -7,12 +7,14 @@ import cx from 'classnames'
 import './styles.scss'
 import { Messages } from '../../types'
 
+import { IService } from '@kubevious/ui-framework'
+
 interface AlertsState {
     alerts: Messages[],
     isDnSelected: boolean
 }
 
-class Alerts extends BaseComponent {
+class Alerts extends BaseComponent<IService> {
     constructor(props) {
         super(props)
 

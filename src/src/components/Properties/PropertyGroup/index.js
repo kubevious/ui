@@ -4,9 +4,9 @@ import { propertyGroupTooltip } from '@kubevious/helpers/dist/docs'
 import _ from 'the-lodash'
 import PropertiesContents from '../PropertiesContents'
 import DnComponent from '../../DnComponent'
-import BaseComponent from '../../../HOC/BaseComponent'
+import { BaseComponent, IService } from '@kubevious/ui-framework'
 
-class PropertyGroup extends BaseComponent {
+class PropertyGroup extends BaseComponent<IService> {
     constructor(props) {
         super(props)
 

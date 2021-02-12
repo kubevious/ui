@@ -1,12 +1,19 @@
 import _ from 'the-lodash'
 
 import { COLORS, SHAPES } from '../boot/markerData'
-import RemoteTrack from '../utils/remote-track';
 
-export var MOCK_MARKERS = []
+import { RemoteTrack } from '@kubevious/ui-framework/dist/remote-track'
+import { ISharedState } from '@kubevious/ui-framework'
+
+import { getRandomDnList } from './utils';
+import { MockRootApiService } from './MockRootApiService';
+
+import { IMarkerService } from '@kubevious/ui-middleware'
+
+const MOCK_MARKERS_ARRAY : any[] = []
 
 for (var i = 0; i < 30; i++) {
-    MOCK_MARKERS.push({
+    MOCK_MARKERS_ARRAY.push({
         name: 'marker-' + (i + 1).toString(),
         shape: SHAPES[i % SHAPES.length],
         color: COLORS[i % COLORS.length],
@@ -16,20 +23,26 @@ for (var i = 0; i < 30; i++) {
     })
 }
 
-MOCK_MARKERS = _.makeDict(MOCK_MARKERS, x => x.name);
+export let MOCK_MARKERS = _.makeDict(MOCK_MARKERS_ARRAY, x => x.name);
 
-class MockMarkerService {
+export class MockMarkerService implements IMarkerService {
 
-    constructor(parent, sharedState) {
-        this._parent = parent;
+    private parent: MockRootApiService;
+    private sharedState : ISharedState;
+    private _remoteTrack : RemoteTrack;
+
+    constructor(parent: MockRootApiService, sharedState: ISharedState)
+    {
+        this.parent = parent;
         this.sharedState = sharedState;
         this._remoteTrack = new RemoteTrack(sharedState)
+        
         this._notifyMarkers();
 
         setInterval(() => {
 
             for (var marker of _.values(MOCK_MARKERS)) {
-                var dnList = this._parent.diagramService().getRandomDnList();
+                var dnList = getRandomDnList();
                 marker.items = dnList.map(x => ({
                     dn: x,
                 }));
@@ -45,10 +58,13 @@ class MockMarkerService {
             })
     }
 
-    _notifyMarkers() {
-        const operation = this._remoteTrack.start({
-            action: `notifyMarkers`,
-        })
+    close()
+    {
+        
+    }
+
+    private _notifyMarkers() {
+        const operation = this._remoteTrack.start(`notifyMarkers`)
 
         this.backendFetchMarkerList((result) => {
             this.sharedState.set('marker_editor_items', result);
@@ -64,9 +80,9 @@ class MockMarkerService {
         }, 1000)
     }
 
-    _notifyMarkerStatus(name) {
+    private _notifyMarkerStatus(name) {
         var marker = MOCK_MARKERS[name];
-        var data = null;
+        var data : any = null;
         if (marker) {
             data = {
                 name: marker.name,
@@ -79,7 +95,7 @@ class MockMarkerService {
         this.sharedState.set('rule_editor_selected_marker_status', data);
     }
 
-    _makeMarkerListItem(x) {
+    private _makeMarkerListItem(x) {
         if (!x) {
             return null;
         }
@@ -93,7 +109,7 @@ class MockMarkerService {
         }
     }
 
-    _makeMarkerItem(x) {
+    private _makeMarkerItem(x) {
         var item = this._makeMarkerListItem(x);
         if (!item) {
             return null;
@@ -101,7 +117,7 @@ class MockMarkerService {
         return item;
     }
 
-    backendFetchMarkerList(cb) {
+    backendFetchMarkerList(cb: (data: any) => any) : void {
         var list = _.values(MOCK_MARKERS);
         list = list.map(x => this._makeMarkerListItem(x));
         setTimeout(() => {
@@ -109,7 +125,7 @@ class MockMarkerService {
         }, 100);
     }
 
-    backendFetchMarker(name, cb) {
+    backendFetchMarker(name: string, cb: (data: any) => any) : void {
         var item = MOCK_MARKERS[name];
         item = this._makeMarkerItem(item);
         setTimeout(() => {
@@ -117,11 +133,11 @@ class MockMarkerService {
         }, 500);
     }
 
-    backendCreateMarker(marker, name, cb) {
+    backendCreateMarker(marker: any, name: string, cb: (data: any) => any) : void {
         marker = _.clone({ ...marker, items: [], logs: [] });
 
         if (MOCK_MARKERS[name]) {
-            this.backendUpdateMarker(marker, name, cb)
+            this._backendUpdateMarker(marker, name, cb)
             return
         }
 
@@ -131,7 +147,7 @@ class MockMarkerService {
         this._notifyMarkers();
     }
 
-    backendUpdateMarker(marker, name, cb) {
+    private _backendUpdateMarker(marker, name, cb) {
         MOCK_MARKERS[marker.name] = _.clone({ ...marker });
 
         delete MOCK_MARKERS[name]
@@ -140,13 +156,13 @@ class MockMarkerService {
         this._notifyMarkers();
     }
 
-    backendDeleteMarker(name, cb) {
+    backendDeleteMarker(name: string, cb: (data: any) => any) : void{
         delete MOCK_MARKERS[name];
-        cb();
+        cb({});
         this._notifyMarkers();
     }
 
-    backendExportItems(cb) {
+    backendExportItems(cb: (data: any) => any) : void {
         var data = _.cloneDeep(_.values(MOCK_MARKERS));
         data = data.map(x => ({
             name: x.name,
@@ -161,7 +177,7 @@ class MockMarkerService {
         cb(response);
     }
 
-    backendImportItems(markers, cb) {
+    backendImportItems(markers: any, cb: (data: any) => any) : void {
         if (markers.deleteExtra) {
             MOCK_MARKERS = {};
         }
@@ -172,9 +188,7 @@ class MockMarkerService {
             MOCK_MARKERS[x.name] = x;
         }
 
-        cb();
+        cb({});
         this._notifyMarkers();
     }
 }
-
-export default MockMarkerService

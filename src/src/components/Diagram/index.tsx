@@ -1,5 +1,5 @@
 import React from 'react'
-import BaseComponent from '../../HOC/BaseComponent'
+import { BaseComponent } from '@kubevious/ui-framework'
 import VisualView from './visual-view/visual-view'
 import * as d3 from 'd3'
 import $ from 'jquery'
@@ -7,13 +7,14 @@ import $ from 'jquery'
 import './styles.scss'
 import { DiagramData } from '../../types'
 
-class Diagram extends BaseComponent {
+import { IDiagramService } from '@kubevious/ui-middleware'
+
+class Diagram extends BaseComponent<IDiagramService> {
     view: VisualView
     private _sourceData: DiagramData | undefined
     constructor(props) {
-        super(props)
+        super(props, { kind: 'diagram' })
 
-        this.registerService({ kind: 'diagram' })
         this.view = new VisualView(d3.select('#diagram'), this.sharedState);
 
         this.subscribeToSharedState('diagram_data',

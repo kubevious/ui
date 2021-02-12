@@ -1,5 +1,5 @@
 import React from 'react'
-import BaseComponent from '../../HOC/BaseComponent'
+import { BaseComponent } from '@kubevious/ui-framework'
 import _ from 'the-lodash'
 import PropertyGroup from './PropertyGroup'
 import DnPath from '../GenerateDnPath'

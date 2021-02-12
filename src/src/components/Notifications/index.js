@@ -1,18 +1,17 @@
 import React from 'react'
-import BaseComponent from '../../HOC/BaseComponent'
+import { BaseComponent } from '@kubevious/ui-framework'
 import NotificationList from '../NotificationList'
 
 import './styles.scss'
 
-class Notifications extends BaseComponent {
+class Notifications extends BaseComponent<IMiscService> {
   constructor(props) {
-      super(props)
+      super(props, { kind: 'misc' })
 
       this.state = {
         list: [],
       }
 
-      this.registerService({ kind: 'misc' })
   }
 
   componentDidMount() {

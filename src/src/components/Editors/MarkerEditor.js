@@ -1,8 +1,10 @@
 import React from 'react'
-import BaseComponent from '../../HOC/BaseComponent'
+import { BaseComponent } from '@kubevious/ui-framework'
 import Editor from './Editor'
 import ItemsList from './ItemsList'
 import { COLORS, SHAPES } from '../../boot/markerData'
+
+import { IMarkerService } from '@kubevious/ui-middleware'
 
 const selectedItemInit = {}
 const selectedItemDataInit = {
@@ -10,11 +12,9 @@ const selectedItemDataInit = {
     items: []
 }
 
-class MarkerEditor extends BaseComponent {
+class MarkerEditor extends BaseComponent<IMarkerService> {
     constructor(props) {
-        super(props);
-
-        this.registerService({ kind: 'marker' })
+        super(props, { kind: 'marker' });
 
         this.state = {
             items: [],

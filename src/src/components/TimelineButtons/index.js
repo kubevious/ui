@@ -1,7 +1,7 @@
 import React from 'react'
 import './styles.scss'
 import cx from 'classnames'
-import BaseComponent from '../../HOC/BaseComponent'
+import { BaseComponent } from '@kubevious/ui-framework'
 import moment from 'moment'
 import TimelineUtils from '../../utils/timeline-utils'
 

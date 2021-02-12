@@ -1,13 +1,11 @@
 import React from 'react'
-import BaseComponent from '../../HOC/BaseComponent'
+import { BaseComponent } from '@kubevious/ui-framework'
 import $ from 'jquery'
 import './styles.scss'
 
-class Snooze extends BaseComponent {
+class Snooze extends BaseComponent<IMiscService> {
     constructor(props) {
-        super(props)
-
-        this.registerService({ kind: 'misc' })
+        super(props, { kind: 'misc' })
 
         this.state = {
             isSnoozed: false,

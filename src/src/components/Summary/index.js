@@ -1,5 +1,5 @@
 import React from 'react'
-import BaseComponent from '../../HOC/BaseComponent'
+import { BaseComponent } from '@kubevious/ui-framework'
 import PropertiesContents from '../Properties/PropertiesContents'
 import './styles.scss'
 import { isEmptyObject } from '../../utils/util'

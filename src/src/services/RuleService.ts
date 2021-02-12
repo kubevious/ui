@@ -1,6 +1,8 @@
-import BaseService from './BaseService'
+import { IRuleService } from '@kubevious/ui-middleware/dist';
+import _ from 'the-lodash';
+import { BaseService } from './BaseService'
 
-class RuleService extends BaseService {
+export class RuleService extends BaseService implements IRuleService {
     constructor(client, sharedState, socket)
     {
         super(client, sharedState, socket)
@@ -8,49 +10,55 @@ class RuleService extends BaseService {
         this._setupWebSocket();
     }
 
-    backendFetchRuleList(cb) {
-        return this._client.get('/rules')
+    backendFetchRuleList(cb: (data: any) => any) : void {
+        this.client.get('/rules')
             .then(result => {
                 cb(result.data);
+                return null;
             });
     }
 
-    backendFetchRule(id, cb) {
-        return this._client.get('/rule/' + id)
+    backendFetchRule(id: string, cb: (data: any) => any) : void {
+        this.client.get('/rule/' + id)
             .then(result => {
                 cb(result.data);
+                return null;
             });
     }
 
-    backendCreateRule(rule, name, cb) {
-        return this._client.post('/rule/' + name, rule)
+    backendCreateRule(config: any, name: string, cb: (data: any) => any) : void {
+        this.client.post('/rule/' + name, config)
             .then(result => {
                 cb(result.data)
+                return null;
             });
     }
 
-    backendDeleteRule(id, cb) {
-        return this._client.delete('/rule/' + id)
+    backendDeleteRule(id: string, cb: (data: any) => any) : void {
+        this.client.delete('/rule/' + id)
             .then(result => {
                 cb(result.data);
+                return null;
             });
     }
 
-    backendExportItems(cb) {
-        return this._client.get('/rules/export')
+    backendExportItems(cb: (data: any) => any) : void {
+        this.client.get('/rules/export')
             .then(result => {
                 cb(result.data);
+                return null;
             });
     }
 
-    backendImportItems(policies, cb) {
-        return this._client.post('/rules/import', policies)
+    backendImportItems(rules: any, cb: (data: any) => any) : void {
+        this.client.post('/rules/import', rules)
             .then(result => {
                 cb(result.data);
+                return null;
             });
     }
 
-    _setupWebSocket()
+    private _setupWebSocket()
     {
         this.sharedState.set('rule_editor_items', []);
 
@@ -80,5 +88,3 @@ class RuleService extends BaseService {
             });
     }
 }
-
-export default RuleService

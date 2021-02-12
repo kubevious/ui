@@ -74,9 +74,10 @@ export const Editor: React.FunctionComponent<EditorProps> = ({
                     />
                 ) : (
                     <MarkerMainTab
-                        selectedItemId={selectedItemId}
+                    
+                        // selectedItemId={selectedItemId} // TODO: Semyon to check
                         selectedItem={selectedItem}
-                        selectedItemData={selectedItemData}
+                        // selectedItemData={selectedItemData} // TODO: Semyon to check
                         deleteItem={deleteItem}
                         openSummary={openSummary}
                         saveItem={saveItem}

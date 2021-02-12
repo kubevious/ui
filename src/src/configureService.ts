@@ -1,17 +1,20 @@
-import MockRootApiService from './services-mock/MockRootApiService'
-import RootApiService from './services/RootApiService'
-import SharedState from './state/shared-state'
+import { MockRootApiService } from './services-mock/MockRootApiService'
+import { RootApiService } from './services/RootApiService'
 import KubeviousHandler from './state/kubevious-handler'
 
-export const sharedState = new SharedState();
-sharedState.register('diagram_expanded_dns', { skipCompare: true, skipValueOutput: true })
-sharedState.register('time_machine_timeline_data', { skipCompare: true, skipValueOutput: true })
+import { app } from '@kubevious/ui-framework';
+
+
+export const sharedState = app.sharedState;
+
+app.sharedState.register('diagram_expanded_dns', { skipCompare: true, skipValueOutput: true })
+app.sharedState.register('time_machine_timeline_data', { skipCompare: true, skipValueOutput: true })
 
 function apiFactory(): MockRootApiService | RootApiService {
     const factory = process.env.REACT_APP_MOCKED_DATA === 'true' ? MockRootApiService : RootApiService;
-    return new factory(sharedState);
+    return new factory();
 }
 
 export const api = apiFactory();
 
-new KubeviousHandler(api);
+new KubeviousHandler();

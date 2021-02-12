@@ -1,8 +1,10 @@
 import React  from 'react'
-import BaseComponent from '../../HOC/BaseComponent'
+import { BaseComponent } from '@kubevious/ui-framework'
 import Editor from './Editor'
 import './styles.scss'
 import ItemsList from './ItemsList'
+
+import { IRuleService } from '@kubevious/ui-middleware'
 
 const selectedItemInit = {}
 const selectedItemDataInit = {
@@ -12,12 +14,10 @@ const selectedItemDataInit = {
     items: []
 }
 
-class RuleEditor extends BaseComponent {
+class RuleEditor extends BaseComponent<IRuleService> {
     constructor(props) {
-        super(props);
-
-        this.registerService({ kind: 'rule' })
-
+        super(props, { kind: 'rule' });
+        
         this.state = {
             selectedTab: 'main',
             items: [],

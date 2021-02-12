@@ -9,5 +9,5 @@ rm -rf node_modules/
 
 npm install
 npm install --only=dev
-npm update websocket-subscription-client @kubevious/helpers the-lodash the-promise
+npm update websocket-subscription-client @kubevious/helpers the-lodash the-promise @kubevious/ui-framework @kubevious/ui-middleware
 
