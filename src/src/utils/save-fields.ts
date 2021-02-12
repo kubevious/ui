@@ -1,4 +1,4 @@
-import { Field, Params } from './../types';
+import { PersistableFields, PersistableParams } from './../types';
 import _ from 'the-lodash'
 
 export class FieldsSaver {
@@ -9,8 +9,8 @@ export class FieldsSaver {
         this.fields = {}
     }
 
-    setValue(values: Field): void {
-        let params: Field = _.clone(values)
+    setValue(values: PersistableFields): void {
+        let params: PersistableFields = _.clone(values)
         let fields = {}
 
         for (let key in params) {
@@ -51,8 +51,8 @@ export class FieldsSaver {
         window.history.pushState(fields, this._title, url)
     }
 
-    decodeParams(params: URLSearchParams): Params {
-        let obj: Params = {}
+    decodeParams(params: URLSearchParams): PersistableParams {
+        let obj: PersistableParams = {}
 
         switch (this._title) {
             case 'Diagram':

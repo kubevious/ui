@@ -45,7 +45,7 @@ export type FontSpec = {
     widths: number[],
 };
 
-export interface Field {
+export interface PersistableFields {
     selected_dn: string,
     time_machine_enabled: boolean,
     time_machine_target_date: Date,
@@ -53,7 +53,7 @@ export interface Field {
     time_machine_duration: number,
 };
 
-export type Params = {
+export type PersistableParams = {
     sd?: string | null,
     tme?: string | null,
     tmtd?: string | null,

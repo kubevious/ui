@@ -4,7 +4,7 @@ import { MarkerDict } from "./types"
 import { SelectedData } from "../../types"
 import { sharedState } from "../../configureService"
 import { DnComponent } from "../DnComponent"
-import MarkerPreview from "../MarkerPreview"
+import { MarkerPreview } from "../MarkerPreview"
 
 import "./styles.scss"
 
