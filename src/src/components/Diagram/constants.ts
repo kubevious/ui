@@ -13,7 +13,7 @@ export const VISUAL_NODE_COLOR_TABLE = [
     "#BBBBBB",
 ]
 
-export const SEVERITY_BG_COLOR_ERROR = "red"
+export const SEVERITY_BG_COLOR_ERROR = "#FF0000"
 export const SEVERITY_BG_COLOR_WARN = "#f58142"
 
 export const NODE_RENDER_METADATA = {
