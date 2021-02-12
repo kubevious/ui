@@ -1,11 +1,11 @@
 import React from 'react'
 import { isEmptyArray } from '../../utils/util'
 import cx from 'classnames'
-import MarkerPreview from '../MarkerPreview'
-import BurgerMenu from '../BurgerMenu';
+import { MarkerPreview } from '../MarkerPreview'
+import { BurgerMenu } from '../BurgerMenu';
 import { Type } from './types';
 
-const ItemsList = ({ type, items, selectedItemId, selectItem, createNewItem, service }) => {
+export const ItemsList = ({ type, items, selectedItemId, selectItem, createNewItem, service }) => {
 
     const ruleIndicatorClass = (x) => {
         let indicatorClass
@@ -57,5 +57,3 @@ const ItemsList = ({ type, items, selectedItemId, selectItem, createNewItem, ser
         </div>
     )
 }
-
-export default ItemsList

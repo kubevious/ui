@@ -6,7 +6,7 @@ import "bootstrap/js/dist/tooltip"
 import { VisualNode } from "../visual-node/visual-node"
 import { flagTooltip, getNodeLogoUrl } from "../../../utils/ui-utils"
 import { ViewPosition } from "../types"
-import { DiagramData, Montserrat } from "../../../types"
+import { DiagramData, FontSpec } from "../../../types"
 import { VisualNodeText } from "../visual-node/visual-node-text"
 import { VisualNodeHeaderMarker } from "../visual-node/visual-node-header-marker"
 import { VisualNodeHeaderFlag } from "../visual-node/visual-node-header-flag"
@@ -127,7 +127,7 @@ export class VisualView {
 
     _measureText(
         text: string | number | undefined,
-        fontSpec?: Montserrat
+        fontSpec?: FontSpec
     ): {
         width: number
         height: number

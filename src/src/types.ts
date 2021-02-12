@@ -38,7 +38,7 @@ export interface DiagramData {
     name?: string,
 };
 
-export type Montserrat = {
+export type FontSpec = {
     defaultWidth: number,
     height: number,
     startCode: number,

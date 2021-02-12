@@ -1,4 +1,4 @@
-import { Montserrat } from "../../types"
+import { FontSpec } from "../../types"
 import { VisualNode } from "./visual-node/visual-node"
 
 export enum NODE_RENDER_METADATA_NAME {
@@ -40,7 +40,7 @@ export interface Header {
     padding?: number
     text?: string | number
     left?: number
-    fontSpec?: Montserrat
+    fontSpec?: FontSpec
     right?: number
     centerY?: number
     top?: number
