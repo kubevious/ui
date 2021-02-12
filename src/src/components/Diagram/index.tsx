@@ -1,36 +1,38 @@
-import React from 'react'
-import { BaseComponent } from '@kubevious/ui-framework'
-import VisualView from './visual-view/visual-view'
-import * as d3 from 'd3'
-import $ from 'jquery'
+import React from "react"
+import { BaseComponent } from "@kubevious/ui-framework"
+import VisualView from "./visual-view/visual-view"
+import * as d3 from "d3"
+import $ from "jquery"
 
-import './styles.scss'
-import { DiagramData } from '../../types'
+import "./styles.scss"
+import { DiagramData } from "../../types"
 
-import { IDiagramService } from '@kubevious/ui-middleware'
+import { IDiagramService } from "@kubevious/ui-middleware"
 
 class Diagram extends BaseComponent<IDiagramService> {
     view: VisualView
     private _sourceData: DiagramData | undefined
     constructor(props) {
-        super(props, { kind: 'diagram' })
+        super(props, { kind: "diagram" })
 
-        this.view = new VisualView(d3.select('#diagram'), this.sharedState);
+        this.view = new VisualView(d3.select("#diagram"), this.sharedState)
 
-        this.subscribeToSharedState('diagram_data',
+        this.subscribeToSharedState(
+            "diagram_data",
             (diagram_data: DiagramData) => {
                 if (diagram_data) {
-                    this._acceptSourceData(diagram_data);
+                    this._acceptSourceData(diagram_data)
                 }
-            })
+            }
+        )
     }
 
     componentDidMount(): void {
         this._setupView()
 
-        $('.lm_content').each(() => {
-            if ($(this).children().hasClass('diagram')) {
-                $(this).css('overflow', 'hidden')
+        $(".lm_content").each(() => {
+            if ($(this).children().hasClass("diagram")) {
+                $(this).css("overflow", "hidden")
             }
         })
     }
@@ -46,13 +48,16 @@ class Diagram extends BaseComponent<IDiagramService> {
         this._massageSourceDataNode(data, null)
     }
 
-    _massageSourceDataNode(node: DiagramData, parent: DiagramData | null): void {
+    _massageSourceDataNode(
+        node: DiagramData,
+        parent: DiagramData | null
+    ): void {
         if (!node.dn) {
             var dn: string
             if (parent) {
-                dn = parent.dn + '/' + node.rn
+                dn = parent.dn + "/" + node.rn
             } else {
-                dn = node.rn || ''
+                dn = node.rn || ""
             }
             node.dn = dn
         }
@@ -65,7 +70,7 @@ class Diagram extends BaseComponent<IDiagramService> {
     }
 
     _setupView(): void {
-        this.view = new VisualView(d3.select('#diagram'), this.sharedState);
+        this.view = new VisualView(d3.select("#diagram"), this.sharedState)
         this.view.skipShowRoot()
         this.view.setup()
         this._renderData()
@@ -78,15 +83,12 @@ class Diagram extends BaseComponent<IDiagramService> {
         if (this._sourceData) {
             this.view.acceptSourceData(this._sourceData)
         }
-        this.view.updateAll(true);
+        this.view.updateAll(true)
     }
 
     render() {
-        return (
-            <div id="diagram" className="diagram"/>
-        )
+        return <div id="diagram" className="diagram" />
     }
-
 }
 
 export default Diagram

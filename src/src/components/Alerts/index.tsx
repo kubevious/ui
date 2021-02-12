@@ -1,16 +1,16 @@
-import React from 'react'
-import { BaseComponent } from '@kubevious/ui-framework'
-import AlertView from './AlertView'
-import { isEmptyArray, sortSeverity } from '../../utils/util'
-import cx from 'classnames'
+import React from "react"
+import { BaseComponent } from "@kubevious/ui-framework"
+import AlertView from "./AlertView"
+import { isEmptyArray, sortSeverity } from "../../utils/util"
+import cx from "classnames"
 
-import './styles.scss'
-import { Messages } from '../../types'
+import "./styles.scss"
+import { Messages } from "../../types"
 
-import { IService } from '@kubevious/ui-framework'
+import { IService } from "@kubevious/ui-framework"
 
 interface AlertsState {
-    alerts: Messages[],
+    alerts: Messages[]
     isDnSelected: boolean
 }
 
@@ -28,11 +28,13 @@ class Alerts extends BaseComponent<IService> {
     }
 
     componentDidMount(): void {
-        this.subscribeToSharedState('selected_object_alerts',
+        this.subscribeToSharedState(
+            "selected_object_alerts",
             (selected_object_alerts: Messages[]) => {
                 this.setState({ alerts: selected_object_alerts })
-            })
-        this.subscribeToSharedState('selected_dn', (selected_dn: string) => {
+            }
+        )
+        this.subscribeToSharedState("selected_dn", (selected_dn: string) => {
             if (selected_dn) {
                 this.setState({ isDnSelected: true })
             }
@@ -40,22 +42,26 @@ class Alerts extends BaseComponent<IService> {
     }
 
     clickDn(dn: string): void {
-        this.sharedState.set('selected_dn', dn);
-        this.sharedState.set('auto_pan_to_selected_dn', true);
+        this.sharedState.set("selected_dn", dn)
+        this.sharedState.set("auto_pan_to_selected_dn", true)
     }
 
     openRule(ruleName: string): void {
-        this.sharedState.set('rule_editor_selected_rule_id', ruleName);
-        this.sharedState.set('focus_rule_editor', true);
+        this.sharedState.set("rule_editor_selected_rule_id", ruleName)
+        this.sharedState.set("focus_rule_editor", true)
     }
 
     renderAlerts(alerts: Messages[]): JSX.Element {
         if (isEmptyArray(alerts)) {
-            return this.sharedState.get('selected_dn')
-                ? <div className="message-empty">No alerts for selected object.</div>
-                : <div className="message-empty">No object selected.</div>
+            return this.sharedState.get("selected_dn") ? (
+                <div className="message-empty">
+                    No alerts for selected object.
+                </div>
+            ) : (
+                <div className="message-empty">No object selected.</div>
+            )
         }
-        
+
         return (
             <AlertView
                 alerts={alerts.sort(sortSeverity)}
@@ -68,7 +74,10 @@ class Alerts extends BaseComponent<IService> {
     render() {
         const { alerts } = this.state as AlertsState
         return (
-            <div id="alertsComponent" className={cx({'empty': isEmptyArray(alerts)})}>
+            <div
+                id="alertsComponent"
+                className={cx({ empty: isEmptyArray(alerts) })}
+            >
                 {this.renderAlerts(alerts)}
             </div>
         )

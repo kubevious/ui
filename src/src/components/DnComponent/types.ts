@@ -1,3 +1,3 @@
 export type DnOptions = {
-  relativeTo?: string
+    relativeTo?: string
 }

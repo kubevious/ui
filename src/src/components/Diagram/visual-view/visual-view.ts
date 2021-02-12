@@ -1,16 +1,16 @@
-import * as d3 from 'd3'
-import $ from 'jquery'
-import _ from 'the-lodash'
-import 'bootstrap/js/dist/tooltip'
+import * as d3 from "d3"
+import $ from "jquery"
+import _ from "the-lodash"
+import "bootstrap/js/dist/tooltip"
 
-import VisualNode from '../visual-node/visual-node'
-import { flagTooltip, getNodeLogoUrl } from '../../../utils/ui-utils'
-import { ViewPosition } from '../types'
-import { DiagramData, Montserrat, SharedUserState } from '../../../types'
-import { VisualNodeText } from '../visual-node/visual-node-text'
-import { VisualNodeHeaderMarker } from '../visual-node/visual-node-header-marker'
-import { VisualNodeHeaderFlag } from '../visual-node/visual-node-header-flag'
-import { VisualNodeHeaderExpander } from '../visual-node/visual-node-header-expander'
+import VisualNode from "../visual-node/visual-node"
+import { flagTooltip, getNodeLogoUrl } from "../../../utils/ui-utils"
+import { ViewPosition } from "../types"
+import { DiagramData, Montserrat, SharedUserState } from "../../../types"
+import { VisualNodeText } from "../visual-node/visual-node-text"
+import { VisualNodeHeaderMarker } from "../visual-node/visual-node-header-marker"
+import { VisualNodeHeaderFlag } from "../visual-node/visual-node-header-flag"
+import { VisualNodeHeaderExpander } from "../visual-node/visual-node-header-expander"
 import {
     nodeGroupTransform,
     nodeWidth,
@@ -28,8 +28,8 @@ import {
     nodeHeaderWidth,
     nodeHeaderHeight,
     nodeHeaderText,
-    nodeHeaderTransform
-} from './utils'
+    nodeHeaderTransform,
+} from "./utils"
 
 export default class VisualView {
     _parentElem: any // Selection<BaseType, unknown, HTMLElement, any>
@@ -53,74 +53,68 @@ export default class VisualView {
     _panAnimationDuration!: number | null
     _panInterpolatorStartTime!: Date | null
     _panAnimationTimer!: ReturnType<typeof setTimeout> | null
-    
 
     constructor(parentElem: any, sharedState: SharedUserState) {
-        this._parentElem = parentElem;
-        this.sharedState = sharedState;
+        this._parentElem = parentElem
+        this.sharedState = sharedState
 
         this._width = 0
         this._height = 0
 
-        this._viewPos = { x: 0, y: 0 };
+        this._viewPos = { x: 0, y: 0 }
 
         this._showRoot = true
-        this._nodeDict = {};
-        this._currentSelectedNodeDn = null;
+        this._nodeDict = {}
+        this._currentSelectedNodeDn = null
 
         this._controlInfo = {}
 
         this._flatVisualNodes = []
 
         this._existingNodeIds = {}
-        
+
         this._markerData = {}
         this._d3NodeDict = {}
         this._d3SmallNodeDict = {}
 
-        sharedState.subscribe("selected_dn",
-            (selected_dn: string) => {
-                this._updateSelection(selected_dn);
-            });
+        sharedState.subscribe("selected_dn", (selected_dn: string) => {
+            this._updateSelection(selected_dn)
+        })
 
-        sharedState.subscribe('markers_dict',
-            (markers_dict: {}) => {
-                this._markerData = markers_dict;
-                if (!markers_dict) {
-                    this._markerData = {};
-                }
-                this.updateAll(true);
-            });
+        sharedState.subscribe("markers_dict", (markers_dict: {}) => {
+            this._markerData = markers_dict
+            if (!markers_dict) {
+                this._markerData = {}
+            }
+            this.updateAll(true)
+        })
     }
 
-    getExpanded(dn: string): boolean
-    {
-        var dict = this.sharedState.get('diagram_expanded_dns');
+    getExpanded(dn: string): boolean {
+        var dict = this.sharedState.get("diagram_expanded_dns")
         if (dict[dn]) {
-            return true;
+            return true
         }
-        return false;
+        return false
     }
 
-    setExpanded(dn: string, value: {})
-    {
-        var dict = this.sharedState.get('diagram_expanded_dns');
-        dict[dn] = value;
-        this.sharedState.set('diagram_expanded_dns', dict);
+    setExpanded(dn: string, value: {}) {
+        var dict = this.sharedState.get("diagram_expanded_dns")
+        dict[dn] = value
+        this.sharedState.set("diagram_expanded_dns", dict)
     }
 
     _measureText(
         text: string | number | undefined,
         fontSpec?: Montserrat
-        ): {
-            width: number,
-            height: number
-        } {
+    ): {
+        width: number
+        height: number
+    } {
         if (!fontSpec) {
-            throw new Error('MISSING FONT SPEC')
+            throw new Error("MISSING FONT SPEC")
         }
-        text = _.isNil(text) ? '' : text ? text.toString() : ''
-        
+        text = _.isNil(text) ? "" : text ? text.toString() : ""
 
         var totalWidth = 0
         var totalHeight = fontSpec.height
@@ -137,7 +131,7 @@ export default class VisualView {
         }
         return {
             width: totalWidth,
-            height: totalHeight
+            height: totalHeight,
         }
     }
 
@@ -147,21 +141,21 @@ export default class VisualView {
 
     setup(): void {
         this._svgElem = this._parentElem
-            .append('svg')
-            .attr('position', 'absolute')
-            .attr('overflow', 'hidden')
-            .attr('top', 0)
-            .attr('left', 0)
-            .attr('right', 0)
-            .attr('bottom', 0)
+            .append("svg")
+            .attr("position", "absolute")
+            .attr("overflow", "hidden")
+            .attr("top", 0)
+            .attr("left", 0)
+            .attr("right", 0)
+            .attr("bottom", 0)
 
-        $(document).on('layout-resize-universeComponent', () => {
+        $(document).on("layout-resize-universeComponent", () => {
             this.setupDimentions()
         })
 
         this.setupDimentions()
 
-        this._rootElem = this._svgElem.append('g')
+        this._rootElem = this._svgElem.append("g")
 
         this._renderControl()
 
@@ -170,48 +164,53 @@ export default class VisualView {
 
     _renderControl(): void {
         var self = this
-        this._controlInfo.previewGroupElem = this._svgElem.append('g')
-            .attr('class', 'preview')
+        this._controlInfo.previewGroupElem = this._svgElem
+            .append("g")
+            .attr("class", "preview")
 
         this._controlInfo.previewFullRectElem = this._controlInfo.previewGroupElem
-            .append('rect')
-            .attr('class', 'preview-full-rect')
+            .append("rect")
+            .attr("class", "preview-full-rect")
 
         this._controlInfo.previewItemsGroupElem = this._controlInfo.previewGroupElem
-            .append('g')
-            .attr('class', 'preview-items-group')
-
+            .append("g")
+            .attr("class", "preview-items-group")
 
         this._controlInfo.previewVisibleRectElem = this._controlInfo.previewGroupElem
-            .append('rect')
-            .attr('class', 'preview-visible-rect')
+            .append("rect")
+            .attr("class", "preview-visible-rect")
 
         this._controlInfo.previewGroupElem
-            .on('click', () => {
+            .on("click", () => {
                 let pt = this._svgElem.node().createSVGPoint()
                 // @ts-ignore: Unreachable code error
                 pt.x = d3.event.clientX
                 // @ts-ignore: Unreachable code error
                 pt.y = d3.event.clientY
                 var target = self._controlInfo.previewFullRectElem._groups[0][0]
-                var cursorpt = pt.matrixTransform(target.getScreenCTM().inverse())
+                var cursorpt = pt.matrixTransform(
+                    target.getScreenCTM().inverse()
+                )
 
                 this._userPanTo(
-                    cursorpt.x / self._controlInfo.scale - this._width / 2, 
-                    cursorpt.y / self._controlInfo.scale - this._height / 2);
+                    cursorpt.x / self._controlInfo.scale - this._width / 2,
+                    cursorpt.y / self._controlInfo.scale - this._height / 2
+                )
             })
-            .call(d3.drag()
-                .on('drag', () => {
+            .call(
+                d3.drag().on("drag", () => {
                     this._userPanTo(
                         // @ts-ignore: Unreachable code error
-                        this._viewPos.x + d3.event.dx / this._controlInfo.scale, 
+                        this._viewPos.x + d3.event.dx / this._controlInfo.scale,
                         // @ts-ignore: Unreachable code error
                         this._viewPos.y + d3.event.dy / this._controlInfo.scale,
-                        true);
-                }))
+                        true
+                    )
+                })
+            )
     }
 
-    setupDimentions(size?: { width: number, height: number }): void {
+    setupDimentions(size?: { width: number; height: number }): void {
         if (!size) {
             size = this._parentElem.node().getBoundingClientRect()
         }
@@ -235,45 +234,59 @@ export default class VisualView {
 
         this._controlInfo.scale = Math.min(
             this._controlInfo.boxWidth / this._visualRoot.width,
-            this._controlInfo.boxHeight / this._visualRoot.height)
+            this._controlInfo.boxHeight / this._visualRoot.height
+        )
 
-        this._controlInfo.boxWidth =
-            Math.max(100, this._visualRoot.width * this._controlInfo.scale)
-        this._controlInfo.boxHeight =
-            Math.max(100, this._visualRoot.height * this._controlInfo.scale)
+        this._controlInfo.boxWidth = Math.max(
+            100,
+            this._visualRoot.width * this._controlInfo.scale
+        )
+        this._controlInfo.boxHeight = Math.max(
+            100,
+            this._visualRoot.height * this._controlInfo.scale
+        )
 
         this._controlInfo.x = this._width - this._controlInfo.boxWidth - 20
         this._controlInfo.y = this._height - this._controlInfo.boxHeight - 20
 
         if (this._controlInfo.previewGroupElem) {
-            this._controlInfo.previewGroupElem.attr('transform', () => {
-                return 'translate(' + this._controlInfo.x + ',' + this._controlInfo.y + ')'
-
+            this._controlInfo.previewGroupElem.attr("transform", () => {
+                return (
+                    "translate(" +
+                    this._controlInfo.x +
+                    "," +
+                    this._controlInfo.y +
+                    ")"
+                )
             })
         } else {
-            throw new Error('MISSING PREVIEW GROUP ELEM')
+            throw new Error("MISSING PREVIEW GROUP ELEM")
         }
 
         if (this._controlInfo.previewFullRectElem) {
             this._controlInfo.previewFullRectElem
-                .attr('width', this._controlInfo.boxWidth)   // this._visualRoot.width * this._controlInfo.scale)
-                .attr('height', this._controlInfo.boxHeight) // this._visualRoot.height * this._controlInfo.scale);
+                .attr("width", this._controlInfo.boxWidth) // this._visualRoot.width * this._controlInfo.scale)
+                .attr("height", this._controlInfo.boxHeight) // this._visualRoot.height * this._controlInfo.scale);
         }
 
         if (this._controlInfo.previewItemsGroupElem) {
-            this._controlInfo.previewItemsGroupElem.attr('transform', () => {
-                return 'scale(' + this._controlInfo.scale + ', ' + this._controlInfo.scale + ')'
-
+            this._controlInfo.previewItemsGroupElem.attr("transform", () => {
+                return (
+                    "scale(" +
+                    this._controlInfo.scale +
+                    ", " +
+                    this._controlInfo.scale +
+                    ")"
+                )
             })
         }
 
         if (this._controlInfo.previewVisibleRectElem) {
             this._controlInfo.previewVisibleRectElem
-                .attr('x', this._viewPos.x * this._controlInfo.scale)
-                .attr('y', this._viewPos.y * this._controlInfo.scale)
-                .attr('width', this._width * this._controlInfo.scale)
-                .attr('height', this._height * this._controlInfo.scale)
-
+                .attr("x", this._viewPos.x * this._controlInfo.scale)
+                .attr("y", this._viewPos.y * this._controlInfo.scale)
+                .attr("width", this._width * this._controlInfo.scale)
+                .attr("height", this._height * this._controlInfo.scale)
         }
     }
 
@@ -286,16 +299,15 @@ export default class VisualView {
     }
 
     _setupPanningByMouseDrag(): void {
-        var drag = d3.drag()
-            .on('drag', () => {
-                this._userPanTo(
-                    // @ts-ignore: Unreachable code error
-                    this._viewPos.x - d3.event.dx,
-                    // @ts-ignore: Unreachable code error
-                    this._viewPos.y - d3.event.dy,
-                    true
-                );
-            })
+        var drag = d3.drag().on("drag", () => {
+            this._userPanTo(
+                // @ts-ignore: Unreachable code error
+                this._viewPos.x - d3.event.dx,
+                // @ts-ignore: Unreachable code error
+                this._viewPos.y - d3.event.dy,
+                true
+            )
+        })
 
         this._svgElem.call(drag)
     }
@@ -305,98 +317,92 @@ export default class VisualView {
             this._userPanTo(
                 this._viewPos.x + e.deltaX,
                 this._viewPos.y + e.deltaY,
-                true);
+                true
+            )
             e.preventDefault()
         }
 
-        var elem = document.getElementById('diagram')
+        var elem = document.getElementById("diagram")
         if (elem && elem.addEventListener) {
-            elem.addEventListener('wheel', doScroll, false)
+            elem.addEventListener("wheel", doScroll, false)
         }
     }
 
-    _activatePanning(): void
-    {
-        if (!this.sharedState.get('auto_pan_to_selected_dn')) {
-            return;
+    _activatePanning(): void {
+        if (!this.sharedState.get("auto_pan_to_selected_dn")) {
+            return
         }
 
-        var visualNode = this._nodeDict[this.sharedState.get('selected_dn')];
+        var visualNode = this._nodeDict[this.sharedState.get("selected_dn")]
         if (!visualNode) {
-            return;
+            return
         }
 
         this._panTo(
-            visualNode.absX - Math.max(this._width / 2 - visualNode.width / 2, 10), 
-            visualNode.absY - Math.max(this._height / 2 - visualNode.height / 2, 10))
+            visualNode.absX -
+                Math.max(this._width / 2 - visualNode.width / 2, 10),
+            visualNode.absY -
+                Math.max(this._height / 2 - visualNode.height / 2, 10)
+        )
     }
 
-    _userPanTo(x: number, y: number, skipAnimate?: boolean)
-    {
-        this.sharedState.set('auto_pan_to_selected_dn', false)
-        this._panTo(x, y, skipAnimate);
+    _userPanTo(x: number, y: number, skipAnimate?: boolean) {
+        this.sharedState.set("auto_pan_to_selected_dn", false)
+        this._panTo(x, y, skipAnimate)
     }
 
-    _panTo(x: number, y: number, skipAnimate?: boolean)
-    {
-        var targetViewPos = this._fixViewPos({ x: x, y: y });
+    _panTo(x: number, y: number, skipAnimate?: boolean) {
+        var targetViewPos = this._fixViewPos({ x: x, y: y })
 
         if (skipAnimate) {
-            this._stopPanAnimation();
-            this._viewPos = targetViewPos;
-            this._applyPanTransform();
+            this._stopPanAnimation()
+            this._viewPos = targetViewPos
+            this._applyPanTransform()
         } else {
-            this._panInterpolator = d3.interpolate(
-                this._viewPos,
-                targetViewPos
-            );
-    
-            this._panAnimationDuration = 200;
-            this._panInterpolatorStartTime = new Date();
-            this._animatePanTransform();
-        }
+            this._panInterpolator = d3.interpolate(this._viewPos, targetViewPos)
 
+            this._panAnimationDuration = 200
+            this._panInterpolatorStartTime = new Date()
+            this._animatePanTransform()
+        }
     }
 
-    _animatePanTransform(): void
-    {
+    _animatePanTransform(): void {
         if (this._panAnimationTimer) {
-            return;
+            return
         }
 
         this._panAnimationTimer = setTimeout(() => {
-            this._panAnimationTimer = null;
-            var date = new Date().getTime();
-            const startDate: number = 
-                this._panInterpolatorStartTime ?
-                new Date(this._panInterpolatorStartTime).getTime() :
-                new Date().getTime()
+            this._panAnimationTimer = null
+            var date = new Date().getTime()
+            const startDate: number = this._panInterpolatorStartTime
+                ? new Date(this._panInterpolatorStartTime).getTime()
+                : new Date().getTime()
 
-            var diff = date - startDate;
+            var diff = date - startDate
             if (!this._panAnimationDuration) {
-                return;
+                return
             }
 
-            var t = diff / this._panAnimationDuration;
-            this._viewPos = this._panInterpolator(t);
-            this._applyPanTransform();
+            var t = diff / this._panAnimationDuration
+            this._viewPos = this._panInterpolator(t)
+            this._applyPanTransform()
 
             if (t < 1.0) {
-                this._animatePanTransform();
+                this._animatePanTransform()
             } else {
-                this._stopPanAnimation();
+                this._stopPanAnimation()
             }
         }, 10)
     }
 
-    _stopPanAnimation(): void
-    {
-        this._panInterpolator = null;
-        this._panInterpolatorStartTime = null;
-        this._panAnimationDuration = null;
+    _stopPanAnimation(): void {
+        this._panInterpolator = null
+        this._panInterpolatorStartTime = null
+        this._panAnimationDuration = null
         if (this._panAnimationTimer) {
-            clearTimeout(this._panAnimationTimer);
-            this._panAnimationTimer = null;
+            clearTimeout(this._panAnimationTimer)
+            this._panAnimationTimer = null
         }
     }
 
@@ -405,11 +411,11 @@ export default class VisualView {
             return
         }
 
-        var pos = this._viewPos;
+        var pos = this._viewPos
         // var pos = this._fixViewPos(this._viewPos);
 
-        this._rootElem.attr('transform', () => {
-            return 'translate(' + (-pos.x) + ',' + (-pos.y) + ')'
+        this._rootElem.attr("transform", () => {
+            return "translate(" + -pos.x + "," + -pos.y + ")"
         })
 
         // const interpolator = d3.interpolate(
@@ -421,30 +427,35 @@ export default class VisualView {
         this._setupControl()
     }
 
-    _fixViewPos(pos: ViewPosition): ViewPosition
-    {
-        var newPos = { x: pos.x, y : pos.y };
+    _fixViewPos(pos: ViewPosition): ViewPosition {
+        var newPos = { x: pos.x, y: pos.y }
 
         if (this._visualRoot) {
             newPos.x = Math.min(this._visualRoot.width - this._width, newPos.x)
-            newPos.y = Math.min(this._visualRoot.height - this._height, newPos.y)
+            newPos.y = Math.min(
+                this._visualRoot.height - this._height,
+                newPos.y
+            )
         }
 
         newPos.x = Math.max(0, newPos.x)
         newPos.y = Math.max(0, newPos.y)
 
-        return newPos;
+        return newPos
     }
 
     acceptSourceData(sourceData: DiagramData): void {
-        this._nodeDict = {};
+        this._nodeDict = {}
         this._visualRoot = this._packSourceData(sourceData)
         this._massageSourceData()
         this._setupControl()
     }
 
     _packSourceData(root: DiagramData): VisualNode {
-        var recurse = (node: DiagramData, parent: VisualNode | null): VisualNode => {
+        var recurse = (
+            node: DiagramData,
+            parent: VisualNode | null
+        ): VisualNode => {
             var visualNode = new VisualNode(this, node, parent)
             if (!node.children) {
                 node.children = []
@@ -453,7 +464,7 @@ export default class VisualView {
                 recurse(child, visualNode)
             }
             visualNode.prepare()
-            this._nodeDict[visualNode.id] = visualNode;
+            this._nodeDict[visualNode.id] = visualNode
             return visualNode
         }
 
@@ -475,7 +486,7 @@ export default class VisualView {
 
     render(): void {
         if (!this._rootElem) {
-            return;
+            return
         }
 
         this._renderItems(this._rootElem, this._flatVisualNodes)
@@ -483,19 +494,21 @@ export default class VisualView {
     }
 
     _renderSmallItems(): void {
-        this._renderItemsSmall(this._controlInfo.previewItemsGroupElem, this._flatVisualNodes)
+        this._renderItemsSmall(
+            this._controlInfo.previewItemsGroupElem,
+            this._flatVisualNodes
+        )
     }
 
     _renderItems(parentNode: any, items: VisualNode[]): void {
         var self = this
-        var node =
-            parentNode.selectAll('.node') //selectAll('g')
-                .data(items, function (d: VisualNode) {
-                    return d.id
-                })
+        var node = parentNode
+            .selectAll(".node") //selectAll('g')
+            .data(items, function (d: VisualNode) {
+                return d.id
+            })
 
-        node
-            .exit()
+        node.exit()
             .each(function (d: VisualNode) {
                 delete self._d3NodeDict[d.id]
             })
@@ -503,190 +516,176 @@ export default class VisualView {
 
         node = node
             .enter()
-            .append('g')
-            .attr('class', function (d: VisualNode) {
+            .append("g")
+            .attr("class", function (d: VisualNode) {
                 if (d.isSelected) {
-                    return 'node selected'
+                    return "node selected"
                 }
-                return 'node'
+                return "node"
             })
-            .attr('id', function (d: VisualNode) {
+            .attr("id", function (d: VisualNode) {
                 return d.id
             })
-            .attr('transform', nodeGroupTransform)
-            .each(function(d: VisualNode) {
+            .attr("transform", nodeGroupTransform)
+            .each(function (d: VisualNode) {
                 // @ts-ignore: Unreachable code error
                 self._d3NodeDict[d.id] = this
             })
 
-        node.append('rect')
-            .attr('class', 'node-bg')
-            .attr('width', nodeWidth)
-            .attr('height', nodeHeight)
-            .style('fill', nodeBgFillColor)
-            .style('stroke', nodeStrokeColor)
+        node.append("rect")
+            .attr("class", "node-bg")
+            .attr("width", nodeWidth)
+            .attr("height", nodeHeight)
+            .style("fill", nodeBgFillColor)
+            .style("stroke", nodeStrokeColor)
 
+        node.append("rect")
+            .attr("class", "node-header")
+            .attr("width", nodeWidth)
+            .attr("height", nodeHeaderBgHeight)
+            .style("fill", nodeHeaderBgFillColor)
+            .on("click", nodePerformSelect)
+            .on("dblclick", nodePerformExpandCollapse)
 
-        node.append('rect')
-            .attr('class', 'node-header')
-            .attr('width', nodeWidth)
-            .attr('height', nodeHeaderBgHeight)
-            .style('fill', nodeHeaderBgFillColor)
-            .on('click', nodePerformSelect)
-            .on('dblclick', nodePerformExpandCollapse)
+        node.append("rect")
+            .attr("class", "node-header-hl")
+            .attr("width", nodeHeaderBgWidth)
+            .attr("height", nodeHeaderBgHeight)
+            .style("fill", nodeHeaderHlFillColor)
+            .on("click", nodePerformSelect)
+            .on("dblclick", nodePerformExpandCollapse)
 
-
-        node.append('rect')
-            .attr('class', 'node-header-hl')
-            .attr('width', nodeHeaderBgWidth)
-            .attr('height', nodeHeaderBgHeight)
-            .style('fill', nodeHeaderHlFillColor)
-            .on('click', nodePerformSelect)
-            .on('dblclick', nodePerformExpandCollapse)
-
-
-        node
-            .append('image')
-            .attr('class', 'node-logo')
-            .attr('xlink:href', function (d: VisualNode) {
+        node.append("image")
+            .attr("class", "node-logo")
+            .attr("xlink:href", function (d: VisualNode) {
                 // @ts-ignore: Unreachable code error
                 return getNodeLogoUrl(d.data.kind)
             })
-            .attr('x', nodeHeaderX('logo'))
-            .attr('y', nodeHeaderY('logo'))
-            .attr('width', nodeHeaderWidth('logo'))
-            .attr('height', nodeHeaderHeight('logo'))
-            .on('click', nodePerformSelect)
-            .on('dblclick', nodePerformExpandCollapse)
+            .attr("x", nodeHeaderX("logo"))
+            .attr("y", nodeHeaderY("logo"))
+            .attr("width", nodeHeaderWidth("logo"))
+            .attr("height", nodeHeaderHeight("logo"))
+            .on("click", nodePerformSelect)
+            .on("dblclick", nodePerformExpandCollapse)
 
+        node.append("text")
+            .attr("class", "node-title-kind")
+            .text(nodeHeaderText("title-kind"))
+            .attr("transform", nodeHeaderTransform("title-kind"))
+            .on("click", nodePerformSelect)
+            .on("dblclick", nodePerformExpandCollapse)
 
-        node.append('text')
-            .attr('class', 'node-title-kind')
-            .text(nodeHeaderText('title-kind'))
-            .attr('transform', nodeHeaderTransform('title-kind'))
-            .on('click', nodePerformSelect)
-            .on('dblclick', nodePerformExpandCollapse)
+        node.append("text")
+            .attr("class", "node-title-name")
+            .text(nodeHeaderText("title-name"))
+            .attr("transform", nodeHeaderTransform("title-name"))
+            .on("click", nodePerformSelect)
+            .on("dblclick", nodePerformExpandCollapse)
 
-
-        node.append('text')
-            .attr('class', 'node-title-name')
-            .text(nodeHeaderText('title-name'))
-            .attr('transform', nodeHeaderTransform('title-name'))
-            .on('click', nodePerformSelect)
-            .on('dblclick', nodePerformExpandCollapse)
-
-
-        node
-            .each(function (d: VisualNode) {
-                self._renderNodeExpander(d)
-                self._renderNodeSeverity(d)
-                self._renderNodeFlags(d)
-                self._renderNodeMarkers(d)
-            })
+        node.each(function (d: VisualNode) {
+            self._renderNodeExpander(d)
+            self._renderNodeSeverity(d)
+            self._renderNodeFlags(d)
+            self._renderNodeMarkers(d)
+        })
     }
 
     _renderNodeExpander(visualNode: VisualNode) {
-        var selection =
-            d3.select(visualNode.node)
-                .selectAll('.node-expander')
-                .data(visualNode.expanderNodes, function (x: any) { //x: VisualNodeHeaderExpander
-                    return x.headerName
-                })
+        var selection = d3
+            .select(visualNode.node)
+            .selectAll(".node-expander")
+            .data(visualNode.expanderNodes, function (x: any) {
+                //x: VisualNodeHeaderExpander
+                return x.headerName
+            })
 
-        selection
-            .exit()
-            .remove()
+        selection.exit().remove()
 
         selection
             .enter()
-            .append('image')
-            .attr('class', 'node-expander')
-            .attr('xlink:href', x => x.imgSrc)
-            .attr('x', x => x.x())
-            .attr('y', x => x.y())
-            .attr('width', x => x.width())
-            .attr('height', x => x.height())
-            .on('click', nodePerformExpandCollapse)
-
+            .append("image")
+            .attr("class", "node-expander")
+            .attr("xlink:href", (x) => x.imgSrc)
+            .attr("x", (x) => x.x())
+            .attr("y", (x) => x.y())
+            .attr("width", (x) => x.width())
+            .attr("height", (x) => x.height())
+            .on("click", nodePerformExpandCollapse)
     }
 
     _renderNodeSeverity(visualNode: VisualNode): void {
         {
-            var selection: any = // d3 type Selection <BaseType, VisualNodeSeverity, BaseType, unknown>
-                d3.select(visualNode.node)
-                    .selectAll('.node-severity')
-                    .data(visualNode.severityNodes, function (x: any) { //x: VisualNodeSeverity
-                        return x.headerName
-                    })
+            var selection: any = d3 // d3 type Selection <BaseType, VisualNodeSeverity, BaseType, unknown>
+                .select(visualNode.node)
+                .selectAll(".node-severity")
+                .data(visualNode.severityNodes, function (x: any) {
+                    //x: VisualNodeSeverity
+                    return x.headerName
+                })
 
-            selection
-                .exit()
-                .remove()
-
+            selection.exit().remove()
 
             selection
                 .enter()
-                .append('rect')
-                .attr('class', 'node-severity')
-                .attr('x', x => x.x())
-                .attr('y', x => x.y())
-                .attr('width', x => x.width())
-                .attr('height', x => x.height())
-                .attr('rx', 10)
-                .style('fill', x => x.fill)
-                .style('stroke', 'rgb(53, 55, 62)')
-                .style('stroke-width', '1')
-                .on('click', nodePerformSelect)
-                .on('dblclick', nodePerformExpandCollapse)
+                .append("rect")
+                .attr("class", "node-severity")
+                .attr("x", (x) => x.x())
+                .attr("y", (x) => x.y())
+                .attr("width", (x) => x.width())
+                .attr("height", (x) => x.height())
+                .attr("rx", 10)
+                .style("fill", (x) => x.fill)
+                .style("stroke", "rgb(53, 55, 62)")
+                .style("stroke-width", "1")
+                .on("click", nodePerformSelect)
+                .on("dblclick", nodePerformExpandCollapse)
         }
 
         {
             // eslint-disable-next-line no-redeclare
-            var selection: any = //d3 type Selection <BaseType, VisualNodeText, BaseType, unknown>
-                d3.select(visualNode.node)
-                    .selectAll('.node-severity-text')
-                    .data(visualNode.severityTextNodes, function(x: any) { // x: VisualNodeText
-                        return x.headerName
-                    })
+            var selection: any = d3 //d3 type Selection <BaseType, VisualNodeText, BaseType, unknown>
+                .select(visualNode.node)
+                .selectAll(".node-severity-text")
+                .data(visualNode.severityTextNodes, function (x: any) {
+                    // x: VisualNodeText
+                    return x.headerName
+                })
 
-            selection
-                .exit()
-                .remove()
+            selection.exit().remove()
 
             selection
                 .enter()
-                .append('text')
-                .attr('class', 'node-severity-text')
+                .append("text")
+                .attr("class", "node-severity-text")
                 .text((x: VisualNodeText) => x.text())
-                .attr('transform', (x: VisualNodeText) => x.transform())
-                .on('click', nodePerformSelect)
-                .on('dblclick', nodePerformExpandCollapse)
+                .attr("transform", (x: VisualNodeText) => x.transform())
+                .on("click", nodePerformSelect)
+                .on("dblclick", nodePerformExpandCollapse)
         }
     }
 
     _renderNodeFlags(visualNode: VisualNode): void {
         var self = this
-        var selection =
-            d3.select(visualNode.node)
-                .selectAll('.node-flag')
-                .data(visualNode.flagNodes, function(x: any) { // x: VisualNodeHeaderFlag
-                    return x.headerName
-                })
+        var selection = d3
+            .select(visualNode.node)
+            .selectAll(".node-flag")
+            .data(visualNode.flagNodes, function (x: any) {
+                // x: VisualNodeHeaderFlag
+                return x.headerName
+            })
 
-        selection
-            .exit()
-            .remove()
+        selection.exit().remove()
 
         selection
             .enter()
-            .append('image')
-            .attr('class', 'node-flag')
-            .attr('xlink:href', x => x.imgSrc)
-            .attr('x', x => x.x())
-            .attr('y', x => x.y())
-            .attr('width', x => x.width())
-            .attr('height', x => x.height())
-            .on('mouseover', function (d: VisualNodeHeaderFlag) {
+            .append("image")
+            .attr("class", "node-flag")
+            .attr("xlink:href", (x) => x.imgSrc)
+            .attr("x", (x) => x.x())
+            .attr("y", (x) => x.y())
+            .attr("width", (x) => x.width())
+            .attr("height", (x) => x.height())
+            .on("mouseover", function (d: VisualNodeHeaderFlag) {
                 // @ts-ignore: Unreachable code error
                 self._showFlagTooltip(this, d.flag)
             })
@@ -694,58 +693,57 @@ export default class VisualView {
 
     _renderNodeMarkers(visualNode: VisualNode): void {
         var self = this
-        var selection: any = // d3 type Selection<d3.BaseType, VisualNodeHeaderMarker, d3.BaseType, unknown>
-            d3.select(visualNode.node)
-                .selectAll('.node-marker')
-                .data(visualNode.markerNodes, function (x: any) { // x: VisualNodeHeaderMarker
-                    return x.headerName
-                })
+        var selection: any = d3 // d3 type Selection<d3.BaseType, VisualNodeHeaderMarker, d3.BaseType, unknown>
+            .select(visualNode.node)
+            .selectAll(".node-marker")
+            .data(visualNode.markerNodes, function (x: any) {
+                // x: VisualNodeHeaderMarker
+                return x.headerName
+            })
 
-        selection
-            .exit()
-            .remove()
+        selection.exit().remove()
 
         selection = selection
             .enter()
-            .append('g')
-            .attr('class', 'node-marker')
-            .attr('id', function (d: VisualNode) {
+            .append("g")
+            .attr("class", "node-marker")
+            .attr("id", function (d: VisualNode) {
                 return d.id
             })
-            .attr('transform', (x: VisualNodeHeaderMarker) => x.transform())
-            .on('mouseover',  function (d: VisualNodeHeaderMarker) {
+            .attr("transform", (x: VisualNodeHeaderMarker) => x.transform())
+            .on("mouseover", function (d: VisualNodeHeaderMarker) {
                 // @ts-ignore: Unreachable code error
                 self._showMarkerTooltip(this, d.marker)
             })
 
         selection
-            .append('rect')
-            .attr('class', 'marker-bg')
-            .attr('rx', 3)
-            .attr('ry', 3)
-            .attr('width', 20)
-            .attr('height', 20)
-            .style('fill', '#292A2F')
+            .append("rect")
+            .attr("class", "marker-bg")
+            .attr("rx", 3)
+            .attr("ry", 3)
+            .attr("width", 20)
+            .attr("height", 20)
+            .style("fill", "#292A2F")
 
         selection
-            .append('text')
-            .attr('class', 'marker-text')
-            .attr('x', 10)
-            .attr('y', 10)
-            .attr('dominant-baseline', 'middle')
-            .attr('text-anchor', 'middle')
-            .attr('fill', (x: VisualNodeHeaderMarker) => x.fill())
+            .append("text")
+            .attr("class", "marker-text")
+            .attr("x", 10)
+            .attr("y", 10)
+            .attr("dominant-baseline", "middle")
+            .attr("text-anchor", "middle")
+            .attr("fill", (x: VisualNodeHeaderMarker) => x.fill())
             .html((x: VisualNodeHeaderMarker) => x.html())
     }
 
     _showFlagTooltip(elem: VisualView, name: string): void {
-        var descr = flagTooltip(name);
-        this._showTooltip(elem, descr);
+        var descr = flagTooltip(name)
+        this._showTooltip(elem, descr)
     }
 
     _showMarkerTooltip(elem: VisualView, name: string): void {
-        var descr = 'Marker <b>' + name + '</b>';
-        this._showTooltip(elem, descr);
+        var descr = "Marker <b>" + name + "</b>"
+        this._showTooltip(elem, descr)
     }
 
     _showTooltip(elem: VisualView, descr: string): void {
@@ -756,15 +754,15 @@ export default class VisualView {
             '<div class="tooltip">' +
             '	<div class="tooltip-arrow"></div>' +
             '	<div class="tooltip-inner"></div>' +
-            '</div>';
+            "</div>"
         // @ts-ignore: Unreachable code error
         $(elem).tooltip({
             template: template,
             title: descr,
-            html: true
+            html: true,
         })
         // @ts-ignore: Unreachable code error
-        $(elem).tooltip('show')
+        $(elem).tooltip("show")
     }
 
     _updateNode(visualNode: VisualNode, isFullUpdate?: boolean): void {
@@ -779,131 +777,128 @@ export default class VisualView {
             this._renderNodeSeverity(visualNode)
             this._renderNodeFlags(visualNode)
             this._renderNodeMarkers(visualNode)
-        } 
-            
-        d3
-            .select(visualNode.node)
-            .selectAll('.node-flag')
+        }
+
+        d3.select(visualNode.node)
+            .selectAll(".node-flag")
             .transition()
             .duration(duration)
-            .attr('x', (x: any) => { // x: VisualNodeHeaderFlag
+            .attr("x", (x: any) => {
+                // x: VisualNodeHeaderFlag
                 return x.x()
             })
-            .attr('y', (x: any) => x.y()) // x: VisualNodeHeaderFlag
+            .attr("y", (x: any) => x.y()) // x: VisualNodeHeaderFlag
 
-        d3
-            .select(visualNode.node)
-            .selectAll('.node-marker')
+        d3.select(visualNode.node)
+            .selectAll(".node-marker")
             .transition()
             .duration(duration)
-            .attr('transform', (x: any) => x.transform())// x: VisualNodeHeaderMarker
+            .attr("transform", (x: any) => x.transform()) // x: VisualNodeHeaderMarker
 
-        d3
-            .select(visualNode.node)
-            .selectAll('.node-marker')
-            .selectAll('.marker-text')
+        d3.select(visualNode.node)
+            .selectAll(".node-marker")
+            .selectAll(".marker-text")
             .html((x: any) => x.html()) // x: VisualNodeHeaderMarker
             .transition()
             .duration(duration)
-            .attr('fill', (x: any) => x.fill()) // x: VisualNodeHeaderMarker
+            .attr("fill", (x: any) => x.fill()) // x: VisualNodeHeaderMarker
 
-        d3
-            .select(visualNode.node)
-            .selectAll('.node-severity')
+        d3.select(visualNode.node)
+            .selectAll(".node-severity")
             .transition()
             .duration(duration)
-            .attr('x', function(x: any) { // x: VisualNodeSeverity
+            .attr("x", function (x: any) {
+                // x: VisualNodeSeverity
                 return x.x()
             })
 
-
-        d3
-            .select(visualNode.node)
-            .selectAll('.node-severity-text')
-            .text((x: any) => { // x: VisualNodeText
+        d3.select(visualNode.node)
+            .selectAll(".node-severity-text")
+            .text((x: any) => {
+                // x: VisualNodeText
                 return x.text()
             })
             .transition()
             .duration(duration)
-            .attr('transform', (x: any) => { // x: VisualNodeText
+            .attr("transform", (x: any) => {
+                // x: VisualNodeText
                 return x.transform()
             })
 
-
-        d3
-            .select(visualNode.node)
+        d3.select(visualNode.node)
             .transition()
             .duration(duration)
-            .attr('class', function (d: any) { // d: VisualNode
+            .attr("class", function (d: any) {
+                // d: VisualNode
                 if (d.isSelected) {
-                    return 'node selected'
+                    return "node selected"
                 }
-                return 'node'
+                return "node"
             })
-            .attr('transform', nodeGroupTransform(visualNode))
+            .attr("transform", nodeGroupTransform(visualNode))
 
-        d3
-            .select(visualNode.node)
-            .select('.node-bg')
+        d3.select(visualNode.node)
+            .select(".node-bg")
             .transition()
             .duration(duration)
-            .attr('width', nodeWidth(visualNode))
-            .attr('height', nodeHeight(visualNode))
-            .style('fill', nodeBgFillColor(visualNode))
-            .style('stroke', nodeStrokeColor(visualNode))
+            .attr("width", nodeWidth(visualNode))
+            .attr("height", nodeHeight(visualNode))
+            .style("fill", nodeBgFillColor(visualNode))
+            .style("stroke", nodeStrokeColor(visualNode))
 
-        d3
-            .select(visualNode.node)
-            .select('.node-header')
+        d3.select(visualNode.node)
+            .select(".node-header")
             .transition()
             .duration(duration)
-            .attr('width', nodeWidth(visualNode))
-            .attr('height', nodeHeaderBgHeight(visualNode))
-            .style('fill', nodeHeaderBgFillColor(visualNode))
+            .attr("width", nodeWidth(visualNode))
+            .attr("height", nodeHeaderBgHeight(visualNode))
+            .style("fill", nodeHeaderBgFillColor(visualNode))
 
-        d3
-            .select(visualNode.node)
-            .select('.node-header-hl')
+        d3.select(visualNode.node)
+            .select(".node-header-hl")
             .transition()
             .duration(duration)
-            .attr('width', nodeHeaderBgWidth(visualNode))
-            .attr('height', nodeHeaderBgHeight(visualNode))
-            .style('fill', nodeHeaderHlFillColor(visualNode))
+            .attr("width", nodeHeaderBgWidth(visualNode))
+            .attr("height", nodeHeaderBgHeight(visualNode))
+            .style("fill", nodeHeaderHlFillColor(visualNode))
 
-        d3
-            .select(visualNode.node)
-            .select('.node-expander')
+        d3.select(visualNode.node)
+            .select(".node-expander")
             .transition()
             .duration(duration)
-            .attr('x', (x: any) => { // x: VisualNodeHeaderExpander
-                var expanderNode = _.head<VisualNodeHeaderExpander>(x.expanderNodes)
+            .attr("x", (x: any) => {
+                // x: VisualNodeHeaderExpander
+                var expanderNode = _.head<VisualNodeHeaderExpander>(
+                    x.expanderNodes
+                )
                 if (expanderNode) {
                     return expanderNode.x()
                 }
                 return 0
             })
-            .attr('xlink:href', (x: any) => { // x: VisualNodeHeaderExpander
-                var expanderNode = _.head<VisualNodeHeaderExpander>(x.expanderNodes)
+            .attr("xlink:href", (x: any) => {
+                // x: VisualNodeHeaderExpander
+                var expanderNode = _.head<VisualNodeHeaderExpander>(
+                    x.expanderNodes
+                )
                 if (expanderNode) {
                     return expanderNode.imgSrc
                 }
                 return 0
             })
 
-
         this._updateNodeSmall(visualNode)
     }
 
     _renderItemsSmall(parentNode: VisualNode, items: VisualNode[]): void {
         var self = this
-        var node =
-            parentNode.selectAll('g')
-                .data(items, function (d: VisualNode) {
-                    return d.id
-                })
+        var node = parentNode
+            .selectAll("g")
+            .data(items, function (d: VisualNode) {
+                return d.id
+            })
 
-        node
-            .exit()
+        node.exit()
             .each(function (d: VisualNode) {
                 delete self._d3SmallNodeDict[d.id]
             })
@@ -911,38 +906,36 @@ export default class VisualView {
 
         node = node
             .enter()
-            .append('g')
-            .attr('class', 'node')
-            .attr('id', function (d: VisualNode) {
+            .append("g")
+            .attr("class", "node")
+            .attr("id", function (d: VisualNode) {
                 return d.id
             })
-            .attr('transform', nodeGroupTransform)
-            .each(function(d: VisualNode){
+            .attr("transform", nodeGroupTransform)
+            .each(function (d: VisualNode) {
                 // @ts-ignore: Unreachable code error
                 self._d3SmallNodeDict[d.id] = this
             })
 
-        node.append('rect')
-            .attr('class', 'node-bg')
-            .attr('width', function (d: VisualNode) {
+        node.append("rect")
+            .attr("class", "node-bg")
+            .attr("width", function (d: VisualNode) {
                 return d.width
             })
-            .attr('height', function (d: VisualNode) {
+            .attr("height", function (d: VisualNode) {
                 return d.height
             })
-            .style('fill', nodeBgFillColor)
+            .style("fill", nodeBgFillColor)
 
-
-        node.append('rect')
-            .attr('class', 'node-header-hl')
-            .attr('width', function (d: VisualNode) {
+        node.append("rect")
+            .attr("class", "node-header-hl")
+            .attr("width", function (d: VisualNode) {
                 return d.width
             })
-            .attr('height', function (d: VisualNode) {
+            .attr("height", function (d: VisualNode) {
                 return d.headerHeight
             })
-            .style('fill', nodeHeaderHlFillColor)
-
+            .style("fill", nodeHeaderHlFillColor)
     }
 
     _updateNodeSmall(visualNode: VisualNode): void {
@@ -952,33 +945,33 @@ export default class VisualView {
             return
         }
 
-        d3
-            .select(visualNode.smallNode)
+        d3.select(visualNode.smallNode)
             .transition()
             .duration(duration)
-            .attr('transform', nodeGroupTransform(visualNode))
+            .attr("transform", nodeGroupTransform(visualNode))
 
-        d3
-            .select(visualNode.smallNode)
-            .select('.node-bg')
+        d3.select(visualNode.smallNode)
+            .select(".node-bg")
             .transition()
             .duration(duration)
-            .attr('width', function (d: any) { // x: VisualNode
+            .attr("width", function (d: any) {
+                // x: VisualNode
                 return d.width
             })
-            .attr('height', function (d: any) { // x: VisualNode
+            .attr("height", function (d: any) {
+                // x: VisualNode
                 return d.height
             })
 
-        d3
-            .select(visualNode.smallNode)
-            .select('.node-header-hl')
+        d3.select(visualNode.smallNode)
+            .select(".node-header-hl")
             .transition()
             .duration(duration)
-            .attr('width', function (d: any) { // x: VisualNode
+            .attr("width", function (d: any) {
+                // x: VisualNode
                 return d.width
             })
-            .style('fill', nodeHeaderHlFillColor(visualNode))
+            .style("fill", nodeHeaderHlFillColor(visualNode))
     }
 
     _updateNodeR(visualNode: VisualNode, isFullUpdate?: boolean): void {
@@ -988,34 +981,34 @@ export default class VisualView {
         }
     }
 
-    _updateSelection(selected_dn: string): void
-    {
-        if (this._currentSelectedNodeDn)
-        {
-            if (this._currentSelectedNodeDn != selected_dn)
-            {
-                var node: VisualNode = this._nodeDict[this._currentSelectedNodeDn];
-                this._currentSelectedNodeDn = null;
+    _updateSelection(selected_dn: string): void {
+        if (this._currentSelectedNodeDn) {
+            if (this._currentSelectedNodeDn != selected_dn) {
+                var node: VisualNode = this._nodeDict[
+                    this._currentSelectedNodeDn
+                ]
+                this._currentSelectedNodeDn = null
                 if (node) {
-                    this._updateNode(node);
+                    this._updateNode(node)
                 }
             }
         }
 
-        if (this._currentSelectedNodeDn && this._currentSelectedNodeDn != selected_dn)
-        {
-            this._currentSelectedNodeDn = selected_dn;
-            var node = this._nodeDict[selected_dn];
+        if (
+            this._currentSelectedNodeDn &&
+            this._currentSelectedNodeDn != selected_dn
+        ) {
+            this._currentSelectedNodeDn = selected_dn
+            var node = this._nodeDict[selected_dn]
             if (node) {
-                this._updateNode(node);
+                this._updateNode(node)
             }
         }
 
-        this._activatePanning();
+        this._activatePanning()
     }
 
     updateAll(isFullUpdate?: boolean): void {
-
         this._massageSourceData()
         this._applyPanTransform()
         this._setupControl()
@@ -1024,20 +1017,16 @@ export default class VisualView {
             this._updateNodeR(this._visualRoot, isFullUpdate)
         }
         this._setupControl()
-        this._activatePanning();
+        this._activatePanning()
     }
 
     handleVisualNodeClick(visualNode: VisualNode): void {
-        this.sharedState.set('auto_pan_to_selected_dn', false)
+        this.sharedState.set("auto_pan_to_selected_dn", false)
 
-        if (visualNode.isSelected)
-        {
-            this.sharedState.set('selected_dn', null);
-        }
-        else
-        {
-            this.sharedState.set('selected_dn', visualNode.id);
+        if (visualNode.isSelected) {
+            this.sharedState.set("selected_dn", null)
+        } else {
+            this.sharedState.set("selected_dn", visualNode.id)
         }
     }
-
 }

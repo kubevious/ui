@@ -1,10 +1,8 @@
-import React from 'react'
-import { isEmptyArray } from '../../utils/util'
-import { AboutItem } from './types'
+import React from "react"
+import { isEmptyArray } from "../../utils/util"
+import { AboutItem } from "./types"
 
-const About = ({ result } : {
-    result: AboutItem[],
-}): JSX.Element => {
+const About = ({ result }: { result: AboutItem[] }): JSX.Element => {
     return (
         <div className="About-wrapper p-40 overflow-hide">
             <div className="container-header">
@@ -12,18 +10,23 @@ const About = ({ result } : {
             </div>
             <table className="table table-striped table-dark">
                 <thead>
-                <tr>
-                    <th>Property</th>
-                    <th>Value</th>
-                </tr>
+                    <tr>
+                        <th>Property</th>
+                        <th>Value</th>
+                    </tr>
                 </thead>
                 <tbody>
-                {!isEmptyArray(result) && result.map((item: AboutItem, index: number) => (
-                    <tr key={index}>
-                        <td>{(item.category ? item.category + ' :: ' : '' ) + item.name}</td>
-                        <td>{item.value}</td>
-                    </tr>
-                ))}
+                    {!isEmptyArray(result) &&
+                        result.map((item: AboutItem, index: number) => (
+                            <tr key={index}>
+                                <td>
+                                    {(item.category
+                                        ? item.category + " :: "
+                                        : "") + item.name}
+                                </td>
+                                <td>{item.value}</td>
+                            </tr>
+                        ))}
                 </tbody>
             </table>
         </div>
