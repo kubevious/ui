@@ -3,7 +3,7 @@ import $ from "jquery"
 import _ from "the-lodash"
 import "bootstrap/js/dist/tooltip"
 
-import VisualNode from "../visual-node/visual-node"
+import { VisualNode } from "../visual-node/visual-node"
 import { flagTooltip, getNodeLogoUrl } from "../../../utils/ui-utils"
 import { ViewPosition } from "../types"
 import { DiagramData, Montserrat } from "../../../types"
@@ -32,7 +32,7 @@ import {
     nodeHeaderTransform,
 } from "./utils"
 
-export default class VisualView {
+export class VisualView {
     private _parentElem: any // Selection<BaseType, unknown, HTMLElement, any>
     private _width: number
     private _height: number

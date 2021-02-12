@@ -1,5 +1,5 @@
-import BaseVisualNodeHeader from "./base-visual-node-header"
-import VisualNode from "./visual-node"
+import { BaseVisualNodeHeader } from "./base-visual-node-header"
+import { VisualNode } from "./visual-node"
 
 export class VisualNodeHeaderMarker extends BaseVisualNodeHeader {
     private _marker: string

@@ -3,7 +3,7 @@ import { isEmptyArray } from "../../utils/util"
 import { MarkerDict } from "./types"
 import { SelectedData } from "../../types"
 import { sharedState } from "../../configureService"
-import DnComponent from "../DnComponent"
+import { DnComponent } from "../DnComponent"
 import MarkerPreview from "../MarkerPreview"
 
 import "./styles.scss"
@@ -64,5 +64,3 @@ export const DnShortcutComponent: React.FunctionComponent<SelectedData> = ({
         </div>
     )
 }
-
-export default DnShortcutComponent

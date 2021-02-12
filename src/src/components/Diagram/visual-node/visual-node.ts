@@ -1,5 +1,5 @@
 import _ from "the-lodash"
-import GrowingPacker from "../packer.growing"
+import { GrowingPacker } from "../packer.growing"
 import { prettyKind } from "../../../utils/ui-utils"
 import {
     MONTSERRAT_12PX_500,
@@ -12,7 +12,7 @@ import {
     SEVERITY_BG_COLOR_WARN,
     VISUAL_NODE_COLOR_TABLE,
 } from "../constants"
-import VisualView from "../visual-view/visual-view"
+import { VisualView } from "../visual-view/visual-view"
 import { DiagramData, Flags } from "../../../types"
 import { NODE_RENDER_METADATA_NAME, Header, Block } from "../types"
 import { VisualNodeHeaderExpander } from "./visual-node-header-expander"
@@ -21,7 +21,7 @@ import { VisualNodeHeaderMarker } from "./visual-node-header-marker"
 import { VisualNodeSeverity } from "./visual-node-severity"
 import { VisualNodeText } from "./visual-node-text"
 
-export default class VisualNode {
+export class VisualNode {
     private _view: VisualView
     private _data: DiagramData
     private _parent: VisualNode | null

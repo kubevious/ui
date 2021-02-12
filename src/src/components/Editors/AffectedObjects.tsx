@@ -1,9 +1,13 @@
-import React from 'react'
-import { SelectedData } from '../../types'
-import DnShortcutComponent from '../DnShortcutComponent'
-import { SelectedItemData } from './types'
+import React from "react"
+import { SelectedData } from "../../types"
+import { DnShortcutComponent } from "../DnShortcutComponent"
+import { SelectedItemData } from "./types"
 
-const AffectedObjects = ({ selectedItemData }: { selectedItemData: SelectedItemData }): JSX.Element => {
+export const AffectedObjects = ({
+    selectedItemData,
+}: {
+    selectedItemData: SelectedItemData
+}): JSX.Element => {
     return (
         <>
             {selectedItemData.items.map((item: SelectedData, index: number) => (
@@ -17,4 +21,3 @@ const AffectedObjects = ({ selectedItemData }: { selectedItemData: SelectedItemD
         </>
     )
 }
-export default AffectedObjects

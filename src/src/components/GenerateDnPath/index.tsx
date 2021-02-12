@@ -4,7 +4,7 @@ import _ from "the-lodash"
 import cx from "classnames"
 import { RnInfo } from "@kubevious/helpers/dist/dn-utils"
 
-const DnPath = ({
+export const DnPath = ({
     dnParts,
     includeLogo,
     bigLogo,
@@ -43,5 +43,3 @@ const DnPath = ({
         </div>
     )
 }
-
-export default DnPath

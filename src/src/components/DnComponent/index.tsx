@@ -59,5 +59,3 @@ export const DnComponent: React.FunctionComponent<DnComponentProps> = ({
         </div>
     )
 }
-
-export default DnComponent

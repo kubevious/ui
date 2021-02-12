@@ -1,6 +1,6 @@
 import React from 'react'
 
-const StartPage = ({ type, createNewItem }: {type: string, createNewItem: () => void}): JSX.Element => {
+export const StartPage = ({ type, createNewItem }: {type: string, createNewItem: () => void}): JSX.Element => {
     return (
         <div className="start-rule-container">
             <div className="start-wrapper">
@@ -27,5 +27,3 @@ const StartPage = ({ type, createNewItem }: {type: string, createNewItem: () => 
         </div>
     )
 }
-
-export default StartPage

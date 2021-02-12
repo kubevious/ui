@@ -1,8 +1,8 @@
 import { Header } from "../types"
-import VisualNode from "./visual-node"
-import VisualView from "../visual-view/visual-view"
+import { VisualNode } from "./visual-node"
+import { VisualView } from "../visual-view/visual-view"
 
-export default class BaseVisualNodeHeader {
+export class BaseVisualNodeHeader {
     private _node: VisualNode
     private _headerName: string
     _flavor: string | undefined

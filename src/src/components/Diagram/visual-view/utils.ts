@@ -1,4 +1,4 @@
-import VisualNode from "../visual-node/visual-node"
+import { VisualNode } from "../visual-node/visual-node"
 
 export function nodePerformExpandCollapse(d: VisualNode): void {
     d.isExpanded = !d.isExpanded

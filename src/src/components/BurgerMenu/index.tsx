@@ -11,7 +11,7 @@ import cx from "classnames"
 import { IMarkerService } from "@kubevious/ui-middleware"
 import { Markers } from "../../types"
 
-const BurgerMenu = ({
+export const BurgerMenu = ({
     type,
     service,
 }: {
@@ -117,5 +117,3 @@ const BurgerMenu = ({
         </div>
     )
 }
-
-export default BurgerMenu

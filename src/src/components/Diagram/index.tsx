@@ -1,6 +1,6 @@
 import React from "react"
 import { BaseComponent } from "@kubevious/ui-framework"
-import VisualView from "./visual-view/visual-view"
+import { VisualView } from "./visual-view/visual-view"
 import * as d3 from "d3"
 import $ from "jquery"
 
@@ -9,7 +9,7 @@ import { DiagramData } from "../../types"
 
 import { IDiagramService } from "@kubevious/ui-middleware"
 
-class Diagram extends BaseComponent<IDiagramService> {
+export class Diagram extends BaseComponent<IDiagramService> {
     view: VisualView
     private _sourceData: DiagramData | undefined
     constructor(props) {
@@ -90,5 +90,3 @@ class Diagram extends BaseComponent<IDiagramService> {
         return <div id="diagram" className="diagram" />
     }
 }
-
-export default Diagram

@@ -1,6 +1,6 @@
 import React from "react"
 import { BaseComponent } from "@kubevious/ui-framework"
-import AlertView from "./AlertView"
+import { AlertView } from "./AlertView"
 import { isEmptyArray, sortSeverity } from "../../utils/util"
 import cx from "classnames"
 
@@ -14,7 +14,7 @@ interface AlertsState {
     isDnSelected: boolean
 }
 
-class Alerts extends BaseComponent<IService> {
+export class Alerts extends BaseComponent<IService> {
     constructor(props) {
         super(props)
 
@@ -83,5 +83,3 @@ class Alerts extends BaseComponent<IService> {
         )
     }
 }
-
-export default Alerts

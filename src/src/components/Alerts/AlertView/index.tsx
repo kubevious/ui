@@ -5,11 +5,11 @@ import {
     uniqueMessages,
     uniqueObjects,
 } from "../../../utils/util"
-import DnPath from "../../GenerateDnPath"
+import { DnPath } from "../../GenerateDnPath"
 import * as DnUtils from "@kubevious/helpers/dist/dn-utils"
 import { Messages } from "../../../types"
 
-const AlertView = ({
+export const AlertView = ({
     alerts,
     clickDn,
     openRule,
@@ -193,5 +193,3 @@ const AlertView = ({
         </div>
     )
 }
-
-export default AlertView

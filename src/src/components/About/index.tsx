@@ -2,7 +2,7 @@ import React from "react"
 import { isEmptyArray } from "../../utils/util"
 import { AboutItem } from "./types"
 
-const About = ({ result }: { result: AboutItem[] }): JSX.Element => {
+export const About = ({ result }: { result: AboutItem[] }): JSX.Element => {
     return (
         <div className="About-wrapper p-40 overflow-hide">
             <div className="container-header">
@@ -32,5 +32,3 @@ const About = ({ result }: { result: AboutItem[] }): JSX.Element => {
         </div>
     )
 }
-
-export default About

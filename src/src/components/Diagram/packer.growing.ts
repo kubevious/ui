@@ -59,7 +59,7 @@
 
 import { Block, NodeDiagrams } from "./types"
 
-var GrowingPacker = function () {}
+export var GrowingPacker = function () {}
 
 GrowingPacker.prototype = {
     fit: function (blocks: Block[]) {
@@ -144,5 +144,3 @@ GrowingPacker.prototype = {
         else return null
     },
 }
-
-export default GrowingPacker

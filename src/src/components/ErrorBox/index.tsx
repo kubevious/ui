@@ -3,7 +3,7 @@ import { faChevronDown, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './styles.scss'
 
-const ErrorBox = ({ error, closeError }): JSX.Element => {
+export const ErrorBox = ({ error, closeError }): JSX.Element => {
     const [expanded, setExpanded] = useState<boolean>(false)
 
     const { data: { message, stack }, status } : { data: { message: string, stack: string }, status: number }  = error
@@ -29,5 +29,3 @@ const ErrorBox = ({ error, closeError }): JSX.Element => {
         </div>
     )
 }
-
-export default ErrorBox

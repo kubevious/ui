@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react"
 import { isEmptyArray, isEmptyObject } from "../../utils/util"
 import cx from "classnames"
-import AffectedObjects from "./AffectedObjects"
-import StartPage from "./StartPage"
-import RuleMainTab from "./RuleMainTab"
-import MarkerMainTab from "./MarkerMainTab"
+import { AffectedObjects } from "./AffectedObjects"
+import { StartPage } from "./StartPage"
+import { RuleMainTab } from "./RuleMainTab"
+import { MarkerMainTab } from "./MarkerMainTab"
 import { SelectedItem, SelectedItemData, Type } from "./types"
 import { SelectedData } from "../../types"
 
@@ -74,10 +74,7 @@ export const Editor: React.FunctionComponent<EditorProps> = ({
                     />
                 ) : (
                     <MarkerMainTab
-                    
-                        // selectedItemId={selectedItemId} // TODO: Semyon to check
                         selectedItem={selectedItem}
-                        // selectedItemData={selectedItemData} // TODO: Semyon to check
                         deleteItem={deleteItem}
                         openSummary={openSummary}
                         saveItem={saveItem}
@@ -156,5 +153,3 @@ export const Editor: React.FunctionComponent<EditorProps> = ({
         </div>
     )
 }
-
-export default Editor

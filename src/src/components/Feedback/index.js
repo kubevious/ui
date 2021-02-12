@@ -8,7 +8,7 @@ import cx from 'classnames'
 import './styles.scss'
 
 
-class Feedback extends BaseComponent<IMiscService> {
+export class Feedback extends BaseComponent<IMiscService> {
     constructor(props) {
         super(props, { kind: 'misc' })
 
@@ -261,5 +261,3 @@ class Feedback extends BaseComponent<IMiscService> {
         )
     }
 }
-
-export default Feedback

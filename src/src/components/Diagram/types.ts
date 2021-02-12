@@ -1,5 +1,5 @@
 import { Montserrat } from "../../types"
-import VisualNode from "./visual-node/visual-node"
+import { VisualNode } from "./visual-node/visual-node"
 
 export enum NODE_RENDER_METADATA_NAME {
     arrange = "arrange",

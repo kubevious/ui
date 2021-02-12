@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import "./styles.scss"
 
-const CopyClipboard = ({ text }: { text: string }): JSX.Element => {
+export const CopyClipboard = ({ text }: { text: string }): JSX.Element => {
     const [copied, setCopied] = useState<boolean>(false)
 
     const copyText = (): void => {
@@ -41,5 +41,3 @@ const CopyClipboard = ({ text }: { text: string }): JSX.Element => {
         </div>
     )
 }
-
-export default CopyClipboard
