@@ -3,13 +3,13 @@ import { COLORS, SHAPES } from "../../boot/markerData"
 import { ChromePicker } from "react-color"
 import cx from "classnames"
 import { MarkerPreview } from "../MarkerPreview"
-import { Marker } from "./types"
+import { MarkerItem } from "./types"
 
 type MarkerMainTabProps = {
-    selectedItem: Marker
-    saveItem: (data: Marker) => void
-    deleteItem: (data: Marker) => void
-    createItem: (data: Marker) => void
+    selectedItem: MarkerItem
+    saveItem: (data: MarkerItem) => void
+    deleteItem: (data: MarkerItem) => void
+    createItem: (data: MarkerItem) => void
     openSummary: () => void
     isSuccess: boolean
 }
@@ -23,7 +23,7 @@ export const MarkerMainTab: React.FunctionComponent<MarkerMainTabProps> = ({
     saveItem,
 }) => {
     const [displayColorPicker, setDisplayColorPicker] = useState<boolean>(false)
-    const [formData, setFormData] = useState<Marker>(selectedItem)
+    const [formData, setFormData] = useState<MarkerItem>(selectedItem)
 
     useEffect(() => {
         setFormData({ ...selectedItem })
@@ -54,7 +54,10 @@ export const MarkerMainTab: React.FunctionComponent<MarkerMainTabProps> = ({
                 <div className="name-wrapper">
                     <div className="marker-area name-area">
                         <div className="shape">
-                            <MarkerPreview shape={shape || ''} color={color || ''} />
+                            <MarkerPreview
+                                shape={shape || ""}
+                                color={color || ""}
+                            />
                         </div>
                         <input
                             type="text"
@@ -89,7 +92,7 @@ export const MarkerMainTab: React.FunctionComponent<MarkerMainTabProps> = ({
                                     >
                                         <MarkerPreview
                                             shape={item}
-                                            color={color || ''}
+                                            color={color || ""}
                                         />
                                     </div>
                                 </div>
@@ -140,7 +143,7 @@ export const MarkerMainTab: React.FunctionComponent<MarkerMainTabProps> = ({
                                         className="icon-wrapper"
                                     >
                                         <MarkerPreview
-                                            shape={shape || ''}
+                                            shape={shape || ""}
                                             color={item}
                                         />
                                     </div>

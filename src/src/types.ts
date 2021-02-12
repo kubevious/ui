@@ -1,5 +1,5 @@
 import { DnOptions } from './components/DnComponent/types';
-import { Marker } from './components/Editors/types';
+import { MarkerItem } from './components/Editors/types';
 
 export type Service = new (...args: any) => Service;
 
@@ -21,7 +21,7 @@ export interface SelectedData {
 
 export type Markers = {
     kind: string,
-    items: Marker[],
+    items: MarkerItem[],
 };
 
 export interface DiagramData {

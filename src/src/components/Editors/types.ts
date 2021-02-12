@@ -1,20 +1,39 @@
 import { SelectedData } from "../../types"
 
-export type SelectedItemData = {
-    status: Marker
-    items: SelectedData[]
-    item_count: number
+export type Log = {
+    kind: string
+    msg: {
+        source: [string]
+        msg: string
+    }
 }
 
-export interface Marker {
-    name?: string
+export type SelectedItemData = {
+    items: SelectedData[]
+    item_count: number
+    is_current?: boolean
+    logs: Log[]
+}
+
+export interface RuleItem extends EditorItem {
+    script?: string,
+    target?: string
+}
+
+export interface MarkerItem extends EditorItem {
+    color?: string,
+    shape?: string,
+}
+
+export interface EditorItem {
+    name: string
+    propagate?: boolean
     shape?: string
     color?: string
     item_count?: number
     error_count?: number
-    is_current?: boolean
     enabled?: boolean
-    propagate?: boolean
+    is_current?: boolean
 }
 
 export enum EditorType {
@@ -25,5 +44,5 @@ export enum EditorType {
 export enum IndicatorType {
     disabled = "disabled",
     invalid = "invalid",
-    enabled = "enabled"
+    enabled = "enabled",
 }

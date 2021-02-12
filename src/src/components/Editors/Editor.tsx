@@ -5,19 +5,19 @@ import { AffectedObjects } from "./AffectedObjects"
 import { StartPage } from "./StartPage"
 import { RuleMainTab } from "./RuleMainTab"
 import { MarkerMainTab } from "./MarkerMainTab"
-import { Marker, SelectedItemData, EditorType } from "./types"
+import { RuleItem, MarkerItem, SelectedItemData, EditorType } from "./types"
 
 type EditorProps = {
     type: string
-    items: Marker[]
+    items: RuleItem[] | MarkerItem[]
     isNewItem: boolean
-    selectedItem: Marker
+    selectedItem: RuleItem | MarkerItem
     selectedItemData: SelectedItemData
     selectedItemId: string
     createNewItem: () => void
-    saveItem: (data: Marker) => void
-    deleteItem: (data: Marker) => void
-    createItem: (data: Marker) => void
+    saveItem: (data: RuleItem | MarkerItem) => void
+    deleteItem: (data: RuleItem | MarkerItem) => void
+    createItem: (data: RuleItem | MarkerItem) => void
     openSummary: () => void
     isSuccess: boolean
 }
@@ -90,9 +90,9 @@ export const Editor: React.FunctionComponent<EditorProps> = ({
     const renderLoading = (): false | JSX.Element => {
         return (
             !isNewItem &&
-            selectedItemData.status &&
+            selectedItemData &&
             type === EditorType.rule &&
-            !selectedItemData.status.is_current && (
+            !selectedItemData.is_current && (
                 <div className="busy-rule-indicator" />
             )
         )

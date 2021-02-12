@@ -1,39 +1,43 @@
 import React from "react"
-import { Editor } from "./Editor.jsx"
-import { ItemsList } from "./ItemsList"
-import { COLORS, SHAPES } from "../../boot/markerData"
-import { MarkerItem, SelectedItemData } from "./types"
 import { BaseComponent } from "@kubevious/ui-framework"
-
-import { IMarkerService } from "@kubevious/ui-middleware"
+import { Editor } from "./Editor.jsx"
+import "./styles.scss"
+import { IRuleService } from "@kubevious/ui-middleware"
+import { ItemsList } from "./ItemsList"
+import { RuleItem, SelectedItemData } from "./types.js"
 
 const selectedItemInit = {}
-const selectedItemDataInit: SelectedItemData = {
-    items: [],
+const selectedItemDataInit = {
+    is_current: true,
     item_count: 0,
     logs: [],
+    items: [],
 }
 
-type MarkerEditorState = {
-    items: MarkerItem[]
-    selectedItem: MarkerItem
+type RuleEditorState = {
+    selectedTab: string
+    items: RuleItem[]
     selectedItemData: SelectedItemData
+    selectedItem: RuleItem
     selectedItemId: string
     isSuccess: boolean
     isNewItem: boolean
 }
 
-export class MarkerEditor extends BaseComponent<IMarkerService> {
-    private _markerService: IMarkerService
+export class RuleEditor extends BaseComponent<IRuleService> {
+    private _ruleService: IRuleService
     constructor(props) {
-        super(props, { kind: "marker" })
+        super(props, { kind: "rule" })
+
         this.state = {
+            selectedTab: "main",
             items: [],
             selectedItem: selectedItemInit,
             selectedItemData: selectedItemDataInit,
             isSuccess: false,
         }
-        this._markerService = this.service as IMarkerService
+        this._ruleService = this.service as IRuleService
+
         this.openSummary = this.openSummary.bind(this)
         this.saveItem = this.saveItem.bind(this)
         this.deleteItem = this.deleteItem.bind(this)
@@ -44,8 +48,8 @@ export class MarkerEditor extends BaseComponent<IMarkerService> {
 
     componentDidMount(): void {
         this.subscribeToSharedState(
-            "marker_editor_items",
-            (value: MarkerItem[]) => {
+            "rule_editor_items",
+            (value: RuleItem[]) => {
                 this.setState({
                     items: value,
                 })
@@ -53,8 +57,8 @@ export class MarkerEditor extends BaseComponent<IMarkerService> {
         )
 
         this.subscribeToSharedState(
-            "rule_editor_selected_marker_status",
-            (value: SelectedItemData) => {
+            "rule_editor_selected_rule_status",
+            (value: SelectedItemData): void => {
                 if (!value) {
                     value = selectedItemDataInit
                 }
@@ -63,21 +67,44 @@ export class MarkerEditor extends BaseComponent<IMarkerService> {
                 })
             }
         )
+
+        let isNewRule: boolean
+
+        this.subscribeToSharedState(
+            "rule_editor_is_new_rule",
+            ({ rule_editor_is_new_rule }) => {
+                isNewRule = rule_editor_is_new_rule
+            }
+        )
+
+        this.subscribeToSharedState(
+            "rule_editor_selected_rule_id",
+            ({
+                rule_editor_selected_rule_id,
+            }: {
+                rule_editor_selected_rule_id: string
+            }) => {
+                if (!isNewRule) {
+                    this.selectItem({ name: rule_editor_selected_rule_id })
+                }
+            }
+        )
     }
 
-    selectItem(marker: MarkerItem): void {
+    selectItem(rule: RuleItem) {
         this.setState({
             isNewItem: false,
             isSuccess: false,
-            selectedItemId: marker.name,
+            selectedItemId: rule.name,
         })
-        this._markerService.backendFetchMarker(marker.name, (data) => {
+
+        this._ruleService.backendFetchRule(rule.name, (data) => {
             if (data === null) {
                 this.openSummary()
                 return
             }
-            const { selectedItemId } = this.state as MarkerEditorState
 
+            const { selectedItemId } = this.state as RuleEditorState
             if (data.name === selectedItemId) {
                 this.setState({
                     selectedItem: data,
@@ -85,14 +112,14 @@ export class MarkerEditor extends BaseComponent<IMarkerService> {
             }
         })
 
-        this.sharedState.set("marker_editor_selected_marker_id", marker.name)
+        this.sharedState.set("rule_editor_selected_rule_id", rule.name)
+        this.sharedState.set("rule_editor_is_new_rule", false)
     }
 
-    saveItem(data: MarkerItem): void {
-        const { selectedItemId } = this.state as MarkerEditorState
-
-        this._markerService.backendCreateMarker(data, selectedItemId, () => {
-            this.setState({ isSuccess: true })
+    saveItem(data: RuleItem) {
+        const { selectedItemId } = this.state as RuleEditorState
+        this._ruleService.backendCreateRule(data, selectedItemId, () => {
+            this.setState({ isSuccess: true, selectedItem: data })
 
             setTimeout(() => {
                 this.setState({ isSuccess: false })
@@ -100,43 +127,42 @@ export class MarkerEditor extends BaseComponent<IMarkerService> {
         })
     }
 
-    deleteItem(data: MarkerItem): void {
-        if (data.name) {
-            this._markerService.backendDeleteMarker(data.name, () => {
-                this.setState({
-                    selectedItem: selectedItemInit,
-                    selectedItemId: null,
-                })
-                this.sharedState.set("marker_editor_selected_marker_id", null)
+    deleteItem(data: RuleItem) {
+        this._ruleService.backendDeleteRule(data.name, () => {
+            this.setState({
+                selectedItem: selectedItemInit,
+                selectedItemId: null,
             })
-        }
+            this.sharedState.set("rule_editor_selected_rule_id", null)
+        })
     }
 
     openSummary(): void {
         this.setState({ selectedItem: selectedItemInit, selectedItemId: null })
-        this.sharedState.set("marker_editor_selected_marker_id", null)
+        this.sharedState.set("rule_editor_selected_rule_id", null)
     }
 
-    createItem(data: MarkerItem): void {
-        this._markerService.backendCreateMarker(data, "", (marker) => {
+    createItem(data: RuleItem) {
+        this._ruleService.backendCreateRule(data, "", (rule: RuleItem) => {
             this.setState({ isSuccess: true })
-            this.selectItem(marker)
+            this.selectItem(rule)
         })
     }
 
-    createNewItem(): void {
-        this.sharedState.set("marker_editor_selected_marker_id", null)
+    createNewItem() {
+        this.sharedState.set("rule_editor_selected_rule_id", null)
+        this.sharedState.set("rule_editor_is_new_rule", true)
 
         this.setState(() => ({
             isNewItem: true,
             selectedItem: {
                 name: "",
-                color: COLORS[0],
-                shape: SHAPES[0],
-                propagate: false,
+                enabled: true,
+                script: "",
+                target: "",
             },
-            isSuccess: false,
             selectedItemId: null,
+            isSuccess: false,
             selectedItemData: selectedItemDataInit,
         }))
     }
@@ -149,21 +175,21 @@ export class MarkerEditor extends BaseComponent<IMarkerService> {
             selectedItemData,
             selectedItemId,
             isSuccess,
-        } = this.state as MarkerEditorState
+        } = this.state as RuleEditorState
 
         return (
-            <div className="RuleEditor-container" id="markerEditorComponent">
+            <div className="RuleEditor-container" id="ruleEditorComponent">
                 <ItemsList
-                    type="marker"
+                    type="rule"
                     items={items}
                     selectedItemId={selectedItemId}
                     selectItem={this.selectItem}
                     createNewItem={this.createNewItem}
-                    service={this._markerService}
+                    service={this._ruleService} // need to pass service, because it's different for markers and rules editors
                 />
 
                 <Editor
-                    type="marker"
+                    type="rule"
                     items={items}
                     isNewItem={isNewItem}
                     selectedItem={selectedItem}

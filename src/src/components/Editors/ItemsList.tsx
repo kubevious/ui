@@ -3,16 +3,16 @@ import { isEmptyArray } from "../../utils/util"
 import cx from "classnames"
 import { MarkerPreview } from "../MarkerPreview"
 import { BurgerMenu } from "../BurgerMenu"
-import { EditorType, IndicatorType, Marker } from "./types"
-import { IMarkerService } from "@kubevious/ui-middleware"
+import { EditorType, IndicatorType, MarkerItem, RuleItem } from "./types"
+import { IMarkerService, IRuleService } from "@kubevious/ui-middleware"
 
 type ItemsListProps = {
     type: string
-    items: Marker[]
+    items: RuleItem[] | MarkerItem[]
     selectedItemId: string
-    selectItem: (marker: Marker) => void
+    selectItem: (marker: RuleItem | MarkerItem) => void
     createNewItem: () => void
-    service: IMarkerService
+    service: IMarkerService | IRuleService
 }
 
 export const ItemsList: React.FunctionComponent<ItemsListProps> = ({
@@ -23,7 +23,7 @@ export const ItemsList: React.FunctionComponent<ItemsListProps> = ({
     createNewItem,
     service,
 }) => {
-    const ruleIndicatorClass = (x: Marker): string => {
+    const ruleIndicatorClass = (x: RuleItem | MarkerItem): string => {
         let indicatorClass: string
         if (!x.enabled) {
             indicatorClass = IndicatorType.disabled

@@ -8,7 +8,7 @@ import {
     faFileImport,
 } from "@fortawesome/free-solid-svg-icons"
 import cx from "classnames"
-import { IMarkerService } from "@kubevious/ui-middleware"
+import { IMarkerService, IRuleService } from "@kubevious/ui-middleware"
 import { Markers } from "../../types"
 
 export const BurgerMenu = ({
@@ -16,7 +16,7 @@ export const BurgerMenu = ({
     service,
 }: {
     type: string
-    service: IMarkerService
+    service: IMarkerService | IRuleService
 }): JSX.Element => {
     const [isMenuVisible, setIsMenuVisible] = useState<boolean>(false)
     const [deleteExtra, setDeleteExtra] = useState<boolean>(false)
