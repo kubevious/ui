@@ -23,36 +23,36 @@ import { VisualNodeText } from "./visual-node-text"
 
 export default class VisualNode {
     [x: string]: any
-    _view: VisualView
-    _data: DiagramData
-    _parent: VisualNode | null
-    _children: VisualNode[]
-    _x: number
-    _y: number
-    _absX: number
-    _absY: number
-    _width: number
-    _height: number
-    _padding: number
-    _paddingLeft: number
-    _headerPadding: number
-    _headerWidth: number
-    _headerHeight: number
-    _depth: number
-    _expanderNodes: VisualNodeHeaderExpander[]
-    _flagNodes: VisualNodeHeaderFlag[]
-    _markerNodes: VisualNodeHeaderMarker[]
-    _severityNodes: VisualNodeSeverity[]
-    _severityTextNodes: VisualNodeText[]
-    _selectedHeaderFillColor!: string
-    _headerFillColor!: string
-    _headerBgFillColor!: string
-    _selectedBgFillColor!: string
-    _bgFillColor!: string
-    _selectedStrokeColor!: string
-    _strokeColor!: string
-    _headers: Header
-    _headersOrder: Header[]
+    private _view: VisualView
+    private _data: DiagramData
+    private _parent: VisualNode | null
+    private _children: VisualNode[]
+    private _x: number
+    private _y: number
+    private _absX: number
+    private _absY: number
+    private _width: number
+    private _height: number
+    private _padding: number
+    private _paddingLeft: number
+    private _headerPadding: number
+    private _headerWidth: number
+    private _headerHeight: number
+    private _depth: number
+    private _expanderNodes: VisualNodeHeaderExpander[]
+    private _flagNodes: VisualNodeHeaderFlag[]
+    private _markerNodes: VisualNodeHeaderMarker[]
+    private _severityNodes: VisualNodeSeverity[]
+    private _severityTextNodes: VisualNodeText[]
+    private _selectedHeaderFillColor!: string
+    private _headerFillColor!: string
+    private _headerBgFillColor!: string
+    private _selectedBgFillColor!: string
+    private _bgFillColor!: string
+    private _selectedStrokeColor!: string
+    private _strokeColor!: string
+    private _headers: Header
+    private _headersOrder: Header[]
 
     constructor(
         view: VisualView,
@@ -105,11 +105,11 @@ export default class VisualNode {
     }
 
     get node(): string {
-        return this.view._d3NodeDict[this.id]
+        return this.view.d3NodeDict[this.id]
     }
 
     get smallNode() {
-        return this.view._d3SmallNodeDict[this.id]
+        return this.view.d3SmallNodeDict[this.id]
     }
 
     get id(): string {
@@ -198,7 +198,7 @@ export default class VisualNode {
     }
 
     get isSelected(): boolean {
-        return this.id === this.view._currentSelectedNodeDn
+        return this.id === this.view.currentSelectedNodeDn
     }
 
     get visibleChildren(): VisualNode[] {
@@ -772,8 +772,8 @@ export default class VisualNode {
         var nodes: VisualNode[] = []
 
         let recurse = function (node: VisualNode) {
-            if (!node.view._existingNodeIds[node.id]) {
-                node.view._existingNodeIds[node.id] = true
+            if (!node.view.existingNodeIds[node.id]) {
+                node.view.existingNodeIds[node.id] = true
                 if (node._resolveValue(NODE_RENDER_METADATA_NAME.expanded)) {
                     node.isExpanded = true
                 }

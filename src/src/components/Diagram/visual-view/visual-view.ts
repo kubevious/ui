@@ -32,27 +32,27 @@ import {
 } from "./utils"
 
 export default class VisualView {
-    _parentElem: any // Selection<BaseType, unknown, HTMLElement, any>
+    private _parentElem: any // Selection<BaseType, unknown, HTMLElement, any>
+    private _width: number
+    private _height: number
+    private _viewPos: ViewPosition
+    private _showRoot: boolean
+    private _nodeDict: {}
+    private _currentSelectedNodeDn: string | null
+    private _controlInfo: any
+    private _flatVisualNodes: VisualNode[]
+    private _existingNodeIds: {}
+    private _markerData: {}
+    private _d3NodeDict: {}
+    private _d3SmallNodeDict: {}
+    private _svgElem: any // Selection<BaseType, unknown, HTMLElement, any>
+    private _rootElem: any // d3 element
+    private _visualRoot: any
+    private _panInterpolator: any // (t: number) => { x: number; y: number} - d3 function
+    private _panAnimationDuration!: number | null
+    private _panInterpolatorStartTime!: Date | null
+    private _panAnimationTimer!: ReturnType<typeof setTimeout> | null
     sharedState: SharedUserState
-    _width: number
-    _height: number
-    _viewPos: ViewPosition
-    _showRoot: boolean
-    _nodeDict: {}
-    _currentSelectedNodeDn: string | null
-    _controlInfo: any
-    _flatVisualNodes: VisualNode[]
-    _existingNodeIds: {}
-    _markerData: {}
-    _d3NodeDict: {}
-    _d3SmallNodeDict: {}
-    _svgElem: any // Selection<BaseType, unknown, HTMLElement, any>
-    _rootElem: any // d3 element
-    _visualRoot: any
-    _panInterpolator: any // (t: number) => { x: number; y: number} - d3 function
-    _panAnimationDuration!: number | null
-    _panInterpolatorStartTime!: Date | null
-    _panAnimationTimer!: ReturnType<typeof setTimeout> | null
 
     constructor(parentElem: any, sharedState: SharedUserState) {
         this._parentElem = parentElem
@@ -88,6 +88,26 @@ export default class VisualView {
             }
             this.updateAll(true)
         })
+    }
+    
+    get markerData(): {} {
+        return this._markerData
+    }
+
+    get existingNodeIds(): {} {
+        return this._existingNodeIds
+    }
+
+    get currentSelectedNodeDn(): string | null {
+        return this._currentSelectedNodeDn
+    }
+
+    get d3NodeDict(): {} {
+        return this._d3NodeDict
+    }
+
+    get d3SmallNodeDict(): {} {
+        return this._d3SmallNodeDict
     }
 
     getExpanded(dn: string): boolean {

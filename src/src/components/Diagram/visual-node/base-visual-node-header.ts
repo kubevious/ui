@@ -3,8 +3,8 @@ import VisualNode from "./visual-node"
 import VisualView from "../visual-view/visual-view"
 
 export default class BaseVisualNodeHeader {
-    _node: VisualNode
-    _headerName: string
+    private _node: VisualNode
+    private _headerName: string
     _flavor: string | undefined
     constructor(node: VisualNode, headerName: string, flavor?: string) {
         this._node = node

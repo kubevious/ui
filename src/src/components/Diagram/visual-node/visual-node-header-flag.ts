@@ -2,7 +2,7 @@ import BaseVisualNodeHeader from "./base-visual-node-header"
 import VisualNode from "./visual-node"
 
 export class VisualNodeHeaderFlag extends BaseVisualNodeHeader {
-    _flag: string
+    private _flag: string
     constructor(node: VisualNode, flag: string) {
         super(node, "flag-" + flag)
 

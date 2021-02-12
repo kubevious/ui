@@ -2,7 +2,7 @@ import BaseVisualNodeHeader from "./base-visual-node-header"
 import VisualNode from "./visual-node"
 
 export class VisualNodeHeaderMarker extends BaseVisualNodeHeader {
-    _marker: string
+    private _marker: string
     _flavor: string
     constructor(node: VisualNode, marker: string) {
         super(node, "marker-" + marker)
@@ -16,7 +16,7 @@ export class VisualNodeHeaderMarker extends BaseVisualNodeHeader {
     }
 
     fill(): string {
-        var marker = this.view._markerData[this.marker]
+        var marker = this.view.markerData[this.marker]
         if (marker) {
             return marker.color
         }
@@ -24,7 +24,7 @@ export class VisualNodeHeaderMarker extends BaseVisualNodeHeader {
     }
 
     html(): string {
-        var marker = this.view._markerData[this.marker]
+        var marker = this.view.markerData[this.marker]
         if (marker) {
             if (marker.shape) {
                 return "&#x" + marker.shape + ";"

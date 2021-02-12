@@ -2,7 +2,7 @@ import BaseVisualNodeHeader from "./base-visual-node-header"
 import VisualNode from "./visual-node"
 
 export class VisualNodeSeverity extends BaseVisualNodeHeader {
-    _fill: string
+    private _fill: string
     constructor(
         node: VisualNode,
         headerName: string,
