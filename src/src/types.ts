@@ -1,4 +1,6 @@
 import { DnOptions } from './components/DnComponent/types';
+import { Marker } from './components/Editors/types';
+
 export type Service = new (...args: any) => Service;
 
 export type AlertCount = {
@@ -21,8 +23,6 @@ export type Markers = {
     kind: string,
     items: Marker[],
 };
-
-export type Marker = Record<string, any>;
 
 export interface DiagramData {
     flags?: Flags,

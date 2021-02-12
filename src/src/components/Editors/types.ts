@@ -1,12 +1,12 @@
 import { SelectedData } from "../../types"
 
 export type SelectedItemData = {
-    status: MarkerStatus
+    status: Marker
     items: SelectedData[]
     item_count: number
 }
 
-export interface MarkerStatus {
+export interface Marker {
     name?: string
     shape?: string
     color?: string
@@ -14,13 +14,7 @@ export interface MarkerStatus {
     error_count?: number
     is_current?: boolean
     enabled?: boolean
-}
-
-export type SelectedItem = {
-    name: string
-    color: string
-    shape: string
-    propagate: boolean
+    propagate?: boolean
 }
 
 export enum EditorType {
