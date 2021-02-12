@@ -21,7 +21,7 @@ export type SelectedItem = {
     propagate: boolean
 }
 
-export enum Type {
+export enum EditorType {
     rule = "rule",
     marker = "marker",
 }

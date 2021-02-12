@@ -5,7 +5,7 @@ import { AffectedObjects } from "./AffectedObjects"
 import { StartPage } from "./StartPage"
 import { RuleMainTab } from "./RuleMainTab"
 import { MarkerMainTab } from "./MarkerMainTab"
-import { SelectedItem, SelectedItemData, Type } from "./types"
+import { SelectedItem, SelectedItemData, EditorType } from "./types"
 import { SelectedData } from "../../types"
 
 type EditorProps = {
@@ -46,7 +46,7 @@ export const Editor: React.FunctionComponent<EditorProps> = ({
         itemCount = selectedItemData.item_count
     }
 
-    if (type === Type.marker) {
+    if (type === EditorType.marker) {
         if (selectedItemData.items) {
             for (var item of selectedItemData.items) {
                 item.markers = [selectedItem.name]
@@ -61,7 +61,7 @@ export const Editor: React.FunctionComponent<EditorProps> = ({
     const detectEditor = (): JSX.Element => {
         return (
             <>
-                {type === Type.rule ? (
+                {type === EditorType.rule ? (
                     <RuleMainTab
                         selectedItemId={selectedItemId}
                         selectedItem={selectedItem}
@@ -90,7 +90,7 @@ export const Editor: React.FunctionComponent<EditorProps> = ({
         return (
             !isNewItem &&
             selectedItemData.status &&
-            type === Type.rule &&
+            type === EditorType.rule &&
             !selectedItemData.status.is_current && (
                 <div className="busy-rule-indicator" />
             )
