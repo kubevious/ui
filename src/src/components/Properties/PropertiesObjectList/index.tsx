@@ -1,10 +1,11 @@
 import React from 'react'
-import DnShortcutComponent from '../../DnShortcutComponent'
+import { Config } from './types'
+import { DnShortcutComponent } from '../../DnShortcutComponent'
 
-export const PropertiesObjectList = ({ config }) => {
+export const PropertiesObjectList = ({ config }: { config: Config[] }) => {
     return (
         <>
-            {config.map((element) => (
+            {config.map((element: Config) => (
                 <div key={element.dn}>
                     <DnShortcutComponent
                         dn={element.dn}

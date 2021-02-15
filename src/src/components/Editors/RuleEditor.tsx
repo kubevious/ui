@@ -25,7 +25,6 @@ type RuleEditorState = {
 }
 
 export class RuleEditor extends BaseComponent<IRuleService> {
-    private _ruleService: IRuleService
     constructor(props) {
         super(props, { kind: "rule" })
 
@@ -36,7 +35,6 @@ export class RuleEditor extends BaseComponent<IRuleService> {
             selectedItemData: selectedItemDataInit,
             isSuccess: false,
         }
-        this._ruleService = this.service as IRuleService
 
         this.openSummary = this.openSummary.bind(this)
         this.saveItem = this.saveItem.bind(this)
@@ -98,7 +96,7 @@ export class RuleEditor extends BaseComponent<IRuleService> {
             selectedItemId: rule.name,
         })
 
-        this._ruleService.backendFetchRule(rule.name, (data) => {
+        this.service.backendFetchRule(rule.name, (data) => {
             if (data === null) {
                 this.openSummary()
                 return
@@ -118,7 +116,7 @@ export class RuleEditor extends BaseComponent<IRuleService> {
 
     saveItem(data: RuleItem) {
         const { selectedItemId } = this.state as RuleEditorState
-        this._ruleService.backendCreateRule(data, selectedItemId, () => {
+        this.service.backendCreateRule(data, selectedItemId, () => {
             this.setState({ isSuccess: true, selectedItem: data })
 
             setTimeout(() => {
@@ -128,7 +126,7 @@ export class RuleEditor extends BaseComponent<IRuleService> {
     }
 
     deleteItem(data: RuleItem) {
-        this._ruleService.backendDeleteRule(data.name, () => {
+        this.service.backendDeleteRule(data.name, () => {
             this.setState({
                 selectedItem: selectedItemInit,
                 selectedItemId: null,
@@ -143,7 +141,7 @@ export class RuleEditor extends BaseComponent<IRuleService> {
     }
 
     createItem(data: RuleItem) {
-        this._ruleService.backendCreateRule(data, "", (rule: RuleItem) => {
+        this.service.backendCreateRule(data, "", (rule: RuleItem) => {
             this.setState({ isSuccess: true })
             this.selectItem(rule)
         })
@@ -185,7 +183,7 @@ export class RuleEditor extends BaseComponent<IRuleService> {
                     selectedItemId={selectedItemId}
                     selectItem={this.selectItem}
                     createNewItem={this.createNewItem}
-                    service={this._ruleService} // need to pass service, because it's different for markers and rules editors
+                    service={this.service} // need to pass service, because it's different for markers and rules editors
                 />
 
                 <Editor

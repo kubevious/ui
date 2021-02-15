@@ -1,13 +1,14 @@
 import React from 'react'
-import PropertiesCounters from '../PropertiesCounters'
-import PropertiesObjectList from '../PropertiesObjectList'
-import PropertiesAlertList from '../PropertiesAlertList'
-import KeyValueList from '../KeyValueList'
-import DnList from '../DnList'
-import Config from '../Config'
-import PropertiesTable from '../PropertiesTable'
+import { Group } from '../../../types'
+import { Config } from '../Config'
+import { DnList } from '../DnList'
+import { KeyValueList } from '../KeyValueList'
+import { PropertiesAlertList } from '../PropertiesAlertList'
+import { PropertiesCounters } from '../PropertiesCounters'
+import { PropertiesObjectList } from '../PropertiesObjectList'
+import { PropertiesTable } from '../PropertiesTable'
 
-export const PropertiesContents = ({ group, dn }) => {
+export const PropertiesContents = ({ group, dn }: { group: Group, dn?: string }) => {
 
     switch (group.kind) {
         case 'counters':

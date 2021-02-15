@@ -11,9 +11,9 @@ import "./styles.scss"
 export const DnShortcutComponent: React.FunctionComponent<SelectedData> = ({
     dn,
     options,
-    errors,
-    warnings,
-    markers,
+    errors = 0,
+    warnings = 0,
+    markers = [],
 }) => {
     const clickDn = (): void => {
         sharedState.set("selected_dn", dn)

@@ -1,17 +1,24 @@
 import React from "react"
-import _ from "the-lodash"
 import cx from "classnames"
-import DnShortcutComponent from "../../DnShortcutComponent"
 
 import "./styles.scss"
 
-import PropertiesValue from "../helpers"
+import { Column, Config, Row, Header } from "./types"
+import { DnOptions } from "../../../types"
+import { DnShortcutComponent } from "../../DnShortcutComponent"
+import { PropertiesValue } from "../helpers"
 
-export const PropertiesTable = ({ config, options, state }) => {
-    const tableHeaders = () => {
-        return config.headers.map((x) => {
-            let column = {}
-            if (_.isObject(x)) {
+export const PropertiesTable = ({
+    config,
+    options,
+}: {
+    config: Config
+    options?: DnOptions
+}) => {
+    const tableHeaders = (): Column[] => {
+        return config.headers.map((x: Header | string) => {
+            let column: Column = {}
+            if (typeof x !== 'string') {
                 column.name = x.id
                 if (x.label) {
                     column.label = x.label
@@ -30,11 +37,12 @@ export const PropertiesTable = ({ config, options, state }) => {
         })
     }
 
-    const renderRow = (row, column) => {
-        let cell = row
-        if (column.name) {
-            cell = row[column.name]
-        }
+    const renderRow = (row: Row | string, column: Column): JSX.Element => {
+        const cell: string = column.name
+            ? row[column.name]
+            : typeof row === "string"
+            ? row
+            : ""
 
         return (
             <td key={column.name}>
@@ -45,16 +53,10 @@ export const PropertiesTable = ({ config, options, state }) => {
         )
     }
 
-    const renderColumnFormatter = (formatter, cell) => {
+    const renderColumnFormatter = (formatter: string, cell: string): JSX.Element | undefined => {
         if (formatter === "check") return renderRowCheckbox(cell)
         if (formatter === "shortcut")
-            return (
-                <DnShortcutComponent
-                    dn={cell}
-                    state={state}
-                    options={options}
-                />
-            )
+            return <DnShortcutComponent dn={cell} options={options} />
     }
 
     const renderRowCheckbox = (value) => (

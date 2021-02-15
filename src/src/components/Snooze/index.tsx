@@ -1,11 +1,12 @@
-import React from 'react'
-import { BaseComponent } from '@kubevious/ui-framework'
-import $ from 'jquery'
-import './styles.scss'
+import React from "react"
+import { BaseComponent } from "@kubevious/ui-framework"
+import $ from "jquery"
+import "./styles.scss"
+import { IMiscService } from "@kubevious/ui-middleware"
 
 export class Snooze extends BaseComponent<IMiscService> {
     constructor(props) {
-        super(props, { kind: 'misc' })
+        super(props, { kind: "misc" })
 
         this.state = {
             isSnoozed: false,
@@ -16,46 +17,44 @@ export class Snooze extends BaseComponent<IMiscService> {
     }
 
     get id() {
-        return this.props.id;
+        return this.props.id
     }
 
     get kind() {
-        return this.props.kind;
+        return this.props.kind
     }
 
     handleMarkAsRead(e) {
-        this._submit(e, null);
+        this._submit(e, null)
     }
 
     handleSnooze(e, days) {
-        this._submit(e, days);
+        this._submit(e, days)
     }
 
-    _submit(e, days)
-    {
+    _submit(e, days) {
         const data = {
             kind: this.kind,
             id: this.id,
-            days: days
+            days: days,
         }
 
-        this.service.submitSnooze(data, () => {
-            
-        })
+        this.service.submitSnooze(data, () => {})
     }
 
     render() {
         return (
             <div className="snooze-btn">
-                { (this.kind == 'message') && <>
-                    <button
-                        className="button light"
-                        onClick={this.handleMarkAsRead}
-                    >
-                        Mark as read
-                    </button>
-                </>
-                }
+                {this.kind == "message" && (
+                    <>
+                        <button
+                            className="button light"
+                            onClick={this.handleMarkAsRead}
+                        >
+                            Mark as read
+                        </button>
+                    </>
+                )}
                 {this.state.isSnoozed ? (
                     <>
                         <button

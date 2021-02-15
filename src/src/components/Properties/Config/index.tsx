@@ -1,33 +1,35 @@
 import React, { useEffect, useState } from 'react'
 import jsyaml from 'js-yaml'
 import hljs from 'highlight.js'
-import DnComponent from '../../DnComponent'
 import { faDownload, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import cx from 'classnames'
 import { Controlled as CodeMirrorEditor } from 'react-codemirror2'
 import _ from 'the-lodash'
-import CopyClipboard from '../../CopyClipboard';
 
 import './styles.scss'
 
 import 'codemirror/theme/darcula.css'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/mode/yaml/yaml'
+import { CopyClipboard } from '../../CopyClipboard';
+import { DnComponent } from '../../DnComponent';
+import { Annotations } from './types';
+import { Editor, EditorChange } from 'codemirror';
 
-export const Config = ({ config, dn, language }) => {
-    const [indent, setIndent] = useState(2)
-    const [editMode, setEditMode] = useState(false)
+export const Config = ({ config, dn, language }: { config: Annotations, dn: string, language?: string }) => {
+    const [indent, setIndent] = useState<number>(2)
+    const [editMode, setEditMode] = useState<boolean>(false)
 
-    const [code, setCode] = useState(jsyaml.safeDump(config, { indent }))
-    const [editedConfig, setEditedConfig] = useState(code)
+    const [code, setCode] = useState<string>(jsyaml.safeDump(config, { indent }))
+    const [editedConfig, setEditedConfig] = useState<string>(code)
 
-    const [fileName, setFileName] = useState('config.yaml')
-    const [kubectlCommand, setKubectlCommand] = useState('')
+    const [fileName, setFileName] = useState<string>('config.yaml')
+    const [kubectlCommand, setKubectlCommand] = useState<string>('')
 
     useEffect(() => {
-        var namespace = _.get(config, 'metadata.namespace');
-        var nameParts = [];
+        var namespace: string = _.get(config, 'metadata.namespace');
+        var nameParts: string[] = [];
         nameParts.push(_.get(config, 'kind'));
         nameParts.push(namespace);
         nameParts.push(_.get(config, 'metadata.name'));
@@ -54,7 +56,7 @@ export const Config = ({ config, dn, language }) => {
         setEditedConfig(jsyaml.safeDump(jsyaml.load(editedConfig), { indent }))
     }, [indent, config])
 
-    const handleEditedMode = () => {
+    const handleEditedMode = (): void => {
         setEditMode(!editMode)
 
         const PATHS_TO_UNSET = [
@@ -77,25 +79,25 @@ export const Config = ({ config, dn, language }) => {
         }
     }
 
-    const renderCode = () => {
-        const result = hljs.highlight(language, code)
+    const renderCode = (): JSX.Element => {
+        const result = language ? hljs.highlight(language, code) : ''
 
         return (
             <pre>
-                <code dangerouslySetInnerHTML={{ __html: result.value }} />
+                {result && result.value && <code dangerouslySetInnerHTML={{ __html: result.value }} />}
             </pre>
         )
     }
 
-    const downloadFile = () => {
+    const downloadFile = (): void => {
         const blob = new Blob([editMode ? editedConfig : code], { type: 'application/yaml' })
         const exportElem = document.getElementById('exportAnchor')
-        exportElem.setAttribute('href', window.URL.createObjectURL(blob))
-        exportElem.setAttribute('download', fileName)
-        exportElem.click()
+        exportElem?.setAttribute('href', window.URL.createObjectURL(blob))
+        exportElem?.setAttribute('download', fileName)
+        exportElem?.click()
     }
 
-    const handleChangeConfig = ({ editor, data, value }) => {
+    const handleChangeConfig = ({ editor, data, value }: {editor: Editor, data: EditorChange, value: string}) => {
         setEditedConfig(value)
     }
 
@@ -156,7 +158,6 @@ export const Config = ({ config, dn, language }) => {
 
                 {editMode && <CodeMirrorEditor
                     value={editedConfig}
-                    name="editedConfig"
                     options={{
                         mode: 'yaml',
                         theme: 'darcula',

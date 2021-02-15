@@ -5,11 +5,11 @@ import { generateTimelineData } from '../boot/timelineBoot'
 import { getRandomDnList } from './utils';
 
 
-import { RemoteTrack } from '@kubevious/ui-framework/dist/remote-track'
 import { ISharedState } from '@kubevious/ui-framework'
 
 import { IDiagramService } from '@kubevious/ui-middleware'
 import { MockRootApiService } from './MockRootApiService';
+import { SUMMARY_DATA, GRAPH_DATA, PROPERTIES_DATA, ALERTS_DATA, HISTORY_RANGE, HISTORY_GRAPH_DATA, HISTORY_PROPERTIES, HISTORY_ALERTS } from '../boot/diagramMockData';
 
 export class MockDiagramService implements IDiagramService {
     

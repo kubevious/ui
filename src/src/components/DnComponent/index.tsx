@@ -1,11 +1,11 @@
 import React, { Fragment } from "react"
 import _ from "the-lodash"
 import { getNodeLogoUrl, prettyKind } from "../../utils/ui-utils"
-import { DnOptions } from "./types"
 
 import * as DnUtils from "@kubevious/helpers/dist/dn-utils"
 
 import "./styles.scss"
+import { DnOptions } from "../../types"
 
 type DnComponentProps = {
     dn: string

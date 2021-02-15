@@ -2,10 +2,11 @@ import _ from 'the-lodash'
 import React from 'react'
 
 import './styles.scss'
+import { PropertiesValue } from '../helpers'
+import { Config } from './types'
 
-import PropertiesValue from '../helpers'
 
-export const KeyValueList = ({ config }) => {
+export const KeyValueList = ({ config }:  { config: Config}) => {
     return (
         <div className="KeyValueList-container">
             {config &&

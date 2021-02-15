@@ -4,15 +4,54 @@ import Autocomplete from 'react-autocomplete';
 import { isEmptyArray, isEmptyObject } from '../../utils/util'
 import { KIND_TO_USER_MAPPING } from '@kubevious/helpers/dist/docs'
 import { prettyKind } from '../../utils/ui-utils'
-import DnShortcutComponent from '../DnShortcutComponent'
+import { DnShortcutComponent } from '../DnShortcutComponent'
 import { BaseComponent } from '@kubevious/ui-framework'
-import MarkerPreview from '../MarkerPreview'
+import { MarkerPreview } from '../MarkerPreview'
 import { FILTERS_LIST } from '../../boot/filterData'
 import cx from 'classnames'
 
 import './styles.scss'
+import { IDiagramService } from '@kubevious/ui-middleware';
+import { MarkersList, KindList } from './types';
+import { MarkerItem } from '../Editors/types';
+import { SelectedData } from '../../types';
+
+type SearchState = {
+    result: SelectedData[],
+    totalCount: number,
+    value: {
+        criteria?: string
+        markers?: MarkerItem[]
+    },
+    savedFilters: {
+        markers?: MarkerItem[]
+    },
+    currentInput: {
+        labels: {
+            key: string,
+            value: string,
+        },
+        annotations: {
+            key: string,
+            value: string,
+        },
+    },
+    autocomplete: {
+        labels: {
+            keys: [],
+            values: []
+        },
+        annotations: {
+            keys: [],
+            values: []
+        }
+    },
+    wasFiltered: boolean
+}
 
 export class Search extends BaseComponent<IDiagramService> {
+    markers: MarkersList
+    kinds: KindList;
     constructor(props) {
         super(props, { kind: 'diagram' })
 
@@ -62,7 +101,7 @@ export class Search extends BaseComponent<IDiagramService> {
             return
         }
         this.service.fetchAutocompleteValues(type, { key, criteria }, (response) => {
-                this.setState((prevState) => {
+                this.setState((prevState: SearchState) => {
                     prevState.autocomplete[type].values = response
                     return {
                         autocomplete: {
@@ -79,7 +118,7 @@ export class Search extends BaseComponent<IDiagramService> {
             type,
             { criteria },
             (response) => {
-                this.setState((prevState) => {
+                this.setState((prevState: SearchState) => {
                     prevState.autocomplete[type].keys = response
                     return {
                         autocomplete: {
@@ -120,9 +159,10 @@ export class Search extends BaseComponent<IDiagramService> {
     }
 
     handleChange(e) {
+        const { value } = this.state as SearchState
         const input = e.target.value
         this.setState(
-            (prevState) => {
+            (prevState: SearchState) => {
                 const valueInState = prevState.value || {}
                 if (!input) {
                     delete valueInState.criteria
@@ -135,14 +175,14 @@ export class Search extends BaseComponent<IDiagramService> {
                 }
             },
             () => {
-                this.fetchResults(this.state.value)
+                this.fetchResults(value)
             }
         )
     }
 
     handleFilterChange(name, title) {
         this.setState(
-            (prevState) => {
+            (prevState: SearchState) => {
                 const valueInState = prevState.value || {}
                 const savedFilters = prevState.savedFilters || {}
                 if (prevState.value[name] === title) {
@@ -159,7 +199,8 @@ export class Search extends BaseComponent<IDiagramService> {
                 }
             },
             () => {
-                this.fetchResults(this.state.value)
+                const { value } = this.state as SearchState
+                this.fetchResults(value)
             }
         )
     }
@@ -167,7 +208,7 @@ export class Search extends BaseComponent<IDiagramService> {
     handleMarkerFilterChange(e) {
         const { title } = e.target
         this.setState(
-            (prevState) => {
+            (prevState: SearchState) => {
                 const valueInState = prevState.value || {}
                 const savedFilters = prevState.savedFilters || {}
                 const markersList = valueInState.markers || []
@@ -198,13 +239,14 @@ export class Search extends BaseComponent<IDiagramService> {
                 }
             },
             () => {
-                this.fetchResults(this.state.value)
+                const { value } = this.state as SearchState
+                this.fetchResults(value)
             }
         )
     }
 
     handleFilterInput(value, name, title) {
-        this.setState((prevState) => {
+        this.setState((prevState: SearchState) => {
             if (title === 'key') {
                 this.fetchKeys(name, value)
                 prevState.currentInput[name].key = value
@@ -227,7 +269,7 @@ export class Search extends BaseComponent<IDiagramService> {
 
     addInputField(type) {
         this.setState(
-            (prevState) => {
+            (prevState: SearchState) => {
                 const input = prevState.currentInput[type]
                 const savedInState = prevState.savedFilters
                 const currentInputInState = prevState.currentInput
@@ -255,7 +297,8 @@ export class Search extends BaseComponent<IDiagramService> {
                 }
             },
             () => {
-                this.fetchResults(this.state.value)
+                const { value } = this.state as SearchState
+                this.fetchResults(value)
             }
         )
         return false
@@ -263,7 +306,7 @@ export class Search extends BaseComponent<IDiagramService> {
 
     deleteFilter(key, val) {
         this.setState(
-            (prevState) => {
+            (prevState: SearchState) => {
                 const valueInState = prevState.value
                 const savedInState = prevState.savedFilters
                 const currentFilters = valueInState[key] || []
@@ -303,14 +346,15 @@ export class Search extends BaseComponent<IDiagramService> {
                 }
             },
             () => {
-                this.fetchResults(this.state.value)
+                const { value } = this.state as SearchState
+                this.fetchResults(value)
             }
         )
         return false
     }
 
     handleEditFilter(type, filterVal) {
-        this.setState((prevState) => {
+        this.setState((prevState: SearchState) => {
             const { key, value } = filterVal
 
             return {
@@ -329,7 +373,7 @@ export class Search extends BaseComponent<IDiagramService> {
     toggleFilter(type, filterVal) {
         const { key, value } = filterVal
         this.setState(
-            (prevState) => {
+            (prevState: SearchState) => {
                 const valueInState = prevState.value
                 const savedInState = prevState.savedFilters
                 if (!this.checkForInputFilter(type)) {
@@ -395,13 +439,14 @@ export class Search extends BaseComponent<IDiagramService> {
                 }
             },
             () => {
-                this.fetchResults(this.state.value)
+                const { value } = this.state as SearchState
+                this.fetchResults(value)
             }
         )
     }
 
     clearFilter(type) {
-        this.setState((prevState) => {
+        this.setState((prevState: SearchState) => {
             const { key } = prevState.currentInput[type]
             const valueInState = prevState.value
             const changedValueArray =
@@ -425,7 +470,8 @@ export class Search extends BaseComponent<IDiagramService> {
             }
         },
             () => {
-                this.fetchResults(this.state.value)
+                const { value } = this.state as SearchState
+                this.fetchResults(value)
             }
         )
     }
@@ -441,7 +487,7 @@ export class Search extends BaseComponent<IDiagramService> {
     }
 
     renderActiveFilters(type, val) {
-        const { savedFilters } = this.state
+        const { savedFilters } = this.state as SearchState
         const { key = null } = val
         const checkInSavedFilters =
             savedFilters[type] && key
@@ -502,9 +548,10 @@ export class Search extends BaseComponent<IDiagramService> {
         if (!val) {
             return
         }
-        const saved = this.state.savedFilters[key] || []
-        const sumOfValues = this.state.value[key]
-            ? this.state.value[key].concat(saved)
+        const { value, savedFilters } = this.state as SearchState
+        const saved = savedFilters[key] || []
+        const sumOfValues = value[key]
+            ? value[key].concat(saved)
             : saved
 
         return sumOfValues.sort(this.compareForSort).map((filter) => {
@@ -522,8 +569,9 @@ export class Search extends BaseComponent<IDiagramService> {
             value,
             savedFilters,
             currentInput,
-            wasFiltered
-        } = this.state
+            wasFiltered,
+            autocomplete
+        } = this.state as SearchState
 
         return (
             <div className="Search-wrapper p-40 overflow-hide">
@@ -583,7 +631,7 @@ export class Search extends BaseComponent<IDiagramService> {
                                                             'Annotation' ? (
                                                             <Autocomplete
                                                                 getItemValue={(value) => value}
-                                                                items={this.state.autocomplete[
+                                                                items={autocomplete[
                                                                     el.payload
                                                                 ].keys}
                                                                 value={
@@ -634,7 +682,7 @@ export class Search extends BaseComponent<IDiagramService> {
                                                         ) : (
                                                             <Autocomplete
                                                                 getItemValue={(value) => value}
-                                                                items={this.state.autocomplete[
+                                                                items={autocomplete[
                                                                     el.payload
                                                                 ].values}
                                                                 value={
@@ -715,7 +763,7 @@ export class Search extends BaseComponent<IDiagramService> {
                                             <button
                                                 key={item.title}
                                                 className={
-                                                    this.state.value[
+                                                    value[
                                                         el.payload
                                                     ] === item.payload
                                                         ? 'selected-filter'
@@ -786,7 +834,6 @@ export class Search extends BaseComponent<IDiagramService> {
                                     <DnShortcutComponent
                                         key={index}
                                         dn={item.dn}
-                                        sharedState={this.sharedState}
                                     />
                                 ))}
                                 {result.length < totalCount && (

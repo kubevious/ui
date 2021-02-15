@@ -7,7 +7,7 @@ import {
 } from "../../../utils/util"
 import { DnPath } from "../../GenerateDnPath"
 import * as DnUtils from "@kubevious/helpers/dist/dn-utils"
-import { Messages } from "../../../types"
+import { Alert } from "../../../types"
 
 export const AlertView = ({
     alerts,
@@ -15,14 +15,14 @@ export const AlertView = ({
     openRule,
     groupPreset,
 }: {
-    alerts: Messages[]
+    alerts: Alert[]
     clickDn: (dn: string) => void
     openRule: (ruleName: string) => void
     groupPreset?: string
 }): JSX.Element => {
     const [group, setGroup] = useState<string>(groupPreset || "no")
 
-    const clickMessage = (alert: Messages): void => {
+    const clickMessage = (alert: Alert): void => {
         if (alert.source.kind === "rule") {
             openRule(alert.source.id)
         }
@@ -33,7 +33,7 @@ export const AlertView = ({
         index,
         shouldRenderDn = true,
     }: {
-        alert: Messages
+        alert: Alert
         index?: number
         shouldRenderDn?: boolean
     }): JSX.Element => {

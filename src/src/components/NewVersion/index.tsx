@@ -1,14 +1,15 @@
-import React from 'react'
-import Markdown from 'markdown-to-jsx'
-import _ from 'the-lodash'
-import { isEmptyArray } from '../../utils/util'
+import React from "react"
+import Markdown from "markdown-to-jsx"
+import _ from "the-lodash"
+import { isEmptyArray } from "../../utils/util"
 
-import './styles.scss'
+import "./styles.scss"
+import { Info } from "./types"
 
-export const NewVersion = ({ info }) => {
+export const NewVersion = ({ info }: { info: Info }) => {
     let version = info.version
-    if (!_.startsWith(version, 'v')) {
-        version = 'v' + version
+    if (!_.startsWith(version, "v")) {
+        version = "v" + version
     }
     return (
         <div className="separate-container new-version-inner">

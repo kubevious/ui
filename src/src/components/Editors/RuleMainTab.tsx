@@ -56,7 +56,7 @@ export const RuleMainTab: React.FunctionComponent<RuleMainTabProps> = ({
 
     const validation = useMemo(() => formData.name === "", [formData])
 
-    const handleScriptKeyUp = ({ editor, data, value }): void => { 
+    const handleScriptKeyUp = ({ editor, data, value }): void => {
         if (
             !editor.state.completionActive &&
             data.keyCode > 64 &&
@@ -108,11 +108,27 @@ export const RuleMainTab: React.FunctionComponent<RuleMainTabProps> = ({
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
-    const handleChangeTarget = ({ editor, data, value }: { editor: codemirror.Editor, data: codemirror.EditorChange, value: string }) => {
+    const handleChangeTarget = ({
+        editor,
+        data,
+        value,
+    }: {
+        editor: codemirror.Editor
+        data: codemirror.EditorChange
+        value: string
+    }) => {
         setFormData({ ...formData, target: value })
     }
 
-    const handleChangeScript = ({ editor, data, value }: { editor: codemirror.Editor, data: codemirror.EditorChange, value: string }) => {
+    const handleChangeScript = ({
+        editor,
+        data,
+        value,
+    }: {
+        editor: codemirror.Editor
+        data: codemirror.EditorChange
+        value: string
+    }) => {
         setFormData({ ...formData, script: value })
     }
 
@@ -197,9 +213,11 @@ export const RuleMainTab: React.FunctionComponent<RuleMainTabProps> = ({
                             onKeyUp={(editor, data, value) =>
                                 handleTargetKeyUp({ editor, data, value })
                             }
-                            onBeforeChange={(editor: codemirror.Editor, data: codemirror.EditorChange, value: string) =>
-                                handleChangeTarget({ editor, data, value })
-                            }
+                            onBeforeChange={(
+                                editor: codemirror.Editor,
+                                data: codemirror.EditorChange,
+                                value: string
+                            ) => handleChangeTarget({ editor, data, value })}
                         />
                     )}
 
@@ -223,9 +241,11 @@ export const RuleMainTab: React.FunctionComponent<RuleMainTabProps> = ({
                             onKeyUp={(editor, data, value) =>
                                 handleScriptKeyUp({ editor, data, value })
                             }
-                            onBeforeChange={(editor: codemirror.Editor, data: codemirror.EditorChange, value: string) =>
-                                handleChangeScript({ editor, data, value })
-                            }
+                            onBeforeChange={(
+                                editor: codemirror.Editor,
+                                data: codemirror.EditorChange,
+                                value: string
+                            ) => handleChangeScript({ editor, data, value })}
                         />
                     )}
                 </div>

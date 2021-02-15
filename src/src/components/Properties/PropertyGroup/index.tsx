@@ -2,46 +2,48 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { propertyGroupTooltip } from '@kubevious/helpers/dist/docs'
 import _ from 'the-lodash'
-import PropertiesContents from '../PropertiesContents'
-import DnComponent from '../../DnComponent'
 import { BaseComponent, IService } from '@kubevious/ui-framework'
+import { DnComponent } from '../../DnComponent'
+import { PropertiesContents } from '../PropertiesContents'
+import { Group } from '../../../types'
+
+type PropertyGroupProps = {
+    title: string,
+    extraClassTitle: string,
+    extraClassContents: string,
+    dn: string,
+    dnKind: string,
+    groupName: string,
+    group: Group,
+    propertyExpanderHandleClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
+}
 
 export class PropertyGroup extends BaseComponent<IService> {
+    tooltip: string
     constructor(props) {
         super(props)
 
-        this.tooltip = null
+        this.tooltip = ''
         this.renderTooltip()
     }
 
-    static PropTypes = {
-        title: PropTypes.string,
-        extraClassTitle: PropTypes.string,
-        extraClassContents: PropTypes.string,
-        dn: PropTypes.string,
-        dnKind: PropTypes.string,
-        groupName: PropTypes.string,
-        group: PropTypes.object,
-        propertyExpanderHandleClick: PropTypes.func,
-    }
-
-    renderTooltip() {
-        const { group, dnKind } = this.props
+    renderTooltip(): void {
+        const { group, dnKind } = this.props as PropertyGroupProps
         const tooltipInfo = propertyGroupTooltip(group.id)
         if (tooltipInfo && _.isObject(tooltipInfo)) {
-            const str = _.get(tooltipInfo, 'owner.' + dnKind)
+            const str: string = _.get(tooltipInfo, 'owner.' + dnKind)
             this.tooltip = str ? str : _.get(tooltipInfo, 'default')
         } else if (tooltipInfo && _.isString(tooltipInfo)) {
             this.tooltip = tooltipInfo
         }
     }
 
-    openMaximized()
+    openMaximized(): void
     {
         const {
             dn,
             group,
-        } = this.props
+        } = this.props as PropertyGroupProps
 
         this.sharedState.set('popup_window', {
             title: 'Properties: ' + group,
@@ -72,24 +74,21 @@ export class PropertyGroup extends BaseComponent<IService> {
             title,
             extraClassTitle,
             extraClassContents,
-            groupName,
             group,
             propertyExpanderHandleClick,
-        } = this.props
+        } = this.props as PropertyGroupProps
 
         return (
             <div className="property-group">
                 <button
                     id="expander"
                     className={`expander ${extraClassTitle}`}
-                    tag={groupName}
-                    onClick={propertyExpanderHandleClick}
+                    onClick={e => propertyExpanderHandleClick}
                 >
                     {title}
                     <span className="property-group-openclose" />
                     <span
                         className="property-group-popup"
-                        tag={groupName}
                         onClick={(e) => {
                             this.openMaximized();
                         }}

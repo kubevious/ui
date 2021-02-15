@@ -16,17 +16,17 @@ export type SelectedItemData = {
 }
 
 export interface RuleItem extends EditorItem {
-    script?: string,
+    script?: string
     target?: string
 }
 
 export interface MarkerItem extends EditorItem {
-    color?: string,
-    shape?: string,
+    color?: string
+    shape?: string
 }
 
 export interface EditorItem {
-    name: string
+    name?: string
     propagate?: boolean
     shape?: string
     color?: string

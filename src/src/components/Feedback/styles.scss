@@ -15,7 +15,7 @@
         flex-direction: column;
         align-items: center;
         // margin-bottom: 10px;
-        font-family: 'Montserrat', sans-serif;
+        font-family: "Montserrat", sans-serif;
         font-weight: 500;
     }
 
@@ -56,7 +56,7 @@
             visibility: hidden;
 
             &:before {
-                content: '★';
+                content: "★";
                 visibility: visible;
             }
         }
@@ -114,13 +114,13 @@
             margin: 0 10px 10px 0;
             font-weight: 700;
 
-
             &:hover {
                 color: black;
                 background: #ffc107;
             }
 
-            &:active, &:focus {
+            &:active,
+            &:focus {
                 outline: none;
                 border: 1px solid #ffc107;
             }
@@ -139,7 +139,7 @@
     }
 
     .non-optional::after {
-        content: ' *';
+        content: " *";
         color: #c59b08;
         display: contents;
     }
@@ -156,7 +156,6 @@
         color: red;
         font-weight: 600;
     }
-
 }
 
 .completed-screen {
@@ -170,7 +169,7 @@
         flex-direction: column;
         align-items: center;
         margin-bottom: 10px;
-        font-family: 'Montserrat', sans-serif;
+        font-family: "Montserrat", sans-serif;
         font-weight: 700;
     }
 }
@@ -209,7 +208,6 @@
     .btn-linkedin {
         background-color: #0e76a8;
     }
-
 }
 
 .submit-thank {

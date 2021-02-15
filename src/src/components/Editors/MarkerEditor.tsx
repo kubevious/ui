@@ -24,7 +24,6 @@ type MarkerEditorState = {
 }
 
 export class MarkerEditor extends BaseComponent<IMarkerService> {
-    private _markerService: IMarkerService
     constructor(props) {
         super(props, { kind: "marker" })
         this.state = {
@@ -33,7 +32,7 @@ export class MarkerEditor extends BaseComponent<IMarkerService> {
             selectedItemData: selectedItemDataInit,
             isSuccess: false,
         }
-        this._markerService = this.service as IMarkerService
+
         this.openSummary = this.openSummary.bind(this)
         this.saveItem = this.saveItem.bind(this)
         this.deleteItem = this.deleteItem.bind(this)
@@ -71,7 +70,7 @@ export class MarkerEditor extends BaseComponent<IMarkerService> {
             isSuccess: false,
             selectedItemId: marker.name,
         })
-        this._markerService.backendFetchMarker(marker.name, (data) => {
+        marker.name && this.service.backendFetchMarker(marker.name, (data) => {
             if (data === null) {
                 this.openSummary()
                 return
@@ -91,7 +90,7 @@ export class MarkerEditor extends BaseComponent<IMarkerService> {
     saveItem(data: MarkerItem): void {
         const { selectedItemId } = this.state as MarkerEditorState
 
-        this._markerService.backendCreateMarker(data, selectedItemId, () => {
+        this.service.backendCreateMarker(data, selectedItemId, () => {
             this.setState({ isSuccess: true })
 
             setTimeout(() => {
@@ -102,7 +101,7 @@ export class MarkerEditor extends BaseComponent<IMarkerService> {
 
     deleteItem(data: MarkerItem): void {
         if (data.name) {
-            this._markerService.backendDeleteMarker(data.name, () => {
+            this.service.backendDeleteMarker(data.name, () => {
                 this.setState({
                     selectedItem: selectedItemInit,
                     selectedItemId: null,
@@ -118,7 +117,7 @@ export class MarkerEditor extends BaseComponent<IMarkerService> {
     }
 
     createItem(data: MarkerItem): void {
-        this._markerService.backendCreateMarker(data, "", (marker) => {
+        this.service.backendCreateMarker(data, "", (marker) => {
             this.setState({ isSuccess: true })
             this.selectItem(marker)
         })
@@ -159,7 +158,7 @@ export class MarkerEditor extends BaseComponent<IMarkerService> {
                     selectedItemId={selectedItemId}
                     selectItem={this.selectItem}
                     createNewItem={this.createNewItem}
-                    service={this._markerService}
+                    service={this.service}
                 />
 
                 <Editor

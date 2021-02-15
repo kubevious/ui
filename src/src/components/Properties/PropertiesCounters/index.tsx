@@ -1,9 +1,10 @@
 import React from 'react'
+import { PropertiesValue } from '../helpers'
 import './styles.scss'
+import { Config } from './types'
 
-import PropertiesValue from '../helpers'
 
-export const PropertiesCounters = ({ config }) => {
+export const PropertiesCounters = ({ config }: {config: Config}) => {
     return (
         <div className="counters-container">
             {config.map(element => (

@@ -1,4 +1,4 @@
-import { Dn, Messages } from '../types';
+import { Dn, Alert } from '../types';
 
 export const isEmptyObject = (obj: {}): boolean => {
     for (let key in obj) {
@@ -16,8 +16,8 @@ export const getRandomInt = (): number => {
     return Math.floor(Math.random() * Math.floor(1048576));
 }
 
-export const uniqueMessages = (messages: Messages[]): Messages[] => {
-    let temp: Messages[] = []
+export const uniqueMessages = (messages: Alert[]): Alert[] => {
+    let temp: Alert[] = []
 
     messages?.map(item => {
         const element = temp.find(tempI => tempI.severity === item.severity && tempI.msg === item.msg)
@@ -44,7 +44,7 @@ export const uniqueObjects = (objects: Dn[]): Dn[] => {
     return temp
 }
 
-export const sortSeverity = (a: Messages, b: Messages): number => {
+export const sortSeverity = (a: Alert, b: Alert): number => {
     if (a.severity === 'error' && b.severity === 'warn') {
         return -1
     }

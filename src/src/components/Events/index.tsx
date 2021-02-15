@@ -1,9 +1,7 @@
-import React, { PureComponent } from 'react'
+import React, { PureComponent } from "react"
 
 export class Events extends PureComponent {
     render() {
-        return(
-            <div>Events</div>
-        )
+        return <div>Events</div>
     }
 }

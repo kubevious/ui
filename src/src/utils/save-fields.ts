@@ -1,9 +1,9 @@
-import { PersistableFields, PersistableParams } from './../types';
-import _ from 'the-lodash'
+import { PersistableFields, PersistableParams } from "./../types"
+import _ from "the-lodash"
 
 export class FieldsSaver {
     private _title: string
-    fields: {};
+    fields: {}
     constructor(title: string) {
         this._title = title
         this.fields = {}
@@ -12,35 +12,39 @@ export class FieldsSaver {
     setValue(values: PersistableFields): void {
         let params: PersistableFields = _.clone(values)
         let fields = {}
-        
+
         for (let key in params) {
             if (params[key] === null || params[key] === undefined) {
                 delete params[key]
-
             }
         }
 
         for (let key in params) {
-            let name = ''
-            key.split('_').forEach(i => {
+            let name = ""
+            key.split("_").forEach((i) => {
                 name += i[0]
                 if (fields[name] !== undefined) {
                     name += i[1]
                 }
             })
 
-            typeof params[key] === 'boolean' ? fields[name] = params[key] : fields[name] = btoa(params[key])
+            typeof params[key] === "boolean"
+                ? (fields[name] = params[key])
+                : (fields[name] = btoa(params[key]))
         }
 
         this.setHistory(fields)
     }
 
     generateUrl(fields: {}): string {
-        let url = '/'
+        let url = "/"
         const firstKey = Object.keys(fields)[0]
 
         for (let key in fields) {
-            url += key === firstKey ? `?${key}=${fields[key]}` : `&${key}=${fields[key]}`
+            url +=
+                key === firstKey
+                    ? `?${key}=${fields[key]}`
+                    : `&${key}=${fields[key]}`
         }
 
         return url
@@ -55,12 +59,20 @@ export class FieldsSaver {
         const obj: PersistableParams = {}
 
         switch (this._title) {
-            case 'Diagram':
-                obj.sd = params.get('sd') ? atob(params.get('sd') || '') : params.get('sd')
-                obj.tme = params.get('tme')
-                obj.tmtd = params.get('tmtd') ? atob(params.get('tmtd') || '') : params.get('tmtd')
-                obj.tmdt = params.get('tmdt') ? atob(params.get('tmdt') || '') : params.get('tmdt')
-                obj.tmd = params.get('tmd') ? atob(params.get('tmd') || '') : params.get('tmd')
+            case "Diagram":
+                obj.sd = params.get("sd")
+                    ? atob(params.get("sd") || "")
+                    : params.get("sd")
+                obj.tme = params.get("tme")
+                obj.tmtd = params.get("tmtd")
+                    ? atob(params.get("tmtd") || "")
+                    : params.get("tmtd")
+                obj.tmdt = params.get("tmdt")
+                    ? atob(params.get("tmdt") || "")
+                    : params.get("tmdt")
+                obj.tmd = params.get("tmd")
+                    ? atob(params.get("tmd") || "")
+                    : params.get("tmd")
         }
         return obj
     }

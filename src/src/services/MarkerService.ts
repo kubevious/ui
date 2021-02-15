@@ -14,7 +14,7 @@ export class MarkerService extends BaseService implements IMarkerService {
     backendFetchMarkerList(cb: (data: any) => any) : void {
         this.client.get('/markers')
             .then(result => {
-                cb(result.data); //Marker[]
+                cb(result.data); //EditorItem[]
                 return null;
             });
     }
@@ -22,7 +22,7 @@ export class MarkerService extends BaseService implements IMarkerService {
     backendFetchMarker(id: string, cb: (data: any) => any) : void {
         this.client.get('/marker/' + id)
             .then((result) => {
-                cb(result.data); //Marker | null
+                cb(result.data); //EditorItem | null
                 return null;
             });
     }
