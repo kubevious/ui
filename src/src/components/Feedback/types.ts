@@ -4,7 +4,7 @@ export type UserAnswers = {
 
 export type Answer = {
     id: string
-    value?: string
+    value?: string[]
     hasValue: boolean
     options?: {
         [id: string]: boolean
@@ -19,8 +19,8 @@ export type Question = {
     id: string
     kind: string
     text: string
-    options: string[]
-    optional: boolean
+    options?: string[]
+    optional?: boolean
 }
 
 export enum Kind {

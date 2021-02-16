@@ -2,7 +2,7 @@ import { Question } from "../Feedback/types"
 
 export type RequestList = {
     kind: string
-    id: string
+    id?: string
     name?: string
     questions?: Question[]
     title?: string

@@ -12,15 +12,15 @@ import "codemirror/addon/hint/show-hint.css"
 import "codemirror/theme/darcula.css"
 import "codemirror/lib/codemirror.css"
 import "codemirror/mode/javascript/javascript"
-import { Log, RuleItem, SelectedItemData } from "./types"
+import { Log, EditorItem, SelectedItemData } from "./types"
 import codemirror from "codemirror"
 
 type RuleMainTabProps = {
-    selectedItem: RuleItem
+    selectedItem: EditorItem
     selectedItemData: SelectedItemData
-    saveItem: (data: RuleItem) => void
-    deleteItem: (data: RuleItem) => void
-    createItem: (data: RuleItem) => void
+    saveItem: (data: EditorItem) => void
+    deleteItem: (data: EditorItem) => void
+    createItem: (data: EditorItem) => void
     openSummary: () => void
     selectedItemId: string
     isSuccess: boolean
@@ -36,7 +36,7 @@ export const RuleMainTab: React.FunctionComponent<RuleMainTabProps> = ({
     createItem,
     saveItem,
 }) => {
-    const [formData, setFormData] = useState<RuleItem>({ name: "" })
+    const [formData, setFormData] = useState<EditorItem>({ name: "" })
     const [formDataId, setFormDataId] = useState<string>("")
     const [visibleEditor, setVisibleEditor] = useState<string>("target")
 

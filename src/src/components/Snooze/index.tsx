@@ -4,6 +4,10 @@ import $ from "jquery"
 import "./styles.scss"
 import { IMiscService } from "@kubevious/ui-middleware"
 
+type SnoozeState = {
+    isSnoozed: boolean
+}
+
 export class Snooze extends BaseComponent<IMiscService> {
     constructor(props) {
         super(props, { kind: "misc" })
@@ -43,6 +47,7 @@ export class Snooze extends BaseComponent<IMiscService> {
     }
 
     render() {
+        const { isSnoozed } = this.state as SnoozeState
         return (
             <div className="snooze-btn">
                 {this.kind == "message" && (
@@ -55,7 +60,7 @@ export class Snooze extends BaseComponent<IMiscService> {
                         </button>
                     </>
                 )}
-                {this.state.isSnoozed ? (
+                {isSnoozed ? (
                     <>
                         <button
                             name="tomorrow"

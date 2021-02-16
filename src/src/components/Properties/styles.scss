@@ -22,7 +22,7 @@
     &.big {
         height: 25px;
         width: 25px;
-      }
+    }
 }
 
 .properties-owner .dn-path .kind {
@@ -43,10 +43,10 @@
 /****** EXPANDER BEGIN **********/
 
 .expander {
-    font-family: 'Montserrat', sans-serif;
+    font-family: "Montserrat", sans-serif;
     font-size: 13px;
-    background: #35373E;
-    color: #FFF;
+    background: #35373e;
+    color: #fff;
     cursor: pointer;
     padding: 15px 15px 14px;
     width: 100%;
@@ -70,8 +70,8 @@
     padding: 10px;
     display: none;
     overflow: hidden;
-    border-right: solid 2px #35373E;
-    color: #FFF;
+    border-right: solid 2px #35373e;
+    color: #fff;
     font-size: 11px;
 }
 
@@ -86,24 +86,24 @@
     float: right;
     width: 20px;
     height: 20px;
-    background: #292A2F;
+    background: #292a2f;
     border-radius: 2px;
 }
 
 .property-group-openclose:hover {
-    background: #FCBD3F;
+    background: #fcbd3f;
     transition: all ease 0.4s;
 }
 
 .expander .property-group-openclose:after {
-    content: '';
+    content: "";
     font-size: 13px;
     color: #777;
     float: right;
     display: block;
     width: 8px;
     height: 8px;
-    border: solid #FFF;
+    border: solid #fff;
     border-width: 1px 1px 0 0;
     transform: rotate(135deg);
     margin: 4px 6px 0 5px;
@@ -121,17 +121,16 @@
     width: 20px;
     height: 20px;
     border-radius: 2px;
-    background: #292A2F url("/img/popup.svg") center center no-repeat;
+    background: #292a2f url("/img/popup.svg") center center no-repeat;
     background-size: 16px;
     border: 0px;
 }
 
 .property-group-popup:hover {
-    background: #FCBD3F url("/img/popup.svg") center center no-repeat;
+    background: #fcbd3f url("/img/popup.svg") center center no-repeat;
     transition: all ease 0.4s;
     background-size: 16px;
 }
-
 
 .property-group-info {
     display: block;
@@ -140,7 +139,7 @@
     width: 20px;
     height: 20px;
     border-radius: 2px;
-    background: #292A2F url("/img/info.svg") center center no-repeat;
+    background: #292a2f url("/img/info.svg") center center no-repeat;
     background-size: 14px;
     border: 0px;
 }
@@ -160,14 +159,14 @@
 }
 
 .property-group-info:hover {
-    background: #FCBD3F url("/img/info.svg") center center no-repeat;
+    background: #fcbd3f url("/img/info.svg") center center no-repeat;
     transition: all ease 0.4s;
     background-size: 14px;
 
     & + .property-tooltiptext {
         display: flex;
         right: 0;
-      }
+    }
 }
 
 /****** EXPANDER END **********/
@@ -198,7 +197,7 @@ div {
 }
 
 pre {
-    color: #FFF;
+    color: #fff;
     margin: 0;
 }
 
@@ -206,7 +205,7 @@ pre {
 
 .scrollbar {
     width: 100%;
-    border: 0 solid #35373E;
+    border: 0 solid #35373e;
     max-height: 300px;
     overflow-y: hidden;
 
@@ -242,6 +241,6 @@ button.expander:focus {
 
     h3 {
         font-size: 20px;
-        margin-top: 20px
+        margin-top: 20px;
     }
 }

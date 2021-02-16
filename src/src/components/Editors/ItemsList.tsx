@@ -3,14 +3,14 @@ import { isEmptyArray } from "../../utils/util"
 import cx from "classnames"
 import { MarkerPreview } from "../MarkerPreview"
 import { BurgerMenu } from "../BurgerMenu"
-import { EditorType, IndicatorType, MarkerItem, RuleItem } from "./types"
+import { EditorType, IndicatorType, EditorItem } from "./types"
 import { IMarkerService, IRuleService } from "@kubevious/ui-middleware"
 
 type ItemsListProps = {
     type: string
-    items: RuleItem[] | MarkerItem[]
+    items: EditorItem[]
     selectedItemId: string
-    selectItem: (marker: RuleItem | MarkerItem) => void
+    selectItem: (marker: EditorItem) => void
     createNewItem: () => void
     service: IMarkerService | IRuleService
 }
@@ -23,7 +23,7 @@ export const ItemsList: React.FunctionComponent<ItemsListProps> = ({
     createNewItem,
     service,
 }) => {
-    const ruleIndicatorClass = (x: RuleItem | MarkerItem): string => {
+    const ruleIndicatorClass = (x: EditorItem): string => {
         let indicatorClass: string
         if (!x.enabled) {
             indicatorClass = IndicatorType.disabled
@@ -34,6 +34,20 @@ export const ItemsList: React.FunctionComponent<ItemsListProps> = ({
         }
         return indicatorClass
     }
+    console.log("items")
+    console.log("items")
+    console.log("items")
+    console.log("items")
+    console.log("items")
+    console.log("items")
+    console.log("items")
+    console.log("items")
+    console.log("items")
+    console.log("items")
+    console.log("items")
+    console.log("items")
+    console.log("items")
+    console.log(items)
 
     return (
         <div id="rule-list">
@@ -55,7 +69,7 @@ export const ItemsList: React.FunctionComponent<ItemsListProps> = ({
                 className={cx("rules", { markers: type === EditorType.marker })}
             >
                 {!isEmptyArray(items) &&
-                    items.map((item) => (
+                    items.map((item: EditorItem) => (
                         <button
                             key={item.name}
                             className={cx("rule-item-button", {

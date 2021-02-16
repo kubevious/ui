@@ -1,10 +1,10 @@
 import React from "react"
 import { BaseComponent } from "@kubevious/ui-framework"
-import { Editor } from "./Editor.jsx"
+import { Editor } from "./Editor"
 import "./styles.scss"
 import { IRuleService } from "@kubevious/ui-middleware"
 import { ItemsList } from "./ItemsList"
-import { RuleItem, SelectedItemData } from "./types.js"
+import { EditorItem, SelectedItemData } from "./types.js"
 
 const selectedItemInit = {}
 const selectedItemDataInit = {
@@ -16,9 +16,9 @@ const selectedItemDataInit = {
 
 type RuleEditorState = {
     selectedTab: string
-    items: RuleItem[]
+    items: EditorItem[]
     selectedItemData: SelectedItemData
-    selectedItem: RuleItem
+    selectedItem: EditorItem
     selectedItemId: string
     isSuccess: boolean
     isNewItem: boolean
@@ -47,7 +47,7 @@ export class RuleEditor extends BaseComponent<IRuleService> {
     componentDidMount(): void {
         this.subscribeToSharedState(
             "rule_editor_items",
-            (value: RuleItem[]) => {
+            (value: EditorItem[]) => {
                 this.setState({
                     items: value,
                 })
@@ -66,37 +66,24 @@ export class RuleEditor extends BaseComponent<IRuleService> {
             }
         )
 
-        let isNewRule: boolean
-
         this.subscribeToSharedState(
-            "rule_editor_is_new_rule",
-            ({ rule_editor_is_new_rule }) => {
-                isNewRule = rule_editor_is_new_rule
-            }
-        )
-
-        this.subscribeToSharedState(
-            "rule_editor_selected_rule_id",
-            ({
-                rule_editor_selected_rule_id,
-            }: {
-                rule_editor_selected_rule_id: string
-            }) => {
-                if (!isNewRule) {
+            ["rule_editor_selected_rule_id", "rule_editor_is_new_rule"],
+            ({ rule_editor_selected_rule_id, rule_editor_is_new_rule }) => {
+                if (!rule_editor_is_new_rule) {
                     this.selectItem({ name: rule_editor_selected_rule_id })
                 }
             }
         )
     }
 
-    selectItem(rule: RuleItem) {
+    selectItem(rule: EditorItem) {
         this.setState({
             isNewItem: false,
             isSuccess: false,
             selectedItemId: rule.name,
         })
 
-        this.service.backendFetchRule(rule.name, (data) => {
+        this.service.backendFetchRule(rule.name || "", (data) => {
             if (data === null) {
                 this.openSummary()
                 return
@@ -114,7 +101,7 @@ export class RuleEditor extends BaseComponent<IRuleService> {
         this.sharedState.set("rule_editor_is_new_rule", false)
     }
 
-    saveItem(data: RuleItem) {
+    saveItem(data: EditorItem) {
         const { selectedItemId } = this.state as RuleEditorState
         this.service.backendCreateRule(data, selectedItemId, () => {
             this.setState({ isSuccess: true, selectedItem: data })
@@ -125,8 +112,8 @@ export class RuleEditor extends BaseComponent<IRuleService> {
         })
     }
 
-    deleteItem(data: RuleItem) {
-        this.service.backendDeleteRule(data.name, () => {
+    deleteItem(data: EditorItem) {
+        this.service.backendDeleteRule(data.name || "", () => {
             this.setState({
                 selectedItem: selectedItemInit,
                 selectedItemId: null,
@@ -140,8 +127,8 @@ export class RuleEditor extends BaseComponent<IRuleService> {
         this.sharedState.set("rule_editor_selected_rule_id", null)
     }
 
-    createItem(data: RuleItem) {
-        this.service.backendCreateRule(data, "", (rule: RuleItem) => {
+    createItem(data: EditorItem) {
+        this.service.backendCreateRule(data, "", (rule: EditorItem) => {
             this.setState({ isSuccess: true })
             this.selectItem(rule)
         })

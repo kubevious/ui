@@ -18,12 +18,12 @@ export type Row = {
 }
 
 export type Column = {
-    name?: string,
-    label?: string,
+    name?: string
+    label?: string
     formatter?: string
 }
 
 export type Config = {
-    headers: Header[] | string[],
+    headers: Header[]
     rows: Row[]
 }

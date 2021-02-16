@@ -573,7 +573,7 @@ export class VisualNode {
                 this._measureHeader(cell)
             }
             header.width = _.max(header.cells.map((x) => x.width))
-            header.height = _.sumBy(header.cells, (x: Header) => x.height)
+            header.height = _.sumBy(header.cells, (x: Header) => x.height || 0)
         } else if (header.kind === "text") {
             var textDimentions = this._view._measureText(
                 header.text,
@@ -621,7 +621,7 @@ export class VisualNode {
     }
 
     _sortChildren(): void {
-        var result = []
+        var result: VisualNode[] = []
         var groups = _.groupBy(this._children, (x: VisualNode) => x.data.order)
         var groupIds = _.keys(groups)
         groupIds = _.orderBy(groupIds, (x: string) => parseInt(x))
@@ -835,11 +835,11 @@ function resolveValue(name: NODE_RENDER_METADATA_NAME, kind: string = "") {
     }
 
     switch (name) {
-        case values.arrange:
+        case NODE_RENDER_METADATA_NAME.arrange:
             return values.arrange
-        case values.padding:
+        case NODE_RENDER_METADATA_NAME.padding:
             return values.padding
-        case values.expanded:
+        case NODE_RENDER_METADATA_NAME.expanded:
             return values.expanded
     }
 }

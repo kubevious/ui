@@ -3,13 +3,13 @@ import { COLORS, SHAPES } from "../../boot/markerData"
 import { ChromePicker } from "react-color"
 import cx from "classnames"
 import { MarkerPreview } from "../MarkerPreview"
-import { MarkerItem } from "./types"
+import { EditorItem } from "./types"
 
 type MarkerMainTabProps = {
-    selectedItem: MarkerItem
-    saveItem: (data: MarkerItem) => void
-    deleteItem: (data: MarkerItem) => void
-    createItem: (data: MarkerItem) => void
+    selectedItem: EditorItem
+    saveItem: (data: EditorItem) => void
+    deleteItem: (data: EditorItem) => void
+    createItem: (data: EditorItem) => void
     openSummary: () => void
     isSuccess: boolean
 }
@@ -23,7 +23,7 @@ export const MarkerMainTab: React.FunctionComponent<MarkerMainTabProps> = ({
     saveItem,
 }) => {
     const [displayColorPicker, setDisplayColorPicker] = useState<boolean>(false)
-    const [formData, setFormData] = useState<MarkerItem>(selectedItem)
+    const [formData, setFormData] = useState<EditorItem>(selectedItem)
 
     useEffect(() => {
         setFormData({ ...selectedItem })

@@ -227,21 +227,22 @@ export class Feedback extends BaseComponent<IMiscService> {
                             {question.text}
                         </label>
                         <div role="group" className="select-buttons">
-                            {question.options.map((option, index) => {
-                                return (
-                                    <button
-                                        key={index}
-                                        type="button"
-                                        name={question.id}
-                                        className={question.id}
-                                        onClick={this.handleInputChange}
-                                        onFocus={this.setClicked}
-                                        value={option}
-                                    >
-                                        {option}
-                                    </button>
-                                )
-                            })}
+                            {question.options &&
+                                question.options.map((option, index) => {
+                                    return (
+                                        <button
+                                            key={index}
+                                            type="button"
+                                            name={question.id}
+                                            className={question.id}
+                                            onClick={this.handleInputChange}
+                                            onFocus={this.setClicked}
+                                            value={option}
+                                        >
+                                            {option}
+                                        </button>
+                                    )
+                                })}
                         </div>
                     </div>
                 )
@@ -261,19 +262,20 @@ export class Feedback extends BaseComponent<IMiscService> {
                             {question.text}
                         </label>
                         <div role="group" className="select-buttons">
-                            {question.options.map((option, index) => {
-                                return (
-                                    <button
-                                        key={index}
-                                        type="button"
-                                        name={question.id}
-                                        onClick={this.handleMultiselect}
-                                        value={option}
-                                    >
-                                        {option}
-                                    </button>
-                                )
-                            })}
+                            {question.options &&
+                                question.options.map((option, index) => {
+                                    return (
+                                        <button
+                                            key={index}
+                                            type="button"
+                                            name={question.id}
+                                            onClick={this.handleMultiselect}
+                                            value={option}
+                                        >
+                                            {option}
+                                        </button>
+                                    )
+                                })}
                         </div>
                     </div>
                 )

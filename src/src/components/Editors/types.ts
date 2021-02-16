@@ -3,7 +3,7 @@ import { SelectedData } from "../../types"
 export type Log = {
     kind: string
     msg: {
-        source: [string]
+        source: string[]
         msg: string
     }
 }
@@ -15,17 +15,9 @@ export type SelectedItemData = {
     logs: Log[]
 }
 
-export interface RuleItem extends EditorItem {
+export interface EditorItem {
     script?: string
     target?: string
-}
-
-export interface MarkerItem extends EditorItem {
-    color?: string
-    shape?: string
-}
-
-export interface EditorItem {
     name?: string
     propagate?: boolean
     shape?: string

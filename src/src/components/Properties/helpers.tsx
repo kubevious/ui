@@ -7,10 +7,6 @@ export const PropertiesValue = (value: any): JSX.Element => {
     // value: Config | string | {}
     if (_.isObject(value) && _.isNotNullOrUndefined(value.value)) {
         value = formatValue(value)
-    }
-
-    if (_.isObject(value) && _.isNotNullOrUndefined(value.value)) {
-        value = formatValue(value)
         return (
             <>
                 <span>

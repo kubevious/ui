@@ -27,6 +27,10 @@ export class GoldenLayoutComponent extends BaseComponent<IService> {
         this._components = []
     }
 
+    get components(): Component[] {
+        return this._components
+    }
+
     componentDidMount() {
         new RegisterComponents(this)
         this._activateLayout()
@@ -59,10 +63,9 @@ export class GoldenLayoutComponent extends BaseComponent<IService> {
         }
         const container = $("#layoutContainer")
         this._layout = new GoldenLayout(this._layoutConfig, container)
-        this._components.forEach(component => {
+        this._components.forEach((component) => {
             component.id &&
                 this._setupContent(component.id, component.component)
-
         })
 
         this._layout.on("componentCreated", (component) => {
@@ -95,7 +98,7 @@ export class GoldenLayoutComponent extends BaseComponent<IService> {
 
         this._layout.init()
 
-        this.props.handleLayout(this)
+        this.props.handleLayout && this.props.handleLayout(this)
 
         window.addEventListener("resize", () => {
             this._layout && this._layout.updateSize()

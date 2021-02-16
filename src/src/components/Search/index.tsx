@@ -1,59 +1,59 @@
-import _ from 'the-lodash'
-import React, { Fragment } from 'react'
-import Autocomplete from 'react-autocomplete';
-import { isEmptyArray, isEmptyObject } from '../../utils/util'
-import { KIND_TO_USER_MAPPING } from '@kubevious/helpers/dist/docs'
-import { prettyKind } from '../../utils/ui-utils'
-import { DnShortcutComponent } from '../DnShortcutComponent'
-import { BaseComponent } from '@kubevious/ui-framework'
-import { MarkerPreview } from '../MarkerPreview'
-import { FILTERS_LIST } from '../../boot/filterData'
-import cx from 'classnames'
+import _ from "the-lodash"
+import React, { Fragment } from "react"
+import Autocomplete from "react-autocomplete"
+import { isEmptyArray, isEmptyObject } from "../../utils/util"
+import { KIND_TO_USER_MAPPING } from "@kubevious/helpers/dist/docs"
+import { prettyKind } from "../../utils/ui-utils"
+import { DnShortcutComponent } from "../DnShortcutComponent"
+import { BaseComponent } from "@kubevious/ui-framework"
+import { MarkerPreview } from "../MarkerPreview"
+import { FILTERS_LIST } from "../../boot/filterData"
+import cx from "classnames"
 
-import './styles.scss'
-import { IDiagramService } from '@kubevious/ui-middleware';
-import { MarkersList, KindList } from './types';
-import { MarkerItem } from '../Editors/types';
-import { SelectedData } from '../../types';
+import "./styles.scss"
+import { IDiagramService } from "@kubevious/ui-middleware"
+import { MarkersList, KindList } from "./types"
+import { EditorItem } from "../Editors/types"
+import { SelectedData } from "../../types"
 
 type SearchState = {
-    result: SelectedData[],
-    totalCount: number,
+    result: SelectedData[]
+    totalCount: number
     value: {
         criteria?: string
-        markers?: MarkerItem[]
-    },
+        markers?: EditorItem[]
+    }
     savedFilters: {
-        markers?: MarkerItem[]
-    },
+        markers?: EditorItem[]
+    }
     currentInput: {
         labels: {
-            key: string,
-            value: string,
-        },
+            key: string
+            value: string
+        }
         annotations: {
-            key: string,
-            value: string,
-        },
-    },
+            key: string
+            value: string
+        }
+    }
     autocomplete: {
         labels: {
-            keys: [],
-            values: []
-        },
-        annotations: {
-            keys: [],
-            values: []
+            key: string
+            value: string
         }
-    },
+        annotations: {
+            key: string
+            value: string
+        }
+    }
     wasFiltered: boolean
 }
 
 export class Search extends BaseComponent<IDiagramService> {
     markers: MarkersList
-    kinds: KindList;
+    kinds: KindList
     constructor(props) {
-        super(props, { kind: 'diagram' })
+        super(props, { kind: "diagram" })
 
         this.kinds = this.getKindsList()
         this.markers = this.getMarkersList()
@@ -65,23 +65,23 @@ export class Search extends BaseComponent<IDiagramService> {
             savedFilters: {},
             currentInput: {
                 labels: {
-                    key: '',
-                    value: '',
+                    key: "",
+                    value: "",
                 },
                 annotations: {
-                    key: '',
-                    value: '',
+                    key: "",
+                    value: "",
                 },
             },
             autocomplete: {
                 labels: {
                     keys: [],
-                    values: []
+                    values: [],
                 },
                 annotations: {
                     keys: [],
-                    values: []
-                }
+                    values: [],
+                },
             },
         }
     }
@@ -91,7 +91,7 @@ export class Search extends BaseComponent<IDiagramService> {
             this.setState({
                 result: response.results,
                 totalCount: response.totalCount,
-                wasFiltered: response.wasFiltered
+                wasFiltered: response.wasFiltered,
             })
         })
     }
@@ -100,7 +100,10 @@ export class Search extends BaseComponent<IDiagramService> {
         if (!key) {
             return
         }
-        this.service.fetchAutocompleteValues(type, { key, criteria }, (response) => {
+        this.service.fetchAutocompleteValues(
+            type,
+            { key, criteria },
+            (response) => {
                 this.setState((prevState: SearchState) => {
                     prevState.autocomplete[type].values = response
                     return {
@@ -109,8 +112,8 @@ export class Search extends BaseComponent<IDiagramService> {
                         },
                     }
                 })
-            })
-
+            }
+        )
     }
 
     fetchKeys(type, criteria) {
@@ -131,31 +134,31 @@ export class Search extends BaseComponent<IDiagramService> {
     }
 
     getKindsList() {
-        let kindsArray = Object.entries(
-            KIND_TO_USER_MAPPING
-        ).map(([key, value]) => ({ title: value, payload: key }))
-
-        kindsArray = _.orderBy(kindsArray, x => x.title);
+        let kindsArray = Object.entries(KIND_TO_USER_MAPPING)
+        let newKindsArray = kindsArray
+            ? kindsArray.map(([key, value]) => ({ title: value, payload: key }))
+            : []
+        newKindsArray = _.orderBy(newKindsArray, (x) => x.title) || []
 
         return {
-            payload: 'kind',
-            shownValue: 'Kind',
-            values: kindsArray,
+            payload: "kind",
+            shownValue: "Kind",
+            values: newKindsArray,
         }
     }
 
     getMarkersList() {
-        const markers = this.sharedState.get('marker_editor_items')
+        const markers = this.sharedState.get("marker_editor_items")
 
         return {
-            payload: 'markers',
-            shownValue: 'Markers',
+            payload: "markers",
+            shownValue: "Markers",
             values: markers,
         }
     }
 
     checkForInputFilter(payload) {
-        return payload === 'labels' || payload === 'annotations'
+        return payload === "labels" || payload === "annotations"
     }
 
     handleChange(e) {
@@ -191,8 +194,7 @@ export class Search extends BaseComponent<IDiagramService> {
                         value: { ...valueInState },
                     }
                 }
-                prevState.savedFilters[name] &&
-                    delete savedFilters[name]
+                prevState.savedFilters[name] && delete savedFilters[name]
                 return {
                     value: { ...valueInState, [name]: title },
                     savedFilters: { ...savedFilters },
@@ -211,9 +213,10 @@ export class Search extends BaseComponent<IDiagramService> {
             (prevState: SearchState) => {
                 const valueInState = prevState.value || {}
                 const savedFilters = prevState.savedFilters || {}
-                const markersList = valueInState.markers || []
+                const markersList: EditorItem[] = valueInState.markers || []
                 if (
                     prevState.value.markers &&
+                    markersList &&
                     markersList.find((marker) => marker === title)
                 ) {
                     const changedMarkers = markersList.filter(
@@ -226,16 +229,14 @@ export class Search extends BaseComponent<IDiagramService> {
                     return {
                         value: { ...valueInState, markers: changedMarkers },
                     }
-                } else if (
-                    prevState.savedFilters.markers
-                ) {
+                } else if (prevState.savedFilters.markers) {
                     delete savedFilters.markers
                 }
 
                 markersList.push(title)
                 return {
                     value: { ...valueInState, markers: markersList },
-                    savedFilters: { ...savedFilters }
+                    savedFilters: { ...savedFilters },
                 }
             },
             () => {
@@ -247,7 +248,7 @@ export class Search extends BaseComponent<IDiagramService> {
 
     handleFilterInput(value, name, title) {
         this.setState((prevState: SearchState) => {
-            if (title === 'key') {
+            if (title === "key") {
                 this.fetchKeys(name, value)
                 prevState.currentInput[name].key = value
                 return {
@@ -274,22 +275,26 @@ export class Search extends BaseComponent<IDiagramService> {
                 const savedInState = prevState.savedFilters
                 const currentInputInState = prevState.currentInput
                 const searchValue = prevState.value[type] || []
-                const elementIndex = searchValue.findIndex((el) => el.key === input.key)
+                const elementIndex = searchValue.findIndex(
+                    (el) => el.key === input.key
+                )
                 const searchValueInSaved = savedInState[type] || []
                 elementIndex !== -1
                     ? (searchValue[elementIndex] = input)
                     : searchValue.push(input)
-                const filteredSaved = searchValueInSaved.filter(el => el.key !== input.key)
+                const filteredSaved = searchValueInSaved.filter(
+                    (el) => el.key !== input.key
+                )
                 savedInState[type] = filteredSaved
                 isEmptyArray(filteredSaved) && delete savedInState[type]
-                currentInputInState[type] = { key: '', value: '' }
+                currentInputInState[type] = { key: "", value: "" }
                 return {
                     value: {
                         ...prevState.value,
                         [type]: searchValue,
                     },
                     savedFilters: {
-                        ...savedInState
+                        ...savedInState,
                     },
                     currentInput: {
                         ...currentInputInState,
@@ -312,12 +317,9 @@ export class Search extends BaseComponent<IDiagramService> {
                 const currentFilters = valueInState[key] || []
                 const currentSavedFilters = savedInState[key] || []
 
-                if (
-                    !this.checkForInputFilter(key)
-                ) {
+                if (!this.checkForInputFilter(key)) {
                     valueInState[key] && delete valueInState[key]
-                    savedInState[key] &&
-                        delete savedInState[key]
+                    savedInState[key] && delete savedInState[key]
                     return {
                         value: { ...valueInState },
                         savedFilters: { ...savedInState },
@@ -331,10 +333,8 @@ export class Search extends BaseComponent<IDiagramService> {
                     (filter) => filter.key !== val.key
                 )
 
-                isEmptyArray(valueInState[key]) &&
-                    delete valueInState[key]
-                isEmptyArray(savedInState[key]) &&
-                    delete savedInState[key]
+                isEmptyArray(valueInState[key]) && delete valueInState[key]
+                isEmptyArray(savedInState[key]) && delete savedInState[key]
 
                 return {
                     value: {
@@ -364,7 +364,7 @@ export class Search extends BaseComponent<IDiagramService> {
                         key,
                         value,
                         disabled: true,
-                    }
+                    },
                 },
             }
         })
@@ -386,9 +386,7 @@ export class Search extends BaseComponent<IDiagramService> {
                         savedInState[type] = valueInState[type]
                         delete valueInState[type]
                     }
-                    savedInState[type]
-                        ? deleteFromSaved()
-                        : addToSaved()
+                    savedInState[type] ? deleteFromSaved() : addToSaved()
                     return {
                         value: { ...valueInState },
                         savedFilters: { ...savedInState },
@@ -396,20 +394,23 @@ export class Search extends BaseComponent<IDiagramService> {
                 }
                 let valueArray = valueInState[type] || []
                 let savedArray = savedInState[type] || []
-                let changedValueArray = valueArray.filter((el) => el.key !== key)
-                let changedSavedArray = savedArray.filter((el) => el.key !== key)
+                let changedValueArray = valueArray.filter(
+                    (el) => el.key !== key
+                )
+                let changedSavedArray = savedArray.filter(
+                    (el) => el.key !== key
+                )
 
                 if (savedInState[type]) {
-
                     const compareLength =
                         changedSavedArray.length === savedArray.length
 
                     savedInState[type] = compareLength
-                        ? [...savedArray, {key, value}]
+                        ? [...savedArray, { key, value }]
                         : changedSavedArray
                     valueInState[type] = compareLength
                         ? changedValueArray
-                        : [...valueArray, {key, value}]
+                        : [...valueArray, { key, value }]
 
                     if (isEmptyArray(valueInState[type])) {
                         return
@@ -434,7 +435,7 @@ export class Search extends BaseComponent<IDiagramService> {
                     value: { ...valueInState },
                     savedFilters: {
                         ...savedInState,
-                        [type]: [{key, value}],
+                        [type]: [{ key, value }],
                     },
                 }
             },
@@ -446,29 +447,30 @@ export class Search extends BaseComponent<IDiagramService> {
     }
 
     clearFilter(type) {
-        this.setState((prevState: SearchState) => {
-            const { key } = prevState.currentInput[type]
-            const valueInState = prevState.value
-            const changedValueArray =
-                valueInState[type] &&
-                valueInState[type].filter((elem) => elem.key !== key)
+        this.setState(
+            (prevState: SearchState) => {
+                const { key } = prevState.currentInput[type]
+                const valueInState = prevState.value
+                const changedValueArray =
+                    valueInState[type] &&
+                    valueInState[type].filter((elem) => elem.key !== key)
 
-            isEmptyArray(changedValueArray)
-                ? delete valueInState[type]
-                : (valueInState[type] = changedValueArray)
-            return {
-                currentInput: {
-                    ...prevState.currentInput,
-                    [type]: {
-                        key: '',
-                        value: '',
+                isEmptyArray(changedValueArray)
+                    ? delete valueInState[type]
+                    : (valueInState[type] = changedValueArray)
+                return {
+                    currentInput: {
+                        ...prevState.currentInput,
+                        [type]: {
+                            key: "",
+                            value: "",
+                        },
+                        value: {
+                            ...valueInState,
+                        },
                     },
-                value: {
-                        ...valueInState,
-                    },
-                },
-            }
-        },
+                }
+            },
             () => {
                 const { value } = this.state as SearchState
                 this.fetchResults(value)
@@ -481,8 +483,10 @@ export class Search extends BaseComponent<IDiagramService> {
         if (kind) {
             return `${kind}: ${count}`
         }
-        return Array.isArray(val)
-            ? val.map((criteria, index) => index === val.length - 1 ? criteria : `${criteria} | `)
+        return val && Array.isArray(val)
+            ? val.map((criteria, index) =>
+                  index === val.length - 1 ? criteria : `${criteria} | `
+              )
             : `${key}: ${value.substring(0, 50)}`
     }
 
@@ -496,14 +500,14 @@ export class Search extends BaseComponent<IDiagramService> {
         if (!val) return
         return (
             <div
-                className={cx('active-filter-box', {
+                className={cx("active-filter-box", {
                     deactivated: checkInSavedFilters,
                 })}
                 key={type}
             >
                 <span className="filter-key">{`${type}: `}</span>
                 <span className="filter-val">
-                    {typeof val === 'string'
+                    {typeof val === "string"
                         ? prettyKind(val)
                         : this.renderPrettyView(val)}
                 </span>
@@ -514,7 +518,7 @@ export class Search extends BaseComponent<IDiagramService> {
                     ></button>
                 )}
                 <button
-                    className={cx('filter-btn toggle-show', {
+                    className={cx("filter-btn toggle-show", {
                         hide: checkInSavedFilters,
                     })}
                     title="Toggle show/hide"
@@ -535,13 +539,13 @@ export class Search extends BaseComponent<IDiagramService> {
         let valA = a.key.toUpperCase()
         let valB = b.key.toUpperCase()
 
-        let comparison = 0;
+        let comparison = 0
         if (valA > valB) {
-            comparison = 1;
+            comparison = 1
         } else if (valA < valB) {
-            comparison = -1;
+            comparison = -1
         }
-        return comparison;
+        return comparison
     }
 
     renderDividedActiveFilters(key, val) {
@@ -550,16 +554,17 @@ export class Search extends BaseComponent<IDiagramService> {
         }
         const { value, savedFilters } = this.state as SearchState
         const saved = savedFilters[key] || []
-        const sumOfValues = value[key]
-            ? value[key].concat(saved)
-            : saved
+        const sumOfValues = value[key] ? value[key].concat(saved) : saved
 
-        return sumOfValues.sort(this.compareForSort).map((filter) => {
-            if (!isEmptyObject(filter)) {
-                return this.renderActiveFilters(key, filter)
-            }
-            return
-        })
+        return (
+            sumOfValues.sort(this.compareForSort) &&
+            sumOfValues.sort(this.compareForSort).map((filter) => {
+                if (!isEmptyObject(filter)) {
+                    return this.renderActiveFilters(key, filter)
+                }
+                return
+            })
+        )
     }
 
     render() {
@@ -570,7 +575,7 @@ export class Search extends BaseComponent<IDiagramService> {
             savedFilters,
             currentInput,
             wasFiltered,
-            autocomplete
+            autocomplete,
         } = this.state as SearchState
 
         return (
@@ -586,205 +591,296 @@ export class Search extends BaseComponent<IDiagramService> {
                     />
                 </div>
                 <div className="active-filters">
-                    {(!isEmptyObject(value) || !isEmptyObject(savedFilters)) && (
-                        <>
-                            {Object.entries(
-                                Object.assign({}, value, savedFilters)
-                            ).sort().map(
-                                ([key, val]) =>
-                                    key !== 'criteria' &&
-                                    (this.checkForInputFilter(key)
-                                        ? this.renderDividedActiveFilters(key, val)
-                                        : this.renderActiveFilters(key, val))
-                            )}
-                        </>
-                    )}
+                    {(!isEmptyObject(value) || !isEmptyObject(savedFilters)) &&
+                        Object.entries(
+                            Object.assign({}, value, savedFilters)
+                        ).sort() && (
+                            <>
+                                {Object.entries(
+                                    Object.assign({}, value, savedFilters)
+                                )
+                                    .sort()
+                                    .map(
+                                        ([key, val]) =>
+                                            key !== "criteria" &&
+                                            (this.checkForInputFilter(key)
+                                                ? this.renderDividedActiveFilters(
+                                                      key,
+                                                      val
+                                                  )
+                                                : this.renderActiveFilters(
+                                                      key,
+                                                      val
+                                                  ))
+                                    )}
+                            </>
+                        )}
                 </div>
                 <div className="search-area">
                     <div className="filter-list filter-box">
-                        {[this.kinds, ...FILTERS_LIST].map((el) => (
-                            <details open key={el.payload}>
-                                <summary
-                                    className={cx('filter-list inner', {
-                                        'is-active': !!value[el.payload],
-                                    })}
-                                >
-                                    {el.shownValue}
-                                </summary>
-                                <div className="inner-items">
-                                    {this.checkForInputFilter(el.payload) ? (
-                                        <div className="filter-input-box">
-                                            {el.values.map((item) => {
-                                                const currentKey =
-                                                    currentInput[el.payload].key
-                                                const currentVal =
-                                                    currentInput[el.payload]
-                                                        .value
-                                                return (
-                                                    <Fragment key={item.title}>
-                                                        <label>
-                                                            {item.title}
-                                                        </label>
-                                                        {item.title ===
-                                                            'Label' ||
-                                                        item.title ===
-                                                            'Annotation' ? (
-                                                            <Autocomplete
-                                                                getItemValue={(value) => value}
-                                                                items={autocomplete[
-                                                                    el.payload
-                                                                ].keys}
-                                                                value={
-                                                                    currentKey
-                                                                }
-                                                                onChange={(e) =>
-                                                                    this.handleFilterInput(
-                                                                        e.target
-                                                                            .value,
-                                                                        el.payload,
-                                                                        item.payload
-                                                                    )
-                                                                }
-                                                                onSelect={(val) =>
-                                                                    this.handleFilterInput(
-                                                                        val,
-                                                                        el.payload,
-                                                                        item.payload,
-                                                                    )
-                                                                }
-                                                                renderItem={(content) => (
-                                                                    <div>
-                                                                        {content}
-                                                                    </div>
-                                                                )}
-                                                                renderMenu={(items) => (
-                                                                    <div
-                                                                        className="autocomplete"
-                                                                        children={
-                                                                            items
-                                                                        }
-                                                                    />
-                                                                )}
-                                                                renderInput={(props) => (
-                                                                    <input
-                                                                        disabled={
-                                                                            currentInput[
-                                                                                el
-                                                                                    .payload
-                                                                            ]
-                                                                                .disabled
-                                                                        }
-                                                                        {...props}
-                                                                    />
-                                                                )}
-                                                                onMenuVisibilityChange={() => this.fetchKeys(el.payload, currentKey)}
-                                                            />
-                                                        ) : (
-                                                            <Autocomplete
-                                                                getItemValue={(value) => value}
-                                                                items={autocomplete[
-                                                                    el.payload
-                                                                ].values}
-                                                                value={
-                                                                    currentVal
-                                                                }
-                                                                onChange={(e) =>
-                                                                    this.handleFilterInput(
-                                                                        e.target
-                                                                            .value,
-                                                                        el.payload,
-                                                                        item.payload
-                                                                    )
-                                                                }
-                                                                onSelect={(val) =>
-                                                                    this.handleFilterInput(
-                                                                        val,
-                                                                        el.payload,
-                                                                        item.payload,
-                                                                    )
-                                                                }
-                                                                renderItem={(content) => (
-                                                                    <div>
-                                                                        {content.substring(0, 70)}
-                                                                    </div>
-                                                                )}
-                                                                renderMenu={(items) => (
-                                                                    <div
-                                                                        className="autocomplete"
-                                                                        children={
-                                                                            items
-                                                                        }
-                                                                    />
-                                                                )}
-                                                                renderInput={(props) => (
-                                                                    <input
-                                                                        disabled={
-                                                                            !currentKey
-                                                                        }
-                                                                        {...props}
-                                                                    />
-                                                                )}
-                                                                onMenuVisibilityChange={() => this.fetchValues(el.payload, currentKey, currentVal)}
-                                                            />
-                                                        )}
-                                                    </Fragment>
-                                                )
+                        {[this.kinds, ...FILTERS_LIST] &&
+                            [this.kinds, ...FILTERS_LIST].map((el) => {
+                                return (
+                                    <details open key={el.payload}>
+                                        <summary
+                                            className={cx("filter-list inner", {
+                                                "is-active": !!value[
+                                                    el.payload
+                                                ],
                                             })}
-                                            {currentInput[el.payload].key &&
-                                                currentInput[el.payload]
-                                                    .value && (
-                                                    <div className="filter-input-btns">
-                                                        <button
-                                                            type="button"
-                                                            className="add-filter-btn"
-                                                            onClick={() =>
-                                                                this.addInputField(
-                                                                    el.payload
+                                        >
+                                            {el.shownValue}
+                                        </summary>
+                                        <div className="inner-items">
+                                            {this.checkForInputFilter(
+                                                el.payload
+                                            ) ? (
+                                                <div className="filter-input-box">
+                                                    {el.values &&
+                                                        el.values.map(
+                                                            (item) => {
+                                                                const currentKey =
+                                                                    currentInput[
+                                                                        el
+                                                                            .payload
+                                                                    ].key
+                                                                const currentVal =
+                                                                    currentInput[
+                                                                        el
+                                                                            .payload
+                                                                    ].value
+                                                                return (
+                                                                    <Fragment
+                                                                        key={
+                                                                            item.title
+                                                                        }
+                                                                    >
+                                                                        <label>
+                                                                            {
+                                                                                item.title
+                                                                            }
+                                                                        </label>
+                                                                        {item.title ===
+                                                                            "Label" ||
+                                                                        item.title ===
+                                                                            "Annotation" ? (
+                                                                            <Autocomplete
+                                                                                getItemValue={(
+                                                                                    value
+                                                                                ) =>
+                                                                                    value
+                                                                                }
+                                                                                items={
+                                                                                    autocomplete[
+                                                                                        el
+                                                                                            .payload
+                                                                                    ]
+                                                                                        .keys
+                                                                                }
+                                                                                value={
+                                                                                    currentKey
+                                                                                }
+                                                                                onChange={(
+                                                                                    e
+                                                                                ) =>
+                                                                                    this.handleFilterInput(
+                                                                                        e
+                                                                                            .target
+                                                                                            .value,
+                                                                                        el.payload,
+                                                                                        item.payload
+                                                                                    )
+                                                                                }
+                                                                                onSelect={(
+                                                                                    val
+                                                                                ) =>
+                                                                                    this.handleFilterInput(
+                                                                                        val,
+                                                                                        el.payload,
+                                                                                        item.payload
+                                                                                    )
+                                                                                }
+                                                                                renderItem={(
+                                                                                    content
+                                                                                ) => (
+                                                                                    <div>
+                                                                                        {
+                                                                                            content
+                                                                                        }
+                                                                                    </div>
+                                                                                )}
+                                                                                renderMenu={(
+                                                                                    items
+                                                                                ) => (
+                                                                                    <div
+                                                                                        className="autocomplete"
+                                                                                        children={
+                                                                                            items
+                                                                                        }
+                                                                                    />
+                                                                                )}
+                                                                                renderInput={(
+                                                                                    props
+                                                                                ) => (
+                                                                                    <input
+                                                                                        disabled={
+                                                                                            currentInput[
+                                                                                                el
+                                                                                                    .payload
+                                                                                            ]
+                                                                                                .disabled
+                                                                                        }
+                                                                                        {...props}
+                                                                                    />
+                                                                                )}
+                                                                                onMenuVisibilityChange={() =>
+                                                                                    this.fetchKeys(
+                                                                                        el.payload,
+                                                                                        currentKey
+                                                                                    )
+                                                                                }
+                                                                            />
+                                                                        ) : (
+                                                                            <Autocomplete
+                                                                                getItemValue={(
+                                                                                    value
+                                                                                ) =>
+                                                                                    value
+                                                                                }
+                                                                                items={
+                                                                                    autocomplete[
+                                                                                        el
+                                                                                            .payload
+                                                                                    ]
+                                                                                        .values
+                                                                                }
+                                                                                value={
+                                                                                    currentVal
+                                                                                }
+                                                                                onChange={(
+                                                                                    e
+                                                                                ) =>
+                                                                                    this.handleFilterInput(
+                                                                                        e
+                                                                                            .target
+                                                                                            .value,
+                                                                                        el.payload,
+                                                                                        item.payload
+                                                                                    )
+                                                                                }
+                                                                                onSelect={(
+                                                                                    val
+                                                                                ) =>
+                                                                                    this.handleFilterInput(
+                                                                                        val,
+                                                                                        el.payload,
+                                                                                        item.payload
+                                                                                    )
+                                                                                }
+                                                                                renderItem={(
+                                                                                    content
+                                                                                ) => (
+                                                                                    <div>
+                                                                                        {content.substring(
+                                                                                            0,
+                                                                                            70
+                                                                                        )}
+                                                                                    </div>
+                                                                                )}
+                                                                                renderMenu={(
+                                                                                    items
+                                                                                ) => (
+                                                                                    <div
+                                                                                        className="autocomplete"
+                                                                                        children={
+                                                                                            items
+                                                                                        }
+                                                                                    />
+                                                                                )}
+                                                                                renderInput={(
+                                                                                    props
+                                                                                ) => (
+                                                                                    <input
+                                                                                        disabled={
+                                                                                            !currentKey
+                                                                                        }
+                                                                                        {...props}
+                                                                                    />
+                                                                                )}
+                                                                                onMenuVisibilityChange={() =>
+                                                                                    this.fetchValues(
+                                                                                        el.payload,
+                                                                                        currentKey,
+                                                                                        currentVal
+                                                                                    )
+                                                                                }
+                                                                            />
+                                                                        )}
+                                                                    </Fragment>
                                                                 )
                                                             }
-                                                        >
-                                                            Add
-                                                        </button>
-                                                        <button
-                                                            type="button"
-                                                            onClick={() =>
-                                                                this.clearFilter(
-                                                                    el.payload
-                                                                )
-                                                            }
-                                                        >
-                                                            Remove
-                                                        </button>
-                                                    </div>
-                                                )}
+                                                        )}
+                                                    {currentInput[el.payload]
+                                                        .key &&
+                                                        currentInput[el.payload]
+                                                            .value && (
+                                                            <div className="filter-input-btns">
+                                                                <button
+                                                                    type="button"
+                                                                    className="add-filter-btn"
+                                                                    onClick={() =>
+                                                                        this.addInputField(
+                                                                            el.payload
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    Add
+                                                                </button>
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() =>
+                                                                        this.clearFilter(
+                                                                            el.payload
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    Remove
+                                                                </button>
+                                                            </div>
+                                                        )}
+                                                </div>
+                                            ) : (
+                                                el.values &&
+                                                el.values.map((item) => (
+                                                    <button
+                                                        key={item.title}
+                                                        className={
+                                                            value[
+                                                                el.payload
+                                                            ] === item.payload
+                                                                ? "selected-filter"
+                                                                : ""
+                                                        }
+                                                        onClick={() =>
+                                                            this.handleFilterChange(
+                                                                el.payload,
+                                                                item.payload
+                                                            )
+                                                        }
+                                                    >
+                                                        {item.title}
+                                                    </button>
+                                                ))
+                                            )}
                                         </div>
-                                    ) : (
-                                        el.values.map((item) => (
-                                            <button
-                                                key={item.title}
-                                                className={
-                                                    value[
-                                                        el.payload
-                                                    ] === item.payload
-                                                        ? 'selected-filter'
-                                                        : ''
-                                                }
-                                                onClick={() =>
-                                                    this.handleFilterChange(el.payload, item.payload)
-                                                }
-                                            >
-                                                {item.title}
-                                            </button>
-                                        ))
-                                    )}
-                                </div>
-                            </details>
-                        ))}
+                                    </details>
+                                )
+                            })}
                         {!isEmptyArray(this.markers.values) && (
                             <details open key={this.markers.payload}>
                                 <summary
-                                    className={cx('filter-list inner', {
-                                        'is-active': !!value[
+                                    className={cx("filter-list inner", {
+                                        "is-active": !!value[
                                             this.markers.payload
                                         ],
                                     })}
@@ -792,30 +888,33 @@ export class Search extends BaseComponent<IDiagramService> {
                                     {this.markers.shownValue}
                                 </summary>
                                 <div className="inner-items">
-                                    {this.markers.values.map((item) => (
-                                        <button
-                                            title={item.name}
-                                            key={item.name}
-                                            className={
-                                                value.markers &&
-                                                value.markers.find(
-                                                    (marker) =>
-                                                        marker === item.name
-                                                )
-                                                    ? 'selected-filter'
-                                                    : ''
-                                            }
-                                            onClick={(e) =>
-                                                this.handleMarkerFilterChange(e)
-                                            }
-                                        >
-                                            <MarkerPreview
-                                                shape={item.shape}
-                                                color={item.color}
-                                            />
-                                            {item.name}
-                                        </button>
-                                    ))}
+                                    {this.markers.values &&
+                                        this.markers.values.map((item) => (
+                                            <button
+                                                title={item.name}
+                                                key={item.name}
+                                                className={
+                                                    value.markers &&
+                                                    value.markers.find(
+                                                        (marker) =>
+                                                            marker === item.name
+                                                    )
+                                                        ? "selected-filter"
+                                                        : ""
+                                                }
+                                                onClick={(e) =>
+                                                    this.handleMarkerFilterChange(
+                                                        e
+                                                    )
+                                                }
+                                            >
+                                                <MarkerPreview
+                                                    shape={item.shape}
+                                                    color={item.color}
+                                                />
+                                                {item.name}
+                                            </button>
+                                        ))}
                                 </div>
                             </details>
                         )}
@@ -823,19 +922,19 @@ export class Search extends BaseComponent<IDiagramService> {
                     <div className="search-results">
                         {isEmptyArray(result) ? (
                             <div className="result-placeholder">
-                                { wasFiltered
-                                    ? 'No items matching search criteria'
-                                    : 'No search criteria defined'
-                                }
+                                {wasFiltered
+                                    ? "No items matching search criteria"
+                                    : "No search criteria defined"}
                             </div>
                         ) : (
                             <>
-                                {result.map((item, index) => (
-                                    <DnShortcutComponent
-                                        key={index}
-                                        dn={item.dn}
-                                    />
-                                ))}
+                                {result &&
+                                    result.map((item, index) => (
+                                        <DnShortcutComponent
+                                            key={index}
+                                            dn={item.dn}
+                                        />
+                                    ))}
                                 {result.length < totalCount && (
                                     <div className="limited-results-msg">
                                         The first 200 items are shown. Please

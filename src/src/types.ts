@@ -1,4 +1,4 @@
-import { MarkerItem } from "./components/Editors/types"
+import { EditorItem } from "./components/Editors/types"
 
 export type Service = new (...args: any) => Service
 
@@ -20,7 +20,7 @@ export interface SelectedData {
 
 export type Markers = {
     kind: string
-    items: MarkerItem[]
+    items: EditorItem[]
 }
 
 export interface DiagramData {
@@ -45,11 +45,11 @@ export type FontSpec = {
 }
 
 export interface PersistableFields {
-    selected_dn: string
-    time_machine_enabled: boolean
-    time_machine_target_date: Date
-    time_machine_date_to: Date
-    time_machine_duration: number
+    selected_dn?: string
+    time_machine_enabled?: boolean
+    time_machine_target_date?: Date
+    time_machine_date_to?: Date
+    time_machine_duration?: number
 }
 
 export type PersistableParams = {
@@ -67,9 +67,9 @@ export type Alert = {
     }
     msg: string
     severity: string
-    id: string
-    dn: string
-    uiKey: string
+    id?: string
+    dn?: string
+    uiKey?: string
 }
 
 export type Dn = {
@@ -90,6 +90,7 @@ export type Group = {
     title?: string
     kind: string
     config: any
+    order?: number
     options: string[]
 }
 

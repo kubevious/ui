@@ -1,8 +1,10 @@
 import React from "react"
 
 import { BaseComponent, IService } from "@kubevious/ui-framework"
+import { IRuleService } from "@kubevious/ui-middleware"
 import { AlertView } from "../../Alerts/AlertView"
-import { Alert, Config } from "./types"
+import { Config } from "./types"
+import { Alert } from "../../../types"
 
 type PropertiesAlertListProps = {
     config: Config[]

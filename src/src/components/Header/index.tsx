@@ -102,6 +102,7 @@ export class Header extends BaseComponent<IMiscService> {
                                 tool-window-id={item.id}
                                 defaultChecked={this.detectIsVisible(item)}
                                 onChange={(e) =>
+                                    this.props.handleChangeWindow &&
                                     this.props.handleChangeWindow(e)
                                 }
                             />
@@ -119,24 +120,25 @@ export class Header extends BaseComponent<IMiscService> {
         })
 
         this.subscribeToSharedState(
-            "time_machine_enabled",
-            (time_machine_enabled: boolean) => {
-                this.subscribeToSharedState(
-                    "time_machine_target_date",
-                    (time_machine_target_date: Date) => {
-                        if (time_machine_enabled && time_machine_target_date) {
-                            this.setState({
-                                time_machine_enabled,
-                                time_machine_target_date,
-                            })
-                        } else {
-                            this.setState({
-                                time_machine_enabled: false,
-                                time_machine_target_date: null,
-                            })
-                        }
-                    }
-                )
+            ["time_machine_enabled", "time_machine_target_date"],
+            ({
+                time_machine_enabled,
+                time_machine_target_date,
+            }: {
+                time_machine_enabled: boolean
+                time_machine_target_date: Date
+            }) => {
+                if (time_machine_enabled && time_machine_target_date) {
+                    this.setState({
+                        time_machine_enabled,
+                        time_machine_target_date,
+                    })
+                } else {
+                    this.setState({
+                        time_machine_enabled: false,
+                        time_machine_target_date: null,
+                    })
+                }
             }
         )
 

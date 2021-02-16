@@ -36,14 +36,10 @@ export const DnComponent: React.FunctionComponent<DnComponentProps> = ({
     if (dnParts.length > 0 && dnParts[0].kind === "root") {
         dnParts = dnParts.splice(1)
     }
-
+    const url = lastPart ? lastPart.kind : ""
     return (
         <div className="dn-path">
-            <img
-                className="dn-logo"
-                src={getNodeLogoUrl(lastPart.kind)}
-                alt="logo"
-            />
+            <img className="dn-logo" src={getNodeLogoUrl(url)} alt="logo" />
             {dnParts.map((item, index) => (
                 <Fragment key={index}>
                     <span className="kind">{prettyKind(item.kind)}</span>

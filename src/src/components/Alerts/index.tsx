@@ -1,16 +1,16 @@
 import React from "react"
-import { BaseComponent } from "@kubevious/ui-framework"
+import { BaseComponent, IService } from "@kubevious/ui-framework"
 import { AlertView } from "./AlertView"
 import { isEmptyArray, sortSeverity } from "../../utils/util"
 import cx from "classnames"
 
 import "./styles.scss"
-import { Messages } from "../../types"
+import { Alert } from "../../types"
 
-import { IService } from "@kubevious/ui-framework"
+import { sharedState } from "../../configureService"
 
 interface AlertsState {
-    alerts: Messages[]
+    alerts: Alert[]
     isDnSelected: boolean
 }
 
@@ -30,7 +30,7 @@ export class Alerts extends BaseComponent<IService> {
     componentDidMount(): void {
         this.subscribeToSharedState(
             "selected_object_alerts",
-            (selected_object_alerts: Messages[]) => {
+            (selected_object_alerts: Alert[]) => {
                 this.setState({ alerts: selected_object_alerts })
             }
         )
@@ -42,18 +42,18 @@ export class Alerts extends BaseComponent<IService> {
     }
 
     clickDn(dn: string): void {
-        this.sharedState.set("selected_dn", dn)
-        this.sharedState.set("auto_pan_to_selected_dn", true)
+        sharedState.set("selected_dn", dn)
+        sharedState.set("auto_pan_to_selected_dn", true)
     }
 
     openRule(ruleName: string): void {
-        this.sharedState.set("rule_editor_selected_rule_id", ruleName)
-        this.sharedState.set("focus_rule_editor", true)
+        sharedState.set("rule_editor_selected_rule_id", ruleName)
+        sharedState.set("focus_rule_editor", true)
     }
 
-    renderAlerts(alerts: Messages[]): JSX.Element {
+    renderAlerts(alerts: Alert[]): JSX.Element {
         if (isEmptyArray(alerts)) {
-            return this.sharedState.get("selected_dn") ? (
+            return sharedState.get("selected_dn") ? (
                 <div className="message-empty">
                     No alerts for selected object.
                 </div>

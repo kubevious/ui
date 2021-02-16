@@ -1,4 +1,4 @@
-import { MarkerItem } from "../Editors/types"
+import { EditorItem } from "../Editors/types"
 
 export type List = {
     payload: string
@@ -18,5 +18,5 @@ export interface KindList extends List {
 }
 
 export interface MarkersList extends List {
-    values: MarkerItem[]
+    values: EditorItem[]
 }

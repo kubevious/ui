@@ -5,19 +5,19 @@ import { AffectedObjects } from "./AffectedObjects"
 import { StartPage } from "./StartPage"
 import { RuleMainTab } from "./RuleMainTab"
 import { MarkerMainTab } from "./MarkerMainTab"
-import { RuleItem, MarkerItem, SelectedItemData, EditorType } from "./types"
+import { EditorItem, SelectedItemData, EditorType } from "./types"
 
 type EditorProps = {
     type: string
-    items: RuleItem[] | MarkerItem[]
+    items: EditorItem[]
     isNewItem: boolean
-    selectedItem: RuleItem | MarkerItem
+    selectedItem: EditorItem
     selectedItemData: SelectedItemData
     selectedItemId: string
     createNewItem: () => void
-    saveItem: (data: RuleItem | MarkerItem) => void
-    deleteItem: (data: RuleItem | MarkerItem) => void
-    createItem: (data: RuleItem | MarkerItem) => void
+    saveItem: (data: EditorItem) => void
+    deleteItem: (data: EditorItem) => void
+    createItem: (data: EditorItem) => void
     openSummary: () => void
     isSuccess: boolean
 }

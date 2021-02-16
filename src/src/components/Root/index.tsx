@@ -1,14 +1,28 @@
 import React from "react"
 import "./styles.scss"
-import GoldenLayoutComponent from "../GoldenLayout"
-import Popup from "../Popup"
-import Header from "../Header"
-import BaseComponent from "@kubevious/ui-framework"
-import SEO from "../SEO"
-import FieldsSaver from "../../utils/save-fields"
-import ErrorBox from "../ErrorBox"
+import { BaseComponent, IService } from "@kubevious/ui-framework"
+import { FieldsSaver } from "../../utils/save-fields"
+import { ErrorBox } from "../ErrorBox"
+import { GoldenLayoutComponent } from "../GoldenLayout"
+import { Header } from "../Header"
+import { Popup } from "../Popup"
+import { SEO } from "../SEO"
+import { PersistableFields } from "../../types"
+import { Component } from "../GoldenLayout/types"
+import { Error } from "../ErrorBox/types"
 
-export class Root extends BaseComponent {
+type RootState = {
+    showPopup: boolean
+    popupContent: null
+    layout: GoldenLayoutComponent
+    windows: Component[]
+    isError: boolean
+    error: Error
+}
+
+export class Root extends BaseComponent<IService> {
+    private _fieldsSaver: FieldsSaver
+    diagramSource: any
     constructor(props) {
         super(props)
 
@@ -26,6 +40,8 @@ export class Root extends BaseComponent {
         this.handleLayout = this.handleLayout.bind(this)
         this.handleChangeWindow = this.handleChangeWindow.bind(this)
         this.closeError = this.closeError.bind(this)
+
+        let fieldsValues: PersistableFields = {}
 
         this.subscribeToSharedState(
             [
@@ -53,10 +69,10 @@ export class Root extends BaseComponent {
         )
     }
 
-    handleLayout(value) {
+    handleLayout(value: GoldenLayoutComponent): void {
         this.setState({
             layout: value,
-            windows: value._components
+            windows: value.components
                 .filter((item) => !item.skipClose)
                 .map((component) => ({ ...component, isVisible: true })),
         })
@@ -81,15 +97,15 @@ export class Root extends BaseComponent {
         )
     }
 
-    closeError() {
+    closeError(): void {
         this.sharedState.set("is_error", false)
         this.sharedState.set("error", null)
     }
 
-    handleChangeWindow(e) {
-        const { windows, layout } = this.state
+    handleChangeWindow(e: React.ChangeEvent<HTMLInputElement>) {
+        const { windows, layout } = this.state as RootState
 
-        const windowId = e.target.getAttribute("tool-window-id")
+        const windowId = e.target.getAttribute("tool-window-id") || ""
         const isVisible = document.getElementById(windowId) !== null
 
         this.setState({
@@ -134,7 +150,8 @@ export class Root extends BaseComponent {
     }
 
     render() {
-        const { showPopup, popupContent, windows, isError, error } = this.state
+        const { showPopup, popupContent, windows, isError, error } = this
+            .state as RootState
 
         return (
             <>
