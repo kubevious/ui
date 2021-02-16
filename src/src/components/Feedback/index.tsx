@@ -9,7 +9,7 @@ import cx from "classnames"
 import "./styles.scss"
 
 import { IMiscService } from "@kubevious/ui-middleware/dist"
-import { Answer, MissingAnswers, Question, UserAnswers } from "./types"
+import { Answer, Kind, MissingAnswers, Question, UserAnswers } from "./types"
 
 type FeedbackState = {
     userAnswers: UserAnswers
@@ -41,7 +41,7 @@ export class Feedback extends BaseComponent<IMiscService> {
     }
 
     checkAnswers(): boolean {
-        let missingAnswers = {}
+        const missingAnswers = {}
         let isQuestionsAnswered = true
         const { userAnswers } = this.state as FeedbackState
         const { request } = this.props as FeedbackProps
@@ -95,12 +95,10 @@ export class Feedback extends BaseComponent<IMiscService> {
     //***
     handleInputChange(e) {
         const { userAnswers } = this.state as FeedbackState
-        let value = e.target.value
+        const value = e.target.value
         let hasValue = false
-        if (_.isNotNullOrUndefined(value)) {
-            if (value.length > 0) {
-                hasValue = true
-            }
+        if (_.isNotNullOrUndefined(value) && value.length > 0) {
+            hasValue = true
         }
 
         userAnswers[e.target.name] = {
@@ -159,7 +157,7 @@ export class Feedback extends BaseComponent<IMiscService> {
     renderQuestion(question: Question): JSX.Element | null {
         const { missingAnswers } = this.state as FeedbackState
         switch (question.kind) {
-            case "input":
+            case Kind.input:
                 return (
                     <div className="user-input">
                         <label
@@ -181,7 +179,7 @@ export class Feedback extends BaseComponent<IMiscService> {
                         ></textarea>
                     </div>
                 )
-            case "rate":
+            case Kind.rate:
                 return (
                     <div className="user-rate">
                         <label
@@ -213,7 +211,7 @@ export class Feedback extends BaseComponent<IMiscService> {
                         </div>
                     </div>
                 )
-            case "single-select":
+            case Kind.single_select:
                 return (
                     <div className="user-single-select">
                         <label
@@ -247,7 +245,7 @@ export class Feedback extends BaseComponent<IMiscService> {
                         </div>
                     </div>
                 )
-            case "multi-select":
+            case Kind.multi_select:
                 return (
                     <div className="user-select">
                         <label

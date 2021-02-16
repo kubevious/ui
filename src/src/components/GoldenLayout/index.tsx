@@ -59,16 +59,16 @@ export class GoldenLayoutComponent extends BaseComponent<IService> {
         }
         const container = $("#layoutContainer")
         this._layout = new GoldenLayout(this._layoutConfig, container)
-
-        for (var component of this._components) {
+        this._components.forEach(component => {
             component.id &&
                 this._setupContent(component.id, component.component)
-        }
+
+        })
 
         this._layout.on("componentCreated", (component) => {
             self._triggerComponentResizeEvent(component)
 
-            let info = this._getComponent(component.config.component)
+            const info = this._getComponent(component.config.component)
             info.goldenComponent = component
             info.goldenContainer = component.container
 

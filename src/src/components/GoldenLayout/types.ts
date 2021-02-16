@@ -21,6 +21,56 @@ export type Component = {
     goldenContainer?: any
 }
 
+export const components =[
+{
+    name: "Summary",
+    component: Summary,
+    location: "main",
+    title: "Summary",
+    allowVerticalScroll: false,
+},
+{
+    name: "Universe",
+    component: Diagram,
+    location: "main",
+    title: "Universe",
+    skipClose: true,
+},
+{
+    name: "Rule Editor",
+    component: RuleEditor,
+    location: "main",
+    title: "Rule Editor",
+},
+{
+    name: "Marker Editor",
+    component: MarkerEditor,
+    location: "main",
+    title: "Marker Editor",
+},
+{
+    name: "Properties",
+    component: Properties,
+    location: "right",
+    title: "Properties",
+    width: 25,
+    allowVerticalScroll: true,
+},
+{
+    name: "Alerts",
+    component: Alerts,
+    location: "bottom",
+    title: "Alerts",
+    allowVerticalScroll: true,
+},
+{
+    name: "Timeline",
+    component: Timeline,
+    location: "bottom",
+    title: "Timeline",
+    allowVerticalScroll: false,
+}]
+
 export type Components =
         | typeof Diagram
         | typeof RuleEditor

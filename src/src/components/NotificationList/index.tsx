@@ -5,6 +5,7 @@ import { NewVersion } from "../NewVersion"
 import { RequestList } from "../Notifications/types"
 
 import "./styles.scss"
+import { Kind } from "./types"
 
 export const NotificationList = ({ list }: { list: RequestList[] }) => {
     return (
@@ -16,13 +17,13 @@ export const NotificationList = ({ list }: { list: RequestList[] }) => {
                 {!list && <>You have no more notifications.</>}
                 {list.map((item, index) => (
                     <div key={index}>
-                        {item.kind == "new-version" && (
+                        {item.kind === Kind.new_version && (
                             <NewVersion info={item} />
                         )}
-                        {item.kind == "feedback-request" && (
+                        {item.kind === Kind.feedback_request && (
                             <Feedback request={item} />
                         )}
-                        {item.kind == "message" && (
+                        {item.kind === Kind.message && (
                             <MessageNotification request={item} />
                         )}
                     </div>

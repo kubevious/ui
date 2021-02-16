@@ -22,3 +22,10 @@ export type Question = {
     options: string[]
     optional: boolean
 }
+
+export enum Kind {
+    input = "input",
+    rate = "rate",
+    single_select = "single-select",
+    multi_select = "multi-select",
+}
