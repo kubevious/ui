@@ -48,15 +48,17 @@ export const BurgerMenu = ({
         }
 
         const reader: FileReader = new FileReader()
-        const strData: string = reader.result?.toString() || ""
+
         reader.onload = () => {
             const importData: {
                 data: {}
                 deleteExtra: boolean
             } = {
-                data: JSON.parse(strData),
+            // @ts-ignore: Unreachable code error
+                data: JSON.parse(reader.result),
                 deleteExtra,
             }
+            console.log(importData);
             service.backendImportItems(importData, () => {
                 input.value = ""
             })
