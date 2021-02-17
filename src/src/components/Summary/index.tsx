@@ -32,8 +32,7 @@ export class Summary extends ClassComponent<{}, SummaryState>{
 
     render() {
         const { data } = this.state
-        console.log('Object.values(data)');
-        console.log(Object.values(data));
+
         if (!isEmptyObject(data)) {
             return (
                 <div id="summaryComponent" className="summary">

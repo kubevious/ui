@@ -57,33 +57,39 @@ export class DiagramSource {
     }
 
     _setupSocketSubscriptions() {
-        this._nodesScope = this._socket.scope(({ value, target }: any) => {
-            if (target) {
-                if (value) {
-                    this._nodeData[target.dn] = value
-                } else {
-                    delete this._nodeData[target.dn]
+        this._nodesScope = this._socket.scope((nodesScope: any) => {
+            if (nodesScope) {
+                const { target, value } = nodesScope
+                if (target) {
+                    if (value) {
+                        this._nodeData[target.dn] = value
+                    } else {
+                        delete this._nodeData[target.dn]
+                    }
                 }
             }
 
             this._handleTreeChange()
         })
 
-        this._childrenScope = this._socket.scope(({ value, target }: any) => {
+        this._childrenScope = this._socket.scope((nodesScope: any) => {
             const expandedObjects = this._sharedState
                 .user()
                 .get("diagram_expanded_dns")
-            if (target && target.dn && expandedObjects[target.dn]) {
-                if (value) {
-                    this._nodeChildren[target.dn] = value
-                } else {
-                    delete this._nodeChildren[target.dn]
+            if (nodesScope) {
+                const { target, value } = nodesScope
+                if (target && target.dn && expandedObjects[target.dn]) {
+                    if (value) {
+                        this._nodeChildren[target.dn] = value
+                    } else {
+                        delete this._nodeChildren[target.dn]
+                    }
+
+                    this._updateMonitoredObjects()
                 }
 
-                this._updateMonitoredObjects()
+                this._handleTreeChange()
             }
-
-            this._handleTreeChange()
         })
     }
 

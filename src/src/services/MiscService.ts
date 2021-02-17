@@ -1,6 +1,7 @@
 import _ from 'the-lodash';
 import { BaseService } from './BaseService'
 import { IMiscService } from '@kubevious/ui-middleware/dist';
+import { version } from '../version';
 
 export class MiscService extends BaseService implements IMiscService {
 
@@ -16,7 +17,7 @@ export class MiscService extends BaseService implements IMiscService {
 
         info.push({
             name: 'UI Version',
-            value: require('../version')
+            value: version
         })
 
         Promise.resolve()

@@ -58,7 +58,6 @@ export const BurgerMenu = ({
                 data: JSON.parse(reader.result),
                 deleteExtra,
             }
-            console.log(importData);
             service.backendImportItems(importData, () => {
                 input.value = ""
             })

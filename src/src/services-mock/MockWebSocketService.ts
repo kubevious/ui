@@ -2,7 +2,6 @@ import _ from 'the-lodash'
 
 import { MockRootApiService } from './MockRootApiService';
 
-import { RemoteTrack } from '@kubevious/ui-framework/dist/remote-track'
 import { ISharedState } from '@kubevious/ui-framework'
 
 import { IWebSocketService } from '@kubevious/ui-middleware'
