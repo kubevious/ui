@@ -20075,7 +20075,7 @@ function traverseTree(parentDn: string | null, node: any) {
     }
     DN_LIST.push(dn)
 
-    for (var x of node.children) {
+    for (const x of node.children) {
         traverseTree(dn, x)
     }
 }

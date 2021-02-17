@@ -28,8 +28,8 @@ export const Config = ({ config, dn, language }: { config: Annotations, dn: stri
     const [kubectlCommand, setKubectlCommand] = useState<string>('')
 
     useEffect(() => {
-        var namespace: string = _.get(config, 'metadata.namespace');
-        var nameParts: string[] = [];
+        const namespace: string = _.get(config, 'metadata.namespace');
+        let nameParts: string[] = [];
         nameParts.push(_.get(config, 'kind'));
         nameParts.push(namespace);
         nameParts.push(_.get(config, 'metadata.name'));
@@ -44,7 +44,7 @@ export const Config = ({ config, dn, language }: { config: Annotations, dn: stri
         let fn = nameParts.join('-') + '.yaml';
         setFileName(fn)
 
-        var command = `kubectl apply -f ${fn}`;
+        let command = `kubectl apply -f ${fn}`;
         if (namespace) {
             command = command + ` -n ${namespace}`;
         }

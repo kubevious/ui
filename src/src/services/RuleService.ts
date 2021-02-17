@@ -69,7 +69,7 @@ export class RuleService extends BaseService implements IRuleService {
             this.sharedState.set('rule_editor_items', value)
         });
 
-        var selectedRuleScope = this._socketScope((value, target) => {
+        const selectedRuleScope = this._socketScope((value, target) => {
 
             this.sharedState.set('rule_editor_selected_rule_status', value);
 

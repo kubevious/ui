@@ -75,7 +75,7 @@ export class DiagramService extends BaseService implements IDiagramService {
     }
 
     fetchHistoryTimeline(from, to, cb) {
-        var params = {
+        const params = {
             from: moment(from).toISOString(),
             to: moment(to).toISOString()
         };
@@ -107,7 +107,7 @@ export class DiagramService extends BaseService implements IDiagramService {
     }
 
     fetchHistoryTimelinePreview(cb) {
-        var params = {
+        const params = {
         };
         return this.client.get('/history/timeline', params)
             .then(result => {
@@ -121,7 +121,7 @@ export class DiagramService extends BaseService implements IDiagramService {
     }
 
     fetchHistorySnapshot(date, cb) {
-        var params = {
+        const params = {
             date: date
         };
         return this.client.get('/history/snapshot', params)
@@ -131,7 +131,7 @@ export class DiagramService extends BaseService implements IDiagramService {
     }
 
     fetchHistoryProps(dn, date, cb) {
-        var params = {
+        const params = {
             dn: dn,
             date: date
         };
@@ -142,7 +142,7 @@ export class DiagramService extends BaseService implements IDiagramService {
     }
 
     fetchHistoryAlerts(dn, date, cb) {
-        var params = {
+        const params = {
             dn: dn,
             date: date
         };
@@ -174,14 +174,14 @@ export class DiagramService extends BaseService implements IDiagramService {
 
     private _setupSummary()
     {
-        var socketScope = this._socketScope((value, target) => {
+        const socketScope = this._socketScope((value, target) => {
             this.sharedState.set('summary', value);
         });
 
         this.sharedState.subscribe('time_machine_enabled',
             ( time_machine_enabled ) => {
 
-                var wsSubscriptions : any[] = []
+                const wsSubscriptions : any[] = []
 
                 if (!time_machine_enabled) {
                     wsSubscriptions.push({ kind: 'props', dn: 'summary' });
@@ -193,7 +193,7 @@ export class DiagramService extends BaseService implements IDiagramService {
 
     private _setupProperties()
     {
-        var socketScope = this._socketScope((value, target) => {
+        const socketScope = this._socketScope((value, target) => {
             if (!this.sharedState.get('time_machine_enabled'))
             {
                 if (target.dn === this.sharedState.get('selected_dn'))
@@ -206,7 +206,7 @@ export class DiagramService extends BaseService implements IDiagramService {
         this.sharedState.subscribe(['selected_dn', 'time_machine_enabled'],
             ({ selected_dn, time_machine_enabled }) => {
 
-                var wsSubscriptions : any[] = []
+                const wsSubscriptions : any[] = []
 
                 if (selected_dn) {
                     if (!time_machine_enabled) {
@@ -221,7 +221,7 @@ export class DiagramService extends BaseService implements IDiagramService {
 
     private _setupAlerts()
     {
-        var socketScope = this._socketScope((value, target) => {
+        const socketScope = this._socketScope((value, target) => {
             if (!this.sharedState.get('time_machine_enabled'))
             {
                 if (target.dn === this.sharedState.get('selected_dn'))
@@ -234,7 +234,7 @@ export class DiagramService extends BaseService implements IDiagramService {
         this.sharedState.subscribe(['selected_dn', 'time_machine_enabled'],
             ({ selected_dn, time_machine_enabled }) => {
 
-                var wsSubscriptions : any[] = []
+                const wsSubscriptions : any[] = []
 
                 if (selected_dn) {
                     if (!time_machine_enabled) {

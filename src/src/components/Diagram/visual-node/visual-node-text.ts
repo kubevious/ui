@@ -7,7 +7,7 @@ export class VisualNodeText extends BaseVisualNodeHeader {
     }
 
     text(): string | number | undefined {
-        var header = this.header
+        const header = this.header
         if (!header) {
             // TODO: Error
             return ""

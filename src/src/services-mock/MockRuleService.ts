@@ -31,7 +31,7 @@ let MOCK_RULES_ARRAY = [
     },
 ]
 let MOCK_RULES = _.makeDict(MOCK_RULES_ARRAY, (x) => x.name)
-for (var x of _.values(MOCK_RULES)) {
+for (const x of _.values(MOCK_RULES)) {
     x.items = []
     x.logs = []
     x.is_current = (Math.random() * 10) % 2 === 0
@@ -50,18 +50,18 @@ export class MockRuleService implements IRuleService {
         this._notifyRules()
 
         setInterval(() => {
-            for (var x of _.values(MOCK_RULES)) {
+            for (const x of _.values(MOCK_RULES)) {
                 x.is_current = true
                 x.items = []
                 x.logs = []
             }
 
-            for (var rule of _.values(MOCK_RULES)) {
+            for (const rule of _.values(MOCK_RULES)) {
                 if (rule.enabled) {
-                    var hasError = Math.random() * 100 > 60
+                    const hasError = Math.random() * 100 > 60
                     if (hasError) {
                         rule.logs = []
-                        for (var i = 0; i < (Math.random() * 10) % 3; i++) {
+                        for (let i = 0; i < (Math.random() * 10) % 3; i++) {
                             rule.logs.push({
                                 kind: "error",
                                 msg: {
@@ -72,7 +72,7 @@ export class MockRuleService implements IRuleService {
                             })
                         }
                     } else {
-                        var dnList = getRandomDnList()
+                        const dnList = getRandomDnList()
                         rule.items = dnList.map((x) => ({
                             dn: x,
                             id: Math.floor(Math.random() * 10),
@@ -108,7 +108,7 @@ export class MockRuleService implements IRuleService {
             this.sharedState.set("rule_editor_items", result)
         })
 
-        var name = this.sharedState.get("rule_editor_selected_rule_id")
+        const name = this.sharedState.get("rule_editor_selected_rule_id")
         if (name) {
             this._notifyRuleStatus(name)
         }
@@ -119,8 +119,8 @@ export class MockRuleService implements IRuleService {
     }
 
     private _notifyRuleStatus(name: string) {
-        var rule: any = MOCK_RULES[name]
-        var data: any = null
+        const rule: any = MOCK_RULES[name]
+        let data: any = null
         if (rule) {
             data = {
                 name: rule.name,
@@ -147,7 +147,7 @@ export class MockRuleService implements IRuleService {
     }
 
     private _makeRuleItem(x) {
-        var item: any = this._makeRuleListItem(x)
+        const item: any = this._makeRuleListItem(x)
         if (!item) {
             return null
         }
@@ -158,7 +158,7 @@ export class MockRuleService implements IRuleService {
     }
 
     backendFetchRuleList(cb: (data: any) => any): void {
-        var list = _.values(MOCK_RULES)
+        let list = _.values(MOCK_RULES)
         list = list.map((x) => this._makeRuleListItem(x))
         setTimeout(() => {
             cb(list)
@@ -166,7 +166,7 @@ export class MockRuleService implements IRuleService {
     }
 
     backendFetchRule(name: string, cb: (data: any) => any): void {
-        var item = MOCK_RULES[name]
+        const item = MOCK_RULES[name]
         let ruleItem = this._makeRuleItem(item)
         setTimeout(() => {
             cb(ruleItem)
@@ -203,7 +203,7 @@ export class MockRuleService implements IRuleService {
     }
 
     backendExportItems(cb: (data: any) => any): void {
-        var data = {
+        const data = {
             kind: "rules",
             items: _.cloneDeep(_.values(MOCK_RULES)),
         }
@@ -215,7 +215,7 @@ export class MockRuleService implements IRuleService {
             MOCK_RULES = []
         }
 
-        for (var x of rules.data.items) {
+        for (const x of rules.data.items) {
             x.items = []
             x.logs = []
             MOCK_RULES[x.name] = x

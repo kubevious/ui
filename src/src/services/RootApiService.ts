@@ -18,22 +18,22 @@ export class RootApiService {
         });
 
         app.registerService({ kind: 'rule' }, () => {
-            var client = app.backendClient('/api/v1');
+            const client = app.backendClient('/api/v1');
             return new RuleService(client, sharedState, this.socketService());
         });
 
         app.registerService({ kind: 'marker' }, () => {
-            var client = app.backendClient('/api/v1');
+            const client = app.backendClient('/api/v1');
             return new MarkerService(client, sharedState, this.socketService());
         });
 
         app.registerService({ kind: 'diagram' }, () => {
-            var client = app.backendClient('/api/v1');
+            const client = app.backendClient('/api/v1');
             return new DiagramService(client, sharedState, this.socketService());
         });
 
         app.registerService({ kind: 'misc' }, () => {
-            var client = app.backendClient('');
+            const client = app.backendClient('');
             return new MiscService(client, sharedState, this.socketService());
         });
     }
@@ -51,7 +51,7 @@ export class RootApiService {
     }
 
     diagramService(params) {
-        var info;
+        let info;
         if (params) {
             info = _.clone(params);
         } else {

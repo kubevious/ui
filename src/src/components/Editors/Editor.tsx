@@ -47,7 +47,7 @@ export const Editor: React.FunctionComponent<EditorProps> = ({
 
     if (type === EditorType.marker) {
         if (selectedItemData.items) {
-            for (var item of selectedItemData.items) {
+            for (const item of selectedItemData.items) {
                 if (selectedItem.name) {
                     item.markers = [selectedItem.name]
                 }

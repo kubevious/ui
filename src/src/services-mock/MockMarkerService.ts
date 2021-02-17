@@ -12,7 +12,7 @@ import { IMarkerService } from '@kubevious/ui-middleware'
 
 const MOCK_MARKERS_ARRAY : any[] = []
 
-for (var i = 0; i < 30; i++) {
+for (let i = 0; i < 30; i++) {
     MOCK_MARKERS_ARRAY.push({
         name: 'marker-' + (i + 1).toString(),
         shape: SHAPES[i % SHAPES.length],
@@ -41,8 +41,8 @@ export class MockMarkerService implements IMarkerService {
 
         setInterval(() => {
 
-            for (var marker of _.values(MOCK_MARKERS)) {
-                var dnList = getRandomDnList();
+            for (const marker of _.values(MOCK_MARKERS)) {
+                const dnList = getRandomDnList();
                 marker.items = dnList.map(x => ({
                     dn: x,
                 }));
@@ -70,7 +70,7 @@ export class MockMarkerService implements IMarkerService {
             this.sharedState.set('marker_editor_items', result);
         })
 
-        var name = this.sharedState.get('marker_editor_selected_marker_id');
+        const name = this.sharedState.get('marker_editor_selected_marker_id');
         if (name) {
             this._notifyMarkerStatus(name);
         }
@@ -81,8 +81,8 @@ export class MockMarkerService implements IMarkerService {
     }
 
     private _notifyMarkerStatus(name) {
-        var marker = MOCK_MARKERS[name];
-        var data : any = null;
+        const marker = MOCK_MARKERS[name];
+        let data : any = null;
         if (marker) {
             data = {
                 name: marker.name,
@@ -110,7 +110,7 @@ export class MockMarkerService implements IMarkerService {
     }
 
     private _makeMarkerItem(x) {
-        var item = this._makeMarkerListItem(x);
+        const item = this._makeMarkerListItem(x);
         if (!item) {
             return null;
         }
@@ -118,7 +118,7 @@ export class MockMarkerService implements IMarkerService {
     }
 
     backendFetchMarkerList(cb: (data: any) => any) : void {
-        var list = _.values(MOCK_MARKERS);
+        let list = _.values(MOCK_MARKERS);
         list = list.map(x => this._makeMarkerListItem(x));
         setTimeout(() => {
             cb(list);
@@ -126,7 +126,7 @@ export class MockMarkerService implements IMarkerService {
     }
 
     backendFetchMarker(name: string, cb: (data: any) => any) : void {
-        var item = MOCK_MARKERS[name];
+        let item = MOCK_MARKERS[name];
         item = this._makeMarkerItem(item);
         setTimeout(() => {
             cb(item);
@@ -163,7 +163,7 @@ export class MockMarkerService implements IMarkerService {
     }
 
     backendExportItems(cb: (data: any) => any) : void {
-        var data = _.cloneDeep(_.values(MOCK_MARKERS));
+        let data = _.cloneDeep(_.values(MOCK_MARKERS));
         data = data.map(x => ({
             name: x.name,
             shape: x.shape,
@@ -182,7 +182,7 @@ export class MockMarkerService implements IMarkerService {
             MOCK_MARKERS = {};
         }
 
-        for (var x of markers.data.items) {
+        for (const x of markers.data.items) {
             x.items = []
             x.logs = []
             MOCK_MARKERS[x.name] = x;

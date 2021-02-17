@@ -24,7 +24,8 @@ export const ItemsList: React.FunctionComponent<ItemsListProps> = ({
     createNewItem,
     service,
 }) => {
-
+    // Example for FC
+    //
     // useService<IMarkerService>({ kind: 'marker'}, (service) => {
     //     service.backendCreateMarker(...)
     // });
@@ -48,20 +49,6 @@ export const ItemsList: React.FunctionComponent<ItemsListProps> = ({
         }
         return indicatorClass
     }
-    console.log("items")
-    console.log("items")
-    console.log("items")
-    console.log("items")
-    console.log("items")
-    console.log("items")
-    console.log("items")
-    console.log("items")
-    console.log("items")
-    console.log("items")
-    console.log("items")
-    console.log("items")
-    console.log("items")
-    console.log(items)
 
     return (
         <div id="rule-list">

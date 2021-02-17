@@ -143,13 +143,13 @@ export class Timeline extends ClassComponent {
         }
 
         if (size) {
-            var margin = this._getMargin()
+            const margin = this._getMargin()
 
             this._width = size.width - margin.left - margin.right
             this._height = size.height - margin.top - margin.bottom - 40
             this.wrap = this._height > 150
 
-            var viewBox = [
+            const viewBox = [
                 -margin.left,
                 0,
                 this._width + margin.left + margin.right,
@@ -182,7 +182,7 @@ export class Timeline extends ClassComponent {
     }
 
     _getMargin() {
-        var margin = {
+        const margin = {
             top: 10,
             right: 15,
             bottom: 25,
@@ -399,7 +399,7 @@ export class Timeline extends ClassComponent {
     _renderAxis() {
         this._axisElem.html("")
 
-        var horizontalTickCount = Math.max(1, this._width / 200)
+        const horizontalTickCount = Math.max(1, this._width / 200)
         this._axisElem
             .append("g")
             .attr("class", "x axis")
@@ -414,7 +414,7 @@ export class Timeline extends ClassComponent {
             )
 
         if (this._showAxis) {
-            var verticalTickCount = Math.max(1, this._height / 20)
+            const verticalTickCount = Math.max(1, this._height / 20)
             this._axisElem
                 .append("g")
                 .attr("class", "y axis")
@@ -567,7 +567,7 @@ export class Timeline extends ClassComponent {
             return
         }
 
-        var margin = this._getMargin()
+        const margin = this._getMargin()
         this._selectorElem
             .append("path")
             .attr("d", "M-7," + -0.4 * margin.top + " h14 v20 l-7,7 l-7,-7 z")

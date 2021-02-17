@@ -278,7 +278,7 @@ export class VisualNode {
         this._headersOrder = []
 
         {
-            var size = 32
+            const size = 32
             this._addToHeader("logo", {
                 kind: "fixed",
                 location: "left",
@@ -310,7 +310,7 @@ export class VisualNode {
 
         if (this.isExpandable) {
             // eslint-disable-next-line no-redeclare
-            var size = 20
+            const size = 20
             this._addToHeader("expander", {
                 kind: "fixed",
                 location: "right",
@@ -375,7 +375,7 @@ export class VisualNode {
             this._severityTextNodes.push(new VisualNodeText(this, "errors"))
         }
 
-        for (var flag of this.flags) {
+        for (const flag of this.flags) {
             this._addToHeader("flag-" + flag, {
                 kind: "icon",
                 icon: flag,
@@ -386,7 +386,7 @@ export class VisualNode {
             (x: string) => new VisualNodeHeaderFlag(this, x)
         )
 
-        for (var marker of this.markers) {
+        for (const marker of this.markers) {
             this._addToHeader("marker-" + marker, {
                 kind: "marker",
                 icon: marker,
@@ -401,9 +401,9 @@ export class VisualNode {
     }
 
     _measureHeaders(): void {
-        var left = this._headerPadding //this._paddingLeft;
-        var right = this._headerPadding //this._padding;
-        for (var header of this._headersOrder) {
+        let left = this._headerPadding //this._paddingLeft;
+        let right = this._headerPadding //this._padding;
+        for (const header of this._headersOrder) {
             this._measureHeader(header)
 
             if (header.bounding) {
@@ -469,8 +469,8 @@ export class VisualNode {
             header.top = (this._headerHeight - h) / 2
 
             if (header.kind === "column" && header.cells) {
-                var top = header.top
-                for (var cell of header.cells) {
+                let top = header.top
+                for (const cell of header.cells) {
                     cell.top = top
                     cell.left = header.left
                     cell.right = header.right
@@ -491,7 +491,7 @@ export class VisualNode {
     }
 
     getHeader(name: string): Header | null {
-        var header = this._headers[name]
+        const header = this._headers[name]
         if (!header) {
             return null
         }
@@ -499,12 +499,12 @@ export class VisualNode {
     }
 
     getHeaderX(name: string, flavor?: string): number {
-        var header = this.getHeader(name)
+        const header = this.getHeader(name)
         if (!header) {
             // TODO: Error
             return 0
         }
-        var value = 0
+        let value = 0
         if (header.location === "left" && header.left) {
             value = header.left
         } else if (header.location === "right" && header.right) {
@@ -525,7 +525,7 @@ export class VisualNode {
     }
 
     getHeaderY(name: string, flavor?: string): number {
-        var header = this.getHeader(name)
+        const header = this.getHeader(name)
         if (!header) {
             // TODO: Error
             return 0
@@ -547,7 +547,7 @@ export class VisualNode {
     }
 
     getHeaderCenterX(name: string): number {
-        var header = this.getHeader(name)
+        const header = this.getHeader(name)
         if (!header || !header.width) {
             // TODO: Error
             return 0
@@ -557,7 +557,7 @@ export class VisualNode {
     }
 
     getHeaderCenterY(name: string): number {
-        var header = this.getHeader(name)
+        const header = this.getHeader(name)
         if (!header || !header.top || !header.height) {
             // TODO: Error
             return 0
@@ -569,13 +569,13 @@ export class VisualNode {
 
     _measureHeader(header: Header): void {
         if (header.kind === "column" && header.cells) {
-            for (var cell of header.cells) {
+            for (const cell of header.cells) {
                 this._measureHeader(cell)
             }
             header.width = _.max(header.cells.map((x) => x.width))
             header.height = _.sumBy(header.cells, (x: Header) => x.height || 0)
         } else if (header.kind === "text") {
-            var textDimentions = this._view._measureText(
+            const textDimentions = this._view._measureText(
                 header.text,
                 header.fontSpec
             )
@@ -612,7 +612,7 @@ export class VisualNode {
         this._headersOrder.push(info)
 
         if ((info.kind === "column", info.cells)) {
-            for (var cell of info.cells) {
+            for (const cell of info.cells) {
                 cell.id = name + "-" + cell.name
                 cell.location = info.location
                 this._headers[cell.id] = cell
@@ -621,12 +621,12 @@ export class VisualNode {
     }
 
     _sortChildren(): void {
-        var result: VisualNode[] = []
-        var groups = _.groupBy(this._children, (x: VisualNode) => x.data.order)
-        var groupIds = _.keys(groups)
+        let result: VisualNode[] = []
+        const groups = _.groupBy(this._children, (x: VisualNode) => x.data.order)
+        let groupIds = _.keys(groups)
         groupIds = _.orderBy(groupIds, (x: string) => parseInt(x))
-        for (var x of groupIds) {
-            var innerList = groups[x]
+        for (const x of groupIds) {
+            let innerList = groups[x]
             innerList = _.orderBy(innerList, (x: VisualNode) => x.data.rn)
             result = _.concat(result, innerList)
         }
@@ -643,7 +643,7 @@ export class VisualNode {
             return
         }
 
-        for (var child of this.visibleChildren) {
+        for (const child of this.visibleChildren) {
             child.measureAndArrange()
         }
 
@@ -655,7 +655,7 @@ export class VisualNode {
             this._arrangeChildrenPack()
         }
 
-        for (var component of this._getInnerCompontents()) {
+        for (const component of this._getInnerCompontents()) {
             this._width = Math.max(
                 this._width,
                 component.x + component.width + this._padding
@@ -701,8 +701,8 @@ export class VisualNode {
     }
 
     _arrangeChildrenHorizontally(): void {
-        var i = this._paddingLeft
-        for (var child of this.visibleChildren) {
+        let i = this._paddingLeft
+        for (const child of this.visibleChildren) {
             child._x = i
             child._y = this._headerHeight + this._padding
             i += child.width + this._padding
@@ -710,8 +710,8 @@ export class VisualNode {
     }
 
     _arrangeChildrenVertically(): void {
-        var i = this._headerHeight + this._padding
-        for (var child of this.visibleChildren) {
+        let i = this._headerHeight + this._padding
+        for (const child of this.visibleChildren) {
             child._x = this._paddingLeft
             child._y = i
             i += child.height + this._padding
@@ -719,8 +719,8 @@ export class VisualNode {
     }
 
     _arrangeChildrenPack(): void {
-        var packer = new GrowingPacker()
-        var blocks: Block[] = this.visibleChildren.map((x) => ({
+        const packer = new GrowingPacker()
+        let blocks: Block[] = this.visibleChildren.map((x) => ({
             w: x.width + this._padding,
             h: x.height + this._padding,
             item: x,
@@ -729,7 +729,7 @@ export class VisualNode {
 
         packer.fit(blocks)
 
-        for (var block of blocks) {
+        for (const block of blocks) {
             if (block.fit) {
                 block.item._x = this._paddingLeft + block.fit.x
                 block.item._y = this._headerHeight + this._padding + block.fit.y
@@ -744,7 +744,7 @@ export class VisualNode {
             return
         }
 
-        for (var child of this.visibleChildren) {
+        for (const child of this.visibleChildren) {
             child._width = this._width - this._paddingLeft - this._padding
             child._fitChildrenWidthToParent()
         }
@@ -762,13 +762,13 @@ export class VisualNode {
             this._absX = this._x
             this._absY = this._y
         }
-        for (var child of this.visibleChildren) {
+        for (const child of this.visibleChildren) {
             child.calculateAbsolutePos()
         }
     }
 
     autoexpand(): VisualNode[] {
-        var nodes: VisualNode[] = []
+        const nodes: VisualNode[] = []
 
         let recurse = function (node: VisualNode) {
             if (!node.view.existingNodeIds[node.id]) {
@@ -778,7 +778,7 @@ export class VisualNode {
                 }
             }
 
-            for (var child of node._children) {
+            for (const child of node._children) {
                 recurse(child)
             }
         }
@@ -789,11 +789,11 @@ export class VisualNode {
     }
 
     extract(): VisualNode[] {
-        var nodes: VisualNode[] = []
+        const nodes: VisualNode[] = []
 
         let recurse = function (node: VisualNode) {
             nodes.push(node)
-            for (var child of node.visibleChildren) {
+            for (const child of node.visibleChildren) {
                 recurse(child)
             }
         }
@@ -804,7 +804,7 @@ export class VisualNode {
     }
 
     _setupTheme(): void {
-        var x =
+        const x =
             VISUAL_NODE_COLOR_TABLE[this.depth % VISUAL_NODE_COLOR_TABLE.length]
         this._headerFillColor = x
         this._headerBgFillColor = "#35373E"
@@ -826,10 +826,10 @@ export class VisualNode {
     return boolean
 */
 function resolveValue(name: NODE_RENDER_METADATA_NAME, kind: string = "") {
-    var valuesDefault = NODE_RENDER_METADATA.default
-    var valuesKind = NODE_RENDER_METADATA.per_kind[kind]
+    const valuesDefault = NODE_RENDER_METADATA.default
+    const valuesKind = NODE_RENDER_METADATA.per_kind[kind]
 
-    var values = _.cloneDeep(valuesDefault)
+    let values = _.cloneDeep(valuesDefault)
     if (valuesKind) {
         values = _.defaults(valuesKind, values)
     }

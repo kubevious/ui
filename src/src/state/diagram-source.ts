@@ -70,7 +70,7 @@ export class DiagramSource {
         })
 
         this._childrenScope = this._socket.scope(({ value, target }: any) => {
-            var expandedObjects = this._sharedState
+            const expandedObjects = this._sharedState
                 .user()
                 .get("diagram_expanded_dns")
             if (target && target.dn && expandedObjects[target.dn]) {
@@ -94,7 +94,7 @@ export class DiagramSource {
 
     _updateChildrenSubscriptions() {
         this._executeDelayedAction("update-ws-children-subscription", () => {
-            var expandedObjects = this._sharedState
+            const expandedObjects = this._sharedState
                 .user()
                 .get("diagram_expanded_dns")
 
@@ -109,7 +109,7 @@ export class DiagramSource {
 
     _updateMonitoredObjects() {
         this._executeDelayedAction("update-monitored-objects", () => {
-            var monitoredObjects = {}
+            const monitoredObjects = {}
 
             this._traverseTree((dn: string | number) => {
                 monitoredObjects[dn] = true
@@ -134,15 +134,15 @@ export class DiagramSource {
                 return
             }
 
-            var tree = this._buildTreeData()
+            const tree = this._buildTreeData()
             this._sharedState.user().set("diagram_data", tree)
         })
     }
 
     _buildTreeData() {
-        var treeNodes = {}
+        let treeNodes = {}
         this._traverseTree((dn: string | number, parentDn: string | number) => {
-            var nodeData = this._nodeData[dn]
+            let nodeData = this._nodeData[dn]
             if (nodeData) {
                 nodeData = _.clone(nodeData)
                 nodeData.children = []
@@ -156,7 +156,7 @@ export class DiagramSource {
             }
         })
 
-        var tree = treeNodes["root"]
+        let tree = treeNodes["root"]
         if (!tree) {
             tree = {
                 rn: "root",
@@ -186,13 +186,13 @@ export class DiagramSource {
     }
 
     _traverseTree(cb) {
-        var expandedDns = this._sharedState.user().get("diagram_expanded_dns")
+        const expandedDns = this._sharedState.user().get("diagram_expanded_dns")
 
-        var traverseNode = (dn: string, parentDn: string | null) => {
+        const traverseNode = (dn: string, parentDn: string | null) => {
             cb(dn, parentDn)
 
             if (expandedDns[dn]) {
-                for (var child of this.getChildren(dn)) {
+                for (const child of this.getChildren(dn)) {
                     traverseNode(child, dn)
                 }
             }

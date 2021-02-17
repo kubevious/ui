@@ -41,7 +41,7 @@ export class BaseVisualNodeHeader {
     }
 
     width(): number {
-        var header = this.header
+        const header = this.header
         if (!header) {
             // TODO: Error
             return 0
@@ -53,7 +53,7 @@ export class BaseVisualNodeHeader {
     }
 
     height(): number {
-        var header = this.header
+        const header = this.header
         if (!header) {
             // TODO: Error
             return 0

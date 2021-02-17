@@ -112,7 +112,7 @@ export class VisualView {
     }
 
     getExpanded(dn: string): boolean {
-        var dict = this.sharedState.get("diagram_expanded_dns")
+        const dict = this.sharedState.get("diagram_expanded_dns")
         if (dict[dn]) {
             return true
         }
@@ -120,7 +120,7 @@ export class VisualView {
     }
 
     setExpanded(dn: string, value: {}) {
-        var dict = this.sharedState.get("diagram_expanded_dns")
+        const dict = this.sharedState.get("diagram_expanded_dns")
         dict[dn] = value
         this.sharedState.set("diagram_expanded_dns", dict)
     }
@@ -137,12 +137,12 @@ export class VisualView {
         }
         text = _.isNil(text) ? "" : text ? text.toString() : ""
 
-        var totalWidth = 0
-        var totalHeight = fontSpec.height
-        for (var i = 0; i < text.length; i++) {
-            var code = text.charCodeAt(i)
-            var index = code - fontSpec.startCode
-            var width: number
+        let totalWidth = 0
+        const totalHeight = fontSpec.height
+        for (let i = 0; i < text.length; i++) {
+            const code = text.charCodeAt(i)
+            const index = code - fontSpec.startCode
+            let width: number
             if (index < 0 || index >= fontSpec.widths.length) {
                 width = fontSpec.defaultWidth
             } else {
@@ -184,7 +184,7 @@ export class VisualView {
     }
 
     _renderControl(): void {
-        var self = this
+        const self = this
         this._controlInfo.previewGroupElem = this._svgElem
             .append("g")
             .attr("class", "preview")
@@ -208,8 +208,8 @@ export class VisualView {
                 pt.x = d3.event.clientX
                 // @ts-ignore: Unreachable code error
                 pt.y = d3.event.clientY
-                var target = self._controlInfo.previewFullRectElem._groups[0][0]
-                var cursorpt = pt.matrixTransform(
+                const target = self._controlInfo.previewFullRectElem._groups[0][0]
+                const cursorpt = pt.matrixTransform(
                     target.getScreenCTM().inverse()
                 )
 
@@ -249,7 +249,7 @@ export class VisualView {
             return
         }
 
-        var boxScale = 5
+        const boxScale = 5
         this._controlInfo.boxWidth = Math.max(100, this._width / boxScale)
         this._controlInfo.boxHeight = Math.max(100, this._height / boxScale)
 
@@ -320,7 +320,7 @@ export class VisualView {
     }
 
     _setupPanningByMouseDrag(): void {
-        var drag = d3.drag().on("drag", () => {
+        const drag = d3.drag().on("drag", () => {
             this._userPanTo(
                 // @ts-ignore: Unreachable code error
                 this._viewPos.x - d3.event.dx,
@@ -334,7 +334,7 @@ export class VisualView {
     }
 
     _setupPanningByWheel(): void {
-        var doScroll = (e: WheelEvent) => {
+        const doScroll = (e: WheelEvent) => {
             this._userPanTo(
                 this._viewPos.x + e.deltaX,
                 this._viewPos.y + e.deltaY,
@@ -343,7 +343,7 @@ export class VisualView {
             e.preventDefault()
         }
 
-        var elem = document.getElementById("diagram")
+        const elem = document.getElementById("diagram")
         if (elem && elem.addEventListener) {
             elem.addEventListener("wheel", doScroll, false)
         }
@@ -354,7 +354,7 @@ export class VisualView {
             return
         }
 
-        var visualNode = this._nodeDict[this.sharedState.get("selected_dn")]
+        const visualNode = this._nodeDict[this.sharedState.get("selected_dn")]
         if (!visualNode) {
             return
         }
@@ -373,7 +373,7 @@ export class VisualView {
     }
 
     _panTo(x: number, y: number, skipAnimate?: boolean) {
-        var targetViewPos = this._fixViewPos({ x: x, y: y })
+        const targetViewPos = this._fixViewPos({ x: x, y: y })
 
         if (skipAnimate) {
             this._stopPanAnimation()
@@ -395,17 +395,17 @@ export class VisualView {
 
         this._panAnimationTimer = setTimeout(() => {
             this._panAnimationTimer = null
-            var date = new Date().getTime()
+            const date = new Date().getTime()
             const startDate: number = this._panInterpolatorStartTime
                 ? new Date(this._panInterpolatorStartTime).getTime()
                 : new Date().getTime()
 
-            var diff = date - startDate
+            const diff = date - startDate
             if (!this._panAnimationDuration) {
                 return
             }
 
-            var t = diff / this._panAnimationDuration
+            const t = diff / this._panAnimationDuration
             this._viewPos = this._panInterpolator(t)
             this._applyPanTransform()
 
@@ -432,8 +432,8 @@ export class VisualView {
             return
         }
 
-        var pos = this._viewPos
-        // var pos = this._fixViewPos(this._viewPos);
+        const pos = this._viewPos
+        // const pos = this._fixViewPos(this._viewPos);
 
         this._rootElem.attr("transform", () => {
             return "translate(" + -pos.x + "," + -pos.y + ")"
@@ -449,7 +449,7 @@ export class VisualView {
     }
 
     _fixViewPos(pos: ViewPosition): ViewPosition {
-        var newPos = { x: pos.x, y: pos.y }
+        const newPos = { x: pos.x, y: pos.y }
 
         if (this._visualRoot) {
             newPos.x = Math.min(this._visualRoot.width - this._width, newPos.x)
@@ -473,15 +473,15 @@ export class VisualView {
     }
 
     _packSourceData(root: DiagramData): VisualNode {
-        var recurse = (
+        const recurse = (
             node: DiagramData,
             parent: VisualNode | null
         ): VisualNode => {
-            var visualNode = new VisualNode(this, node, parent)
+            const visualNode = new VisualNode(this, node, parent)
             if (!node.children) {
                 node.children = []
             }
-            for (var child of node.children) {
+            for (const child of node.children) {
                 recurse(child, visualNode)
             }
             visualNode.prepare()
@@ -522,8 +522,8 @@ export class VisualView {
     }
 
     _renderItems(parentNode: any, items: VisualNode[]): void {
-        var self = this
-        var node = parentNode
+        const self = this
+        let node = parentNode
             .selectAll(".node") //selectAll('g')
             .data(items, function (d: VisualNode) {
                 return d.id
@@ -612,7 +612,7 @@ export class VisualView {
     }
 
     _renderNodeExpander(visualNode: VisualNode) {
-        var selection = d3
+        const selection = d3
             // @ts-ignore: Unreachable code error
             .select(visualNode.node)
             .selectAll(".node-expander")
@@ -637,7 +637,7 @@ export class VisualView {
 
     _renderNodeSeverity(visualNode: VisualNode): void {
         {
-            var selection: any = d3 // d3 type Selection <BaseType, VisualNodeSeverity, BaseType, unknown>
+            const selection: any = d3 // d3 type Selection <BaseType, VisualNodeSeverity, BaseType, unknown>
                 // @ts-ignore: Unreachable code error
                 .select(visualNode.node)
                 .selectAll(".node-severity")
@@ -666,7 +666,7 @@ export class VisualView {
 
         {
             // eslint-disable-next-line no-redeclare
-            var selection: any = d3 //d3 type Selection <BaseType, VisualNodeText, BaseType, unknown>
+            const selection: any = d3 //d3 type Selection <BaseType, VisualNodeText, BaseType, unknown>
                 // @ts-ignore: Unreachable code error
                 .select(visualNode.node)
                 .selectAll(".node-severity-text")
@@ -689,8 +689,8 @@ export class VisualView {
     }
 
     _renderNodeFlags(visualNode: VisualNode): void {
-        var self = this
-        var selection = d3
+        const self = this
+        const selection = d3
             // @ts-ignore: Unreachable code error
             .select(visualNode.node)
             .selectAll(".node-flag")
@@ -717,8 +717,8 @@ export class VisualView {
     }
 
     _renderNodeMarkers(visualNode: VisualNode): void {
-        var self = this
-        var selection: any = d3 // d3 type Selection<d3.BaseType, VisualNodeHeaderMarker, d3.BaseType, unknown>
+        const self = this
+        let selection: any = d3 // d3 type Selection<d3.BaseType, VisualNodeHeaderMarker, d3.BaseType, unknown>
             // @ts-ignore: Unreachable code error
             .select(visualNode.node)
             .selectAll(".node-marker")
@@ -763,12 +763,12 @@ export class VisualView {
     }
 
     _showFlagTooltip(elem: VisualView, name: string): void {
-        var descr = flagTooltip(name)
+        const descr = flagTooltip(name)
         this._showTooltip(elem, descr)
     }
 
     _showMarkerTooltip(elem: VisualView, name: string): void {
-        var descr = "Marker <b>" + name + "</b>"
+        const descr = "Marker <b>" + name + "</b>"
         this._showTooltip(elem, descr)
     }
 
@@ -776,7 +776,7 @@ export class VisualView {
         if (!descr) {
             return
         }
-        var template =
+        const template =
             '<div class="tooltip">' +
             '	<div class="tooltip-arrow"></div>' +
             '	<div class="tooltip-inner"></div>' +
@@ -792,7 +792,7 @@ export class VisualView {
     }
 
     _updateNode(visualNode: VisualNode, isFullUpdate?: boolean): void {
-        var duration = 200
+        const duration = 200
 
         if (!visualNode.node) {
             return
@@ -904,7 +904,7 @@ export class VisualView {
             .duration(duration)
             .attr("x", (x: any) => {
                 // x: VisualNodeHeaderExpander
-                var expanderNode = _.head<VisualNodeHeaderExpander>(
+                const expanderNode = _.head<VisualNodeHeaderExpander>(
                     x.expanderNodes
                 )
                 if (expanderNode) {
@@ -914,7 +914,7 @@ export class VisualView {
             })
             .attr("xlink:href", (x: any) => {
                 // x: VisualNodeHeaderExpander
-                var expanderNode = _.head<VisualNodeHeaderExpander>(
+                const expanderNode = _.head<VisualNodeHeaderExpander>(
                     x.expanderNodes
                 )
                 if (expanderNode) {
@@ -927,8 +927,8 @@ export class VisualView {
     }
 
     _renderItemsSmall(parentNode: VisualNode, items: VisualNode[]): void {
-        var self = this
-        var node = parentNode
+        const self = this
+        let node = parentNode
             // @ts-ignore: Unreachable code error
             .selectAll("g")
             .data(items, function (d: VisualNode) {
@@ -976,7 +976,7 @@ export class VisualView {
     }
 
     _updateNodeSmall(visualNode: VisualNode): void {
-        var duration = 200
+        const duration = 200
 
         if (!visualNode.smallNode) {
             return
@@ -1013,7 +1013,7 @@ export class VisualView {
 
     _updateNodeR(visualNode: VisualNode, isFullUpdate?: boolean): void {
         this._updateNode(visualNode, isFullUpdate)
-        for (var child of visualNode.visibleChildren) {
+        for (const child of visualNode.visibleChildren) {
             this._updateNodeR(child, isFullUpdate)
         }
     }
@@ -1023,7 +1023,7 @@ export class VisualView {
             this._currentSelectedNodeDn &&
             this._currentSelectedNodeDn != selected_dn
         ) {
-            var node: VisualNode = this._nodeDict[this._currentSelectedNodeDn]
+            const node: VisualNode = this._nodeDict[this._currentSelectedNodeDn]
             this._currentSelectedNodeDn = null
             if (node) {
                 this._updateNode(node)
@@ -1032,7 +1032,7 @@ export class VisualView {
 
         if (this._currentSelectedNodeDn != selected_dn) {
             this._currentSelectedNodeDn = selected_dn
-            var node = this._nodeDict[selected_dn]
+            const node = this._nodeDict[selected_dn]
             if (node) {
                 this._updateNode(node)
             }

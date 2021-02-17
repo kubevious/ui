@@ -37,7 +37,7 @@ export class GoldenLayoutComponent extends ClassComponent {
     }
 
     _activateLayout() {
-        var self = this
+        const self = this
 
         this._layoutConfig = {
             content: [
@@ -81,7 +81,7 @@ export class GoldenLayoutComponent extends ClassComponent {
         })
 
         this._layout.on("tabCreated", (tab) => {
-            var info = this._getComponent(tab.contentItem.config.component)
+            const info = this._getComponent(tab.contentItem.config.component)
             info.goldenTab = tab
 
             tab.closeElement.off("click").click((e) => {
@@ -106,7 +106,7 @@ export class GoldenLayoutComponent extends ClassComponent {
     }
 
     _register(info: Component): void {
-        var id = info.name
+        let id = info.name
         id = _.camelCase(id)
         id = id + "Component"
         info.id = id
@@ -114,13 +114,13 @@ export class GoldenLayoutComponent extends ClassComponent {
     }
 
     activateComponent(id: string): void {
-        var info = this._getComponent(id)
+        const info = this._getComponent(id)
         if (!info.goldenTab) {
             return
         }
 
-        var stack = info.goldenTab.contentItem.parent
-        var stackComponent = _.head(
+        const stack = info.goldenTab.contentItem.parent
+        const stackComponent = _.head(
             stack.contentItems.filter((x) => x.config.component === id)
         )
         if (stackComponent) {
@@ -149,12 +149,12 @@ export class GoldenLayoutComponent extends ClassComponent {
     }
 
     _getLocationLayout(location: string): GoldenLayout.ItemConfigType {
-        var components = this._getLocationComponents(location)
+        const components = this._getLocationComponents(location)
         if (components.length === 1) {
             return this._getComponentLayout(components[0])
         }
 
-        var layout: GoldenLayout.ItemConfigType = {
+        const layout: GoldenLayout.ItemConfigType = {
             type: "stack",
         }
 
@@ -168,7 +168,7 @@ export class GoldenLayoutComponent extends ClassComponent {
     }
 
     _getComponentLayout(component: Component): GoldenLayout.ItemConfigType {
-        var layout: any = {}
+        const layout: any = {}
 
         layout.type = "react-component"
         layout.component = component.id

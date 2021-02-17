@@ -22,7 +22,7 @@ export const DnComponent: React.FunctionComponent<DnComponentProps> = ({
     const lastPart = _.last(dnParts)
 
     if (opt.relativeTo) {
-        var parentDnParts = DnUtils.parseDn(opt.relativeTo)
+        const parentDnParts = DnUtils.parseDn(opt.relativeTo)
         while (
             dnParts.length > 0 &&
             parentDnParts.length > 0 &&

@@ -127,10 +127,10 @@ export class StateHandler {
     _handleSelectedDnAutoExpandChange() {
         this.sharedState.user().subscribe("selected_dn", (selected_dn) => {
             if (selected_dn) {
-                var dict = this.sharedState.user().get("diagram_expanded_dns")
-                var parts = DnUtils.splitDn(selected_dn)
-                var dn = parts[0]
-                for (var i = 1; i < parts.length - 1; i++) {
+                const dict = this.sharedState.user().get("diagram_expanded_dns")
+                const parts = DnUtils.splitDn(selected_dn)
+                let dn = parts[0]
+                for (let i = 1; i < parts.length - 1; i++) {
                     dn = dn + "/" + parts[i]
                     dict[dn] = true
                 }
@@ -239,19 +239,19 @@ export class StateHandler {
                 ["selected_raw_alerts", "selected_dn"],
                 ({ selected_raw_alerts, selected_dn }) => {
                     if (selected_raw_alerts && selected_dn) {
-                        var alerts = _.cloneDeep(selected_raw_alerts)
+                        let alerts = _.cloneDeep(selected_raw_alerts)
 
                         if (_.isPlainObject(alerts)) {
-                            var newAlerts: any = []
-                            for (var dn of _.keys(alerts)) {
-                                for (var alert of alerts[dn]) {
+                            const newAlerts: any = []
+                            for (const dn of _.keys(alerts)) {
+                                for (const alert of alerts[dn]) {
                                     alert.dn = dn
                                     newAlerts.push(alert)
                                 }
                             }
                             alerts = newAlerts
                         } else {
-                            for (var alert of alerts) {
+                            for (const alert of alerts) {
                                 if (!alert.dn) {
                                     alert.dn = selected_dn
                                 }
@@ -260,7 +260,7 @@ export class StateHandler {
 
                         alerts = _.orderBy(alerts, ["dn", "severity", "msg"])
 
-                        for (var alert of alerts) {
+                        for (const alert of alerts) {
                             alert.uiKey =
                                 alert.dn +
                                 "-" +
@@ -410,7 +410,7 @@ export class StateHandler {
         this.sharedState
             .user()
             .subscribe("marker_editor_items", (marker_editor_items) => {
-                var markerDict = {}
+                let markerDict = {}
                 if (marker_editor_items) {
                     markerDict = _.makeDict(
                         marker_editor_items,

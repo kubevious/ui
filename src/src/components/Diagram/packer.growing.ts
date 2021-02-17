@@ -35,7 +35,7 @@
  Example:
  -------
 
- var blocks = [
+ const blocks = [
  { w: 100, h: 100 },
  { w: 100, h: 100 },
  { w:  80, h:  80 },
@@ -44,11 +44,11 @@
  etc
  ];
 
- var packer = new GrowingPacker();
+ const packer = new GrowingPacker();
  packer.fit(blocks);
 
- for(var n = 0 ; n < blocks.length ; n++) {
-    var block = blocks[n];
+ for(let n = 0 ; n < blocks.length ; n++) {
+    const block = blocks[n];
     if (block.fit) {
       Draw(block.fit.x, block.fit.y, block.w, block.h);
     }
@@ -59,16 +59,16 @@
 
 import { Block, NodeDiagrams } from "./types"
 
-export var GrowingPacker = function () {}
+export const GrowingPacker = function () {}
 
 GrowingPacker.prototype = {
     fit: function (blocks: Block[]) {
-        var n: number,
+        let n: number,
             node: NodeDiagrams,
             block: Block,
             len: number = blocks.length
-        var w = len > 0 ? blocks[0].w : 0
-        var h = len > 0 ? blocks[0].h : 0
+        let w = len > 0 ? blocks[0].w : 0
+        let h = len > 0 ? blocks[0].h : 0
         this.root = { x: 0, y: 0, w: w, h: h }
         for (n = 0; n < len; n++) {
             block = blocks[n]
@@ -97,11 +97,11 @@ GrowingPacker.prototype = {
     },
 
     growNode: function (w: number, h: number) {
-        var canGrowDown = w <= this.root.w
-        var canGrowRight = h <= this.root.h
+        const canGrowDown = w <= this.root.w
+        const canGrowRight = h <= this.root.h
 
-        var shouldGrowRight = canGrowRight && this.root.h >= this.root.w + w // attempt to keep square-ish by growing right when height is much greater than width
-        var shouldGrowDown = canGrowDown && this.root.w >= this.root.h + h // attempt to keep square-ish by growing down  when width  is much greater than height
+        const shouldGrowRight = canGrowRight && this.root.h >= this.root.w + w // attempt to keep square-ish by growing right when height is much greater than width
+        const shouldGrowDown = canGrowDown && this.root.w >= this.root.h + h // attempt to keep square-ish by growing down  when width  is much greater than height
 
         if (shouldGrowRight) return this.growRight(w, h)
         else if (shouldGrowDown) return this.growDown(w, h)
@@ -111,7 +111,7 @@ GrowingPacker.prototype = {
     },
 
     growRight: function (w: number, h: number) {
-        var node: NodeDiagrams
+        let node: NodeDiagrams
         this.root = {
             used: true,
             x: 0,
@@ -128,7 +128,7 @@ GrowingPacker.prototype = {
     },
 
     growDown: function (w: number, h: number) {
-        var node: NodeDiagrams
+        let node: NodeDiagrams
         this.root = {
             used: true,
             x: 0,

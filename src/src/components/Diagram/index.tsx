@@ -53,7 +53,7 @@ export class Diagram extends ClassComponent<{}, {}, IDiagramService> {
         parent: DiagramData | null
     ): void {
         if (!node.dn) {
-            var dn: string
+            let dn: string
             if (parent) {
                 dn = parent.dn + "/" + node.rn
             } else {
@@ -63,7 +63,7 @@ export class Diagram extends ClassComponent<{}, {}, IDiagramService> {
         }
 
         if (node.children) {
-            for (var child of node.children) {
+            for (const child of node.children) {
                 this._massageSourceDataNode(child, node)
             }
         }

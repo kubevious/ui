@@ -14,7 +14,7 @@ export class VisualNodeHeaderFlag extends BaseVisualNodeHeader {
     }
 
     get imgSrc(): string {
-        var header = this.header
+        const header = this.header
         if (!header) {
             // TODO: Error
             return ""

@@ -1,6 +1,5 @@
 import React from "react"
 import { ClassComponent } from "@kubevious/ui-framework"
-import $ from "jquery"
 import "./styles.scss"
 import { IMiscService } from "@kubevious/ui-middleware"
 
@@ -8,7 +7,12 @@ type SnoozeState = {
     isSnoozed: boolean
 }
 
-export class Snooze extends ClassComponent<IMiscService> {
+type SnoozeProps = {
+    id?: string
+    kind?: string
+}
+
+export class Snooze extends ClassComponent<SnoozeProps, SnoozeState, IMiscService> {
     constructor(props) {
         super(props, { kind: "misc" })
 

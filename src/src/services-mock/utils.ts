@@ -12,11 +12,11 @@ export function randomInt(x: number) : number
 export function getRandomDnList()
 {
     const count = randomInt(10) + 3;
-    var res : string[] = [];
+    const res : string[] = [];
 
-    for(var i = 0; i < count; i++)
+    for(let i = 0; i < count; i++)
     {
-        var dn = (<string[]>DN_LIST)[randomInt(DN_LIST.length)];
+        const dn = (<string[]>DN_LIST)[randomInt(DN_LIST.length)];
         res.push(dn)
     }
     return res;

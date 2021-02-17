@@ -88,7 +88,7 @@ export function nodeHeaderWidth(
     flavor?: string
 ): (d: VisualNode) => number {
     return (d) => {
-        var header = d.getHeader(headerName)
+        const header = d.getHeader(headerName)
         if (!header) {
             // TODO: Error
             return 0
@@ -105,7 +105,7 @@ export function nodeHeaderHeight(
     flavor?: string
 ): (d: VisualNode) => number {
     return (d) => {
-        var header = d.getHeader(headerName)
+        const header = d.getHeader(headerName)
         if (!header) {
             // TODO: Error
             return 0
@@ -121,7 +121,7 @@ export function nodeHeaderText(
     headerName: string
 ): (d: VisualNode) => number | string | undefined {
     return (d: VisualNode) => {
-        var header = d.getHeader(headerName)
+        const header = d.getHeader(headerName)
         if (!header) {
             // TODO: Error
             return ""

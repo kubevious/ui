@@ -69,7 +69,7 @@ export class MarkerService extends BaseService implements IMarkerService {
             this.sharedState.set('marker_editor_items', value)
         });
 
-        var selectedMarkerScope = this._socketScope((value, target) => {
+        const selectedMarkerScope = this._socketScope((value, target) => {
 
             this.sharedState.set('rule_editor_selected_marker_status', value);
 

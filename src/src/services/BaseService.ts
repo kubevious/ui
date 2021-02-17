@@ -45,11 +45,11 @@ export class BaseService
     {
         console.log('[BaseService] ' + this.constructor.name + ' :: destroy');
 
-        for(var handler of this._socketHandlers)
+        for(const handler of this._socketHandlers)
         {
             handler.stop();
         }
-        for(var scope of this._socketScopes)
+        for(const scope of this._socketScopes)
         {
             scope.close();
         }
@@ -57,7 +57,7 @@ export class BaseService
 
     _socketSubscribe(target, cb)
     {
-        var handler = this.socket.subscribe(target, cb);
+        const handler = this.socket.subscribe(target, cb);
         this._socketHandlers.push(handler);
         return handler;
     }
@@ -76,7 +76,7 @@ export class BaseService
 
     _socketScope(cb)
     {
-        var scope = this.socket.scope(cb);
+        const scope = this.socket.scope(cb);
         this._socketScopes.push(scope);
         return scope;
     }

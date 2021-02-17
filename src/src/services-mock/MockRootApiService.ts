@@ -48,7 +48,7 @@ export class MockRootApiService
     }
 
     diagramService(params) {
-        var info;
+        let info;
         if (params) {
             info = _.clone(params);
         } else {
