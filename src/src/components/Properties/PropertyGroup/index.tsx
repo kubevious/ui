@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { propertyGroupTooltip } from '@kubevious/helpers/dist/docs'
 import _ from 'the-lodash'
-import { BaseComponent, IService } from '@kubevious/ui-framework'
+import { ClassComponent } from '@kubevious/ui-framework'
 import { DnComponent } from '../../DnComponent'
 import { PropertiesContents } from '../PropertiesContents'
 import { Group } from '../../../types'
@@ -18,7 +18,7 @@ type PropertyGroupProps = {
     propertyExpanderHandleClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
 }
 
-export class PropertyGroup extends BaseComponent<IService> {
+export class PropertyGroup extends ClassComponent {
     tooltip: string
     constructor(props) {
         super(props)

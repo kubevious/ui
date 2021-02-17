@@ -1,5 +1,5 @@
 import React from "react"
-import { BaseComponent } from "@kubevious/ui-framework"
+import { ClassComponent } from "@kubevious/ui-framework"
 
 import "./styles.scss"
 import { IMiscService } from "@kubevious/ui-middleware/dist"
@@ -10,7 +10,7 @@ type NotificationsState = {
     list: RequestList[]
 }
 
-export class Notifications extends BaseComponent<IMiscService> {
+export class Notifications extends ClassComponent<{}, {}, IMiscService> {
     constructor(props) {
         super(props, { kind: "misc" })
 

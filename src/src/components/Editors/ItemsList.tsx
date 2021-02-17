@@ -5,6 +5,7 @@ import { MarkerPreview } from "../MarkerPreview"
 import { BurgerMenu } from "../BurgerMenu"
 import { EditorType, IndicatorType, EditorItem } from "./types"
 import { IMarkerService, IRuleService } from "@kubevious/ui-middleware"
+import { useService, useSharedState, subscribeToSharedState } from '@kubevious/ui-framework';
 
 type ItemsListProps = {
     type: string
@@ -23,6 +24,19 @@ export const ItemsList: React.FunctionComponent<ItemsListProps> = ({
     createNewItem,
     service,
 }) => {
+
+    // useService<IMarkerService>({ kind: 'marker'}, (service) => {
+    //     service.backendCreateMarker(...)
+    // });
+
+    // useSharedState((sharedState) => {
+    //     sharedState.get(...)
+    // });
+
+    // subscribeToSharedState('foo', (foo) => {
+
+    // });
+
     const ruleIndicatorClass = (x: EditorItem): string => {
         let indicatorClass: string
         if (!x.enabled) {

@@ -1,5 +1,5 @@
 import React from "react"
-import { BaseComponent } from "@kubevious/ui-framework"
+import { ClassComponent } from "@kubevious/ui-framework"
 import { Editor } from "./Editor"
 import "./styles.scss"
 import { IRuleService } from "@kubevious/ui-middleware"
@@ -24,7 +24,7 @@ type RuleEditorState = {
     isNewItem: boolean
 }
 
-export class RuleEditor extends BaseComponent<IRuleService> {
+export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService> {
     constructor(props) {
         super(props, { kind: "rule" })
 

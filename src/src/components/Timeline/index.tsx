@@ -1,5 +1,5 @@
 import React from "react"
-import { BaseComponent, IService } from "@kubevious/ui-framework"
+import { ClassComponent } from "@kubevious/ui-framework"
 import $ from "jquery"
 import _ from "the-lodash"
 import moment, { DurationInputArg1 } from "moment"
@@ -11,7 +11,7 @@ import { TimelineUtils } from "../../utils/timeline-utils"
 import "./styles.scss"
 import { ChartData } from "./type"
 
-export class Timeline extends BaseComponent<IService> {
+export class Timeline extends ClassComponent {
     actualTargetDate!: string | null
     private _isDraggingSelector: boolean
     time_machine_actual_date_range: { from: moment.Moment; to?: moment.Moment }

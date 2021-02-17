@@ -1,5 +1,5 @@
 import React from "react"
-import { BaseComponent } from "@kubevious/ui-framework"
+import { ClassComponent } from "@kubevious/ui-framework"
 import { VisualView } from "./visual-view/visual-view"
 import * as d3 from "d3"
 import $ from "jquery"
@@ -9,7 +9,7 @@ import { DiagramData } from "../../types"
 
 import { IDiagramService } from "@kubevious/ui-middleware"
 
-export class Diagram extends BaseComponent<IDiagramService> {
+export class Diagram extends ClassComponent<{}, {}, IDiagramService> {
     view: VisualView
     private _sourceData: DiagramData | undefined
     constructor(props) {

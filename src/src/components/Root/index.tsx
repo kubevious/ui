@@ -1,6 +1,6 @@
 import React from "react"
 import "./styles.scss"
-import { BaseComponent, IService } from "@kubevious/ui-framework"
+import { ClassComponent } from "@kubevious/ui-framework"
 import { FieldsSaver } from "../../utils/save-fields"
 import { ErrorBox } from "../ErrorBox"
 import { GoldenLayoutComponent } from "../GoldenLayout"
@@ -20,7 +20,7 @@ type RootState = {
     error: Error
 }
 
-export class Root extends BaseComponent<IService> {
+export class Root extends ClassComponent<{}, RootState> {
     private _fieldsSaver: FieldsSaver
     diagramSource: any
     constructor(props) {

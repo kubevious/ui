@@ -1,5 +1,5 @@
 import React from "react"
-import { BaseComponent, IService } from "@kubevious/ui-framework"
+import { ClassComponent } from "@kubevious/ui-framework"
 import ReactDOM from "react-dom"
 import $ from "jquery"
 import _ from "the-lodash"
@@ -17,7 +17,7 @@ type Layout = {
     content?: GoldenLayout.ContentItem
 }
 
-export class GoldenLayoutComponent extends BaseComponent<IService> {
+export class GoldenLayoutComponent extends ClassComponent {
     private _components: Component[]
     private _layoutConfig: GoldenLayout.Config
     private _layout: GoldenLayout | undefined

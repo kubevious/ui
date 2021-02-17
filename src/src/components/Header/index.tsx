@@ -6,7 +6,7 @@ import githubImg from "../../assets/header-btns/github.svg"
 import { About } from "../About"
 import { Search } from "../Search"
 import { Notifications } from "../Notifications"
-import { BaseComponent } from "@kubevious/ui-framework"
+import { ClassComponent } from "@kubevious/ui-framework"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSpinner } from "@fortawesome/free-solid-svg-icons"
 import moment from "moment"
@@ -22,7 +22,7 @@ type HeaderState = {
     time_machine_target_date: Date
 }
 
-export class Header extends BaseComponent<IMiscService> {
+export class Header extends ClassComponent<{}, {}, IMiscService> {
     constructor(props) {
         super(props, { kind: "misc" })
 

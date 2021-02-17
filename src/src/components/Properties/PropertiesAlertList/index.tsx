@@ -1,6 +1,6 @@
 import React from "react"
 
-import { BaseComponent, IService } from "@kubevious/ui-framework"
+import { ClassComponent } from "@kubevious/ui-framework"
 import { IRuleService } from "@kubevious/ui-middleware"
 import { AlertView } from "../../Alerts/AlertView"
 import { Config } from "./types"
@@ -10,7 +10,7 @@ type PropertiesAlertListProps = {
     config: Config[]
 }
 
-export class PropertiesAlertList extends BaseComponent<IService> {
+export class PropertiesAlertList extends ClassComponent {
     clickDn = (dn: string): void => {
         this.sharedState.set("selected_dn", dn)
         this.sharedState.set("auto_pan_to_selected_dn", true)

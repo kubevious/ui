@@ -1,7 +1,7 @@
 import React from "react"
 import "./styles.scss"
 import cx from "classnames"
-import { BaseComponent, IService } from "@kubevious/ui-framework"
+import { ClassComponent } from "@kubevious/ui-framework"
 import moment from "moment"
 import { TimelineUtils } from "../../utils/timeline-utils"
 
@@ -9,7 +9,7 @@ type TimelineButtonsState = {
     time_machine_enabled: boolean
 }
 
-export class TimelineButtons extends BaseComponent<IService> {
+export class TimelineButtons extends ClassComponent {
     _timelineUtils: TimelineUtils
     constructor(props) {
         super(props)

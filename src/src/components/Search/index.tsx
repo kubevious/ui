@@ -5,7 +5,7 @@ import { isEmptyArray, isEmptyObject } from "../../utils/util"
 import { KIND_TO_USER_MAPPING } from "@kubevious/helpers/dist/docs"
 import { prettyKind } from "../../utils/ui-utils"
 import { DnShortcutComponent } from "../DnShortcutComponent"
-import { BaseComponent } from "@kubevious/ui-framework"
+import { ClassComponent } from "@kubevious/ui-framework"
 import { MarkerPreview } from "../MarkerPreview"
 import { FILTERS_LIST } from "../../boot/filterData"
 import cx from "classnames"
@@ -49,7 +49,7 @@ type SearchState = {
     wasFiltered: boolean
 }
 
-export class Search extends BaseComponent<IDiagramService> {
+export class Search extends ClassComponent<IDiagramService> {
     markers: MarkersList
     kinds: KindList
     constructor(props) {

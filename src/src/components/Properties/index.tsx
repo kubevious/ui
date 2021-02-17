@@ -1,5 +1,5 @@
 import React from "react"
-import { BaseComponent, IService } from "@kubevious/ui-framework"
+import { ClassComponent } from "@kubevious/ui-framework"
 import _ from "the-lodash"
 import { PropertyGroup } from "./PropertyGroup"
 import { DnPath } from "../GenerateDnPath"
@@ -17,7 +17,7 @@ type PropertiesProps = {
     selectedObjectProps: Group[]
 }
 
-export class Properties extends BaseComponent<IService> {
+export class Properties extends ClassComponent {
     constructor(props) {
         super(props)
 

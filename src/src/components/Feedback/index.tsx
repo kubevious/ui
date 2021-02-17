@@ -1,5 +1,5 @@
 import React from "react"
-import { BaseComponent } from "@kubevious/ui-framework"
+import { ClassComponent } from "@kubevious/ui-framework"
 import { Snooze } from "../Snooze"
 import { PostFeedback } from "../PostFeedback"
 import $ from "jquery"
@@ -25,15 +25,16 @@ type FeedbackProps = {
     }
 }
 
-export class Feedback extends BaseComponent<IMiscService> {
+export class Feedback extends ClassComponent<FeedbackProps, FeedbackState, IMiscService> {
     constructor(props: FeedbackProps) {
         super(props, { kind: "misc" })
 
-        this.state = {
+        this.setState({
             userAnswers: {},
             missingAnswers: {},
             isSubmitAllowed: true,
-        } as FeedbackState
+        })
+
         this.handleInputChange = this.handleInputChange.bind(this)
         this.handleMultiselect = this.handleMultiselect.bind(this)
         this.setClicked = this.setClicked.bind(this)

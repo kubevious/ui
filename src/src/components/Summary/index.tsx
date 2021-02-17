@@ -1,10 +1,10 @@
 import React from "react"
-import { BaseComponent, IService } from "@kubevious/ui-framework"
+import { ClassComponent } from "@kubevious/ui-framework"
 import { PropertiesContents } from "../Properties/PropertiesContents"
 import "./styles.scss"
 import { isEmptyObject } from "../../utils/util"
 
-export class Summary extends BaseComponent<IService> {
+export class Summary extends ClassComponent{
     constructor(props) {
         super(props)
 

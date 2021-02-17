@@ -3,7 +3,7 @@ import { Editor } from "./Editor"
 import { ItemsList } from "./ItemsList"
 import { COLORS, SHAPES } from "../../boot/markerData"
 import { EditorItem, SelectedItemData } from "./types"
-import { BaseComponent } from "@kubevious/ui-framework"
+import { ClassComponent } from "@kubevious/ui-framework"
 
 import { IMarkerService } from "@kubevious/ui-middleware"
 
@@ -18,20 +18,20 @@ type MarkerEditorState = {
     items: EditorItem[]
     selectedItem: EditorItem
     selectedItemData: SelectedItemData
-    selectedItemId: string
+    selectedItemId: string | null | undefined
     isSuccess: boolean
     isNewItem: boolean
 }
 
-export class MarkerEditor extends BaseComponent<IMarkerService> {
+export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerService> {
     constructor(props) {
         super(props, { kind: "marker" })
-        this.state = {
+        this.setState({
             items: [],
             selectedItem: selectedItemInit,
             selectedItemData: selectedItemDataInit,
             isSuccess: false,
-        }
+        });
 
         this.openSummary = this.openSummary.bind(this)
         this.saveItem = this.saveItem.bind(this)
@@ -91,7 +91,7 @@ export class MarkerEditor extends BaseComponent<IMarkerService> {
     saveItem(data: EditorItem): void {
         const { selectedItemId } = this.state as MarkerEditorState
 
-        this.service.backendCreateMarker(data, selectedItemId, () => {
+        this.service.backendCreateMarker(data, selectedItemId!, () => {
             this.setState({ isSuccess: true })
 
             setTimeout(() => {
