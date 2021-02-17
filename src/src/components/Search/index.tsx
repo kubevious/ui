@@ -38,18 +38,18 @@ type SearchState = {
     }
     autocomplete: {
         labels: {
-            key: string
-            value: string
+            keys: string[]
+            values: string[]
         }
         annotations: {
-            key: string
-            value: string
+            keys: string[]
+            values: string[]
         }
     }
-    wasFiltered: boolean
+    wasFiltered?: boolean
 }
 
-export class Search extends ClassComponent<IDiagramService> {
+export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
     markers: MarkersList
     kinds: KindList
     constructor(props) {
@@ -83,6 +83,7 @@ export class Search extends ClassComponent<IDiagramService> {
                     values: [],
                 },
             },
+            wasFiltered: false
         }
     }
 
@@ -107,6 +108,7 @@ export class Search extends ClassComponent<IDiagramService> {
                 this.setState((prevState: SearchState) => {
                     prevState.autocomplete[type].values = response
                     return {
+                        ...prevState,
                         autocomplete: {
                             ...prevState.autocomplete,
                         },
@@ -124,6 +126,7 @@ export class Search extends ClassComponent<IDiagramService> {
                 this.setState((prevState: SearchState) => {
                     prevState.autocomplete[type].keys = response
                     return {
+                        ...prevState,
                         autocomplete: {
                             ...prevState.autocomplete,
                         },
@@ -170,10 +173,12 @@ export class Search extends ClassComponent<IDiagramService> {
                 if (!input) {
                     delete valueInState.criteria
                     return {
+                        ...prevState,
                         value: { ...valueInState },
                     }
                 }
                 return {
+                    ...prevState,
                     value: { ...valueInState, criteria: input },
                 }
             },
@@ -191,11 +196,13 @@ export class Search extends ClassComponent<IDiagramService> {
                 if (prevState.value[name] === title) {
                     delete valueInState[name]
                     return {
+                        ...prevState,
                         value: { ...valueInState },
                     }
                 }
                 prevState.savedFilters[name] && delete savedFilters[name]
                 return {
+                    ...prevState,
                     value: { ...valueInState, [name]: title },
                     savedFilters: { ...savedFilters },
                 }
@@ -224,9 +231,13 @@ export class Search extends ClassComponent<IDiagramService> {
                     )
                     if (isEmptyArray(changedMarkers)) {
                         delete valueInState.markers
-                        return { value: { ...valueInState } }
+                        return {
+                            ...prevState,
+                            value: { ...valueInState }
+                        }
                     }
                     return {
+                        ...prevState,
                         value: { ...valueInState, markers: changedMarkers },
                     }
                 } else if (prevState.savedFilters.markers) {
@@ -235,6 +246,7 @@ export class Search extends ClassComponent<IDiagramService> {
 
                 markersList.push(title)
                 return {
+                    ...prevState,
                     value: { ...valueInState, markers: markersList },
                     savedFilters: { ...savedFilters },
                 }
@@ -252,6 +264,7 @@ export class Search extends ClassComponent<IDiagramService> {
                 this.fetchKeys(name, value)
                 prevState.currentInput[name].key = value
                 return {
+                    ...prevState,
                     currentInput: {
                         ...prevState.currentInput,
                     },
@@ -261,6 +274,7 @@ export class Search extends ClassComponent<IDiagramService> {
             this.fetchValues(name, currentKey, value)
             prevState.currentInput[name].value = value
             return {
+                ...prevState,
                 currentInput: {
                     ...prevState.currentInput,
                 },
@@ -388,6 +402,7 @@ export class Search extends ClassComponent<IDiagramService> {
                     }
                     savedInState[type] ? deleteFromSaved() : addToSaved()
                     return {
+                        ...prevState,
                         value: { ...valueInState },
                         savedFilters: { ...savedInState },
                     }
@@ -413,13 +428,14 @@ export class Search extends ClassComponent<IDiagramService> {
                         : [...valueArray, { key, value }]
 
                     if (isEmptyArray(valueInState[type])) {
-                        return
+                        return prevState
                     } else if (isEmptyArray(savedInState[type])) {
                         delete savedInState[type]
-                        return
+                        return prevState
                     }
 
                     return {
+                        ...prevState,
                         value: {
                             ...valueInState,
                         },
@@ -432,6 +448,7 @@ export class Search extends ClassComponent<IDiagramService> {
                 valueInState[type] = changedValueArray
                 isEmptyArray(changedValueArray) && delete valueInState[type]
                 return {
+                    ...prevState,
                     value: { ...valueInState },
                     savedFilters: {
                         ...savedInState,
@@ -459,6 +476,7 @@ export class Search extends ClassComponent<IDiagramService> {
                     ? delete valueInState[type]
                     : (valueInState[type] = changedValueArray)
                 return {
+                    ...prevState,
                     currentInput: {
                         ...prevState.currentInput,
                         [type]: {
