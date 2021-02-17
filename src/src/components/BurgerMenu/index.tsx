@@ -54,7 +54,7 @@ export const BurgerMenu = ({
                 data: {}
                 deleteExtra: boolean
             } = {
-            // @ts-ignore: Unreachable code error
+                // @ts-ignore: Unreachable code error
                 data: JSON.parse(reader.result),
                 deleteExtra,
             }

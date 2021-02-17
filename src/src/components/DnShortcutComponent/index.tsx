@@ -20,12 +20,7 @@ export const DnShortcutComponent: React.FunctionComponent<SelectedData> = ({
         sharedState.set("auto_pan_to_selected_dn", true)
         sharedState.set("popup_window", null)
     }
-    // ***
-    // Example markerDict
-    // markerDict = {
-    //   markerName: MarkerDict
-    // }
-    // ***
+
     const markerDict = sharedState.get("markers_dict") || {}
 
     let markerItems: MarkerDict[] = []

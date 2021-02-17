@@ -25,7 +25,11 @@ type FeedbackProps = {
     }
 }
 
-export class Feedback extends ClassComponent<FeedbackProps, FeedbackState, IMiscService> {
+export class Feedback extends ClassComponent<
+    FeedbackProps,
+    FeedbackState,
+    IMiscService
+> {
     constructor(props: FeedbackProps) {
         super(props, { kind: "misc" })
 

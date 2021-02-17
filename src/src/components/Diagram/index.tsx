@@ -10,12 +10,12 @@ import { DiagramData } from "../../types"
 import { IDiagramService } from "@kubevious/ui-middleware"
 
 export class Diagram extends ClassComponent<{}, {}, IDiagramService> {
-    view: VisualView
+    view: VisualView | null
     private _sourceData: DiagramData | undefined
     constructor(props) {
         super(props, { kind: "diagram" })
 
-        this.view = new VisualView(d3.select("#diagram"), this.sharedState)
+        this.view = null
 
         this.subscribeToSharedState(
             "diagram_data",

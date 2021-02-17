@@ -5,16 +5,12 @@ import { isEmptyArray, sortSeverity } from "../../utils/util"
 import cx from "classnames"
 
 import "./styles.scss"
-import { Alert } from "../../types"
 
 import { sharedState } from "../../configureService"
+import { Alert } from "../../types"
+import { AlertsState } from "./types"
 
-interface AlertsState {
-    alerts: Alert[]
-    isDnSelected: boolean
-}
-
-export class Alerts extends ClassComponent {
+export class Alerts extends ClassComponent<{}, AlertsState> {
     constructor(props) {
         super(props)
 
@@ -72,7 +68,7 @@ export class Alerts extends ClassComponent {
     }
 
     render() {
-        const { alerts } = this.state as AlertsState
+        const { alerts } = this.state
         return (
             <div
                 id="alertsComponent"

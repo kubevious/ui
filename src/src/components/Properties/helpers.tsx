@@ -3,8 +3,8 @@ import React from "react"
 
 import "./styles.scss"
 
+// value: Config | string | {}
 export const PropertiesValue = (value: any): JSX.Element => {
-    // value: Config | string | {}
     if (_.isObject(value) && _.isNotNullOrUndefined(value.value)) {
         value = formatValue(value)
         return (

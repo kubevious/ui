@@ -12,12 +12,6 @@ import "./styles.scss"
 import { Component, Components } from "./types"
 import { DiagramSource } from "../../state/diagram-source"
 
-type Layout = {
-    height?: number
-    type: string
-    content?: GoldenLayout.ContentItem
-}
-
 type GoldenLayoutComponentProps = {
     diagramSource: DiagramSource
     handleLayout: (value: GoldenLayoutComponent) => void
