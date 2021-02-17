@@ -10,7 +10,7 @@ type PropertiesAlertListProps = {
     config: Config[]
 }
 
-export class PropertiesAlertList extends ClassComponent {
+export class PropertiesAlertList extends ClassComponent<PropertiesAlertListProps> {
     clickDn = (dn: string): void => {
         this.sharedState.set("selected_dn", dn)
         this.sharedState.set("auto_pan_to_selected_dn", true)
@@ -22,7 +22,7 @@ export class PropertiesAlertList extends ClassComponent {
     }
 
     configureAlerts(): Alert[] {
-        const { config } = this.props as PropertiesAlertListProps
+        const { config } = this.props
         let alerts: Alert[] = []
 
         config.map((elem: Config) => {

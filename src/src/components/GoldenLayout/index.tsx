@@ -10,6 +10,7 @@ import { RegisterComponents } from "./register-components"
 
 import "./styles.scss"
 import { Component, Components } from "./types"
+import { DiagramSource } from "../../state/diagram-source"
 
 type Layout = {
     height?: number
@@ -17,7 +18,12 @@ type Layout = {
     content?: GoldenLayout.ContentItem
 }
 
-export class GoldenLayoutComponent extends ClassComponent {
+type GoldenLayoutComponentProps = {
+    diagramSource: DiagramSource
+    handleLayout: (value: GoldenLayoutComponent) => void
+}
+
+export class GoldenLayoutComponent extends ClassComponent<GoldenLayoutComponentProps> {
     private _components: Component[]
     private _layoutConfig: GoldenLayout.Config
     private _layout: GoldenLayout | undefined
@@ -168,6 +174,7 @@ export class GoldenLayoutComponent extends ClassComponent {
     }
 
     _getComponentLayout(component: Component): GoldenLayout.ItemConfigType {
+        // Component from 'golden-layout'
         const layout: any = {}
 
         layout.type = "react-component"

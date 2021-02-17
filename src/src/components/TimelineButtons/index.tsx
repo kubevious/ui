@@ -9,7 +9,7 @@ type TimelineButtonsState = {
     time_machine_enabled: boolean
 }
 
-export class TimelineButtons extends ClassComponent {
+export class TimelineButtons extends ClassComponent<{}, TimelineButtonsState> {
     _timelineUtils: TimelineUtils
     constructor(props) {
         super(props)
@@ -25,7 +25,7 @@ export class TimelineButtons extends ClassComponent {
     }
 
     _toggle() {
-        const { time_machine_enabled } = this.state as TimelineButtonsState
+        const { time_machine_enabled } = this.state
         if (time_machine_enabled) {
             this.sharedState.set("time_machine_enabled", false)
         } else {
@@ -69,7 +69,7 @@ export class TimelineButtons extends ClassComponent {
     }
 
     render() {
-        const { time_machine_enabled } = this.state as TimelineButtonsState
+        const { time_machine_enabled } = this.state
         return (
             <div className="tl-interaction">
                 <a

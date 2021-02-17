@@ -162,7 +162,7 @@ export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscServic
             isLoading,
             time_machine_enabled,
             time_machine_target_date,
-        } = this.state as HeaderState
+        } = this.state
 
         return (
             <div className="header">

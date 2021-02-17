@@ -18,7 +18,7 @@ type PropertyGroupProps = {
     propertyExpanderHandleClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
 }
 
-export class PropertyGroup extends ClassComponent {
+export class PropertyGroup extends ClassComponent<PropertyGroupProps> {
     tooltip: string
     constructor(props) {
         super(props)
@@ -28,7 +28,7 @@ export class PropertyGroup extends ClassComponent {
     }
 
     renderTooltip(): void {
-        const { group, dnKind } = this.props as PropertyGroupProps
+        const { group, dnKind } = this.props
         const tooltipInfo = propertyGroupTooltip(group.id)
         if (tooltipInfo && _.isObject(tooltipInfo)) {
             const str: string = _.get(tooltipInfo, 'owner.' + dnKind)
@@ -43,7 +43,7 @@ export class PropertyGroup extends ClassComponent {
         const {
             dn,
             group,
-        } = this.props as PropertyGroupProps
+        } = this.props
 
         this.sharedState.set('popup_window', {
             title: 'Properties: ' + group,
@@ -76,7 +76,7 @@ export class PropertyGroup extends ClassComponent {
             extraClassContents,
             group,
             propertyExpanderHandleClick,
-        } = this.props as PropertyGroupProps
+        } = this.props
 
         return (
             <div className="property-group">

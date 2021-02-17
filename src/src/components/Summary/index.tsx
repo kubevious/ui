@@ -3,8 +3,19 @@ import { ClassComponent } from "@kubevious/ui-framework"
 import { PropertiesContents } from "../Properties/PropertiesContents"
 import "./styles.scss"
 import { isEmptyObject } from "../../utils/util"
+import { Config } from "../Properties/PropertiesAlertList/types"
 
-export class Summary extends ClassComponent{
+type SummaryState = {
+    data: {
+        kind?: string
+        id?: string
+        title?: string
+        order?: number
+        config?: Config[]
+    }
+}
+
+export class Summary extends ClassComponent<{}, SummaryState>{
     constructor(props) {
         super(props)
 
@@ -20,7 +31,9 @@ export class Summary extends ClassComponent{
     }
 
     render() {
-        const { data } = this.state as any
+        const { data } = this.state
+        console.log('Object.values(data)');
+        console.log(Object.values(data));
         if (!isEmptyObject(data)) {
             return (
                 <div id="summaryComponent" className="summary">

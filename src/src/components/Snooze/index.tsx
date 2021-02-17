@@ -51,7 +51,7 @@ export class Snooze extends ClassComponent<SnoozeProps, SnoozeState, IMiscServic
     }
 
     render() {
-        const { isSnoozed } = this.state as SnoozeState
+        const { isSnoozed } = this.state
         return (
             <div className="snooze-btn">
                 {this.kind == "message" && (

@@ -10,21 +10,21 @@ import "./styles.scss"
 import "./obsidian.css"
 import { Group } from "../../types"
 
-type PropertiesProps = {
+type PropertiesState = {
     selectedDn: string
     dnParts: DnUtils.RnInfo[]
     dnKind: string
     selectedObjectProps: Group[]
 }
 
-export class Properties extends ClassComponent {
+export class Properties extends ClassComponent<{}, PropertiesState> {
     constructor(props) {
         super(props)
 
         this.state = {
-            selectedDn: null,
+            selectedDn: '',
             dnParts: [],
-            dnKind: null,
+            dnKind: '',
             selectedObjectProps: [],
         }
 
@@ -43,7 +43,7 @@ export class Properties extends ClassComponent {
     }
 
     _renderPropertiesNodeDn(): JSX.Element {
-        const { dnParts } = this.state as PropertiesProps
+        const { dnParts } = this.state
         return (
             <div className="properties-owner">
                 <DnPath dnParts={dnParts} includeLogo bigLogo />
@@ -52,9 +52,7 @@ export class Properties extends ClassComponent {
     }
 
     _renderContent(): JSX.Element {
-        const { selectedDn, selectedObjectProps, dnKind } = this
-            .state as PropertiesProps
-
+        const { selectedDn, selectedObjectProps, dnKind } = this.state
         const propertyGroups = _.orderBy(selectedObjectProps, (x) => {
             if (x.order) {
                 return x.order
@@ -70,7 +68,7 @@ export class Properties extends ClassComponent {
                     return (
                         <PropertyGroup
                             key={index}
-                            title={item.title}
+                            title={item.title || ''}
                             extraClassTitle={isExpanded ? "active" : ""}
                             extraClassContents={
                                 isExpanded ? "expander-open" : ""
@@ -90,8 +88,7 @@ export class Properties extends ClassComponent {
     }
 
     renderUserView(): JSX.Element {
-        const { selectedDn, selectedObjectProps } = this
-            .state as PropertiesProps
+        const { selectedDn, selectedObjectProps } = this.state
 
         if (!selectedDn && !selectedObjectProps) {
             return <div className="message-empty">No object selected.</div>
@@ -114,7 +111,7 @@ export class Properties extends ClassComponent {
                     dnParts = DnUtils.parseDn(selected_dn)
                 }
 
-                let dnKind = null
+                let dnKind = ''
                 if (dnParts.length > 0) {
                     dnKind = _.last(dnParts).kind
                 }
@@ -130,8 +127,7 @@ export class Properties extends ClassComponent {
     }
 
     render() {
-        const { selectedDn, selectedObjectProps } = this
-            .state as PropertiesProps
+        const { selectedDn, selectedObjectProps } = this.state
 
         return (
             <div

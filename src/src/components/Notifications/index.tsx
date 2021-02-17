@@ -10,7 +10,7 @@ type NotificationsState = {
     list: RequestList[]
 }
 
-export class Notifications extends ClassComponent<{}, {}, IMiscService> {
+export class Notifications extends ClassComponent<{}, NotificationsState, IMiscService> {
     constructor(props) {
         super(props, { kind: "misc" })
 
@@ -36,7 +36,7 @@ export class Notifications extends ClassComponent<{}, {}, IMiscService> {
     }
 
     render() {
-        const { list } = this.state as NotificationsState
+        const { list } = this.state
         return <NotificationList list={list} />
     }
 }

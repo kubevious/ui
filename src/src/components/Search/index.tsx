@@ -165,7 +165,7 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
     }
 
     handleChange(e) {
-        const { value } = this.state as SearchState
+        const { value } = this.state
         const input = e.target.value
         this.setState(
             (prevState: SearchState) => {
@@ -208,7 +208,7 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
                 }
             },
             () => {
-                const { value } = this.state as SearchState
+                const { value } = this.state
                 this.fetchResults(value)
             }
         )
@@ -252,7 +252,7 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
                 }
             },
             () => {
-                const { value } = this.state as SearchState
+                const { value } = this.state
                 this.fetchResults(value)
             }
         )
@@ -316,7 +316,7 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
                 }
             },
             () => {
-                const { value } = this.state as SearchState
+                const { value } = this.state
                 this.fetchResults(value)
             }
         )
@@ -360,7 +360,7 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
                 }
             },
             () => {
-                const { value } = this.state as SearchState
+                const { value } = this.state
                 this.fetchResults(value)
             }
         )
@@ -457,7 +457,7 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
                 }
             },
             () => {
-                const { value } = this.state as SearchState
+                const { value } = this.state
                 this.fetchResults(value)
             }
         )
@@ -490,7 +490,7 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
                 }
             },
             () => {
-                const { value } = this.state as SearchState
+                const { value } = this.state
                 this.fetchResults(value)
             }
         )
@@ -509,7 +509,7 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
     }
 
     renderActiveFilters(type, val) {
-        const { savedFilters } = this.state as SearchState
+        const { savedFilters } = this.state
         const { key = null } = val
         const checkInSavedFilters =
             savedFilters[type] && key
@@ -570,7 +570,7 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
         if (!val) {
             return
         }
-        const { value, savedFilters } = this.state as SearchState
+        const { value, savedFilters } = this.state
         const saved = savedFilters[key] || []
         const sumOfValues = value[key] ? value[key].concat(saved) : saved
 
@@ -594,7 +594,7 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
             currentInput,
             wasFiltered,
             autocomplete,
-        } = this.state as SearchState
+        } = this.state
 
         return (
             <div className="Search-wrapper p-40 overflow-hide">

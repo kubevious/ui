@@ -10,19 +10,20 @@ import { SEO } from "../SEO"
 import { PersistableFields } from "../../types"
 import { Component } from "../GoldenLayout/types"
 import { Error } from "../ErrorBox/types"
+import { DiagramSource } from "../../state/diagram-source"
 
 type RootState = {
     showPopup: boolean
-    popupContent: null
-    layout: GoldenLayoutComponent
+    popupContent: any
+    layout: GoldenLayoutComponent | null
     windows: Component[]
     isError: boolean
-    error: Error
+    error: Error | null
 }
 
 export class Root extends ClassComponent<{}, RootState> {
     private _fieldsSaver: FieldsSaver
-    diagramSource: any
+    diagramSource!: DiagramSource
     constructor(props) {
         super(props)
 
@@ -103,7 +104,7 @@ export class Root extends ClassComponent<{}, RootState> {
     }
 
     handleChangeWindow(e: React.ChangeEvent<HTMLInputElement>) {
-        const { windows, layout } = this.state as RootState
+        const { windows, layout } = this.state
 
         const windowId = e.target.getAttribute("tool-window-id") || ""
         const isVisible = document.getElementById(windowId) !== null
@@ -120,9 +121,9 @@ export class Root extends ClassComponent<{}, RootState> {
         })
 
         if (isVisible) {
-            layout.hideComponent(windowId)
+            layout && layout.hideComponent(windowId)
         } else {
-            layout.showComponent(windowId)
+            layout && layout.showComponent(windowId)
         }
     }
 
@@ -151,7 +152,7 @@ export class Root extends ClassComponent<{}, RootState> {
 
     render() {
         const { showPopup, popupContent, windows, isError, error } = this
-            .state as RootState
+            .state
 
         return (
             <>
@@ -186,7 +187,7 @@ export class Root extends ClassComponent<{}, RootState> {
 
                     {showPopup && <Popup popupContent={popupContent} />}
 
-                    {isError && (
+                    {isError && error && (
                         <ErrorBox error={error} closeError={this.closeError} />
                     )}
                 </div>

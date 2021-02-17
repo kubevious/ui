@@ -1,5 +1,5 @@
 export interface AboutItem {
-    category: string
+    category?: string
     name: string
     value: string
 }

@@ -20,7 +20,7 @@ type FeedbackState = {
 type FeedbackProps = {
     request: {
         kind: string
-        id: string
+        id?: string
         questions?: Question[]
     }
 }
@@ -44,8 +44,8 @@ export class Feedback extends ClassComponent<FeedbackProps, FeedbackState, IMisc
     checkAnswers(): boolean {
         const missingAnswers = {}
         let isQuestionsAnswered = true
-        const { userAnswers } = this.state as FeedbackState
-        const { request } = this.props as FeedbackProps
+        const { userAnswers } = this.state
+        const { request } = this.props
         request.questions &&
             request.questions.forEach((question: Question) => {
                 if (!question.optional) {
@@ -65,8 +65,8 @@ export class Feedback extends ClassComponent<FeedbackProps, FeedbackState, IMisc
     }
 
     handleSubmit(): void {
-        const { userAnswers } = this.state as FeedbackState
-        const { request } = this.props as FeedbackProps
+        const { userAnswers } = this.state
+        const { request } = this.props
         const checkResult = this.checkAnswers()
         if (checkResult) {
             const answers = _.values(userAnswers)
@@ -95,7 +95,7 @@ export class Feedback extends ClassComponent<FeedbackProps, FeedbackState, IMisc
     //e: React.ChangeEvent<HTMLTextAreaElement> | React.FormEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement, MouseEvent>
     //***
     handleInputChange(e) {
-        const { userAnswers } = this.state as FeedbackState
+        const { userAnswers } = this.state
         const value = e.target.value
         let hasValue = false
         if (_.isNotNullOrUndefined(value) && value.length > 0) {
@@ -119,7 +119,7 @@ export class Feedback extends ClassComponent<FeedbackProps, FeedbackState, IMisc
     handleMultiselect(e) {
         e.target.classList.toggle("clicked")
 
-        const { userAnswers } = this.state as FeedbackState
+        const { userAnswers } = this.state
         let userAnswer = userAnswers[e.target.name]
         if (!userAnswer) {
             userAnswer = {
@@ -156,7 +156,7 @@ export class Feedback extends ClassComponent<FeedbackProps, FeedbackState, IMisc
     }
 
     renderQuestion(question: Question): JSX.Element | null {
-        const { missingAnswers } = this.state as FeedbackState
+        const { missingAnswers } = this.state
         switch (question.kind) {
             case Kind.input:
                 return (
@@ -286,9 +286,9 @@ export class Feedback extends ClassComponent<FeedbackProps, FeedbackState, IMisc
     }
 
     render() {
-        const { request } = this.props as FeedbackProps
+        const { request } = this.props
         const { questions } = request
-        const { isSubmitAllowed } = this.state as FeedbackState
+        const { isSubmitAllowed } = this.state
 
         return (
             <div className="separate-container">

@@ -7,7 +7,7 @@ import { Config } from './types'
 export const PropertiesCounters = ({ config }: {config: Config}) => {
     return (
         <div className="counters-container">
-            {config.map(element => (
+            {config && config.map(element => (
                 <div className="counter-block" key={element.title}>
                     <label>{element.title}</label>
                     <div className="counter-value">
