@@ -13,16 +13,22 @@ import moment from "moment"
 
 import "./styles.scss"
 import { IMiscService } from "@kubevious/ui-middleware"
+import { Component } from "../GoldenLayout/types"
 
 type HeaderState = {
     showSettings: boolean
     isLoading: boolean
     hasNotifications: boolean
     time_machine_enabled: boolean
-    time_machine_target_date: Date
+    time_machine_target_date: Date | null
 }
 
-export class Header extends ClassComponent<{}, {}, IMiscService> {
+type HeaderProps = {
+    handleChangeWindow: (e: React.ChangeEvent<HTMLInputElement>) => void
+    windows:  Component[]
+}
+
+export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscService> {
     constructor(props) {
         super(props, { kind: "misc" })
 
@@ -88,7 +94,7 @@ export class Header extends ClassComponent<{}, {}, IMiscService> {
                 onMouseLeave={() => this.setState({ showSettings: false })}
             >
                 {windows.map((
-                    item // components
+                    item
                 ) => (
                     <span className="s-menu-item" key={item.name}>
                         <label
