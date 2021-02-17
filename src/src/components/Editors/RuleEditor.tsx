@@ -6,7 +6,13 @@ import { IRuleService } from "@kubevious/ui-middleware"
 import { ItemsList } from "./ItemsList"
 import { EditorItem, SelectedItemData } from "./types.js"
 
-const selectedItemInit = {}
+const selectedItemInit = {
+    name: "",
+    enabled: true,
+    script: "",
+    target: "",
+}
+
 const selectedItemDataInit = {
     is_current: true,
     item_count: 0,
@@ -24,7 +30,11 @@ type RuleEditorState = {
     isNewItem: boolean
 }
 
-export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService> {
+export class RuleEditor extends ClassComponent<
+    {},
+    RuleEditorState,
+    IRuleService
+> {
     constructor(props) {
         super(props, { kind: "rule" })
 
@@ -33,7 +43,9 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
             items: [],
             selectedItem: selectedItemInit,
             selectedItemData: selectedItemDataInit,
+            selectedItemId: "",
             isSuccess: false,
+            isNewItem: false,
         }
 
         this.openSummary = this.openSummary.bind(this)
@@ -80,29 +92,31 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
         this.setState({
             isNewItem: false,
             isSuccess: false,
-            selectedItemId: rule.name,
+            selectedItemId: rule.name || "",
         })
 
-        this.service.backendFetchRule(rule.name || "", (data) => {
-            if (data === null) {
-                this.openSummary()
-                return
-            }
+        !rule.name
+            ? this.openSummary()
+            : this.service.backendFetchRule(rule.name, (data) => {
+                  if (data === null) {
+                      this.openSummary()
+                      return
+                  }
 
-            const { selectedItemId } = this.state as RuleEditorState
-            if (data.name === selectedItemId) {
-                this.setState({
-                    selectedItem: data,
-                })
-            }
-        })
+                  const { selectedItemId } = this.state
+                  if (data.name === selectedItemId) {
+                      this.setState({
+                          selectedItem: data,
+                      })
+                  }
+              })
 
         this.sharedState.set("rule_editor_selected_rule_id", rule.name)
         this.sharedState.set("rule_editor_is_new_rule", false)
     }
 
     saveItem(data: EditorItem) {
-        const { selectedItemId } = this.state as RuleEditorState
+        const { selectedItemId } = this.state
         this.service.backendCreateRule(data, selectedItemId, () => {
             this.setState({ isSuccess: true, selectedItem: data })
 
@@ -116,14 +130,14 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
         this.service.backendDeleteRule(data.name || "", () => {
             this.setState({
                 selectedItem: selectedItemInit,
-                selectedItemId: null,
+                selectedItemId: "",
             })
             this.sharedState.set("rule_editor_selected_rule_id", null)
         })
     }
 
     openSummary(): void {
-        this.setState({ selectedItem: selectedItemInit, selectedItemId: null })
+        this.setState({ selectedItem: selectedItemInit, selectedItemId: "" })
         this.sharedState.set("rule_editor_selected_rule_id", null)
     }
 
@@ -138,7 +152,8 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
         this.sharedState.set("rule_editor_selected_rule_id", null)
         this.sharedState.set("rule_editor_is_new_rule", true)
 
-        this.setState(() => ({
+        this.setState((prevState) => ({
+            ...prevState,
             isNewItem: true,
             selectedItem: {
                 name: "",
@@ -146,7 +161,7 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
                 script: "",
                 target: "",
             },
-            selectedItemId: null,
+            selectedItemId: "",
             isSuccess: false,
             selectedItemData: selectedItemDataInit,
         }))
@@ -160,7 +175,7 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
             selectedItemData,
             selectedItemId,
             isSuccess,
-        } = this.state as RuleEditorState
+        } = this.state
 
         return (
             <div className="RuleEditor-container" id="ruleEditorComponent">
@@ -170,7 +185,7 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
                     selectedItemId={selectedItemId}
                     selectItem={this.selectItem}
                     createNewItem={this.createNewItem}
-                    service={this.service} // need to pass service, because it's different for markers and rules editors
+                    service={this.service}
                 />
 
                 <Editor
