@@ -274,7 +274,7 @@ export const RuleMainTab: React.FunctionComponent<RuleMainTabProps> = ({
                     checked={enabled || false}
                     onChange={(event) => changeEnable(event)}
                 />
-                <span className="checkmark" />
+                <span id="checkmark" className="checkmark" />
             </label>
 
             <div className="btn-group">
@@ -312,7 +312,7 @@ export const RuleMainTab: React.FunctionComponent<RuleMainTabProps> = ({
                             Cancel
                         </button>
                         <button
-                            className="button success"
+                            className="button success rule"
                             onClick={() => createItem(formData)}
                             disabled={validation}
                         >

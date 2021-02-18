@@ -61,7 +61,7 @@ export const MarkerMainTab: React.FunctionComponent<MarkerMainTabProps> = ({
                         </div>
                         <input
                             type="text"
-                            className="field-input name"
+                            className="field-input name marker"
                             value={name || ""}
                             name="name"
                             onChange={(e) => handleChange(e)}
@@ -170,7 +170,7 @@ export const MarkerMainTab: React.FunctionComponent<MarkerMainTabProps> = ({
                             Cancel
                         </button>
                         <button
-                            className="button success"
+                            className="button success marker"
                             onClick={() => saveItem(formData)}
                             disabled={validation}
                         >
@@ -189,7 +189,7 @@ export const MarkerMainTab: React.FunctionComponent<MarkerMainTabProps> = ({
                             Cancel
                         </button>
                         <button
-                            className="button success"
+                            className="button success marker"
                             onClick={() => createItem(formData)}
                             disabled={validation}
                         >

@@ -142,7 +142,7 @@ export class RuleEditor extends ClassComponent<
     }
 
     createItem(data: EditorItem) {
-        this.service.backendCreateRule(data, "", (rule: EditorItem) => {
+        this.service.backendCreateRule(data, data.name || '', (rule: EditorItem) => {
             this.setState({ isSuccess: true })
             this.selectItem(rule)
         })
