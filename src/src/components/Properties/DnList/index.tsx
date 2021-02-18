@@ -1,21 +1,24 @@
-import React from 'react'
-import { DnShortcutComponent } from '../../DnShortcutComponent'
-import { isEmptyArray } from '../../../utils/util'
+import React from "react"
+import { DnShortcutComponent } from "../../DnShortcutComponent"
+import { isEmptyArray } from "../../../utils/util"
 
-import { Config } from './types'
-import { DnOptions } from '../../../types'
+import { DnOptions } from "../../../types"
 
-export const DnList = ({ config, options }: { config: Config[], options?: DnOptions }) => {
+export const DnList = ({
+    config,
+    options,
+}: {
+    config: string[]
+    options?: DnOptions
+}) => {
     return (
         <>
             {!isEmptyArray(config) &&
-                config.map((item: Config, index: number) => (
+                config.map((item: string, index: number) => (
                     <DnShortcutComponent
                         key={index}
-                        dn={item.dn}
+                        dn={item}
                         options={options}
-                        errors={item.alertCount.error}
-                        warnings={item.alertCount.warn}
                     />
                 ))}
         </>

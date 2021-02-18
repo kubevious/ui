@@ -7,15 +7,17 @@ import { Config } from "../Properties/PropertiesAlertList/types"
 
 type SummaryState = {
     data: {
-        kind?: string
-        id?: string
-        title?: string
-        order?: number
-        config?: Config[]
+        [container: string]: {
+            kind?: string
+            id?: string
+            title?: string
+            order?: number
+            config?: Config[]
+        }
     }
 }
 
-export class Summary extends ClassComponent<{}, SummaryState>{
+export class Summary extends ClassComponent<{}, SummaryState> {
     constructor(props) {
         super(props)
 

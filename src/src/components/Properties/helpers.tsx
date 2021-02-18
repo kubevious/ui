@@ -8,12 +8,10 @@ export const PropertiesValue = (value: any): JSX.Element => {
     if (_.isObject(value) && _.isNotNullOrUndefined(value.value)) {
         value = formatValue(value)
         return (
-            <>
-                <span>
-                    {formatValue({ value: value.value, unit: value.unit })}
-                    {value.unit && <span>{value.unit}</span>}
-                </span>
-            </>
+            <span>
+                {formatValue(value)}
+                {value.unit && <span>{value.unit}</span>}
+            </span>
         )
     } else {
         return <span>{_.toString(value)}</span>
@@ -24,11 +22,12 @@ function formatValue(value: {
     unit: string
     value: number
 }):
-    | {
-          unit: string
-          value: number
-      }
+    | number
     | "0 Bytes"
+    | {
+          value: number
+          unit: string
+      }
     | {
           value: string
           unit: string
@@ -43,7 +42,7 @@ function formatValue(value: {
             return formatMemory(value.value, 2)
 
         default:
-            return value
+            return value.value || value
     }
 }
 

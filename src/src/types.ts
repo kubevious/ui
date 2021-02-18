@@ -75,6 +75,11 @@ export type Alert = {
 export type Dn = {
     dn?: string
     alertCount?: AlertCount
+    title?: string
+    alert?: Alert
+    unit?: string
+    value?: number
+    targets?: string[]
 }
 
 export interface TopIssueNamespaces {

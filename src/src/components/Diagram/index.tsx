@@ -16,7 +16,6 @@ export class Diagram extends ClassComponent<{}, {}, IDiagramService> {
         super(props, { kind: "diagram" })
 
         this.view = null
-
         this.subscribeToSharedState(
             "diagram_data",
             (diagram_data: DiagramData) => {

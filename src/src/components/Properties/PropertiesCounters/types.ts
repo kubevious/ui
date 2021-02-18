@@ -1,5 +1,5 @@
 export type Config = {
-    title: string
+    title?: string
     value?: number
     unit?: string
 }[]

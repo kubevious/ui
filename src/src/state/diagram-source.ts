@@ -28,24 +28,26 @@ export class DiagramSource {
 
         this._setupSocketSubscriptions()
 
-        this._sharedState
-            .user()
-            .subscribe("diagram_expanded_dns", (diagram_expanded_dns) => {
+        this._sharedState.subscribe(
+            "diagram_expanded_dns",
+            (diagram_expanded_dns) => {
                 this._updateSubscriptions()
                 this._handleTreeChange()
-            })
+            }
+        )
 
-        this._sharedState
-            .user()
-            .subscribe("time_machine_enabled", (time_machine_enabled) => {
+        this._sharedState.subscribe(
+            "time_machine_enabled",
+            (time_machine_enabled) => {
                 if (!time_machine_enabled) {
                     this._handleTreeChange()
                 }
-            })
+            }
+        )
     }
 
     close() {
-        this._sharedState.user().close()
+        this._sharedState.close()
         this._socket.close()
     }
 
@@ -57,39 +59,31 @@ export class DiagramSource {
     }
 
     _setupSocketSubscriptions() {
-        this._nodesScope = this._socket.scope((nodesScope: any) => {
-            if (nodesScope) {
-                const { target, value } = nodesScope
-                if (target) {
-                    if (value) {
-                        this._nodeData[target.dn] = value
-                    } else {
-                        delete this._nodeData[target.dn]
-                    }
-                }
+        this._nodesScope = this._socket.scope((value, target) => {
+            console.log("value => ", value)
+            if (value) {
+                this._nodeData[target.dn] = value
+            } else {
+                delete this._nodeData[target.dn]
             }
 
             this._handleTreeChange()
         })
-
-        this._childrenScope = this._socket.scope((nodesScope: any) => {
-            const expandedObjects = this._sharedState
-                .user()
-                .get("diagram_expanded_dns")
-            if (nodesScope) {
-                const { target, value } = nodesScope
-                if (target && target.dn && expandedObjects[target.dn]) {
-                    if (value) {
-                        this._nodeChildren[target.dn] = value
-                    } else {
-                        delete this._nodeChildren[target.dn]
-                    }
-
-                    this._updateMonitoredObjects()
+        this._childrenScope = this._socket.scope((value, target) => {
+            const expandedObjects = this._sharedState.get(
+                "diagram_expanded_dns"
+            )
+            if (expandedObjects[target.dn]) {
+                if (value) {
+                    this._nodeChildren[target.dn] = value
+                } else {
+                    delete this._nodeChildren[target.dn]
                 }
 
-                this._handleTreeChange()
+                this._updateMonitoredObjects()
             }
+
+            this._handleTreeChange()
         })
     }
 
@@ -100,9 +94,9 @@ export class DiagramSource {
 
     _updateChildrenSubscriptions() {
         this._executeDelayedAction("update-ws-children-subscription", () => {
-            const expandedObjects = this._sharedState
-                .user()
-                .get("diagram_expanded_dns")
+            const expandedObjects = this._sharedState.get(
+                "diagram_expanded_dns"
+            )
 
             this._childrenScope.replace(
                 _.keys(expandedObjects).map((x: any) => ({
@@ -131,17 +125,17 @@ export class DiagramSource {
     }
 
     _handleTreeChange() {
-        if (this._sharedState.user().get("time_machine_enabled")) {
+        if (this._sharedState.get("time_machine_enabled")) {
             return
         }
 
         this._executeDelayedAction("build-tree", () => {
-            if (this._sharedState.user().get("time_machine_enabled")) {
+            if (this._sharedState.get("time_machine_enabled")) {
                 return
             }
 
             const tree = this._buildTreeData()
-            this._sharedState.user().set("diagram_data", tree)
+            this._sharedState.set("diagram_data", tree)
         })
     }
 
@@ -192,7 +186,7 @@ export class DiagramSource {
     }
 
     _traverseTree(cb) {
-        const expandedDns = this._sharedState.user().get("diagram_expanded_dns")
+        const expandedDns = this._sharedState.get("diagram_expanded_dns")
 
         const traverseNode = (dn: string, parentDn: string | null) => {
             cb(dn, parentDn)
