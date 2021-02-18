@@ -9,7 +9,7 @@ export const PropertiesValue = (value: any): JSX.Element => {
         value = formatValue(value)
         return (
             <span>
-                {formatValue(value)}
+                {formatValue(value.value || value)}
                 {value.unit && <span>{value.unit}</span>}
             </span>
         )
@@ -42,7 +42,9 @@ function formatValue(value: {
             return formatMemory(value.value, 2)
 
         default:
-            return value.value || value
+            const result =
+                value.value || value.value === 0 ? value.value : value
+            return result
     }
 }
 

@@ -83,7 +83,7 @@ export class PropertyGroup extends ClassComponent<PropertyGroupProps> {
                 <button
                     id="expander"
                     className={`expander ${extraClassTitle}`}
-                    onClick={e => propertyExpanderHandleClick}
+                    onClick={propertyExpanderHandleClick}
                 >
                     {title}
                     <span className="property-group-openclose" />

@@ -60,7 +60,6 @@ export class DiagramSource {
 
     _setupSocketSubscriptions() {
         this._nodesScope = this._socket.scope((value, target) => {
-            console.log("value => ", value)
             if (value) {
                 this._nodeData[target.dn] = value
             } else {

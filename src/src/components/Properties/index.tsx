@@ -22,9 +22,9 @@ export class Properties extends ClassComponent<{}, PropertiesState> {
         super(props)
 
         this.state = {
-            selectedDn: '',
+            selectedDn: "",
             dnParts: [],
-            dnKind: '',
+            dnKind: "",
             selectedObjectProps: [],
         }
 
@@ -34,6 +34,7 @@ export class Properties extends ClassComponent<{}, PropertiesState> {
     propertyExpanderHandleClick(
         event: React.MouseEvent<HTMLButtonElement, MouseEvent>
     ): void {
+        console.log(event.currentTarget)
         const target = event.currentTarget
         target.classList.toggle("active")
         const contentsElem =
@@ -68,7 +69,7 @@ export class Properties extends ClassComponent<{}, PropertiesState> {
                     return (
                         <PropertyGroup
                             key={index}
-                            title={item.title || ''}
+                            title={item.title || ""}
                             extraClassTitle={isExpanded ? "active" : ""}
                             extraClassContents={
                                 isExpanded ? "expander-open" : ""
@@ -111,7 +112,7 @@ export class Properties extends ClassComponent<{}, PropertiesState> {
                     dnParts = DnUtils.parseDn(selected_dn)
                 }
 
-                let dnKind = ''
+                let dnKind = ""
                 if (dnParts.length > 0) {
                     dnKind = _.last(dnParts).kind
                 }

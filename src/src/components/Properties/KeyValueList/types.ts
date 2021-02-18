@@ -1,3 +1,3 @@
 export type Config = {
-    [name: string]: string
+    [name: string]: string | { value: number; unit: string }
 }
