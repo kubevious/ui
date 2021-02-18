@@ -25,7 +25,7 @@ type MarkerEditorState = {
 
 export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerService> {
     constructor(props) {
-        super(props, { kind: "marker" })
+        super(props, null, { kind: "marker" })
         this.state = ({
             items: [],
             selectedItem: selectedItemInit,

@@ -53,7 +53,7 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
     markers: MarkersList
     kinds: KindList
     constructor(props) {
-        super(props, { kind: "diagram" })
+        super(props, null, { kind: "diagram" })
 
         this.kinds = this.getKindsList()
         this.markers = this.getMarkersList()

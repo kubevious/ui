@@ -14,7 +14,7 @@ type SnoozeProps = {
 
 export class Snooze extends ClassComponent<SnoozeProps, SnoozeState, IMiscService> {
     constructor(props) {
-        super(props, { kind: "misc" })
+        super(props, null, { kind: "misc" })
 
         this.state = {
             isSnoozed: false,

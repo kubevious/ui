@@ -30,7 +30,7 @@ type HeaderProps = {
 
 export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscService> {
     constructor(props) {
-        super(props, { kind: "misc" })
+        super(props, null, { kind: "misc" })
 
         this.state = {
             showSettings: false,

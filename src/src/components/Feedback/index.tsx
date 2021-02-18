@@ -31,7 +31,7 @@ export class Feedback extends ClassComponent<
     IMiscService
 > {
     constructor(props: FeedbackProps) {
-        super(props, { kind: "misc" })
+        super(props, null, { kind: "misc" })
 
         this.setState({
             userAnswers: {},

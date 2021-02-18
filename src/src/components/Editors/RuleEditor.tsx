@@ -36,7 +36,7 @@ export class RuleEditor extends ClassComponent<
     IRuleService
 > {
     constructor(props) {
-        super(props, { kind: "rule" })
+        super(props, null, { kind: "rule" })
 
         this.state = {
             selectedTab: "main",

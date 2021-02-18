@@ -12,7 +12,7 @@ type NotificationsState = {
 
 export class Notifications extends ClassComponent<{}, NotificationsState, IMiscService> {
     constructor(props) {
-        super(props, { kind: "misc" })
+        super(props, null, { kind: "misc" })
 
         this.state = {
             list: [],

@@ -13,7 +13,7 @@ export class Diagram extends ClassComponent<{}, {}, IDiagramService> {
     view: VisualView | null
     private _sourceData: DiagramData | undefined
     constructor(props) {
-        super(props, { kind: "diagram" })
+        super(props, null, { kind: "diagram" })
 
         this.view = null
         this.subscribeToSharedState(

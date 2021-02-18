@@ -17,14 +17,14 @@ export class WebSocketService implements IWebSocketService
         this._socket.close();
     }
 
-    subscribe(target: any, cb: (data: any) => any) : any
+    subscribe(target: any, cb: (value: any) => any): any
     {
         return this._socket.subscribe(target, value => {
             cb(value);
         });
     }
 
-    scope(cb: (data: any) => any) : any
+    scope(cb: (value: any, target: any) => any): any
     {
         return this._socket.scope(cb);
     }

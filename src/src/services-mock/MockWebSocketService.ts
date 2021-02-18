@@ -83,7 +83,7 @@ export class MockWebSocketService implements IWebSocketService
         console.log("NODE CHILDREN DATA", this._nodeChildren);
     }
 
-    scope(cb)
+    scope(cb: (value: any, target: any) => any): any
     {
         return {
             replace: (subscriptions) => {
@@ -92,7 +92,7 @@ export class MockWebSocketService implements IWebSocketService
         }
     }
 
-    subscribe(target: any, cb: (data: any) => any) : any
+    subscribe(target: any, cb: (value: any) => any): any
     {
         
     }
