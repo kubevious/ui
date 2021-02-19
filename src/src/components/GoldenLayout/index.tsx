@@ -9,13 +9,7 @@ import GoldenLayout from "golden-layout"
 import { RegisterComponents } from "./register-components"
 
 import "./styles.scss"
-import { Component, Components } from "./types"
-import { DiagramSource } from "../../state/diagram-source"
-
-type GoldenLayoutComponentProps = {
-    diagramSource: DiagramSource
-    handleLayout: (value: GoldenLayoutComponent) => void
-}
+import { Component, Components, GoldenLayoutComponentProps } from "./types"
 
 export class GoldenLayoutComponent extends ClassComponent<GoldenLayoutComponentProps> {
     private _components: Component[]
@@ -36,7 +30,7 @@ export class GoldenLayoutComponent extends ClassComponent<GoldenLayoutComponentP
         this._activateLayout()
     }
 
-    _activateLayout() {
+    _activateLayout(): void {
         const self = this
 
         this._layoutConfig = {
@@ -67,7 +61,7 @@ export class GoldenLayoutComponent extends ClassComponent<GoldenLayoutComponentP
             component.id &&
                 this._setupContent(component.id, component.component)
         })
-
+        // Component from 'golden-layout'
         this._layout.on("componentCreated", (component) => {
             self._triggerComponentResizeEvent(component)
 
@@ -80,11 +74,12 @@ export class GoldenLayoutComponent extends ClassComponent<GoldenLayoutComponentP
             })
         })
 
+        // Component from 'golden-layout'
         this._layout.on("tabCreated", (tab) => {
             const info = this._getComponent(tab.contentItem.config.component)
             info.goldenTab = tab
 
-            tab.closeElement.off("click").click((e) => {
+            tab.closeElement.off("click").click((e: { target: { parentNode: { title: string } } }) => {
                 const component = this._components.find(
                     (item) => item.name === e.target.parentNode.title
                 )
@@ -144,8 +139,8 @@ export class GoldenLayoutComponent extends ClassComponent<GoldenLayoutComponentP
             this._layout.root.contentItems[0].addChild(componentLayout)
     }
 
-    _getLocationComponents(location) {
-        return _.filter(this._components, (x) => x.location === location)
+    _getLocationComponents(location: string): Component[] {
+        return _.filter(this._components, (x: Component) => x.location === location)
     }
 
     _getLocationLayout(location: string): GoldenLayout.ItemConfigType {
