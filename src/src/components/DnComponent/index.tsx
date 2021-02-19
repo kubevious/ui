@@ -5,12 +5,7 @@ import { getNodeLogoUrl, prettyKind } from "../../utils/ui-utils"
 import * as DnUtils from "@kubevious/helpers/dist/dn-utils"
 
 import "./styles.scss"
-import { DnOptions } from "../../types"
-
-type DnComponentProps = {
-    dn: string
-    options?: DnOptions
-}
+import { DnComponentProps } from "./types"
 
 export const DnComponent: React.FunctionComponent<DnComponentProps> = ({
     dn,
