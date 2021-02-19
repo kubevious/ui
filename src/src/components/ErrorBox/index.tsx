@@ -22,7 +22,7 @@ export const ErrorBox = ({
         <div className="ErrorBox-container">
             <div className="error">
                 <div className="error-text">
-                    Error {status}: {message}
+                    Error {status || 0}: {message}
                 </div>
 
                 <div className="more-text">
