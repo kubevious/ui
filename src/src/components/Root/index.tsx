@@ -7,19 +7,8 @@ import { GoldenLayoutComponent } from "../GoldenLayout"
 import { Header } from "../Header"
 import { Popup } from "../Popup"
 import { SEO } from "../SEO"
-import { PersistableFields } from "../../types"
-import { Component } from "../GoldenLayout/types"
-import { Error } from "../ErrorBox/types"
 import { DiagramSource } from "../../state/diagram-source"
-
-type RootState = {
-    showPopup: boolean
-    popupContent: any
-    layout: GoldenLayoutComponent | null
-    windows: Component[]
-    isError: boolean
-    error: Error | null
-}
+import { RootState } from "./types"
 
 export class Root extends ClassComponent<{}, RootState> {
     private _fieldsSaver: FieldsSaver
@@ -41,8 +30,6 @@ export class Root extends ClassComponent<{}, RootState> {
         this.handleLayout = this.handleLayout.bind(this)
         this.handleChangeWindow = this.handleChangeWindow.bind(this)
         this.closeError = this.closeError.bind(this)
-
-        let fieldsValues: PersistableFields = {}
 
         this.subscribeToSharedState(
             [
@@ -103,7 +90,7 @@ export class Root extends ClassComponent<{}, RootState> {
         this.sharedState.set("error", null)
     }
 
-    handleChangeWindow(e: React.ChangeEvent<HTMLInputElement>) {
+    handleChangeWindow(e: React.ChangeEvent<HTMLInputElement>): void {
         const { windows, layout } = this.state
 
         const windowId = e.target.getAttribute("tool-window-id") || ""
@@ -151,8 +138,7 @@ export class Root extends ClassComponent<{}, RootState> {
     }
 
     render() {
-        const { showPopup, popupContent, windows, isError, error } = this
-            .state
+        const { showPopup, popupContent, windows, isError, error } = this.state
 
         return (
             <>
