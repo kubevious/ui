@@ -9,7 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons"
 import cx from "classnames"
 import { IMarkerService, IRuleService } from "@kubevious/ui-middleware"
-import { Markers } from "../../types"
+import { ExportItem } from "../../types"
 
 export const BurgerMenu = ({
     type,
@@ -22,7 +22,7 @@ export const BurgerMenu = ({
     const [deleteExtra, setDeleteExtra] = useState<boolean>(false)
 
     const exportItems = (): void => {
-        service.backendExportItems((response: Markers) => {
+        service.backendExportItems((response: ExportItem) => {
             const dataStr: string =
                 "data:text/json;charset=utf-8," +
                 encodeURIComponent(JSON.stringify(response))

@@ -18,7 +18,7 @@ export interface SelectedData {
     markers?: string[]
 }
 
-export type Markers = {
+export type ExportItem = {
     kind: string
     items: EditorItem[]
 }
@@ -35,6 +35,7 @@ export interface DiagramData {
     markers?: string[]
     childrenCount: number
     name?: string
+    selfAlertCount?: AlertCount
 }
 
 export type FontSpec = {
