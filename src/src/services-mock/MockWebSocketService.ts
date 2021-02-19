@@ -110,7 +110,7 @@ export class MockWebSocketService implements IWebSocketService
 
     private _getItem(subscription)
     {
-        if(subscription.kind == 'node')
+        if(subscription.kind === 'node')
         {
             let value = this._nodeData[subscription.dn];
             if (!value) {
@@ -122,7 +122,7 @@ export class MockWebSocketService implements IWebSocketService
                 value: value
             }
         }
-        else if(subscription.kind == 'children')
+        else if(subscription.kind === 'children')
         {
             let value = this._nodeChildren[subscription.dn];
             if (!value) {

@@ -24,21 +24,21 @@ describe('Test marker editor', () => {
     })
 
     it('update marker', () => {
-        cy.get('#markerEditorComponent .markers .rule-item-button').first().click()
-        cy.wait(1000)
+        cy.get('#markerEditorComponent .markers .rule-item-button').last().click()
+        cy.wait(2000)
 
         cy.get('.field-input.name.marker').clear().type('Edited super marker')
 
         cy.get('.button.success.marker').contains('Save').click()
         cy.wait(1000)
 
-        cy.get('#markerEditorComponent .rule-item-button').first().should(($r) => {
+        cy.get('#markerEditorComponent .rule-item-button').last().should(($r) => {
             expect($r).to.contain('Edited super marker')
         })
     })
 
     it('delete marker', () => {
-        cy.get('#markerEditorComponent .markers .rule-item-button').first().click()
+        cy.get('#markerEditorComponent .markers .rule-item-button').last().click()
         const initLength = Cypress.$('#markerEditorComponent .markers .rule-item-button').length
 
         cy.get('button').contains('Delete').click()

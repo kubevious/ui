@@ -1021,7 +1021,7 @@ export class VisualView {
     _updateSelection(selected_dn: string): void {
         if (
             this._currentSelectedNodeDn &&
-            this._currentSelectedNodeDn != selected_dn
+            this._currentSelectedNodeDn !== selected_dn
         ) {
             const node: VisualNode = this._nodeDict[this._currentSelectedNodeDn]
             this._currentSelectedNodeDn = null
@@ -1030,7 +1030,7 @@ export class VisualView {
             }
         }
 
-        if (this._currentSelectedNodeDn != selected_dn) {
+        if (this._currentSelectedNodeDn !== selected_dn) {
             this._currentSelectedNodeDn = selected_dn
             const node = this._nodeDict[selected_dn]
             if (node) {
