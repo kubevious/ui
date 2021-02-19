@@ -9,21 +9,7 @@ import cx from "classnames"
 import "./styles.scss"
 
 import { IMiscService } from "@kubevious/ui-middleware/dist"
-import { Answer, Kind, MissingAnswers, Question, UserAnswers } from "./types"
-
-type FeedbackState = {
-    userAnswers: UserAnswers
-    missingAnswers: MissingAnswers
-    isSubmitAllowed: boolean
-}
-
-type FeedbackProps = {
-    request: {
-        kind: string
-        id?: string
-        questions?: Question[]
-    }
-}
+import { Answer, FeedbackState, Kind, FeedbackProps, Question } from "./types"
 
 export class Feedback extends ClassComponent<
     FeedbackProps,
@@ -98,7 +84,7 @@ export class Feedback extends ClassComponent<
     //***
     //e: React.ChangeEvent<HTMLTextAreaElement> | React.FormEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement, MouseEvent>
     //***
-    handleInputChange(e) {
+    handleInputChange(e): void {
         const { userAnswers } = this.state
         const value = e.target.value
         let hasValue = false
@@ -120,7 +106,7 @@ export class Feedback extends ClassComponent<
     //***
     //e: React.MouseEvent<HTMLButtonElement, MouseEvent>
     //***
-    handleMultiselect(e) {
+    handleMultiselect(e): void {
         e.target.classList.toggle("clicked")
 
         const { userAnswers } = this.state
@@ -151,10 +137,7 @@ export class Feedback extends ClassComponent<
         })
     }
 
-    //***
-    //e: React.FocusEvent<HTMLButtonElement>
-    //***
-    setClicked(e) {
+    setClicked(e: React.FocusEvent<HTMLButtonElement>): void {
         $(`.user-single-select .${e.target.name}`).removeClass("clicked")
         e.target.classList.add("clicked")
     }

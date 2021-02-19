@@ -15,6 +15,20 @@ export type MissingAnswers = {
     [id: string]: boolean
 }
 
+export type FeedbackState = {
+    userAnswers: UserAnswers
+    missingAnswers: MissingAnswers
+    isSubmitAllowed: boolean
+}
+
+export type FeedbackProps = {
+    request: {
+        kind: string
+        id?: string
+        questions?: Question[]
+    }
+}
+
 export type Question = {
     id: string
     kind: string
