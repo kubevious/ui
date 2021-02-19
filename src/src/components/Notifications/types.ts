@@ -13,3 +13,7 @@ export type RequestList = {
     features?: string[]
     request?: RequestList
 }
+
+export type NotificationsState = {
+    list: RequestList[]
+}

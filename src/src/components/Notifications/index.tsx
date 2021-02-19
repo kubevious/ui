@@ -4,11 +4,7 @@ import { ClassComponent } from "@kubevious/ui-framework"
 import "./styles.scss"
 import { IMiscService } from "@kubevious/ui-middleware/dist"
 import { NotificationList } from "../NotificationList"
-import { RequestList } from "./types"
-
-type NotificationsState = {
-    list: RequestList[]
-}
+import { NotificationsState } from "./types"
 
 export class Notifications extends ClassComponent<{}, NotificationsState, IMiscService> {
     constructor(props) {
