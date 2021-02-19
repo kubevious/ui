@@ -4,7 +4,7 @@ import { Editor } from "./Editor"
 import "./styles.scss"
 import { IRuleService } from "@kubevious/ui-middleware"
 import { ItemsList } from "./ItemsList"
-import { EditorItem, SelectedItemData } from "./types.js"
+import { EditorItem, RuleEditorState, SelectedItemData } from "./types.js"
 
 const selectedItemInit = {
     name: "",
@@ -18,16 +18,6 @@ const selectedItemDataInit = {
     item_count: 0,
     logs: [],
     items: [],
-}
-
-type RuleEditorState = {
-    selectedTab: string
-    items: EditorItem[]
-    selectedItemData: SelectedItemData
-    selectedItem: EditorItem
-    selectedItemId: string
-    isSuccess: boolean
-    isNewItem: boolean
 }
 
 export class RuleEditor extends ClassComponent<
@@ -88,7 +78,7 @@ export class RuleEditor extends ClassComponent<
         )
     }
 
-    selectItem(rule: EditorItem) {
+    selectItem(rule: EditorItem): void {
         this.setState({
             isNewItem: false,
             isSuccess: false,
@@ -115,7 +105,7 @@ export class RuleEditor extends ClassComponent<
         this.sharedState.set("rule_editor_is_new_rule", false)
     }
 
-    saveItem(data: EditorItem) {
+    saveItem(data: EditorItem): void {
         const { selectedItemId } = this.state
         this.service.backendCreateRule(data, selectedItemId, () => {
             this.setState({ isSuccess: true, selectedItem: data })
@@ -126,7 +116,7 @@ export class RuleEditor extends ClassComponent<
         })
     }
 
-    deleteItem(data: EditorItem) {
+    deleteItem(data: EditorItem): void {
         this.service.backendDeleteRule(data.name || "", () => {
             this.setState({
                 selectedItem: selectedItemInit,
@@ -141,14 +131,18 @@ export class RuleEditor extends ClassComponent<
         this.sharedState.set("rule_editor_selected_rule_id", null)
     }
 
-    createItem(data: EditorItem) {
-        this.service.backendCreateRule(data, data.name || '', (rule: EditorItem) => {
-            this.setState({ isSuccess: true })
-            this.selectItem(rule)
-        })
+    createItem(data: EditorItem): void {
+        this.service.backendCreateRule(
+            data,
+            data.name || "",
+            (rule: EditorItem) => {
+                this.setState({ isSuccess: true })
+                this.selectItem(rule)
+            }
+        )
     }
 
-    createNewItem() {
+    createNewItem(): void {
         this.sharedState.set("rule_editor_selected_rule_id", null)
         this.sharedState.set("rule_editor_is_new_rule", true)
 

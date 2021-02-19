@@ -3,16 +3,7 @@ import { COLORS, SHAPES } from "../../boot/markerData"
 import { ChromePicker } from "react-color"
 import cx from "classnames"
 import { MarkerPreview } from "../MarkerPreview"
-import { EditorItem } from "./types"
-
-type MarkerMainTabProps = {
-    selectedItem: EditorItem
-    saveItem: (data: EditorItem) => void
-    deleteItem: (data: EditorItem) => void
-    createItem: (data: EditorItem) => void
-    openSummary: () => void
-    isSuccess: boolean
-}
+import { EditorItem, MarkerMainTabProps } from "./types"
 
 export const MarkerMainTab: React.FunctionComponent<MarkerMainTabProps> = ({
     selectedItem,
@@ -41,7 +32,7 @@ export const MarkerMainTab: React.FunctionComponent<MarkerMainTabProps> = ({
         setFormData({ ...formData, shape: name })
     }
 
-    const handleChangeColor = (color: string) => {
+    const handleChangeColor = (color: string): void => {
         setFormData({ ...formData, color: color })
     }
 

@@ -12,19 +12,11 @@ import "codemirror/addon/hint/show-hint.css"
 import "codemirror/theme/darcula.css"
 import "codemirror/lib/codemirror.css"
 import "codemirror/mode/javascript/javascript"
-import { Log, EditorItem, SelectedItemData } from "./types"
+import { Log, EditorItem, RuleMainTabProps } from "./types"
 import codemirror from "codemirror"
 
-type RuleMainTabProps = {
-    selectedItem: EditorItem
-    selectedItemData: SelectedItemData
-    saveItem: (data: EditorItem) => void
-    deleteItem: (data: EditorItem) => void
-    createItem: (data: EditorItem) => void
-    openSummary: () => void
-    selectedItemId: string
-    isSuccess: boolean
-}
+const LEFT_WINDOW_CODE_KEY = 91
+const EMPTY_CODE_KEY = 64
 
 export const RuleMainTab: React.FunctionComponent<RuleMainTabProps> = ({
     selectedItemId,
@@ -35,7 +27,7 @@ export const RuleMainTab: React.FunctionComponent<RuleMainTabProps> = ({
     openSummary,
     createItem,
     saveItem,
-}) => {
+}) => {    
     const [formData, setFormData] = useState<EditorItem>({ name: "" })
     const [formDataId, setFormDataId] = useState<string>("")
     const [visibleEditor, setVisibleEditor] = useState<string>("target")
@@ -56,15 +48,15 @@ export const RuleMainTab: React.FunctionComponent<RuleMainTabProps> = ({
 
     const validation = useMemo(() => formData.name === "", [formData])
 
-    const handleScriptKeyUp = ({ editor, data, value }): void => {
+    const handleScriptKeyUp = ({ editor, data }: { editor: codemirror.Editor, data: KeyboardEvent}): void => {
         if (
             !editor.state.completionActive &&
-            data.keyCode > 64 &&
-            data.keyCode < 91
+            //Select only keycode letters
+            data.keyCode > EMPTY_CODE_KEY &&
+            data.keyCode < LEFT_WINDOW_CODE_KEY
         ) {
             //***
-            // "autocomplete" is not exists in commands
-            //  need tests to update this functionality
+            // "autocomplete" is not exists in CommandActions type, but exists in Codemirror.commands
             //***
             // @ts-ignore: Unreachable code error
             Codemirror.commands.autocomplete(editor, null, {
@@ -73,13 +65,15 @@ export const RuleMainTab: React.FunctionComponent<RuleMainTabProps> = ({
         }
     }
 
-    const handleTargetKeyUp = ({ editor, data, value }): void => {
-        if (data.keyCode > 64 && data.keyCode < 91) {
+    const handleTargetKeyUp = ({ editor, data}: { editor: Codemirror.Editor, data: KeyboardEvent }): void => {
+        //Select only keycode letters
+        if (data.keyCode > EMPTY_CODE_KEY &&
+            data.keyCode < LEFT_WINDOW_CODE_KEY) {
             showSnippets(editor)
         }
     }
 
-    const showSnippets = (editor) => {
+    const showSnippets = (editor: Codemirror.Editor): void => {
         Codemirror.showHint(
             editor,
             function () {
@@ -104,7 +98,7 @@ export const RuleMainTab: React.FunctionComponent<RuleMainTabProps> = ({
         )
     }
 
-    const handleChange = (e) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
@@ -116,7 +110,7 @@ export const RuleMainTab: React.FunctionComponent<RuleMainTabProps> = ({
         editor: codemirror.Editor
         data: codemirror.EditorChange
         value: string
-    }) => {
+    }): void => {
         setFormData({ ...formData, target: value })
     }
 
@@ -128,11 +122,11 @@ export const RuleMainTab: React.FunctionComponent<RuleMainTabProps> = ({
         editor: codemirror.Editor
         data: codemirror.EditorChange
         value: string
-    }) => {
+    }): void => {
         setFormData({ ...formData, script: value })
     }
 
-    const changeEnable = (e) => {
+    const changeEnable = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setFormData({ ...formData, enabled: !formData.enabled })
     }
 
@@ -195,7 +189,6 @@ export const RuleMainTab: React.FunctionComponent<RuleMainTabProps> = ({
                     {visibleEditor === "target" && (
                         <CodeMirrorEditor
                             value={target || ""}
-                            name="target"
                             options={{
                                 mode: "javascript",
                                 theme: "darcula",
@@ -204,14 +197,8 @@ export const RuleMainTab: React.FunctionComponent<RuleMainTabProps> = ({
                                     "Ctrl-Space": "autocomplete",
                                 },
                             }}
-                            //***
-                            // new types from CodeMirrorEditor
-                            // onKeyUp: (editor: codemirror.Editor, event?: any): void
-                            // need tests for update props onKeyUp
-                            //***
-                            // @ts-ignore: Unreachable code error
-                            onKeyUp={(editor, data, value) =>
-                                handleTargetKeyUp({ editor, data, value })
+                            onKeyUp={(editor: Codemirror.Editor, data: KeyboardEvent) =>
+                                handleTargetKeyUp({ editor, data })
                             }
                             onBeforeChange={(
                                 editor: codemirror.Editor,
@@ -232,14 +219,8 @@ export const RuleMainTab: React.FunctionComponent<RuleMainTabProps> = ({
                                     "Ctrl-Space": "autocomplete",
                                 },
                             }}
-                            //***
-                            // new types from CodeMirrorEditor
-                            // onKeyUp: (editor: codemirror.Editor, event?: any): void
-                            // need tests for update props onKeyUp
-                            //***
-                            // @ts-ignore: Unreachable code error
-                            onKeyUp={(editor, data, value) =>
-                                handleScriptKeyUp({ editor, data, value })
+                            onKeyUp={(editor: Codemirror.Editor, data: KeyboardEvent) =>
+                                handleScriptKeyUp({ editor, data })
                             }
                             onBeforeChange={(
                                 editor: codemirror.Editor,
@@ -272,7 +253,7 @@ export const RuleMainTab: React.FunctionComponent<RuleMainTabProps> = ({
                     type="checkbox"
                     className="enable-checkbox"
                     checked={enabled || false}
-                    onChange={(event) => changeEnable(event)}
+                    onChange={(e) => changeEnable(e)}
                 />
                 <span id="checkmark" className="checkmark" />
             </label>

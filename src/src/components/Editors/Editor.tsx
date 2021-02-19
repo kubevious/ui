@@ -5,22 +5,7 @@ import { AffectedObjects } from "./AffectedObjects"
 import { StartPage } from "./StartPage"
 import { RuleMainTab } from "./RuleMainTab"
 import { MarkerMainTab } from "./MarkerMainTab"
-import { EditorItem, SelectedItemData, EditorType } from "./types"
-
-type EditorProps = {
-    type: string
-    items: EditorItem[]
-    isNewItem: boolean
-    selectedItem: EditorItem
-    selectedItemData: SelectedItemData
-    selectedItemId: string
-    createNewItem: () => void
-    saveItem: (data: EditorItem) => void
-    deleteItem: (data: EditorItem) => void
-    createItem: (data: EditorItem) => void
-    openSummary: () => void
-    isSuccess: boolean
-}
+import { EditorType, EditorProps } from "./types"
 
 export const Editor: React.FunctionComponent<EditorProps> = ({
     type,

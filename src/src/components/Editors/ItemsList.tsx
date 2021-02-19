@@ -3,18 +3,7 @@ import { isEmptyArray } from "../../utils/util"
 import cx from "classnames"
 import { MarkerPreview } from "../MarkerPreview"
 import { BurgerMenu } from "../BurgerMenu"
-import { EditorType, IndicatorType, EditorItem } from "./types"
-import { IMarkerService, IRuleService } from "@kubevious/ui-middleware"
-import { useService, useSharedState, subscribeToSharedState } from '@kubevious/ui-framework';
-
-type ItemsListProps = {
-    type: string
-    items: EditorItem[]
-    selectedItemId: string
-    selectItem: (marker: EditorItem) => void
-    createNewItem: () => void
-    service: IMarkerService | IRuleService
-}
+import { EditorType, IndicatorType, EditorItem, ItemsListProps } from "./types"
 
 export const ItemsList: React.FunctionComponent<ItemsListProps> = ({
     type,
@@ -24,20 +13,6 @@ export const ItemsList: React.FunctionComponent<ItemsListProps> = ({
     createNewItem,
     service,
 }) => {
-    // Example for FC
-    //
-    // useService<IMarkerService>({ kind: 'marker'}, (service) => {
-    //     service.backendCreateMarker(...)
-    // });
-
-    // useSharedState((sharedState) => {
-    //     sharedState.get(...)
-    // });
-
-    // subscribeToSharedState('foo', (foo) => {
-
-    // });
-
     const ruleIndicatorClass = (x: EditorItem): string => {
         let indicatorClass: string
         if (!x.enabled) {
