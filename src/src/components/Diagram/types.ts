@@ -61,3 +61,27 @@ export type ViewPosition = {
     x: number
     y: number
 }
+
+export type ControlInfo = {
+    previewGroupElem: {
+        _groups: any[] //html elem
+        _parents: any[] //html elem
+    }
+    previewFullRectElem: {
+        _groups: any[] //html elem
+        _parents: any[] //html elem
+    }
+    previewItemsGroupElem: {
+        _groups: any[] //html elem
+        _parents: any[] //html elem
+    }
+    previewVisibleRectElem: {
+        _groups: any[] //html elem
+        _parents: any[] //html elem
+    }
+    boxWidth: number
+    boxHeight: number
+    scale: number
+    x: number
+    y: number
+}

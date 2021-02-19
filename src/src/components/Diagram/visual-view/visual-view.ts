@@ -40,7 +40,7 @@ export class VisualView {
     private _showRoot: boolean
     private _nodeDict: {}
     private _currentSelectedNodeDn: string | null
-    private _controlInfo: any
+    private _controlInfo: any // ControlInfo
     private _flatVisualNodes: VisualNode[]
     private _existingNodeIds: {}
     private _markerData: Record<string, any>
@@ -48,7 +48,7 @@ export class VisualView {
     private _d3SmallNodeDict: {}
     private _svgElem: any // Selection<BaseType, unknown, HTMLElement, any>
     private _rootElem: any // d3 element
-    private _visualRoot: any
+    private _visualRoot: VisualNode | undefined
     private _panInterpolator: any // (t: number) => { x: number; y: number} - d3 function
     private _panAnimationDuration!: number | null
     private _panInterpolatorStartTime!: Date | null
