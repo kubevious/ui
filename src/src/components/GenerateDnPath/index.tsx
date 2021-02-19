@@ -3,16 +3,13 @@ import { prettyKind, getNodeLogoUrl } from "../../utils/ui-utils"
 import _ from "the-lodash"
 import cx from "classnames"
 import { RnInfo } from "@kubevious/helpers/dist/dn-utils"
+import { DnPathProps } from "./type"
 
 export const DnPath = ({
     dnParts,
     includeLogo,
     bigLogo,
-}: {
-    dnParts: RnInfo[]
-    includeLogo?: boolean
-    bigLogo?: boolean
-}): JSX.Element => {
+}: DnPathProps): JSX.Element => {
     if (dnParts.length > 0 && dnParts[0].kind === "root") {
         dnParts = dnParts.splice(1)
     }
@@ -26,7 +23,7 @@ export const DnPath = ({
                     src={getNodeLogoUrl(lastPart.kind)}
                 />
             )}
-            {dnParts.map((part, index) => {
+            {dnParts.map((part: RnInfo, index: number) => {
                 const kind: string = prettyKind(part.kind)
                 return (
                     <Fragment key={index}>
