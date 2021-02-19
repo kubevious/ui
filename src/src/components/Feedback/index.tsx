@@ -33,11 +33,11 @@ export class Feedback extends ClassComponent<
     constructor(props: FeedbackProps) {
         super(props, null, { kind: "misc" })
 
-        this.setState({
+        this.state = {
             userAnswers: {},
             missingAnswers: {},
             isSubmitAllowed: true,
-        })
+        }
 
         this.handleInputChange = this.handleInputChange.bind(this)
         this.handleMultiselect = this.handleMultiselect.bind(this)
