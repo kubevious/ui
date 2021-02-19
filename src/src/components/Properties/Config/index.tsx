@@ -16,6 +16,7 @@ import { CopyClipboard } from '../../CopyClipboard';
 import { DnComponent } from '../../DnComponent';
 import { Annotations } from './types';
 import { Editor, EditorChange } from 'codemirror';
+import { sharedState } from '../../../configureService';
 
 export const Config = ({ config, dn, language }: { config: Annotations, dn: string, language?: string }) => {
     const [indent, setIndent] = useState<number>(2)
@@ -52,8 +53,13 @@ export const Config = ({ config, dn, language }: { config: Annotations, dn: stri
     }, [])
 
     useEffect(() => {
-        setCode(jsyaml.safeDump(config, { indent }))
-        setEditedConfig(jsyaml.safeDump(jsyaml.load(editedConfig), { indent }))
+        try {
+            setCode(jsyaml.safeDump(config, { indent }))
+            setEditedConfig(jsyaml.safeDump(jsyaml.load(editedConfig), { indent }))
+        } catch (error) {
+            sharedState.set('is_error', true)
+            sharedState.set('error', { data: error })
+        }
     }, [indent, config])
 
     const handleEditedMode = (): void => {
