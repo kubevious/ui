@@ -13,20 +13,8 @@ import moment from "moment"
 
 import "./styles.scss"
 import { IMiscService } from "@kubevious/ui-middleware"
+import { HeaderProps, HeaderState } from "./types"
 import { Component } from "../GoldenLayout/types"
-
-type HeaderState = {
-    showSettings: boolean
-    isLoading: boolean
-    hasNotifications: boolean
-    time_machine_enabled: boolean
-    time_machine_target_date: Date | null
-}
-
-type HeaderProps = {
-    handleChangeWindow: (e: React.ChangeEvent<HTMLInputElement>) => void
-    windows:  Component[]
-}
 
 export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscService> {
     constructor(props) {
@@ -68,22 +56,22 @@ export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscServic
         })
     }
 
-    detectIsVisible(item): boolean {
-        return document.getElementById(item.id) !== null
+    detectIsVisible(item: Component): boolean {
+        return !!item.id && document.getElementById(item.id) !== null
     }
 
-    openNotifications() {
+    openNotifications(): void {
         this.sharedState.set("popup_window", {
             title: "Notifications",
             content: <Notifications />,
         })
     }
 
-    deactivateTimemachine() {
+    deactivateTimemachine(): void {
         this.sharedState.set("time_machine_enabled", false)
     }
 
-    renderSettings() {
+    renderSettings(): JSX.Element {
         const { windows } = this.props
 
         return (
