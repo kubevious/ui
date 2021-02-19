@@ -1,22 +1,10 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { propertyGroupTooltip } from '@kubevious/helpers/dist/docs'
 import _ from 'the-lodash'
 import { ClassComponent } from '@kubevious/ui-framework'
 import { DnComponent } from '../../DnComponent'
 import { PropertiesContents } from '../PropertiesContents'
-import { Group } from '../../../types'
-
-type PropertyGroupProps = {
-    title: string,
-    extraClassTitle: string,
-    extraClassContents: string,
-    dn: string,
-    dnKind: string,
-    groupName: string,
-    group: Group,
-    propertyExpanderHandleClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
-}
+import { PropertyGroupProps } from './types'
 
 export class PropertyGroup extends ClassComponent<PropertyGroupProps> {
     tooltip: string

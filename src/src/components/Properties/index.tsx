@@ -9,13 +9,7 @@ import * as DnUtils from "@kubevious/helpers/dist/dn-utils"
 import "./styles.scss"
 import "./obsidian.css"
 import { Group } from "../../types"
-
-type PropertiesState = {
-    selectedDn: string
-    dnParts: DnUtils.RnInfo[]
-    dnKind: string
-    selectedObjectProps: Group[]
-}
+import { PropertiesState } from "./types"
 
 export class Properties extends ClassComponent<{}, PropertiesState> {
     constructor(props) {

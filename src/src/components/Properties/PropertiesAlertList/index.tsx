@@ -3,12 +3,8 @@ import React from "react"
 import { ClassComponent } from "@kubevious/ui-framework"
 import { IRuleService } from "@kubevious/ui-middleware"
 import { AlertView } from "../../Alerts/AlertView"
-import { Config } from "./types"
+import { Config, PropertiesAlertListProps } from "./types"
 import { Alert } from "../../../types"
-
-type PropertiesAlertListProps = {
-    config: Config[]
-}
 
 export class PropertiesAlertList extends ClassComponent<PropertiesAlertListProps> {
     clickDn = (dn: string): void => {

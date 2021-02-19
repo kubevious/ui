@@ -103,7 +103,7 @@ export const Config = ({ config, dn, language }: { config: Annotations, dn: stri
         exportElem?.click()
     }
 
-    const handleChangeConfig = ({ editor, data, value }: {editor: Editor, data: EditorChange, value: string}) => {
+    const handleChangeConfig = ({ editor, data, value }: {editor: Editor, data: EditorChange, value: string}): void => {
         setEditedConfig(value)
     }
 
@@ -168,7 +168,7 @@ export const Config = ({ config, dn, language }: { config: Annotations, dn: stri
                         mode: 'yaml',
                         theme: 'darcula',
                     }}
-                    onBeforeChange={(editor, data, value) => handleChangeConfig({ editor, data, value })}
+                    onBeforeChange={(editor: Editor, data: EditorChange, value: string) => handleChangeConfig({ editor, data, value })}
                 />}
             </div>
 

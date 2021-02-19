@@ -3,7 +3,7 @@ import React from "react"
 
 import "./styles.scss"
 
-// value: Config | string | {}
+// value: { unit?: string, value: number } | string | number
 export const PropertiesValue = (value: any): JSX.Element => {
     if (_.isObject(value) && _.isNotNullOrUndefined(value.value)) {
         value = formatValue(value)
@@ -24,14 +24,8 @@ function formatValue(value: {
 }):
     | number
     | "0 Bytes"
-    | {
-          value: number
-          unit: string
-      }
-    | {
-          value: string
-          unit: string
-      } {
+    | { value: number; unit: string }
+    | { value: string; unit: string } {
     switch (value.unit) {
         case "%":
             return {
@@ -52,12 +46,7 @@ const MEMORY_SIZES = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
 function formatMemory(
     value: number,
     decimals: number
-):
-    | "0 Bytes"
-    | {
-          value: number
-          unit: string
-      } {
+): "0 Bytes" | { value: number; unit: string } {
     if (value === 0) return "0 Bytes"
     const k = 1024
     const dm = decimals < 0 ? 0 : decimals

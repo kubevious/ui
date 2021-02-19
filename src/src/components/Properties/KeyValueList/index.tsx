@@ -5,7 +5,7 @@ import "./styles.scss"
 import { PropertiesValue } from "../helpers"
 import { Config } from "./types"
 
-export const KeyValueList = ({ config }: { config: Config }) => {
+export const KeyValueList = ({ config }: { config: Config }): JSX.Element => {
     return (
         <div className="KeyValueList-container">
             {Object.entries(config).map((item, index) => {

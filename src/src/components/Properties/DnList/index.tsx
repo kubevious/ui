@@ -10,7 +10,7 @@ export const DnList = ({
 }: {
     config: string[]
     options?: DnOptions
-}) => {
+}): JSX.Element => {
     return (
         <>
             {!isEmptyArray(config) &&
