@@ -27,7 +27,7 @@ export const RuleMainTab: React.FunctionComponent<RuleMainTabProps> = ({
     openSummary,
     createItem,
     saveItem,
-}) => {    
+}) => {
     const [formData, setFormData] = useState<EditorItem>({ name: "" })
     const [formDataId, setFormDataId] = useState<string>("")
     const [visibleEditor, setVisibleEditor] = useState<string>("target")

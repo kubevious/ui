@@ -12,42 +12,15 @@ import cx from "classnames"
 
 import "./styles.scss"
 import { IDiagramService } from "@kubevious/ui-middleware"
-import { MarkersList, KindList } from "./types"
+import {
+    MarkersList,
+    KindList,
+    SearchState,
+    SearchValue,
+    KindListValue,
+} from "./types"
 import { EditorItem } from "../Editors/types"
 import { SelectedData } from "../../types"
-
-type SearchState = {
-    result: SelectedData[]
-    totalCount: number
-    value: {
-        criteria?: string
-        markers?: EditorItem[]
-    }
-    savedFilters: {
-        markers?: EditorItem[]
-    }
-    currentInput: {
-        labels: {
-            key: string
-            value: string
-        }
-        annotations: {
-            key: string
-            value: string
-        }
-    }
-    autocomplete: {
-        labels: {
-            keys: string[]
-            values: string[]
-        }
-        annotations: {
-            keys: string[]
-            values: string[]
-        }
-    }
-    wasFiltered?: boolean
-}
 
 export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
     markers: MarkersList
@@ -83,21 +56,28 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
                     values: [],
                 },
             },
-            wasFiltered: false
+            wasFiltered: false,
         }
     }
 
-    fetchResults(criteria) {
-        this.service.fetchSearchResults(criteria, (response) => {
-            this.setState({
-                result: response.results,
-                totalCount: response.totalCount,
-                wasFiltered: response.wasFiltered,
-            })
-        })
+    fetchResults(criteria: SearchValue): void {
+        this.service.fetchSearchResults(
+            criteria,
+            (response: {
+                results: SelectedData[]
+                totalCount: number
+                wasFiltered: boolean
+            }) => {
+                this.setState({
+                    result: response.results,
+                    totalCount: response.totalCount,
+                    wasFiltered: response.wasFiltered,
+                })
+            }
+        )
     }
 
-    fetchValues(type, key, criteria) {
+    fetchValues(type: string, key: string, criteria: string): void {
         if (!key) {
             return
         }
@@ -118,7 +98,7 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
         )
     }
 
-    fetchKeys(type, criteria) {
+    fetchKeys(type: string, criteria: string): void {
         return this.service.fetchAutocompleteKeys(
             type,
             { criteria },
@@ -136,12 +116,13 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
         )
     }
 
-    getKindsList() {
+    getKindsList(): KindList {
         let kindsArray = Object.entries(KIND_TO_USER_MAPPING)
         let newKindsArray = kindsArray
             ? kindsArray.map(([key, value]) => ({ title: value, payload: key }))
             : []
-        newKindsArray = _.orderBy(newKindsArray, (x) => x.title) || []
+        newKindsArray =
+            _.orderBy(newKindsArray, (x: KindListValue) => x.title) || []
 
         return {
             payload: "kind",
@@ -150,8 +131,10 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
         }
     }
 
-    getMarkersList() {
-        const markers = this.sharedState.get("marker_editor_items")
+    getMarkersList(): MarkersList {
+        const markers: EditorItem[] = this.sharedState.get(
+            "marker_editor_items"
+        )
 
         return {
             payload: "markers",
@@ -160,12 +143,11 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
         }
     }
 
-    checkForInputFilter(payload) {
+    checkForInputFilter(payload: string): boolean {
         return payload === "labels" || payload === "annotations"
     }
 
-    handleChange(e) {
-        const { value } = this.state
+    handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
         const input = e.target.value
         this.setState(
             (prevState: SearchState) => {
@@ -183,12 +165,15 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
                 }
             },
             () => {
-                this.fetchResults(value)
+                this.fetchResults(this.state.value)
             }
         )
     }
 
-    handleFilterChange(name, title) {
+    handleFilterChange(
+        name: string,
+        title: string | { kind: string; count: number }
+    ): void {
         this.setState(
             (prevState: SearchState) => {
                 const valueInState = prevState.value || {}
@@ -208,52 +193,71 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
                 }
             },
             () => {
-                const { value } = this.state
-                this.fetchResults(value)
+                this.fetchResults(this.state.value)
             }
         )
     }
-
-    handleMarkerFilterChange(e) {
-        const { title } = e.target
+    //***
+    //e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    //***
+    handleMarkerFilterChange(title: string): void {
         this.setState(
             (prevState: SearchState) => {
-                const valueInState = prevState.value || {}
-                const savedFilters = prevState.savedFilters || {}
-                const markersList: EditorItem[] = valueInState.markers || []
-                if (
-                    prevState.value.markers &&
-                    markersList &&
-                    markersList.find((marker) => marker === title)
-                ) {
-                    const changedMarkers = markersList.filter(
-                        (marker) => marker !== title
+                const newMarker: EditorItem = _.filter(
+                    this.markers.values,
+                    (marker: EditorItem) => marker.name === title
+                )[0]
+                if (!newMarker.name) {
+                    return prevState
+                }
+
+                const valueInState = prevState.value
+                const savedFilters = prevState.savedFilters
+                const markerExists = _.filter(
+                    valueInState.markers,
+                    (marker: string) => marker === newMarker.name
+                )[0]
+                let changedMarkers: string[] = []
+                if (!!markerExists) {
+                    changedMarkers = _.filter(
+                        savedFilters.markers,
+                        (marker: string) => marker !== newMarker.name
                     )
                     if (isEmptyArray(changedMarkers)) {
-                        delete valueInState.markers
                         return {
                             ...prevState,
-                            value: { ...valueInState }
+                            savedFilters: {
+                                markers: [],
+                            },
+                            value: { ...prevState.value, markers: [] },
                         }
                     }
                     return {
                         ...prevState,
+                        savedFilters: {
+                            markers: changedMarkers,
+                        },
                         value: { ...valueInState, markers: changedMarkers },
                     }
-                } else if (prevState.savedFilters.markers) {
-                    delete savedFilters.markers
                 }
 
-                markersList.push(title)
+                if (valueInState.markers) {
+                    changedMarkers = [...valueInState.markers, newMarker.name]
+                    return {
+                        ...prevState,
+                        value: { ...valueInState, markers: changedMarkers },
+                        savedFilters: { markers: changedMarkers },
+                    }
+                }
+
                 return {
                     ...prevState,
-                    value: { ...valueInState, markers: markersList },
-                    savedFilters: { ...savedFilters },
+                    value: { ...valueInState, markers: [newMarker.name] },
+                    savedFilters: { markers: [newMarker.name] },
                 }
             },
             () => {
-                const { value } = this.state
-                this.fetchResults(value)
+                this.fetchResults(this.state.value)
             }
         )
     }
@@ -316,8 +320,7 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
                 }
             },
             () => {
-                const { value } = this.state
-                this.fetchResults(value)
+                this.fetchResults(this.state.value)
             }
         )
         return false
@@ -360,8 +363,7 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
                 }
             },
             () => {
-                const { value } = this.state
-                this.fetchResults(value)
+                this.fetchResults(this.state.value)
             }
         )
         return false
@@ -457,8 +459,7 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
                 }
             },
             () => {
-                const { value } = this.state
-                this.fetchResults(value)
+                this.fetchResults(this.state.value)
             }
         )
     }
@@ -490,8 +491,7 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
                 }
             },
             () => {
-                const { value } = this.state
-                this.fetchResults(value)
+                this.fetchResults(this.state.value)
             }
         )
     }
@@ -515,7 +515,7 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
             savedFilters[type] && key
                 ? savedFilters[type].find((el) => el.key === key)
                 : savedFilters[type]
-        if (!val) return
+        if (!val || !val.length) return
         return (
             <div
                 className={cx("active-filter-box", {
@@ -595,7 +595,6 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
             wasFiltered,
             autocomplete,
         } = this.state
-
         return (
             <div className="Search-wrapper p-40 overflow-hide">
                 <div className="form-group has-success">
@@ -806,9 +805,13 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
                                                                                     </div>
                                                                                 )}
                                                                                 renderMenu={(
-                                                                                    items
+                                                                                    items,
+                                                                                    index
                                                                                 ) => (
                                                                                     <div
+                                                                                        key={
+                                                                                            index
+                                                                                        }
                                                                                         className="autocomplete"
                                                                                         children={
                                                                                             items
@@ -907,32 +910,35 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
                                 </summary>
                                 <div className="inner-items">
                                     {this.markers.values &&
-                                        this.markers.values.map((item) => (
-                                            <button
-                                                title={item.name}
-                                                key={item.name}
-                                                className={
-                                                    value.markers &&
-                                                    value.markers.find(
-                                                        (marker) =>
-                                                            marker === item.name
-                                                    )
-                                                        ? "selected-filter"
-                                                        : ""
-                                                }
-                                                onClick={(e) =>
-                                                    this.handleMarkerFilterChange(
-                                                        e
-                                                    )
-                                                }
-                                            >
-                                                <MarkerPreview
-                                                    shape={item.shape}
-                                                    color={item.color}
-                                                />
-                                                {item.name}
-                                            </button>
-                                        ))}
+                                        this.markers.values.map((item) => {
+                                            return (
+                                                <button
+                                                    title={item.name}
+                                                    key={item.name}
+                                                    className={
+                                                        value.markers &&
+                                                        value.markers.find(
+                                                            (marker) =>
+                                                                marker ===
+                                                                item.name
+                                                        )
+                                                            ? "selected-filter"
+                                                            : ""
+                                                    }
+                                                    onClick={() =>
+                                                        this.handleMarkerFilterChange(
+                                                            item.name || ""
+                                                        )
+                                                    }
+                                                >
+                                                    <MarkerPreview
+                                                        shape={item.shape}
+                                                        color={item.color}
+                                                    />
+                                                    {item.name}
+                                                </button>
+                                            )
+                                        })}
                                 </div>
                             </details>
                         )}
