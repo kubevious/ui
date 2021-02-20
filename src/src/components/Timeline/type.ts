@@ -5,3 +5,8 @@ export type ChartData = {
     error: number
     warn: number
 }
+
+export type Actual = {
+    to?: moment.Moment;
+    from: moment.Moment;
+}
