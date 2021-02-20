@@ -3,19 +3,7 @@ import { ClassComponent } from "@kubevious/ui-framework"
 import { PropertiesContents } from "../Properties/PropertiesContents"
 import "./styles.scss"
 import { isEmptyObject } from "../../utils/util"
-import { Config } from "../Properties/PropertiesAlertList/types"
-
-type SummaryState = {
-    data: {
-        [container: string]: {
-            kind?: string
-            id?: string
-            title?: string
-            order?: number
-            config?: Config[]
-        }
-    }
-}
+import { SummaryState } from "./types"
 
 export class Summary extends ClassComponent<{}, SummaryState> {
     constructor(props) {
