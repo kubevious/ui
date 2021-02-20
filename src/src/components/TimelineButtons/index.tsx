@@ -4,10 +4,7 @@ import cx from "classnames"
 import { ClassComponent } from "@kubevious/ui-framework"
 import moment from "moment"
 import { TimelineUtils } from "../../utils/timeline-utils"
-
-type TimelineButtonsState = {
-    time_machine_enabled: boolean
-}
+import { TimelineButtonsState } from "./types"
 
 export class TimelineButtons extends ClassComponent<{}, TimelineButtonsState> {
     _timelineUtils: TimelineUtils
@@ -24,7 +21,7 @@ export class TimelineButtons extends ClassComponent<{}, TimelineButtonsState> {
         this._reset = this._reset.bind(this)
     }
 
-    _toggle() {
+    _toggle(): void {
         const { time_machine_enabled } = this.state
         if (time_machine_enabled) {
             this.sharedState.set("time_machine_enabled", false)
@@ -48,7 +45,7 @@ export class TimelineButtons extends ClassComponent<{}, TimelineButtonsState> {
         }
     }
 
-    _reset() {
+    _reset(): void {
         const initDuration = this._timelineUtils.getActualInitDuration()
 
         this.sharedState.set("time_machine_enabled", false)
