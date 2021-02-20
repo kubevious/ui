@@ -600,7 +600,7 @@ export class Timeline extends ClassComponent {
     }
 
     _renderChart(
-        chartObj: d3.Line<[number, number]>,
+        chartObj: any, //d3.Line<[number, number]>
         chartClass: string
     ): void {
         const charts = this._chartsElem
@@ -620,7 +620,7 @@ export class Timeline extends ClassComponent {
     }
 
     _renderSubchart(
-        chartObj: d3.Line<[number, number]>,
+        chartObj: any, //d3.Line<[number, number]>
         chartClass: string
     ): void {
         const brushCharts = this._subElemCharts
