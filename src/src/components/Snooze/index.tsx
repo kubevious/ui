@@ -2,15 +2,7 @@ import React from "react"
 import { ClassComponent } from "@kubevious/ui-framework"
 import "./styles.scss"
 import { IMiscService } from "@kubevious/ui-middleware"
-
-type SnoozeState = {
-    isSnoozed: boolean
-}
-
-type SnoozeProps = {
-    id?: string
-    kind?: string
-}
+import { SnoozeProps, SnoozeState } from "./types"
 
 export class Snooze extends ClassComponent<SnoozeProps, SnoozeState, IMiscService> {
     constructor(props) {
@@ -24,23 +16,23 @@ export class Snooze extends ClassComponent<SnoozeProps, SnoozeState, IMiscServic
         this.handleMarkAsRead = this.handleMarkAsRead.bind(this)
     }
 
-    get id() {
+    get id(): string | undefined {
         return this.props.id
     }
 
-    get kind() {
+    get kind(): string | undefined {
         return this.props.kind
     }
 
-    handleMarkAsRead(e) {
+    handleMarkAsRead(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
         this._submit(e, null)
     }
 
-    handleSnooze(e, days) {
+    handleSnooze(e: React.MouseEvent<HTMLButtonElement, MouseEvent>, days: number): void {
         this._submit(e, days)
     }
 
-    _submit(e, days) {
+    _submit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>, days: number | null) {
         const data = {
             kind: this.kind,
             id: this.id,
