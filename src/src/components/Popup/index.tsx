@@ -5,7 +5,6 @@ import "./styles.scss"
 import { PopupProps } from "./types";
 
 export const Popup: React.FunctionComponent<PopupProps> = ({ popupContent }) => {
-    console.log('popupContent :>> ', popupContent);
     function closePopup() {
         sharedState.set("popup_window", null)
     }

@@ -7,6 +7,7 @@ import { Column, Config, Row, Header } from "./types"
 import { DnOptions } from "../../../types"
 import { DnShortcutComponent } from "../../DnShortcutComponent"
 import { PropertiesValue } from "../helpers"
+import _ from 'the-lodash'
 
 export const PropertiesTable = ({
     config,
@@ -40,7 +41,7 @@ export const PropertiesTable = ({
     const renderRow = (row: Row | string, column: Column): JSX.Element => {
         const cell: string = column.name
             ? row[column.name]
-            : typeof row === "string"
+            : _.isString(row)
             ? row
             : ""
 

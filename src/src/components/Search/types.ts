@@ -24,6 +24,15 @@ export interface MarkersList extends List {
     values: EditorItem[]
 }
 
+export type FilterObjectType = {
+    key?: string
+    value?: string
+    kind?: string
+    count?: number
+}
+
+export type FilterType = FilterObjectType | string
+
 export type SearchValue = {
     criteria?: string
     kind?: string
@@ -37,7 +46,7 @@ export type SearchValue = {
         value: string
     }
     error?: {
-        kind: string,
+        kind: string
         count?: number
     }
 }
@@ -46,9 +55,7 @@ export type SearchState = {
     result: SelectedData[]
     totalCount: number
     value: SearchValue
-    savedFilters: {
-        markers?: string[]
-    }
+    savedFilters: SearchValue
     currentInput: {
         labels: {
             key: string
