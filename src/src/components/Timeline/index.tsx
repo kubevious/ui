@@ -19,7 +19,6 @@ export class Timeline extends ClassComponent {
     private _showAxis: boolean
 
     // d3 elements
-    //
     private _parentElem: any // Selection<BaseType, unknown, HTMLElement, any>
     private _mainSvgElem: any
     private _mainChartElem: any
@@ -32,7 +31,6 @@ export class Timeline extends ClassComponent {
     private _subchartAxisElem: any
     private _subElemCharts: any
     private _subchartSelectorElem: any
-    //
 
     private _width!: number
     wrap: boolean = false
