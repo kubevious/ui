@@ -13,6 +13,7 @@ import 'codemirror/theme/darcula.css'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/mode/yaml/yaml'
 import { CopyClipboard } from '../../CopyClipboard';
+// import { CopyClipboard } from '@kubevious/ui-components';
 import { DnComponent } from '../../DnComponent';
 import { Annotations } from './types';
 import { Editor, EditorChange } from 'codemirror';
