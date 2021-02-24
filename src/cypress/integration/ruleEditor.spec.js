@@ -14,7 +14,7 @@ describe('Test rule editor', () => {
 
         cy.wait(2000)
 
-        cy.get('#rule-editor .field-input.name').type('New super rule')
+        cy.get('#rule-editor .field-input.name').type('!New super rule')
 
         cy.get('.react-codemirror2').first().type('Rule target')
 
@@ -29,7 +29,7 @@ describe('Test rule editor', () => {
         cy.wait(1000)
 
         cy.get('#ruleEditorComponent .rules').should(($r) => {
-            expect($r.first()).to.contain('New super rule')
+            expect($r.first()).to.contain('!New super rule')
         })
     })
 
@@ -38,14 +38,14 @@ describe('Test rule editor', () => {
 
         cy.wait(1000)
 
-        cy.get('.field-input.name').clear().type('Edited super rule')
+        cy.get('.field-input.name').clear().type('!Edited super rule')
 
         cy.get('button').contains('Save').click()
 
         cy.wait(1000)
 
         cy.get('#ruleEditorComponent .rules').should(($r) => {
-            expect($r).to.contain('Edited super rule')
+            expect($r).to.contain('!Edited super rule')
         })
     })
 
@@ -57,7 +57,7 @@ describe('Test rule editor', () => {
         cy.wait(1000)
 
         cy.get('#ruleEditorComponent .rules').should(($r) => {
-            expect($r.last()).not.to.contain('Edited super rule')
+            expect($r.first()).not.to.contain('!Edited super rule')
         })
     })
 
