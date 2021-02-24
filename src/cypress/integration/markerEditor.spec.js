@@ -32,7 +32,7 @@ describe('Test marker editor', () => {
         cy.get('.button.success.marker').contains('Save').click()
         cy.wait(1000)
 
-        cy.get('#markerEditorComponent .rule-item-button').first().should(($r) => {
+        cy.get('#markerEditorComponent .markers').should(($r) => {
             expect($r).to.contain('!Edited super marker')
         })
     })
