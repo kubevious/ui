@@ -19,7 +19,7 @@ import { Annotations } from './types';
 import { Editor, EditorChange } from 'codemirror';
 import { sharedState } from '../../../configureService';
 
-export const Config = ({ config, dn, language }: { config: Annotations, dn: string, language?: string }): JSX.Element => {
+export const Config = ({ config, dn, language }: { config: Annotations, dn: string, language?: string }) => {
     const [indent, setIndent] = useState<number>(2)
     const [editMode, setEditMode] = useState<boolean>(false)
 
