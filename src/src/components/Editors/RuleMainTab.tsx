@@ -28,7 +28,7 @@ export const RuleMainTab: React.FunctionComponent<RuleMainTabProps> = ({
     createItem,
     saveItem,
 }) => {
-    const [formData, setFormData] = useState<EditorItem>({ name: "" })
+    const [formData, setFormData] = useState<EditorItem>({ enabled: false })
     const [formDataId, setFormDataId] = useState<string>("")
     const [visibleEditor, setVisibleEditor] = useState<string>("target")
 
@@ -46,7 +46,9 @@ export const RuleMainTab: React.FunctionComponent<RuleMainTabProps> = ({
         )
     }, [selectedItemData])
 
-    const validation = useMemo(() => formData.name === "", [formData])
+    const validation = useMemo(() => {
+        return !formData.name || !formData.target || !formData.script
+    }, [formData])
 
     const handleScriptKeyUp = ({ editor, data }: { editor: codemirror.Editor, data: KeyboardEvent}): void => {
         if (
