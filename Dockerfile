@@ -5,9 +5,9 @@ WORKDIR /app
 # ENV NODE_ENV production
 ENV NODE_ENV development
 ENV PATH /app/node_modules/.bin:$PATH
+ENV SKIP_PREFLIGHT_CHECK true
 COPY src/package.json ./
 COPY src/package-lock.json ./
-COPY src/tsconfig.json ./
 RUN npm ci
 # RUN npm ci --only=production
 COPY src/ ./
