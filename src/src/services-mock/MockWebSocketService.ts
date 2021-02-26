@@ -6,8 +6,8 @@ import { ISharedState } from '@kubevious/ui-framework'
 
 import { IWebSocketService } from '@kubevious/ui-middleware'
 
-
 import { GRAPH_DATA } from '../boot/diagramMockData'
+import { WebSocketTarget, WebSocketSubscription, WebSocketScope } from '@kubevious/ui-middleware/dist/services/websocket';
 
 export class MockWebSocketService implements IWebSocketService
 {
@@ -83,21 +83,34 @@ export class MockWebSocketService implements IWebSocketService
         console.log("NODE CHILDREN DATA", this._nodeChildren);
     }
 
-    scope(cb: (value: any, target: any) => any): any
+    scope(cb: (value: any, target: WebSocketTarget) => any) : WebSocketScope
     {
         return {
-            replace: (subscriptions) => {
-                this._handleSubscriptions(subscriptions, cb);
+            close: () => {
+
+            },
+            subscribe: (target: WebSocketTarget) => {
+
+            },
+            unsubscribe: (target: WebSocketTarget) => {
+
+            },
+            replace: (newTargets: WebSocketTarget[]) => {
+                this._handleSubscriptions(newTargets, cb)
             }
         }
     }
 
-    subscribe(target: any, cb: (value: any) => any): any
+    subscribe(target: WebSocketTarget, cb: (value: any) => any) : WebSocketSubscription
     {
-        
+        return {
+            close: () => {
+
+            }
+        }
     }
 
-    private _handleSubscriptions(subscriptions, cb)
+    private _handleSubscriptions(subscriptions: WebSocketTarget[], cb: (value: any, target: WebSocketTarget) => any)
     {
         for(let x of subscriptions)
         {

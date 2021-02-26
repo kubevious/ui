@@ -1,15 +1,18 @@
+import _ from "the-lodash"
 import { SharedState } from "@kubevious/ui-framework/dist"
 import { IWebSocketService } from "@kubevious/ui-middleware/dist"
-import _ from "the-lodash"
+import { WebSocketScope } from "@kubevious/ui-middleware/dist/services/websocket"
+
 
 export class DiagramSource {
     private _sharedState: SharedState
     private _socket: IWebSocketService
-    private _delayedActions: {}
-    private _nodeData: {}
-    private _nodeChildren: {}
-    private _nodesScope: any
-    private _childrenScope: any
+    private _delayedActions : Record<string, boolean> = {}
+    private _nodeData: Record<string, any> = {}
+    private _nodeChildren: Record<string, string[]> = {}
+    private _nodesScope: WebSocketScope;
+    private _childrenScope: WebSocketScope;
+
     constructor(sharedState: SharedState, socket: IWebSocketService) {
         if (!sharedState) {
             throw new Error("SharedState not provided")
@@ -21,12 +24,33 @@ export class DiagramSource {
         this._sharedState = sharedState
         this._socket = socket
 
-        this._delayedActions = {}
 
-        this._nodeData = {}
-        this._nodeChildren = {}
+        this._nodesScope = this._socket.scope((value, target) => {
+            if (value) {
+                this._nodeData[target.dn] = value
+            } else {
+                delete this._nodeData[target.dn]
+            }
 
-        this._setupSocketSubscriptions()
+            this._handleTreeChange()
+        })
+
+        this._childrenScope = this._socket.scope((value, target) => {
+            const expandedObjects = this._sharedState.get(
+                "diagram_expanded_dns"
+            )
+            if (expandedObjects[target.dn]) {
+                if (value) {
+                    this._nodeChildren[target.dn] = value
+                } else {
+                    delete this._nodeChildren[target.dn]
+                }
+
+                this._updateMonitoredObjects()
+            }
+
+            this._handleTreeChange()
+        })
 
         this._sharedState.subscribe(
             "diagram_expanded_dns",
@@ -58,40 +82,12 @@ export class DiagramSource {
         return []
     }
 
-    _setupSocketSubscriptions() {
-        this._nodesScope = this._socket.scope((value, target) => {
-            if (value) {
-                this._nodeData[target.dn] = value
-            } else {
-                delete this._nodeData[target.dn]
-            }
-
-            this._handleTreeChange()
-        })
-        this._childrenScope = this._socket.scope((value, target) => {
-            const expandedObjects = this._sharedState.get(
-                "diagram_expanded_dns"
-            )
-            if (expandedObjects[target.dn]) {
-                if (value) {
-                    this._nodeChildren[target.dn] = value
-                } else {
-                    delete this._nodeChildren[target.dn]
-                }
-
-                this._updateMonitoredObjects()
-            }
-
-            this._handleTreeChange()
-        })
-    }
-
-    _updateSubscriptions() {
+    private  _updateSubscriptions() {
         this._updateMonitoredObjects()
         this._updateChildrenSubscriptions()
     }
 
-    _updateChildrenSubscriptions() {
+    private _updateChildrenSubscriptions() {
         this._executeDelayedAction("update-ws-children-subscription", () => {
             const expandedObjects = this._sharedState.get(
                 "diagram_expanded_dns"
@@ -106,7 +102,7 @@ export class DiagramSource {
         })
     }
 
-    _updateMonitoredObjects() {
+    private _updateMonitoredObjects() {
         this._executeDelayedAction("update-monitored-objects", () => {
             const monitoredObjects = {}
 
@@ -123,7 +119,7 @@ export class DiagramSource {
         })
     }
 
-    _handleTreeChange() {
+    private _handleTreeChange() {
         if (this._sharedState.get("time_machine_enabled")) {
             return
         }
@@ -138,7 +134,7 @@ export class DiagramSource {
         })
     }
 
-    _buildTreeData() {
+    private _buildTreeData() {
         let treeNodes = {}
         this._traverseTree((dn: string | number, parentDn: string | number) => {
             let nodeData = this._nodeData[dn]
@@ -168,7 +164,7 @@ export class DiagramSource {
         return tree
     }
 
-    _executeDelayedAction(
+    private _executeDelayedAction(
         name: string,
         action: { (): void; (): void; (): void; (): void },
         timeout?: number
@@ -184,7 +180,7 @@ export class DiagramSource {
         }, timeout)
     }
 
-    _traverseTree(cb) {
+    private _traverseTree(cb) {
         const expandedDns = this._sharedState.get("diagram_expanded_dns")
 
         const traverseNode = (dn: string, parentDn: string | null) => {
