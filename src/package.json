@@ -13,7 +13,7 @@
     "@kubevious/ui-middleware": "^1.0.6",
     "@kubevious/websocket-client": "^1.0.7",
     "@types/bootstrap": "^5.0.5",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bootstrap": "^4.5.0",
     "c3": "^0.7.20",
     "classnames": "^2.2.6",
