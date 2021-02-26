@@ -4,6 +4,7 @@ MY_DIR="$(dirname $MY_PATH)"
 cd $MY_DIR
 
 export REACT_APP_MOCKED_DATA=true
+export SKIP_PREFLIGHT_CHECK=true
 
 cd src
 npm start

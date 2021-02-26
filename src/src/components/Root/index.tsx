@@ -2,7 +2,7 @@ import React from "react"
 import "./styles.scss"
 import { ClassComponent } from "@kubevious/ui-framework"
 import { FieldsSaver } from "../../utils/save-fields"
-import { ErrorBox } from "../ErrorBox"
+import { ErrorBox } from '@kubevious/ui-components';
 import { GoldenLayoutComponent } from "../GoldenLayout"
 import { Header } from "../Header"
 import { Popup } from "../Popup"
