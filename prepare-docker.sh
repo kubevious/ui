@@ -5,14 +5,11 @@ cd $MY_DIR
 
 source configuration.sh
 
-# docker build -f Dockerfile.dev -t kubevious-saas-frontend:dev .
-
-# docker build -t kubevious-ui-react:prod .
-# 
-docker build --no-cache \
+#  --no-cache
+docker build \
     -m 4000m \
     -t kubevious-ui-react:dev \
     .
 
 echo "*** RUN WITH:"
-echo "    $ ./run-docker.sh"
+echo "    $ ./run-dev-docker.sh"
