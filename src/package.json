@@ -9,7 +9,6 @@
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
     "@fortawesome/react-fontawesome": "^0.1.12",
     "@kubevious/helpers": "^1.0.52",
-    "@kubevious/ui-components": "^1.0.5",
     "@kubevious/ui-framework": "^1.0.10",
     "@kubevious/ui-middleware": "^1.0.6",
     "@kubevious/websocket-client": "^1.0.7",
@@ -73,14 +72,11 @@
     ]
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",
     "@testing-library/user-event": "^12.6.0",
-    "@types/auth0-js": "^9.14.2",
     "@types/classnames": "^2.2.11",
     "@types/codemirror": "0.0.108",
     "@types/d3": "^6.2.0",
-    "@types/jest": "^26.0.19",
     "@types/jquery": "^3.5.5",
     "@types/node": "^12.19.15",
     "@types/react": "^17.0.1",
