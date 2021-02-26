@@ -8,6 +8,5 @@ cd src
 rm -rf node_modules/
 
 npm install
-npm install --only=dev
-npm update websocket-subscription-client @kubevious/helpers the-lodash
+npm update @kubevious/helpers the-lodash the-promise @kubevious/ui-framework @kubevious/ui-middleware @kubevious/ui-components @kubevious/websocket-client
 

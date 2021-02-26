@@ -12,41 +12,39 @@ describe('Test marker editor', () => {
 
         cy.get('#markerEditorComponent .new-rule-btn').first().click()
 
-        cy.get('.field-input.name').type('New super marker')
+        cy.get('.field-input.name.marker').type('!New super marker')
 
-        cy.get('button').contains('Create').click()
+        cy.get('.button.success.marker').contains('Create').click()
 
         cy.wait(1000)
 
         cy.get('.rule-item-button.selected').should(($r) => {
-            expect($r.last()).to.contain('New super marker')
+            expect($r.first()).to.contain('!New super marker')
         })
     })
 
     it('update marker', () => {
-        cy.get('#markerEditorComponent .markers .rule-item-button').last().click()
+        cy.get('#markerEditorComponent .markers .rule-item-button').first().click()
+        cy.wait(2000)
+
+        cy.get('.field-input.name.marker').clear().type('!Edited super marker')
+
+        cy.get('.button.success.marker').contains('Save').click()
         cy.wait(1000)
 
-        cy.get('.field-input.name').clear().type('Edited super marker')
-
-        cy.get('button').contains('Save').click()
-        cy.wait(1000)
-
-        cy.get('#markerEditorComponent .rule-item-button').last().should(($r) => {
-            expect($r).to.contain('Edited super marker')
+        cy.get('#markerEditorComponent .markers').should(($r) => {
+            expect($r).to.contain('!Edited super marker')
         })
     })
 
     it('delete marker', () => {
-        cy.get('#markerEditorComponent .markers .rule-item-button').last().click()
+        cy.get('#markerEditorComponent .markers .rule-item-button').first().click()
+        const initLength = Cypress.$('#markerEditorComponent .markers .rule-item-button').length
 
         cy.get('button').contains('Delete').click()
 
         cy.wait(1000)
-
-        cy.get('#markerEditorComponent .rule-item-button').first().should(($r) => {
-            expect($r.last()).not.to.contain('Edited super marker')
-        })
+        cy.get('#markerEditorComponent .rule-item-button').should('have.length', initLength - 1)
     })
 
     it('export markers', () => {
@@ -64,7 +62,7 @@ describe('Test marker editor', () => {
 
             cy.contains('Import markers').click()
 
-            const initLength = Cypress.$('.markers .rule-item-button').length
+            const initLength = Cypress.$('#markerEditorComponent .markers .rule-item-button').length
             const contentLength = fileContent.items.length
 
             cy.get('#upload-marker').attachFile({

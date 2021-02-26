@@ -18,7 +18,7 @@
         flex-direction: column;
         align-items: center;
         margin-bottom: 10px;
-        font-family: 'Montserrat', sans-serif;
+        font-family: "Montserrat", sans-serif;
         font-weight: 700;
     }
 
@@ -48,7 +48,7 @@
             visibility: hidden;
 
             &:before {
-                content: '★';
+                content: "★";
                 visibility: visible;
             }
         }
@@ -109,7 +109,8 @@
                 background: #ffc107;
             }
 
-            &:active, &:focus {
+            &:active,
+            &:focus {
                 outline: none;
                 border: 1px solid #ffc107;
             }
@@ -126,7 +127,6 @@
             }
         }
     }
-
 }
 
 .completed-screen {
@@ -140,7 +140,7 @@
         flex-direction: column;
         align-items: center;
         margin-bottom: 10px;
-        font-family: 'Montserrat', sans-serif;
+        font-family: "Montserrat", sans-serif;
         font-weight: 700;
     }
 }
@@ -179,7 +179,6 @@
     .btn-linkedin {
         background-color: #0e76a8;
     }
-
 }
 
 .submit-thank {

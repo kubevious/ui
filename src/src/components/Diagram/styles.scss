@@ -12,22 +12,22 @@
 }
 
 .node .node-title-kind {
-    font-family: 'Montserrat', sans-serif;
+    font-family: "Montserrat", sans-serif;
     font-size: 10px;
     font-weight: 500;
-    fill: #FFFFFFAA;
+    fill: #ffffffaa;
 }
 .node .node-title-name {
-    font-family: 'Montserrat', sans-serif;
+    font-family: "Montserrat", sans-serif;
     font-size: 14px;
-    font-weight:500;
-    fill: #FFFFFF;
+    font-weight: 500;
+    fill: #ffffff;
 }
 
 .node .marker-text {
-    font-family: 'Font Awesome 5 Pro';
+    font-family: "Font Awesome 5 Pro";
     font-size: 14px;
-    font-weight:900;
+    font-weight: 900;
 }
 
 .selected .node-title-kind {
@@ -38,7 +38,7 @@
 }
 
 .node .node-severity-text {
-    font-family: 'Montserrat', sans-serif;
+    font-family: "Montserrat", sans-serif;
     font-size: 12px;
     font-weight: 500;
     fill: #ffffff;
@@ -65,6 +65,3 @@
     stroke-width: 1px;
     fill-opacity: 0.5;
 }
-
-
-
