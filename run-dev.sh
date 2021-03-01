@@ -4,7 +4,6 @@ MY_DIR="$(dirname $MY_PATH)"
 cd $MY_DIR
 
 export BACKEND_URL=http://localhost:4001
-export SKIP_PREFLIGHT_CHECK=true
 
 cd src
 npm start
