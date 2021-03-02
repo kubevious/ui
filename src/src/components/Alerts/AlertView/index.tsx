@@ -5,7 +5,7 @@ import {
     uniqueMessages,
     uniqueObjects,
 } from "../../../utils/util"
-import { DnPath } from "../../GenerateDnPath"
+import { DnPath } from '@kubevious/ui-components';
 import * as DnUtils from "@kubevious/helpers/dist/dn-utils"
 import { Alert } from "../../../types"
 

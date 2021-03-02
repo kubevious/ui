@@ -2,7 +2,7 @@ import React from "react"
 import { ClassComponent } from "@kubevious/ui-framework"
 import _ from "the-lodash"
 import { PropertyGroup } from "./PropertyGroup"
-import { DnPath } from "../GenerateDnPath"
+import { DnPath } from '@kubevious/ui-components';
 import cx from "classnames"
 import * as DnUtils from "@kubevious/helpers/dist/dn-utils"
 
