@@ -2,7 +2,7 @@ import React from 'react'
 import { propertyGroupTooltip } from '@kubevious/helpers/dist/docs'
 import _ from 'the-lodash'
 import { ClassComponent } from '@kubevious/ui-framework'
-import { DnComponent } from '../../DnComponent'
+import { DnComponent } from '@kubevious/ui-components';
 import { PropertiesContents } from '../PropertiesContents'
 import { PropertyGroupProps } from './types'
 

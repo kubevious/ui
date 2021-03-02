@@ -12,8 +12,7 @@ import './styles.scss'
 import 'codemirror/theme/darcula.css'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/mode/yaml/yaml'
-import { CopyClipboard } from '@kubevious/ui-components';
-import { DnComponent } from '../../DnComponent';
+import { CopyClipboard, DnComponent } from '@kubevious/ui-components';
 import { Annotations } from './types';
 import { Editor, EditorChange } from 'codemirror';
 import { sharedState } from '../../../configureService';
