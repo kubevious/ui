@@ -1,5 +1,5 @@
 import React from "react"
-import { DnShortcutComponent } from "../../DnShortcutComponent"
+import { DnShortcutComponent } from '@kubevious/ui-components';
 import { isEmptyArray } from "../../../utils/util"
 
 import { DnOptions } from "../../../types"

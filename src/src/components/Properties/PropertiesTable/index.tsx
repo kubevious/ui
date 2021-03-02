@@ -5,7 +5,7 @@ import "./styles.scss"
 
 import { Column, Config, Row, Header } from "./types"
 import { DnOptions } from "../../../types"
-import { DnShortcutComponent } from "../../DnShortcutComponent"
+import { DnShortcutComponent } from '@kubevious/ui-components';
 import { PropertiesValue } from "../helpers"
 import _ from 'the-lodash'
 

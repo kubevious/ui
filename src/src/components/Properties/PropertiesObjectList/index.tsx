@@ -1,6 +1,6 @@
 import React from 'react'
 import { Config } from './types'
-import { DnShortcutComponent } from '../../DnShortcutComponent'
+import { DnShortcutComponent } from '@kubevious/ui-components';
 
 export const PropertiesObjectList = ({ config }: { config: Config[] }) => {
     return (

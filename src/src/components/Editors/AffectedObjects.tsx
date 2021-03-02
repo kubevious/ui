@@ -1,6 +1,6 @@
 import React from "react"
 import { SelectedData } from "../../types"
-import { DnShortcutComponent } from "../DnShortcutComponent"
+import { DnShortcutComponent } from '@kubevious/ui-components';
 import { SelectedItemData } from "./types"
 
 export const AffectedObjects = ({
