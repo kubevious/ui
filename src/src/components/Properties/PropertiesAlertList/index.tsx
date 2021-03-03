@@ -2,7 +2,7 @@ import React from "react"
 
 import { ClassComponent } from "@kubevious/ui-framework"
 import { IRuleService } from "@kubevious/ui-middleware"
-import { AlertView } from "../../Alerts/AlertView"
+import { AlertView } from '@kubevious/ui-alerts';
 import { Config, PropertiesAlertListProps } from "./types"
 import { Alert } from "../../../types"
 

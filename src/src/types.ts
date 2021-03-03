@@ -1,7 +1,5 @@
 import { EditorItem } from "./components/Editors/types"
 
-export type Service = new (...args: any) => Service
-
 export type AlertCount = {
     error?: number
     warn?: number

@@ -1,6 +1,6 @@
 import { GoldenLayoutComponent } from "."
 import { DiagramSource } from "../../state/diagram-source"
-import { Alerts } from "../Alerts"
+import { Alerts } from '@kubevious/ui-alerts';
 import { Diagram } from "../Diagram"
 import { MarkerEditor } from "../Editors/MarkerEditor"
 import { RuleEditor } from "../Editors/RuleEditor"
