@@ -9,4 +9,3 @@ rm -rf node_modules/
 
 npm install
 npm update @kubevious/helpers the-lodash the-promise @kubevious/ui-framework @kubevious/ui-middleware @kubevious/ui-components @kubevious/websocket-client @kubevious/ui-alerts
-
