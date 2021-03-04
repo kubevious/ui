@@ -1,4 +1,15 @@
-import { EditorItem } from "./components/Editors/types"
+export type EditorItem = {
+    script?: string;
+    target?: string;
+    name?: string;
+    propagate?: boolean;
+    shape?: string;
+    color?: string;
+    item_count?: number;
+    error_count?: number;
+    enabled?: boolean;
+    is_current?: boolean;
+};
 
 export type AlertCount = {
     error?: number

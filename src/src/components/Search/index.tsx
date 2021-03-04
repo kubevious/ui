@@ -21,8 +21,7 @@ import {
   FilterType,
   FilterObjectType,
 } from "./types"
-import { EditorItem } from "../Editors/types"
-import { SelectedData } from "../../types"
+import { SelectedData, EditorItem } from "../../types"
 
 export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
   markers: MarkersList

@@ -3,8 +3,7 @@ import { DiagramSource } from "../../state/diagram-source"
 import { Alerts } from '@kubevious/ui-alerts';
 // import { Diagram } from '@kubevious/ui-diagram'; // need fixed d3 lib
 import { Diagram } from "../Diagram"
-import { MarkerEditor } from "../Editors/MarkerEditor"
-import { RuleEditor } from "../Editors/RuleEditor"
+import { RuleEditor, MarkerEditor } from '@kubevious/ui-rule-engine'
 import { Properties } from "../Properties"
 import { Summary } from "../Summary"
 import { Timeline } from "../Timeline"
