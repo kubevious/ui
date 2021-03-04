@@ -1,11 +1,11 @@
 import _ from "the-lodash"
 import { FieldsSaver } from "../utils/save-fields"
 import moment from "moment"
-import { TimelineUtils } from "../utils/timeline-utils"
 
 import * as DnUtils from "@kubevious/helpers/dist/dn-utils"
 import { SharedState } from "@kubevious/ui-framework/dist"
 import { IDiagramService } from "@kubevious/ui-middleware"
+import { TimelineUtils } from "@kubevious/ui-time-machine"
 
 export class StateHandler {
     private _timelineUtils: TimelineUtils

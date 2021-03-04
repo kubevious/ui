@@ -6,7 +6,7 @@ import { Diagram } from "../Diagram"
 import { RuleEditor, MarkerEditor } from '@kubevious/ui-rule-engine'
 import { Properties } from "../Properties"
 import { Summary } from "../Summary"
-import { Timeline } from "../Timeline"
+import { Timeline } from '@kubevious/ui-time-machine'
 
 export type GoldenLayoutComponentProps = {
     diagramSource: DiagramSource
