@@ -4,8 +4,7 @@ import { Alerts } from '@kubevious/ui-alerts';
 // import { Diagram } from '@kubevious/ui-diagram'; // need fixed d3 lib
 import { Diagram } from "../Diagram"
 import { RuleEditor, MarkerEditor } from '@kubevious/ui-rule-engine'
-import { Properties } from "../Properties"
-import { Summary } from "../Summary"
+import { Properties, Summary } from '@kubevious/ui-properties'
 import { Timeline } from '@kubevious/ui-time-machine'
 
 export type GoldenLayoutComponentProps = {
@@ -28,62 +27,62 @@ export type Component = {
     goldenContainer?: any
 }
 
-export const components =[
-{
-    name: "Summary",
-    component: Summary,
-    location: "main",
-    title: "Summary",
-    allowVerticalScroll: false,
-},
-{
-    name: "Universe",
-    component: Diagram,
-    location: "main",
-    title: "Universe",
-    skipClose: true,
-},
-{
-    name: "Rule Editor",
-    component: RuleEditor,
-    location: "main",
-    title: "Rule Editor",
-},
-{
-    name: "Marker Editor",
-    component: MarkerEditor,
-    location: "main",
-    title: "Marker Editor",
-},
-{
-    name: "Properties",
-    component: Properties,
-    location: "right",
-    title: "Properties",
-    width: 25,
-    allowVerticalScroll: true,
-},
-{
-    name: "Alerts",
-    component: Alerts,
-    location: "bottom",
-    title: "Alerts",
-    allowVerticalScroll: true,
-},
-{
-    name: "Timeline",
-    component: Timeline,
-    location: "bottom",
-    title: "Timeline",
-    allowVerticalScroll: false,
-}]
+export const components = [
+    {
+        name: "Summary",
+        component: Summary,
+        location: "main",
+        title: "Summary",
+        allowVerticalScroll: false,
+    },
+    {
+        name: "Universe",
+        component: Diagram,
+        location: "main",
+        title: "Universe",
+        skipClose: true,
+    },
+    {
+        name: "Rule Editor",
+        component: RuleEditor,
+        location: "main",
+        title: "Rule Editor",
+    },
+    {
+        name: "Marker Editor",
+        component: MarkerEditor,
+        location: "main",
+        title: "Marker Editor",
+    },
+    {
+        name: "Properties",
+        component: Properties,
+        location: "right",
+        title: "Properties",
+        width: 25,
+        allowVerticalScroll: true,
+    },
+    {
+        name: "Alerts",
+        component: Alerts,
+        location: "bottom",
+        title: "Alerts",
+        allowVerticalScroll: true,
+    },
+    {
+        name: "Timeline",
+        component: Timeline,
+        location: "bottom",
+        title: "Timeline",
+        allowVerticalScroll: false,
+    }]
 
 export type Components =
-        | typeof Diagram
-        | typeof RuleEditor
-        | typeof MarkerEditor
-        | typeof Properties
-        | typeof Alerts
-        | typeof Timeline
-        | typeof Summary
+    | typeof Diagram
+    | typeof RuleEditor
+    | typeof MarkerEditor
+    | typeof Properties
+    | typeof Alerts
+    | typeof Timeline
+    | typeof Summary
 
