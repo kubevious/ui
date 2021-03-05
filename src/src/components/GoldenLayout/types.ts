@@ -1,8 +1,7 @@
 import { GoldenLayoutComponent } from "."
 import { DiagramSource } from "../../state/diagram-source"
 import { Alerts } from '@kubevious/ui-alerts';
-// import { Diagram } from '@kubevious/ui-diagram'; // need fixed d3 lib
-import { Diagram } from "../Diagram"
+import { Diagram } from '@kubevious/ui-diagram';
 import { RuleEditor, MarkerEditor } from '@kubevious/ui-rule-engine'
 import { Properties, Summary } from '@kubevious/ui-properties'
 import { Timeline } from '@kubevious/ui-time-machine'

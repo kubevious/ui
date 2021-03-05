@@ -11,7 +11,7 @@
     "@kubevious/helpers": "^1.0.52",
     "@kubevious/ui-alerts": "^1.0.4",
     "@kubevious/ui-components": "^1.0.10",
-    "@kubevious/ui-diagram": "^1.0.3",
+    "@kubevious/ui-diagram": "^1.0.7",
     "@kubevious/ui-framework": "^1.0.10",
     "@kubevious/ui-middleware": "^1.0.6",
     "@kubevious/ui-properties": "^1.0.6",

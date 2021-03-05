@@ -1,5 +1,6 @@
 import _ from "the-lodash"
 import moment from "moment"
+import * as d3 from "d3"
 import {
     prettyKind as helperPrettyKind,
     FLAG_TOOLTIPS,
