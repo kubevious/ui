@@ -1,6 +1,6 @@
 import { BaseService } from './BaseService'
 import moment from 'moment'
-import { BackendClient, ISharedState } from '@kubevious/ui-framework';
+import { HttpClient, ISharedState } from '@kubevious/ui-framework';
 import { IDiagramService, IWebSocketService } from '@kubevious/ui-middleware';
 
 export class DiagramService extends BaseService implements IDiagramService {
@@ -9,7 +9,7 @@ export class DiagramService extends BaseService implements IDiagramService {
     private _timelinePreviewHandlers : any[] = [];
     private _intervals : any[] = [];
 
-    constructor(client: BackendClient, sharedState: ISharedState, socket: IWebSocketService)
+    constructor(client: HttpClient, sharedState: ISharedState, socket: IWebSocketService)
     {
         super(client, sharedState, socket)
 
@@ -79,7 +79,7 @@ export class DiagramService extends BaseService implements IDiagramService {
             from: moment(from).toISOString(),
             to: moment(to).toISOString()
         };
-        return this.client.get('/history/timeline', params)
+        return this.client.get<any[]>('/history/timeline', params)
             .then(result => {
                 let data = result.data;
                 for(let x of data)
@@ -109,7 +109,7 @@ export class DiagramService extends BaseService implements IDiagramService {
     fetchHistoryTimelinePreview(cb) {
         const params = {
         };
-        return this.client.get('/history/timeline', params)
+        return this.client.get<any[]>('/history/timeline', params)
             .then(result => {
                 let data = result.data;
                 for(let x of data)

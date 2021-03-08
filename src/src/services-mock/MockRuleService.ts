@@ -102,7 +102,13 @@ export class MockRuleService implements IRuleService {
     close() {}
 
     private _notifyRules() {
-        const operation = this._remoteTrack.start(`notifyRules`)
+        const id = new Date().toISOString();
+        this._remoteTrack.start({
+            id: id,
+            method: 'GET',
+            url: '/',
+            headers: {}
+        })
 
         this.backendFetchRuleList((result) => {
             this.sharedState.set("rule_editor_items", result)
@@ -114,7 +120,12 @@ export class MockRuleService implements IRuleService {
         }
 
         setTimeout(() => {
-            operation.complete()
+            this._remoteTrack.finish({
+                id: id,
+                method: 'GET',
+                url: '/',
+                headers: {}
+            }, {});
         }, 1000)
     }
 

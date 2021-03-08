@@ -1,9 +1,12 @@
-import { IRuleService } from '@kubevious/ui-middleware/dist';
 import _ from 'the-lodash';
+import { HttpClient, ISharedState } from '@kubevious/ui-framework';
+import { IRuleService, IWebSocketService } from '@kubevious/ui-middleware';
+
 import { BaseService } from './BaseService'
 
 export class RuleService extends BaseService implements IRuleService {
-    constructor(client, sharedState, socket)
+
+    constructor(client: HttpClient, sharedState: ISharedState, socket: IWebSocketService)
     {
         super(client, sharedState, socket)
 

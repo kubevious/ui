@@ -1,10 +1,13 @@
 import _ from 'the-lodash';
 import { BaseService } from './BaseService'
 
-import { IMarkerService } from '@kubevious/ui-middleware/dist';
+import { HttpClient, ISharedState } from '@kubevious/ui-framework';
+
+import { IMarkerService, IWebSocketService } from '@kubevious/ui-middleware';
 
 export class MarkerService extends BaseService implements IMarkerService {
-    constructor(client, sharedState, socket)
+
+    constructor(client: HttpClient, sharedState: ISharedState, socket: IWebSocketService)
     {
         super(client, sharedState, socket)
 

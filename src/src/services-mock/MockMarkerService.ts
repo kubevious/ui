@@ -64,7 +64,13 @@ export class MockMarkerService implements IMarkerService {
     }
 
     private _notifyMarkers() {
-        const operation = this._remoteTrack.start(`notifyMarkers`)
+        const id = new Date().toISOString();
+        this._remoteTrack.start({
+            id: id,
+            method: 'GET',
+            url: '/',
+            headers: {}
+        })
 
         this.backendFetchMarkerList((result) => {
             this.sharedState.set('marker_editor_items', result);
@@ -76,7 +82,12 @@ export class MockMarkerService implements IMarkerService {
         }
 
         setTimeout(() => {
-            operation.complete()
+            this._remoteTrack.finish({
+                id: id,
+                method: 'GET',
+                url: '/',
+                headers: {}
+            }, {});
         }, 1000)
     }
 
