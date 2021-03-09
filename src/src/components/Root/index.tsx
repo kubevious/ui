@@ -2,12 +2,12 @@ import React from "react"
 import "./styles.scss"
 import { ClassComponent } from "@kubevious/ui-framework"
 import { FieldsSaver } from "../../utils/save-fields"
-import { ErrorBox } from '@kubevious/ui-components';
+import { ErrorBox, Popup } from '@kubevious/ui-components';
 import { GoldenLayoutComponent } from "../GoldenLayout"
 import { Header } from "../Header"
-import { Popup } from "../Popup"
 import { SEO } from "../SEO"
 import { RootState } from "./types"
+import { sharedState } from "../../configureService";
 
 export class Root extends ClassComponent<{}, RootState> {
     private _fieldsSaver: FieldsSaver
@@ -138,6 +138,10 @@ export class Root extends ClassComponent<{}, RootState> {
     render() {
         const { showPopup, popupContent, windows, isError, error } = this.state
 
+        function closePopup() {
+            sharedState.set("popup_window", null)
+        }
+
         return (
             <>
                 <SEO />
@@ -168,7 +172,7 @@ export class Root extends ClassComponent<{}, RootState> {
                         handleLayout={this.handleLayout}
                     />
 
-                    {showPopup && <Popup popupContent={popupContent} />}
+                    {showPopup && <Popup popupContent={popupContent} closePopup={closePopup} />}
 
                     {isError && error && (
                         <ErrorBox error={error} closeError={this.closeError} />
