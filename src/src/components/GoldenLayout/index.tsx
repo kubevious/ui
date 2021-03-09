@@ -14,7 +14,7 @@ export class GoldenLayoutComponent extends ClassComponent<GoldenLayoutComponentP
     private _components: Component[]
     private _layoutConfig: GoldenLayout.Config
     private _layout: GoldenLayout | undefined
-    constructor(props) {
+    constructor(props: GoldenLayoutComponentProps | Readonly<GoldenLayoutComponentProps>) {
         super(props)
         this._layoutConfig = {}
         this._components = []
