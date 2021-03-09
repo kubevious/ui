@@ -1,4 +1,4 @@
-import { Component } from "../GoldenLayout/types"
+import { Component } from "@kubevious/ui-components/dist/GoldenLayout/types"
 
 export type HeaderState = {
     showSettings: boolean

@@ -8,4 +8,4 @@ cd src
 rm -rf node_modules/
 
 npm install
-npm update @kubevious/ui-properties @kubevious/ui-diagram @kubevious/ui-rule-engine @kubevious/ui-time-machine @kubevious/helpers the-lodash the-promise @kubevious/ui-framework @kubevious/ui-middleware @kubevious/ui-components @kubevious/websocket-client @kubevious/ui-alerts
+npm update @kubevious/ui-rule-engine @kubevious/ui-time-machine @kubevious/helpers the-lodash @kubevious/ui-framework @kubevious/ui-middleware @kubevious/ui-components @kubevious/websocket-client

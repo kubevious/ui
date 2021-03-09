@@ -3,7 +3,7 @@ import "./styles.scss"
 import { ClassComponent } from "@kubevious/ui-framework"
 import { FieldsSaver } from "../../utils/save-fields"
 import { ErrorBox, Popup } from '@kubevious/ui-components';
-import { GoldenLayoutComponent } from "../GoldenLayout"
+import { GoldenLayout } from '@kubevious/ui-components';
 import { Header } from "../Header"
 import { SEO } from "../SEO"
 import { RootState } from "./types"
@@ -55,7 +55,7 @@ export class Root extends ClassComponent<{}, RootState> {
         )
     }
 
-    handleLayout(value: GoldenLayoutComponent): void {
+    handleLayout(value: GoldenLayout): void {
         this.setState({
             layout: value,
             windows: value.components
@@ -168,7 +168,7 @@ export class Root extends ClassComponent<{}, RootState> {
                         windows={windows}
                     />
 
-                    <GoldenLayoutComponent
+                    <GoldenLayout
                         handleLayout={this.handleLayout}
                     />
 
