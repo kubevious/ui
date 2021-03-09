@@ -27,11 +27,6 @@ export interface SelectedData {
     markers?: string[]
 }
 
-export type ExportItem = {
-    kind: string
-    items: EditorItem[]
-}
-
 export interface DiagramData {
     flags?: Flags
     dn?: string
@@ -45,13 +40,6 @@ export interface DiagramData {
     childrenCount: number
     name?: string
     selfAlertCount?: AlertCount
-}
-
-export type FontSpec = {
-    defaultWidth: number
-    height: number
-    startCode: number
-    widths: number[]
 }
 
 export interface PersistableFields {
@@ -68,45 +56,6 @@ export type PersistableParams = {
     tmtd?: string | null
     tmdt?: string | null
     tmd?: string | null
-}
-
-export type Alert = {
-    source: {
-        id: string
-        kind: string
-    }
-    msg: string
-    severity: string
-    id?: string
-    dn?: string
-    uiKey?: string
-}
-
-export type Dn = {
-    dn?: string
-    alertCount?: AlertCount
-    title?: string
-    alert?: Alert
-    unit?: string
-    value?: number
-    targets?: string[]
-}
-
-export interface TopIssueNamespaces {
-    kind: string
-    id: string
-    title: string
-    order: number
-    config: Dn[]
-}
-
-export type Group = {
-    id: string
-    title?: string
-    kind: string
-    config: any
-    order?: number
-    options: string[]
 }
 
 export type DnOptions = {
