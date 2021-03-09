@@ -6,10 +6,9 @@ import _ from "the-lodash"
 import "golden-layout/src/css/goldenlayout-base.css"
 import "golden-layout/src/css/goldenlayout-dark-theme.css"
 import GoldenLayout from "golden-layout"
-import { RegisterComponents } from "./register-components"
 
 import "./styles.scss"
-import { Component, Components, GoldenLayoutComponentProps } from "./types"
+import { Component, Components, GoldenLayoutComponentProps, components } from "./types"
 
 export class GoldenLayoutComponent extends ClassComponent<GoldenLayoutComponentProps> {
     private _components: Component[]
@@ -26,7 +25,9 @@ export class GoldenLayoutComponent extends ClassComponent<GoldenLayoutComponentP
     }
 
     componentDidMount() {
-        new RegisterComponents(this)
+        components.forEach(component => {
+            this._register(component)
+        })
         this._activateLayout()
     }
 

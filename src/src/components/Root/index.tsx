@@ -7,12 +7,10 @@ import { GoldenLayoutComponent } from "../GoldenLayout"
 import { Header } from "../Header"
 import { Popup } from "../Popup"
 import { SEO } from "../SEO"
-import { DiagramSource } from "../../state/diagram-source"
 import { RootState } from "./types"
 
 export class Root extends ClassComponent<{}, RootState> {
     private _fieldsSaver: FieldsSaver
-    diagramSource!: DiagramSource
     constructor(props) {
         super(props)
 
@@ -167,7 +165,6 @@ export class Root extends ClassComponent<{}, RootState> {
                     />
 
                     <GoldenLayoutComponent
-                        diagramSource={this.diagramSource}
                         handleLayout={this.handleLayout}
                     />
 

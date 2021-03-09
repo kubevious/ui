@@ -1,5 +1,4 @@
 import { GoldenLayoutComponent } from "."
-import { DiagramSource } from "../../state/diagram-source"
 import { Alerts } from '@kubevious/ui-alerts';
 import { Diagram } from '@kubevious/ui-diagram';
 import { RuleEditor, MarkerEditor } from '@kubevious/ui-rule-engine'
@@ -7,7 +6,6 @@ import { Properties, Summary } from '@kubevious/ui-properties'
 import { Timeline } from '@kubevious/ui-time-machine'
 
 export type GoldenLayoutComponentProps = {
-    diagramSource: DiagramSource
     handleLayout: (value: GoldenLayoutComponent) => void
 }
 
