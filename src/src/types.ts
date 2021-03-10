@@ -62,22 +62,3 @@ export type DnOptions = {
     relativeTo?: string
 }
 
-export interface GoldenLayoutWindowInfo {
-    id?: string;
-    name: string;
-    component: any;
-    location: GoldenLayoutLocation;
-    title: string;
-    allowVerticalScroll?: boolean;
-    skipClose?: boolean;
-    height?: number;
-    width?: number;
-}
-
-export enum GoldenLayoutLocation {
-    main = "main",
-    right = "right",
-    left = "left",
-    bottom = "bottom",
-    top = "top"
-}

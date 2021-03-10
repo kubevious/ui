@@ -1,4 +1,4 @@
-import { GoldenLayoutWindowInfo } from "../../types"
+import { GoldenLayoutWindowInfo } from "@kubevious/ui-components"
 
 export type HeaderState = {
     showSettings: boolean

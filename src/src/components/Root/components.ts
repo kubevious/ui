@@ -3,9 +3,10 @@ import { Diagram } from '@kubevious/ui-diagram';
 import { RuleEditor, MarkerEditor } from '@kubevious/ui-rule-engine'
 import { Properties, Summary } from '@kubevious/ui-properties'
 import { Timeline } from '@kubevious/ui-time-machine'
-import { GoldenLayoutLocation } from '../../types';
 
-export const components = [
+import { GoldenLayoutWindowInfo, GoldenLayoutLocation } from '@kubevious/ui-components';
+
+export const components : GoldenLayoutWindowInfo[] = [
     {
         name: "Summary",
         component: Summary,

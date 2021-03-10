@@ -1,5 +1,4 @@
-import { GoldenLayout } from '@kubevious/ui-components';
-import { GoldenLayoutWindowInfo } from '../../types';
+import { GoldenLayout, GoldenLayoutWindowInfo } from '@kubevious/ui-components';
 
 export type Error = {
     data: {
