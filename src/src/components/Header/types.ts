@@ -1,4 +1,4 @@
-import { Component } from "@kubevious/ui-components/dist/GoldenLayout/types"
+import { GoldenLayoutWindowInfo } from "../../types"
 
 export type HeaderState = {
     showSettings: boolean
@@ -10,5 +10,5 @@ export type HeaderState = {
 
 export type HeaderProps = {
     handleChangeWindow: (e: React.ChangeEvent<HTMLInputElement>) => void
-    windows:  Component[]
+    windows:  GoldenLayoutWindowInfo[]
 }

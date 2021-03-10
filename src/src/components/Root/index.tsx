@@ -8,10 +8,11 @@ import { Header } from "../Header"
 import { SEO } from "../SEO"
 import { RootState } from "./types"
 import { sharedState } from "../../configureService";
+import { components } from "./components";
 
 export class Root extends ClassComponent<{}, RootState> {
     private _fieldsSaver: FieldsSaver
-    constructor(props) {
+    constructor(props: {} | Readonly<{}>) {
         super(props)
 
         this.state = {
@@ -169,6 +170,7 @@ export class Root extends ClassComponent<{}, RootState> {
                     />
 
                     <GoldenLayout
+                        windows={components}
                         handleLayout={this.handleLayout}
                     />
 

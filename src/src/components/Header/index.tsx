@@ -14,7 +14,7 @@ import moment from "moment"
 import "./styles.scss"
 import { IMiscService } from "@kubevious/ui-middleware"
 import { HeaderProps, HeaderState } from "./types"
-import { Component } from "@kubevious/ui-components/dist/GoldenLayout/types"
+import { GoldenLayoutWindowInfo } from "../../types"
 
 export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscService> {
     constructor(props) {
@@ -56,7 +56,7 @@ export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscServic
         })
     }
 
-    detectIsVisible(item: Component): boolean {
+    detectIsVisible(item: GoldenLayoutWindowInfo): boolean {
         return !!item.id && document.getElementById(item.id) !== null
     }
 

@@ -1,5 +1,5 @@
 import { GoldenLayout } from '@kubevious/ui-components';
-import { Component } from '@kubevious/ui-components/dist/GoldenLayout/types';
+import { GoldenLayoutWindowInfo } from '../../types';
 
 export type Error = {
     data: {
@@ -22,7 +22,7 @@ export type RootState = {
     showPopup: boolean
     popupContent: any
     layout: GoldenLayout | null
-    windows: Component[]
+    windows: GoldenLayoutWindowInfo[]
     isError: boolean
     error: Error | null
 }
