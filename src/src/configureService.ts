@@ -14,6 +14,9 @@ app.sharedState.register("time_machine_timeline_data", {
     skipCompare: true,
     skipValueOutput: true,
 })
+app.sharedState.register("visible_windows", {
+    skipCompare: true,
+})
 
 function apiFactory(): MockRootApiService | RootApiService {
     const factory =
