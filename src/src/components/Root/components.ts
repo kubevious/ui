@@ -47,6 +47,7 @@ export const components : GoldenLayoutWindowInfo[] = [
         component: Alerts,
         location: GoldenLayoutLocation.bottom,
         title: "Alerts",
+        height: 20,
         allowVerticalScroll: true,
     },
     {
@@ -54,5 +55,6 @@ export const components : GoldenLayoutWindowInfo[] = [
         component: Timeline,
         location: GoldenLayoutLocation.bottom,
         title: "Timeline",
+        height: 20,
         allowVerticalScroll: false,
     }]
