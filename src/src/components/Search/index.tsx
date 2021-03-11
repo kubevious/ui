@@ -216,43 +216,63 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
           valueInState.markers,
           (marker: string) => marker === newMarker.name
         )[0]
-        let changedMarkers: string[] = []
-        if (!!markerExists) {
-          changedMarkers = _.filter(
-            savedFilters.markers,
+        const savedMarkers = _.filter(
+          savedFilters.markers,
+          (marker: string) => marker !== newMarker.name
+        )
+
+        if (!isEmptyArray(markerExists)) {
+          const filteredMarkers = _.filter(
+            valueInState.markers || savedFilters.markers,
             (marker: string) => marker !== newMarker.name
           )
-          if (isEmptyArray(changedMarkers)) {
+          const value = { ...valueInState, markers: filteredMarkers }
+
+          if (isEmptyArray(filteredMarkers)) {
+            delete value.markers
+          }
+
+          if (!isEmptyArray(savedMarkers)) {
+            delete savedFilters.markers
+
             return {
               ...prevState,
-              savedFilters: {
-                markers: [],
-              },
-              value: { ...prevState.value, markers: [] },
+              savedFilters,
+              value,
             }
           }
+
           return {
             ...prevState,
-            savedFilters: {
-              markers: changedMarkers,
-            },
-            value: { ...valueInState, markers: changedMarkers },
+            savedFilters,
+            value,
           }
         }
+        const changedMarkers = valueInState.markers ? [...valueInState.markers, newMarker.name] : [newMarker.name]
 
-        if (valueInState.markers) {
-          changedMarkers = [...valueInState.markers, newMarker.name]
+        if (!isEmptyArray(savedMarkers)) {
           return {
             ...prevState,
-            value: { ...valueInState, markers: changedMarkers },
-            savedFilters: { markers: changedMarkers },
+            savedFilters: { ...savedFilters, markers: savedMarkers },
+            value: { ...valueInState, markers: savedMarkers },
           }
+        }
+        delete savedFilters.markers
+
+        if (isEmptyArray(changedMarkers)) {
+          delete valueInState.markers
+          return {
+            ...prevState,
+            savedFilters,
+            value: valueInState,
+          }
+
         }
 
         return {
           ...prevState,
-          value: { ...valueInState, markers: [newMarker.name] },
-          savedFilters: { markers: [newMarker.name] },
+          savedFilters,
+          value: { ...valueInState, markers: changedMarkers },
         }
       },
       () => {
@@ -352,10 +372,10 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
         }
         if (typeof val !== "string") {
           valueInState[key] = currentFilters.filter((filter: FilterType) =>
-            this.keyCheck(filter, val.key || "")
+            !this.keyCheck(filter, val.key || "")
           )
           savedInState[key] = currentSavedFilters.filter((filter: FilterType) =>
-            this.keyCheck(filter, val.key || "")
+            !this.keyCheck(filter, val.key || "")
           )
         }
 
@@ -434,10 +454,10 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
         let changedSavedArray: FilterType[] = []
         if (typeof filterVal !== "string") {
           changedValueArray = valueArray.filter((el) =>
-            this.keyCheck(el, filterVal.key || "")
+            !this.keyCheck(el, filterVal.key || "")
           )
           changedSavedArray = savedArray.filter((el) =>
-            this.keyCheck(el, filterVal.key || "")
+            !this.keyCheck(el, filterVal.key || "")
           )
         }
         if (savedInState[type]) {
@@ -537,7 +557,7 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
     const { savedFilters } = this.state
     const key = typeof val !== "string" && val.key ? val.key : null
     const checkInSavedFilters =
-      savedFilters[type] && key
+      !!savedFilters[type] && !!key
         ? savedFilters[type].find((el: FilterType) => this.keyCheck(el, key))
         : savedFilters[type]
     if (!val) return
