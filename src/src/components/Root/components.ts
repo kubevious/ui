@@ -8,7 +8,7 @@ import { GoldenLayoutWindowInfo, GoldenLayoutLocation } from '@kubevious/ui-comp
 
 export const components : GoldenLayoutWindowInfo[] = [
     {
-        id: "SummaryComponent",
+        id: "summaryComponent",
         component: Summary,
         location: GoldenLayoutLocation.main,
         title: "Summary",
@@ -16,26 +16,26 @@ export const components : GoldenLayoutWindowInfo[] = [
         allowVerticalScroll: false,
     },
     {
-        id: "UniverseComponent",
+        id: "universeComponent",
         component: Diagram,
         location: GoldenLayoutLocation.main,
         title: "Universe",
         skipClose: true,
     },
     {
-        id: "RuleEditorComponent",
+        id: "ruleEditorComponent",
         component: RuleEditor,
         location: GoldenLayoutLocation.main,
         title: "Rule Editor",
     },
     {
-        id: "MarkerEditorComponent",
+        id: "markerEditorComponent",
         component: MarkerEditor,
         location: GoldenLayoutLocation.main,
         title: "Marker Editor",
     },
     {
-        id: "PropertiesComponent",
+        id: "propertiesComponent",
         component: Properties,
         location: GoldenLayoutLocation.right,
         title: "Properties",
@@ -43,14 +43,14 @@ export const components : GoldenLayoutWindowInfo[] = [
         allowVerticalScroll: true,
     },
     {
-        id: "AlertsComponent",
+        id: "alertsComponent",
         component: Alerts,
         location: GoldenLayoutLocation.bottom,
         title: "Alerts",
         allowVerticalScroll: true,
     },
     {
-        id: "TimelineComponent",
+        id: "timelineComponent",
         component: Timeline,
         location: GoldenLayoutLocation.bottom,
         title: "Timeline",
