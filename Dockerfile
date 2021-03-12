@@ -1,9 +1,9 @@
 ###############################################################################
 # Step 1 : Builder image
-FROM kubevious/node-builder:12 as build
+FROM kubevious/node-builder:14 as build
 WORKDIR /app
 # ENV NODE_ENV production
-ENV NODE_ENV development
+# ENV NODE_ENV development
 ENV PATH /app/node_modules/.bin:$PATH
 ENV SKIP_PREFLIGHT_CHECK true
 COPY src/package.json ./

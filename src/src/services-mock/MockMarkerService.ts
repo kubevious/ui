@@ -23,7 +23,7 @@ for (let i = 0; i < 30; i++) {
     })
 }
 
-export let MOCK_MARKERS = _.makeDict(MOCK_MARKERS_ARRAY, x => x.name);
+export let MOCK_MARKERS = _.makeDict(MOCK_MARKERS_ARRAY, x => x.name, x => x);
 
 export class MockMarkerService implements IMarkerService {
 

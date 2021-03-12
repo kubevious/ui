@@ -1,6 +1,6 @@
 import _ from "the-lodash"
 import { FieldsSaver } from "../utils/save-fields"
-import moment from "moment"
+import moment, { isMoment } from "moment"
 
 import * as DnUtils from "@kubevious/helpers/dist/dn-utils"
 import { SharedState } from "@kubevious/ui-framework/dist"
@@ -321,7 +321,13 @@ export class StateHandler {
                     const massagedData = this._massageTimelineData(
                         time_machine_timeline_preview_raw
                     )
-                    const lastDate = _.last(massagedData).dateMoment
+
+                    let lastDate : moment.Moment;
+                    if (massagedData.length > 0) {
+                        lastDate = _.last(massagedData)!.dateMoment
+                    } else {
+                        lastDate = moment();
+                    }
 
                     this.sharedState
                         .user()

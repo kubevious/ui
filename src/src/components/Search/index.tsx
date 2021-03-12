@@ -215,7 +215,7 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
         const markerExists = _.filter(
           valueInState.markers,
           (marker: string) => marker === newMarker.name
-        )[0]
+        )
         const savedMarkers = _.filter(
           savedFilters.markers,
           (marker: string) => marker !== newMarker.name
@@ -229,7 +229,7 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
           const value = { ...valueInState, markers: filteredMarkers }
 
           if (isEmptyArray(filteredMarkers)) {
-            delete value.markers
+            delete (value as any).markers
           }
 
           if (!isEmptyArray(savedMarkers)) {

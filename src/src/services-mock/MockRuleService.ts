@@ -30,7 +30,7 @@ let MOCK_RULES_ARRAY = [
         script: "script-3",
     },
 ]
-let MOCK_RULES = _.makeDict(MOCK_RULES_ARRAY, (x) => x.name)
+let MOCK_RULES = _.makeDict(MOCK_RULES_ARRAY, (x) => x.name, x => x)
 for (const x of _.values(MOCK_RULES)) {
     x.items = []
     x.logs = []
