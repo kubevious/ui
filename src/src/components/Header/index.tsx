@@ -1,5 +1,5 @@
-import _ from "the-lodash"
 import React from "react"
+import _ from "the-lodash"
 import bugImg from "../../assets/header-btns/bug.svg"
 import slackImg from "../../assets/header-btns/slack.svg"
 import githubImg from "../../assets/header-btns/github.svg"
@@ -13,11 +13,11 @@ import moment from "moment"
 
 import "./styles.scss"
 import { IMiscService } from "@kubevious/ui-middleware"
+import { GoldenLayoutWindowInfo } from "@kubevious/ui-components"
 import { HeaderProps, HeaderState } from "./types"
-import { Component } from "../GoldenLayout/types"
 
 export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscService> {
-    constructor(props) {
+    constructor(props : HeaderProps | Readonly<HeaderProps>) {
         super(props, null, { kind: "misc" })
 
         this.state = {
@@ -26,6 +26,7 @@ export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscServic
             hasNotifications: false,
             time_machine_enabled: false,
             time_machine_target_date: null,
+            visible_windows: {}
         }
 
         this.openAbout = this.openAbout.bind(this)
@@ -34,6 +35,8 @@ export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscServic
         this.renderSettings = this.renderSettings.bind(this)
         this.openNotifications = this.openNotifications.bind(this)
         this.deactivateTimemachine = this.deactivateTimemachine.bind(this)
+        this.handleWindowVisibilityChange = this.handleWindowVisibilityChange.bind(this)
+
     }
 
     openAbout(): void {
@@ -56,8 +59,11 @@ export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscServic
         })
     }
 
-    detectIsVisible(item: Component): boolean {
-        return !!item.id && document.getElementById(item.id) !== null
+    detectIsVisible(item: GoldenLayoutWindowInfo): boolean {
+        if (this.state.visible_windows[item.id]) {
+            return true;
+        }
+        return false;
     }
 
     openNotifications(): void {
@@ -71,8 +77,20 @@ export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscServic
         this.sharedState.set("time_machine_enabled", false)
     }
 
+    handleWindowVisibilityChange(windowInfo: GoldenLayoutWindowInfo) {
+        const visible_windows = this.sharedState.get("visible_windows");
+        if (this.detectIsVisible(windowInfo)) {
+            delete visible_windows[windowInfo.id];
+        } else {
+            visible_windows[windowInfo.id] = true;
+        }
+        this.sharedState.set("visible_windows", visible_windows);
+    }
+
     renderSettings(): JSX.Element {
         const { windows } = this.props
+
+        const closableWindows = windows.filter(x => !x.skipClose);
 
         return (
             <div
@@ -81,23 +99,22 @@ export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscServic
                 onMouseEnter={() => this.setState({ showSettings: true })}
                 onMouseLeave={() => this.setState({ showSettings: false })}
             >
-                {windows.map((
+                {closableWindows.map((
                     item
                 ) => (
-                    <span className="s-menu-item" key={item.name}>
+                    <span className="s-menu-item" key={item.id}>
                         <label
                             className="ccheck"
-                            id={`toolWindowShowHideLabel${item.name}Component`}
+                            id={`toolWindowShowHideLabel${item.id}`}
                         >
                             {this.detectIsVisible(item) ? "Hide" : "Show"}{" "}
-                            {item.name}
+                            {item.title}
                             <input
                                 type="checkbox"
                                 tool-window-id={item.id}
                                 defaultChecked={this.detectIsVisible(item)}
                                 onChange={(e) =>
-                                    this.props.handleChangeWindow &&
-                                    this.props.handleChangeWindow(e)
+                                    this.handleWindowVisibilityChange(item)
                                 }
                             />
                             <span className="checkmark" />
@@ -109,6 +126,13 @@ export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscServic
     }
 
     componentDidMount() {
+
+        this.subscribeToSharedState("visible_windows", (visible_windows) => {
+            this.setState({
+                visible_windows: visible_windows
+            })
+        });
+
         this.subscribeToSharedState("is_loading", (is_loading) => {
             this.setState({ isLoading: is_loading })
         })

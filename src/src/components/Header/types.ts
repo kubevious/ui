@@ -1,4 +1,4 @@
-import { Component } from "../GoldenLayout/types"
+import { GoldenLayoutWindowInfo } from "@kubevious/ui-components"
 
 export type HeaderState = {
     showSettings: boolean
@@ -6,9 +6,9 @@ export type HeaderState = {
     hasNotifications: boolean
     time_machine_enabled: boolean
     time_machine_target_date: Date | null
+    visible_windows: Record<string, boolean>
 }
 
 export type HeaderProps = {
-    handleChangeWindow: (e: React.ChangeEvent<HTMLInputElement>) => void
-    windows:  Component[]
+    windows:  GoldenLayoutWindowInfo[]
 }

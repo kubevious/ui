@@ -1,5 +1,4 @@
-import { SelectedData } from "../../types"
-import { EditorItem } from "../Editors/types"
+import { SelectedData, EditorItem } from "../../types"
 
 export type List = {
     payload: string
@@ -76,5 +75,7 @@ export type SearchState = {
             values: string[]
         }
     }
-    wasFiltered?: boolean
+    wasFiltered?: boolean,
+    markers?: string[]
+
 }

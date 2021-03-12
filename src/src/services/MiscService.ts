@@ -1,11 +1,13 @@
 import _ from 'the-lodash';
+import { HttpClient, ISharedState } from '@kubevious/ui-framework';
+import { IMiscService, IWebSocketService } from '@kubevious/ui-middleware';
+
 import { BaseService } from './BaseService'
-import { IMiscService } from '@kubevious/ui-middleware/dist';
 import { version } from '../version';
 
 export class MiscService extends BaseService implements IMiscService {
 
-    constructor(client, sharedState, socket)
+    constructor(client: HttpClient, sharedState: ISharedState, socket: IWebSocketService)
     {
         super(client, sharedState, socket)
 
@@ -22,7 +24,7 @@ export class MiscService extends BaseService implements IMiscService {
 
         Promise.resolve()
             .then(() => {
-                return this.client.get('/api/v1/version')
+                return this.client.get<any>('/api/v1/version')
                     .then(result => {
                         return result.data.version;
                     })
@@ -37,7 +39,7 @@ export class MiscService extends BaseService implements IMiscService {
                 })
             })
             .then(() => {
-                return this.client.get('/api/v1/metrics')
+                return this.client.get<any>('/api/v1/metrics')
                     .then(result => {
                         info = _.concat(info, result.data.metrics);
                     })

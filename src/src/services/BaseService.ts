@@ -1,11 +1,11 @@
 import _ from 'the-lodash';
 
-import { BackendClient, ISharedState } from '@kubevious/ui-framework'
+import { HttpClient, ISharedState } from '@kubevious/ui-framework'
 import { IWebSocketService } from '@kubevious/ui-middleware/dist';
 
 export class BaseService
 {
-    private _client: BackendClient;
+    private _client: HttpClient;
     private _sharedState: ISharedState;
     private _socket: IWebSocketService;
 
@@ -13,7 +13,7 @@ export class BaseService
     private _socketHandlers : any [] = [];
     private _socketScopes : any [] = [];
 
-    constructor(client: BackendClient, sharedState: ISharedState, socket: IWebSocketService)
+    constructor(client: HttpClient, sharedState: ISharedState, socket: IWebSocketService)
     {
         console.log('[BaseService] ' + this.constructor.name + ' :: create');
 

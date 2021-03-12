@@ -1,11 +1,13 @@
 import _ from "the-lodash"
 import { FieldsSaver } from "../utils/save-fields"
-import moment from "moment"
-import { TimelineUtils } from "../utils/timeline-utils"
+import moment, { isMoment } from "moment"
 
 import * as DnUtils from "@kubevious/helpers/dist/dn-utils"
 import { SharedState } from "@kubevious/ui-framework/dist"
 import { IDiagramService } from "@kubevious/ui-middleware"
+import { TimelineUtils } from "@kubevious/ui-time-machine"
+import { PersistableParams } from "../types"
+import { ChartData } from "@kubevious/ui-time-machine/dist/Timeline/type"
 
 export class StateHandler {
     private _timelineUtils: TimelineUtils
@@ -14,11 +16,11 @@ export class StateHandler {
     sharedState: SharedState
     private _service: IDiagramService
     private _fieldsSaver: FieldsSaver
-    private _desiredTimelineDateFrom: any
-    private _desiredTimelineDateTo: any
-    private _latestTimelineDateFrom: any
-    private _latestTimelineDateTo: any
-    private _isQueryingTimeline: any
+    private _desiredTimelineDateFrom!: moment.Moment
+    private _desiredTimelineDateTo!: moment.Moment
+    private _latestTimelineDateFrom!: moment.Moment
+    private _latestTimelineDateTo!: moment.Moment
+    private _isQueryingTimeline!: boolean
     constructor(sharedState: SharedState, diagramService: IDiagramService) {
         if (!sharedState) {
             throw new Error("SharedState not provided")
@@ -38,12 +40,12 @@ export class StateHandler {
         this._setup()
     }
 
-    close() {
+    close(): void {
         this._service.close()
         this.sharedState.user().close()
     }
 
-    _setup() {
+    _setup(): void {
         this.sharedState.user().set("is_loading", false)
         this.sharedState.user().set("is_error", false)
         this.sharedState.user().set("error", null)
@@ -61,7 +63,7 @@ export class StateHandler {
         this._handleMarkerListChange()
     }
 
-    _handleSummary() {
+    _handleSummary(): void {
         this.sharedState
             .user()
             .subscribe(
@@ -82,10 +84,10 @@ export class StateHandler {
             )
     }
 
-    _handleDefaultParams() {
-        const params = new URLSearchParams(window.location.search)
+    _handleDefaultParams(): void {
+        const params: URLSearchParams = new URLSearchParams(window.location.search)
 
-        const fields = this._fieldsSaver.decodeParams(params)
+        const fields: PersistableParams = this._fieldsSaver.decodeParams(params)
 
         const { sd, tme, tmtd, tmdt, tmd } = fields
 
@@ -124,8 +126,8 @@ export class StateHandler {
         }
     }
 
-    _handleSelectedDnAutoExpandChange() {
-        this.sharedState.user().subscribe("selected_dn", (selected_dn) => {
+    _handleSelectedDnAutoExpandChange(): void {
+        this.sharedState.user().subscribe("selected_dn", (selected_dn: string) => {
             if (selected_dn) {
                 const dict = this.sharedState.user().get("diagram_expanded_dns")
                 const parts = DnUtils.splitDn(selected_dn)
@@ -139,7 +141,7 @@ export class StateHandler {
         })
     }
 
-    _handleTimeMachineChange() {
+    _handleTimeMachineChange(): void {
         this.sharedState.user().subscribe(["time_machine_target_date"], () => {
             if (this._isTimeMachineDateSetScheduled) {
                 this._isTimeMachineDateDirty = true
@@ -178,7 +180,7 @@ export class StateHandler {
             )
     }
 
-    _triggerTimeMachine() {
+    _triggerTimeMachine(): void {
         this._isTimeMachineDateDirty = false
 
         setTimeout(() => {
@@ -194,7 +196,7 @@ export class StateHandler {
         }, 250)
     }
 
-    _handleSelectedDnChange() {
+    _handleSelectedDnChange(): void {
         this.sharedState
             .user()
             .subscribe(
@@ -232,7 +234,7 @@ export class StateHandler {
             )
     }
 
-    _handleSelectedAlertsChange() {
+    _handleSelectedAlertsChange(): void {
         this.sharedState
             .user()
             .subscribe(
@@ -283,7 +285,7 @@ export class StateHandler {
             )
     }
 
-    _massageTimelineData(data) {
+    _massageTimelineData(data: ChartData[]): ChartData[] {
         if (!data || data.length === 0) {
             let date = moment()
             return [
@@ -304,7 +306,7 @@ export class StateHandler {
         return data
     }
 
-    _handleTimelineDataChange() {
+    _handleTimelineDataChange(): void {
         this._service.subscribeTimelinePreview((data) => {
             this.sharedState
                 .user()
@@ -319,7 +321,13 @@ export class StateHandler {
                     const massagedData = this._massageTimelineData(
                         time_machine_timeline_preview_raw
                     )
-                    const lastDate = _.last(massagedData).dateMoment
+
+                    let lastDate : moment.Moment;
+                    if (massagedData.length > 0) {
+                        lastDate = _.last(massagedData)!.dateMoment
+                    } else {
+                        lastDate = moment();
+                    }
 
                     this.sharedState
                         .user()
@@ -372,12 +380,9 @@ export class StateHandler {
             )
     }
 
-    _tryQueryTimelineData() {
+    _tryQueryTimelineData(): void {
         const from = this._desiredTimelineDateFrom
         const to = this._desiredTimelineDateTo
-
-        const fromMoment = moment(from)
-        const toMoment = moment(to)
 
         if (
             from === this._latestTimelineDateFrom &&
@@ -406,7 +411,7 @@ export class StateHandler {
         })
     }
 
-    _handleMarkerListChange() {
+    _handleMarkerListChange(): void {
         this.sharedState
             .user()
             .subscribe("marker_editor_items", (marker_editor_items) => {
@@ -414,8 +419,8 @@ export class StateHandler {
                 if (marker_editor_items) {
                     markerDict = _.makeDict(
                         marker_editor_items,
-                        (x) => x.name,
-                        (x) => ({
+                        (x: { name: any }) => x.name,
+                        (x: { shape: any; color: any }) => ({
                             shape: x.shape,
                             color: x.color,
                         })

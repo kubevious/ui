@@ -30,7 +30,7 @@ let MOCK_RULES_ARRAY = [
         script: "script-3",
     },
 ]
-let MOCK_RULES = _.makeDict(MOCK_RULES_ARRAY, (x) => x.name)
+let MOCK_RULES = _.makeDict(MOCK_RULES_ARRAY, (x) => x.name, x => x)
 for (const x of _.values(MOCK_RULES)) {
     x.items = []
     x.logs = []
@@ -102,7 +102,13 @@ export class MockRuleService implements IRuleService {
     close() {}
 
     private _notifyRules() {
-        const operation = this._remoteTrack.start(`notifyRules`)
+        const id = new Date().toISOString();
+        this._remoteTrack.start({
+            id: id,
+            method: 'GET',
+            url: '/',
+            headers: {}
+        })
 
         this.backendFetchRuleList((result) => {
             this.sharedState.set("rule_editor_items", result)
@@ -114,7 +120,12 @@ export class MockRuleService implements IRuleService {
         }
 
         setTimeout(() => {
-            operation.complete()
+            this._remoteTrack.finish({
+                id: id,
+                method: 'GET',
+                url: '/',
+                headers: {}
+            }, {});
         }, 1000)
     }
 

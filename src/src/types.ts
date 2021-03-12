@@ -1,6 +1,15 @@
-import { EditorItem } from "./components/Editors/types"
-
-export type Service = new (...args: any) => Service
+export type EditorItem = {
+    script?: string;
+    target?: string;
+    name?: string;
+    propagate?: boolean;
+    shape?: string;
+    color?: string;
+    item_count?: number;
+    error_count?: number;
+    enabled?: boolean;
+    is_current?: boolean;
+};
 
 export type AlertCount = {
     error?: number
@@ -18,11 +27,6 @@ export interface SelectedData {
     markers?: string[]
 }
 
-export type ExportItem = {
-    kind: string
-    items: EditorItem[]
-}
-
 export interface DiagramData {
     flags?: Flags
     dn?: string
@@ -36,13 +40,6 @@ export interface DiagramData {
     childrenCount: number
     name?: string
     selfAlertCount?: AlertCount
-}
-
-export type FontSpec = {
-    defaultWidth: number
-    height: number
-    startCode: number
-    widths: number[]
 }
 
 export interface PersistableFields {
@@ -61,45 +58,7 @@ export type PersistableParams = {
     tmd?: string | null
 }
 
-export type Alert = {
-    source: {
-        id: string
-        kind: string
-    }
-    msg: string
-    severity: string
-    id?: string
-    dn?: string
-    uiKey?: string
-}
-
-export type Dn = {
-    dn?: string
-    alertCount?: AlertCount
-    title?: string
-    alert?: Alert
-    unit?: string
-    value?: number
-    targets?: string[]
-}
-
-export interface TopIssueNamespaces {
-    kind: string
-    id: string
-    title: string
-    order: number
-    config: Dn[]
-}
-
-export type Group = {
-    id: string
-    title?: string
-    kind: string
-    config: any
-    order?: number
-    options: string[]
-}
-
 export type DnOptions = {
     relativeTo?: string
 }
+
