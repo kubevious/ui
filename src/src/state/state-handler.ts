@@ -42,16 +42,16 @@ export class StateHandler {
 
     close(): void {
         this._service.close()
-        this.sharedState.user().close()
+        this.sharedState.close()
     }
 
     _setup(): void {
-        this.sharedState.user().set("is_loading", false)
-        this.sharedState.user().set("is_error", false)
-        this.sharedState.user().set("error", null)
-        this.sharedState.user().set("diagram_expanded_dns", { root: true })
+        this.sharedState.set("is_loading", false)
+        this.sharedState.set("is_error", false)
+        this.sharedState.set("error", null)
+        this.sharedState.set("diagram_expanded_dns", { root: true })
 
-        this.sharedState.user().set("time_machine_timeline_preview", [])
+        this.sharedState.set("time_machine_timeline_preview", [])
 
         this._handleSummary()
         this._handleDefaultParams()
@@ -65,7 +65,6 @@ export class StateHandler {
 
     _handleSummary(): void {
         this.sharedState
-            .user()
             .subscribe(
                 ["time_machine_enabled", "time_machine_date"],
                 ({ time_machine_enabled, time_machine_date }) => {
@@ -76,7 +75,7 @@ export class StateHandler {
                             dn,
                             time_machine_date,
                             (config) => {
-                                this.sharedState.user().set("summary", config)
+                                this.sharedState.set("summary", config)
                             }
                         )
                     }
@@ -92,16 +91,15 @@ export class StateHandler {
         const { sd, tme, tmtd, tmdt, tmd } = fields
 
         if (sd) {
-            this.sharedState.user().set("selected_dn", sd)
-            this.sharedState.user().set("auto_pan_to_selected_dn", true)
+            this.sharedState.set("selected_dn", sd)
+            this.sharedState.set("auto_pan_to_selected_dn", true)
         }
 
         if (tme) {
-            this.sharedState.user().set("time_machine_enabled", tme === "true")
+            this.sharedState.set("time_machine_enabled", tme === "true")
             if (!tmtd) {
                 const date = new Date()
                 this.sharedState
-                    .user()
                     .set(
                         "time_machine_target_date",
                         Date.parse(date.toString())
@@ -111,38 +109,38 @@ export class StateHandler {
 
         if (tmtd) {
             const date = typeof tmtd === "string" ? tmtd : Date.parse(tmtd)
-            this.sharedState.user().set("time_machine_target_date", date)
+            this.sharedState.set("time_machine_target_date", date)
         }
 
         if (tmdt) {
             const date = typeof tmdt === "string" ? tmdt : Date.parse(tmdt)
-            this.sharedState.user().set("time_machine_date_to", date)
+            this.sharedState.set("time_machine_date_to", date)
         } else {
-            this.sharedState.user().set("time_machine_date_to", null)
+            this.sharedState.set("time_machine_date_to", null)
         }
 
         if (tmd) {
-            this.sharedState.user().set("time_machine_duration", tmd)
+            this.sharedState.set("time_machine_duration", tmd)
         }
     }
 
     _handleSelectedDnAutoExpandChange(): void {
-        this.sharedState.user().subscribe("selected_dn", (selected_dn: string) => {
+        this.sharedState.subscribe("selected_dn", (selected_dn: string) => {
             if (selected_dn) {
-                const dict = this.sharedState.user().get("diagram_expanded_dns")
+                const dict = this.sharedState.get("diagram_expanded_dns")
                 const parts = DnUtils.splitDn(selected_dn)
                 let dn = parts[0]
                 for (let i = 1; i < parts.length - 1; i++) {
                     dn = dn + "/" + parts[i]
                     dict[dn] = true
                 }
-                this.sharedState.user().set("diagram_expanded_dns", dict)
+                this.sharedState.set("diagram_expanded_dns", dict)
             }
         })
     }
 
     _handleTimeMachineChange(): void {
-        this.sharedState.user().subscribe(["time_machine_target_date"], () => {
+        this.sharedState.subscribe(["time_machine_target_date"], () => {
             if (this._isTimeMachineDateSetScheduled) {
                 this._isTimeMachineDateDirty = true
                 return
@@ -152,7 +150,6 @@ export class StateHandler {
         })
 
         this.sharedState
-            .user()
             .subscribe(
                 ["time_machine_enabled", "time_machine_date"],
                 ({ time_machine_enabled, time_machine_date }) => {
@@ -162,15 +159,12 @@ export class StateHandler {
                             (sourceData) => {
                                 if (
                                     this.sharedState
-                                        .user()
                                         .get("time_machine_enabled") &&
                                     this.sharedState
-                                        .user()
                                         .get("time_machine_date") ===
                                         time_machine_date
                                 ) {
                                     this.sharedState
-                                        .user()
                                         .set("diagram_data", sourceData)
                                 }
                             }
@@ -185,9 +179,8 @@ export class StateHandler {
 
         setTimeout(() => {
             const value = this.sharedState
-                .user()
                 .get("time_machine_target_date")
-            this.sharedState.user().set("time_machine_date", value)
+            this.sharedState.set("time_machine_date", value)
 
             this._isTimeMachineDateSetScheduled = false
             if (this._isTimeMachineDateDirty) {
@@ -198,7 +191,6 @@ export class StateHandler {
 
     _handleSelectedDnChange(): void {
         this.sharedState
-            .user()
             .subscribe(
                 ["selected_dn", "time_machine_enabled", "time_machine_date"],
                 ({ selected_dn, time_machine_enabled, time_machine_date }) => {
@@ -209,7 +201,6 @@ export class StateHandler {
                                 time_machine_date,
                                 (config) => {
                                     this.sharedState
-                                        .user()
                                         .set("selected_object_props", config)
                                 }
                             )
@@ -219,16 +210,14 @@ export class StateHandler {
                                 time_machine_date,
                                 (config) => {
                                     this.sharedState
-                                        .user()
                                         .set("selected_raw_alerts", config)
                                 }
                             )
                         }
                     } else {
                         this.sharedState
-                            .user()
                             .set("selected_object_props", null)
-                        this.sharedState.user().set("selected_raw_alerts", null)
+                        this.sharedState.set("selected_raw_alerts", null)
                     }
                 }
             )
@@ -236,7 +225,6 @@ export class StateHandler {
 
     _handleSelectedAlertsChange(): void {
         this.sharedState
-            .user()
             .subscribe(
                 ["selected_raw_alerts", "selected_dn"],
                 ({ selected_raw_alerts, selected_dn }) => {
@@ -274,11 +262,9 @@ export class StateHandler {
                         }
 
                         this.sharedState
-                            .user()
                             .set("selected_object_alerts", alerts)
                     } else {
                         this.sharedState
-                            .user()
                             .set("selected_object_alerts", null)
                     }
                 }
@@ -309,12 +295,10 @@ export class StateHandler {
     _handleTimelineDataChange(): void {
         this._service.subscribeTimelinePreview((data) => {
             this.sharedState
-                .user()
                 .set("time_machine_timeline_preview_raw", data)
         })
 
         this.sharedState
-            .user()
             .subscribe(
                 "time_machine_timeline_preview_raw",
                 (time_machine_timeline_preview_raw) => {
@@ -330,10 +314,8 @@ export class StateHandler {
                     }
 
                     this.sharedState
-                        .user()
                         .set("time_machine_timeline_preview", massagedData)
                     this.sharedState
-                        .user()
                         .set(
                             "time_machine_timeline_preview_last_date",
                             lastDate
@@ -342,7 +324,6 @@ export class StateHandler {
             )
 
         this.sharedState
-            .user()
             .subscribe(
                 [
                     "time_machine_duration",
@@ -353,16 +334,13 @@ export class StateHandler {
                     let actual = this._timelineUtils.getActualRange()
 
                     this.sharedState
-                        .user()
                         .set("time_machine_actual_date_to", actual.to)
                     this.sharedState
-                        .user()
                         .set("time_machine_actual_date_from", actual.from)
                 }
             )
 
         this.sharedState
-            .user()
             .subscribe(
                 [
                     "time_machine_actual_date_from",
@@ -404,7 +382,6 @@ export class StateHandler {
 
             const massagedData = this._massageTimelineData(data)
             this.sharedState
-                .user()
                 .set("time_machine_timeline_data", massagedData)
 
             this._tryQueryTimelineData()
@@ -413,7 +390,6 @@ export class StateHandler {
 
     _handleMarkerListChange(): void {
         this.sharedState
-            .user()
             .subscribe("marker_editor_items", (marker_editor_items) => {
                 let markerDict = {}
                 if (marker_editor_items) {
@@ -427,7 +403,7 @@ export class StateHandler {
                     )
                 }
 
-                this.sharedState.user().set("markers_dict", markerDict)
+                this.sharedState.set("markers_dict", markerDict)
             })
     }
 }

@@ -1,7 +1,8 @@
 import _ from 'the-lodash';
 
 import { HttpClient, ISharedState } from '@kubevious/ui-framework'
-import { IWebSocketService } from '@kubevious/ui-middleware/dist';
+import { IWebSocketService } from '@kubevious/ui-middleware';
+import { WebSocketTarget, WebSocketSubscription, WebSocketScope } from '@kubevious/ui-middleware/dist/services/websocket';
 
 export class BaseService
 {
@@ -9,9 +10,8 @@ export class BaseService
     private _sharedState: ISharedState;
     private _socket: IWebSocketService;
 
-
-    private _socketHandlers : any [] = [];
-    private _socketScopes : any [] = [];
+    private _socketHandlers : WebSocketSubscription[] = [];
+    private _socketScopes : WebSocketScope [] = [];
 
     constructor(client: HttpClient, sharedState: ISharedState, socket: IWebSocketService)
     {
@@ -47,7 +47,7 @@ export class BaseService
 
         for(const handler of this._socketHandlers)
         {
-            handler.stop();
+            handler.close();
         }
         for(const scope of this._socketScopes)
         {
@@ -55,14 +55,14 @@ export class BaseService
         }
     }
 
-    _socketSubscribe(target, cb)
+    _socketSubscribe(target: WebSocketTarget, cb: (value: any) => any)
     {
         const handler = this.socket.subscribe(target, cb);
         this._socketHandlers.push(handler);
         return handler;
     }
 
-    _subscribeSocketToSharedState(name, socketTarget, defaultValue)
+    _subscribeSocketToSharedState(name: string, socketTarget: WebSocketTarget, defaultValue: any)
     {
         this.sharedState.set(name, defaultValue);
 
@@ -74,7 +74,7 @@ export class BaseService
         });
     }
 
-    _socketScope(cb)
+    _socketScope(cb: (value: any, target: WebSocketTarget) => any)
     {
         const scope = this.socket.scope(cb);
         this._socketScopes.push(scope);
