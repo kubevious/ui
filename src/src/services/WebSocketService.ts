@@ -30,4 +30,9 @@ export class WebSocketService implements IWebSocketService
     {
         return this._socket.scope({}, cb);
     }
+
+    updateContext(updatedContext: WebSocketTarget): void
+    {
+        
+    }
 }

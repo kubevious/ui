@@ -8,7 +8,7 @@ import cx from "classnames"
 
 import "./styles.scss"
 
-import { IMiscService } from "@kubevious/ui-middleware/dist"
+import { IMiscService } from "@kubevious/ui-middleware"
 import { Answer, FeedbackState, Kind, FeedbackProps, Question } from "./types"
 
 export class Feedback extends ClassComponent<
