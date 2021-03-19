@@ -117,7 +117,6 @@ export class Feedback extends ClassComponent<
                 hasValue: false,
                 options: {},
             }
-            userAnswers[e.target.name] = userAnswer
         }
 
         if (userAnswer.options && e.target.value in userAnswer.options) {
@@ -132,6 +131,7 @@ export class Feedback extends ClassComponent<
         userAnswer.value = _.keys(userAnswer.options)
         const hasValue = userAnswer.value && userAnswer.value.length > 0
         userAnswer.hasValue = !!hasValue
+        userAnswers[e.target.name] = userAnswer
         this.setState({
             userAnswers: userAnswers,
         })
