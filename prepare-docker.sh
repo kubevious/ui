@@ -5,7 +5,7 @@ cd $MY_DIR
 
 source configuration.sh
 
-#  --no-cache
+#  --no-cache --progress=plain 
 docker build \
     -m 4000m \
     -t kubevious-ui-react:dev \

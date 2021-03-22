@@ -3,12 +3,13 @@ MY_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$(basename "${BASH_SOURCE
 MY_DIR="$(dirname $MY_PATH)"
 cd $MY_DIR
 
-# docker build -f Dockerfile.dev -t kubevious-saas-frontend:dev .
-
-# docker build -t kubevious-ui-react:prod .
-
-docker build --no-cache \
+#  --no-cache
+docker build \
     -m 4000m \
     -t kubevious-ui-react:mock \
     -f Dockerfile.mock \
     .
+
+
+echo "*** RUN WITH:"
+echo "    $ ./run-dev-docker-mock.sh"

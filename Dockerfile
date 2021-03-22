@@ -1,16 +1,20 @@
 ###############################################################################
 # Step 1 : Builder image
 FROM kubevious/node-builder:14 as build
-WORKDIR /app
+RUN node --version
+RUN npm --version
 # ENV NODE_ENV production
 # ENV NODE_ENV development
-ENV PATH /app/node_modules/.bin:$PATH
+# ENV PATH /app/node_modules/.bin:$PATH
 ENV SKIP_PREFLIGHT_CHECK true
-COPY src/package.json ./
-COPY src/package-lock.json ./
+WORKDIR /app
+COPY ./package*.json ./
 RUN npm ci
-# RUN npm ci --only=production
-COPY src/ ./
+COPY ./public ./public
+COPY ./tools ./tools
+COPY ./src ./src
+COPY ./tsconfig.json ./
+RUN ./tools/sync-public.sh
 RUN npm run build
 
 ###############################################################################

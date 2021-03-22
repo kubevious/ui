@@ -65,8 +65,8 @@ steps:
       - ls -la
       - ../process-version-bump.sh
       - source version.sh
-      - echo "export const version = \"${PRODUCT_VERSION}\";" > /codefresh/volume/${PRODUCT_NAME}/src/src/version.ts
-      - cat /codefresh/volume/${PRODUCT_NAME}/src/src/version.ts
+      - echo "export const version = \"${PRODUCT_VERSION}\";" > /codefresh/volume/${PRODUCT_NAME}/src/version.ts
+      - cat /codefresh/volume/${PRODUCT_NAME}/src/version.ts
       - cf_export PRODUCT_VERSION="${PRODUCT_VERSION}"
       - cf_export DOCKER_TAG="${PRODUCT_VERSION}"
 
@@ -95,8 +95,8 @@ steps:
     shell: bash
     working_directory: "${{main_clone}}"
     commands:
-      - cp -f ../cicd-demo.git/src/site-preview.jpg ./src/public/img/site-preview.jpg
-      - cp -f ../cicd-demo.git/src/seo.tsx ./src/src/components/SEO/index.tsx
+      - cp -f ../cicd-demo.git/src/site-preview.jpg ./public/img/site-preview.jpg
+      - cp -f ../cicd-demo.git/src/seo.tsx ./src/components/SEO/index.tsx
       - git status
 
   build_demo:
