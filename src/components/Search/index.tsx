@@ -61,7 +61,6 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
       },
       wasFiltered: false,
     }
-    this.handleMarkerFilterChange = this.handleMarkerFilterChange.bind(this)
     this.deleteFilter = this.deleteFilter.bind(this)
     this.handleEditFilter = this.handleEditFilter.bind(this)
     this.toggleFilter = this.toggleFilter.bind(this)
@@ -173,90 +172,6 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
           ...prevState,
           value: { ...valueInState, [name]: title },
           savedFilters: { ...savedFilters },
-        }
-      },
-      () => {
-        this.fetchResults(this.state.value)
-      }
-    )
-  }
-  //***
-  //e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  //***
-  handleMarkerFilterChange(title: string): void {
-    this.setState(
-      (prevState: SearchState) => {
-        const newMarker: EditorItem = _.filter(
-          this.markers.values,
-          (marker: EditorItem) => marker.name === title
-        )[0]
-        if (!newMarker.name) {
-          return prevState
-        }
-
-        const valueInState = prevState.value
-        const savedFilters = prevState.savedFilters
-        const markerExists = _.filter(
-          valueInState.markers,
-          (marker: string) => marker === newMarker.name
-        )
-        const savedMarkers = _.filter(
-          savedFilters.markers,
-          (marker: string) => marker !== newMarker.name
-        )
-
-        if (!isEmptyArray(markerExists)) {
-          const filteredMarkers = _.filter(
-            valueInState.markers || savedFilters.markers,
-            (marker: string) => marker !== newMarker.name
-          )
-          const value = { ...valueInState, markers: filteredMarkers }
-
-          if (isEmptyArray(filteredMarkers)) {
-            delete (value as any).markers
-          }
-
-          if (!isEmptyArray(savedMarkers)) {
-            delete savedFilters.markers
-
-            return {
-              ...prevState,
-              savedFilters,
-              value,
-            }
-          }
-
-          return {
-            ...prevState,
-            savedFilters,
-            value,
-          }
-        }
-        const changedMarkers = valueInState.markers ? [...valueInState.markers, newMarker.name] : [newMarker.name]
-
-        if (!isEmptyArray(savedMarkers)) {
-          return {
-            ...prevState,
-            savedFilters: { ...savedFilters, markers: savedMarkers },
-            value: { ...valueInState, markers: savedMarkers },
-          }
-        }
-        delete savedFilters.markers
-
-        if (isEmptyArray(changedMarkers)) {
-          delete valueInState.markers
-          return {
-            ...prevState,
-            savedFilters,
-            value: valueInState,
-          }
-
-        }
-
-        return {
-          ...prevState,
-          savedFilters,
-          value: { ...valueInState, markers: changedMarkers },
         }
       },
       () => {
@@ -562,7 +477,7 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
                     >
                       {el.shownValue}
                     </summary>
-                    <div className="inner-items">zx
+                    <div className="inner-items">
                       {this.checkForInputFilter(el.payload) ? (
                         <SearchAutocomplete
                           values={el.values}
@@ -601,7 +516,7 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
               <SearchMarkers
                 markers={this.markers}
                 searchValue={value}
-                handleMarkerFilterChange={this.handleMarkerFilterChange}
+                self={this}
               />
             )}
           </div>
