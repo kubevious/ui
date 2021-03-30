@@ -24,6 +24,7 @@ import {
 import { SelectedData, EditorItem } from "../../types"
 import { SearchInput } from "./SearchInput"
 import { SearchFilter } from "./SearchFilter"
+import { SearchResults } from "./SearchResults"
 
 export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
   markers: MarkersList
@@ -61,20 +62,16 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
       },
       wasFiltered: false,
     }
+    this.handleChange = this.handleChange.bind(this)
   }
 
   fetchResults(criteria: SearchValue): void {
     this.service.fetchSearchResults(
       criteria,
-      (response: {
-        results: SelectedData[]
-        totalCount: number
-        wasFiltered: boolean
-      }) => {
+      (response: SelectedData[]) => {
         this.setState({
-          result: response.results,
-          totalCount: response.totalCount,
-          wasFiltered: response.wasFiltered,
+          result: response,
+          totalCount: response.length,
         })
       }
     )
@@ -567,219 +564,198 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
           toggleFilter={this.toggleFilter}
           deleteFilter={this.deleteFilter}
         />
-          <div className="search-area">
-            <div className="filter-list filter-box">
-              {[this.kinds, ...FILTERS_LIST] &&
-                [this.kinds, ...FILTERS_LIST].map((el) => {
-                  return (
-                    <details open key={el.payload}>
-                      <summary
-                        className={cx("filter-list inner", {
-                          "is-active": !!value[el.payload],
-                        })}
-                      >
-                        {el.shownValue}
-                      </summary>
-                      <div className="inner-items">
-                        {this.checkForInputFilter(el.payload) ? (
-                          <div className="filter-input-box">
-                            {el.values &&
-                              el.values.map((item, index) => {
-                                const currentKey = currentInput[el.payload].key
-                                const currentVal = currentInput[el.payload].value
-                                return (
-                                  <Fragment key={item.title}>
-                                    <label>{item.title}</label>
-                                    {item.title === "Label" ||
-                                      item.title === "Annotation" ? (
-                                      <Autocomplete
-                                        getItemValue={(value) => value}
-                                        items={autocomplete[el.payload].keys}
-                                        value={currentKey}
-                                        onChange={(e) =>
-                                          this.handleFilterInput(
-                                            e.target.value,
-                                            el.payload,
-                                            item.payload
-                                          )
-                                        }
-                                        onSelect={(val) =>
-                                          this.handleFilterInput(
-                                            val,
-                                            el.payload,
-                                            item.payload
-                                          )
-                                        }
-                                        renderItem={(content) => (
-                                          <div>{content}</div>
-                                        )}
-                                        renderMenu={(items) => (
-                                          <div
-                                            className="autocomplete"
-                                            children={items}
-                                          />
-                                        )}
-                                        renderInput={(props) => (
-                                          <input
-                                            disabled={
-                                              currentInput[el.payload].disabled
-                                            }
-                                            {...props}
-                                          />
-                                        )}
-                                        onMenuVisibilityChange={() =>
-                                          this.fetchKeys(el.payload, currentKey)
-                                        }
-                                      />
-                                    ) : (
-                                      <Autocomplete
-                                        getItemValue={(value) => value}
-                                        items={autocomplete[el.payload].values}
-                                        value={currentVal}
-                                        onChange={(e) =>
-                                          this.handleFilterInput(
-                                            e.target.value,
-                                            el.payload,
-                                            item.payload
-                                          )
-                                        }
-                                        onSelect={(val) =>
-                                          this.handleFilterInput(
-                                            val,
-                                            el.payload,
-                                            item.payload
-                                          )
-                                        }
-                                        renderItem={(content) => (
-                                          <div>{content.substring(0, 70)}</div>
-                                        )}
-                                        renderMenu={(items, index) => (
-                                          <div
-                                            key={index}
-                                            className="autocomplete"
-                                            children={items}
-                                          />
-                                        )}
-                                        renderInput={(props) => (
-                                          <input
-                                            disabled={!currentKey}
-                                            {...props}
-                                          />
-                                        )}
-                                        onMenuVisibilityChange={() =>
-                                          this.fetchValues(
-                                            el.payload,
-                                            currentKey,
-                                            currentVal
-                                          )
-                                        }
-                                      />
-                                    )}
-                                  </Fragment>
-                                )
-                              })}
-                            {currentInput[el.payload].key &&
-                              currentInput[el.payload].value && (
-                                <div className="filter-input-btns">
-                                  <button
-                                    type="button"
-                                    className="add-filter-btn"
-                                    onClick={() => this.addInputField(el.payload)}
-                                  >
-                                    Add
+        <div className="search-area">
+          <div className="filter-list filter-box">
+            {[this.kinds, ...FILTERS_LIST] &&
+              [this.kinds, ...FILTERS_LIST].map((el) => {
+                return (
+                  <details open key={el.payload}>
+                    <summary
+                      className={cx("filter-list inner", {
+                        "is-active": !!value[el.payload],
+                      })}
+                    >
+                      {el.shownValue}
+                    </summary>
+                    <div className="inner-items">
+                      {this.checkForInputFilter(el.payload) ? (
+                        <div className="filter-input-box">
+                          {el.values &&
+                            el.values.map((item, index) => {
+                              const currentKey = currentInput[el.payload].key
+                              const currentVal = currentInput[el.payload].value
+                              return (
+                                <Fragment key={item.title}>
+                                  <label>{item.title}</label>
+                                  {item.title === "Label" ||
+                                    item.title === "Annotation" ? (
+                                    <Autocomplete
+                                      getItemValue={(value) => value}
+                                      items={autocomplete[el.payload].keys}
+                                      value={currentKey}
+                                      onChange={(e) =>
+                                        this.handleFilterInput(
+                                          e.target.value,
+                                          el.payload,
+                                          item.payload
+                                        )
+                                      }
+                                      onSelect={(val) =>
+                                        this.handleFilterInput(
+                                          val,
+                                          el.payload,
+                                          item.payload
+                                        )
+                                      }
+                                      renderItem={(content) => (
+                                        <div>{content}</div>
+                                      )}
+                                      renderMenu={(items) => (
+                                        <div
+                                          className="autocomplete"
+                                          children={items}
+                                        />
+                                      )}
+                                      renderInput={(props) => (
+                                        <input
+                                          disabled={
+                                            currentInput[el.payload].disabled
+                                          }
+                                          {...props}
+                                        />
+                                      )}
+                                      onMenuVisibilityChange={() =>
+                                        this.fetchKeys(el.payload, currentKey)
+                                      }
+                                    />
+                                  ) : (
+                                    <Autocomplete
+                                      getItemValue={(value) => value}
+                                      items={autocomplete[el.payload].values}
+                                      value={currentVal}
+                                      onChange={(e) =>
+                                        this.handleFilterInput(
+                                          e.target.value,
+                                          el.payload,
+                                          item.payload
+                                        )
+                                      }
+                                      onSelect={(val) =>
+                                        this.handleFilterInput(
+                                          val,
+                                          el.payload,
+                                          item.payload
+                                        )
+                                      }
+                                      renderItem={(content) => (
+                                        <div>{content.substring(0, 70)}</div>
+                                      )}
+                                      renderMenu={(items, index) => (
+                                        <div
+                                          key={index}
+                                          className="autocomplete"
+                                          children={items}
+                                        />
+                                      )}
+                                      renderInput={(props) => (
+                                        <input
+                                          disabled={!currentKey}
+                                          {...props}
+                                        />
+                                      )}
+                                      onMenuVisibilityChange={() =>
+                                        this.fetchValues(
+                                          el.payload,
+                                          currentKey,
+                                          currentVal
+                                        )
+                                      }
+                                    />
+                                  )}
+                                </Fragment>
+                              )
+                            })}
+                          {currentInput[el.payload].key &&
+                            currentInput[el.payload].value && (
+                              <div className="filter-input-btns">
+                                <button
+                                  type="button"
+                                  className="add-filter-btn"
+                                  onClick={() => this.addInputField(el.payload)}
+                                >
+                                  Add
                                 </button>
-                                  <button
-                                    type="button"
-                                    onClick={() => this.clearFilter(el.payload)}
-                                  >
-                                    Remove
+                                <button
+                                  type="button"
+                                  onClick={() => this.clearFilter(el.payload)}
+                                >
+                                  Remove
                                 </button>
-                                </div>
-                              )}
-                          </div>
-                        ) : (
-                          el.values &&
-                          el.values.map((item) => (
-                            <button
-                              key={item.title}
-                              className={
-                                value[el.payload] === item.payload
-                                  ? "selected-filter"
-                                  : ""
-                              }
-                              onClick={() =>
-                                this.handleFilterChange(el.payload, item.payload)
-                              }
-                            >
-                              {item.title}
-                            </button>
-                          ))
-                        )}
-                      </div>
-                    </details>
-                  )
-                })}
-              {!isEmptyArray(this.markers.values) && (
-                <details open key={this.markers.payload}>
-                  <summary
-                    className={cx("filter-list inner", {
-                      "is-active": !!value[this.markers.payload],
-                    })}
-                  >
-                    {this.markers.shownValue}
-                  </summary>
-                  <div className="inner-items">
-                    {this.markers.values &&
-                      this.markers.values.map((item) => {
-                        return (
+                              </div>
+                            )}
+                        </div>
+                      ) : (
+                        el.values &&
+                        el.values.map((item) => (
                           <button
-                            title={item.name}
-                            key={item.name}
+                            key={item.title}
                             className={
-                              value.markers &&
-                                value.markers.find((marker) => marker === item.name)
+                              value[el.payload] === item.payload
                                 ? "selected-filter"
                                 : ""
                             }
                             onClick={() =>
-                              this.handleMarkerFilterChange(item.name || "")
+                              this.handleFilterChange(el.payload, item.payload)
                             }
                           >
-                            <MarkerPreview
-                              shape={item.shape}
-                              color={item.color}
-                            />
-                            {item.name}
+                            {item.title}
                           </button>
-                        )
-                      })}
-                  </div>
-                </details>
-              )}
-            </div>
-            <div className="search-results">
-              {isEmptyArray(result) ? (
-                <div className="result-placeholder">
-                  {wasFiltered
-                    ? "No items matching search criteria"
-                    : "No search criteria defined"}
-                </div>
-              ) : (
-                <>
-                  {result &&
-                    result.map((item, index) => (
-                      <DnShortcutComponent key={index} dn={item.dn} />
-                    ))}
-                  {result.length < totalCount && (
-                    <div className="limited-results-msg">
-                      The first 200 items are shown. Please refine your search
-                      query to see more
+                        ))
+                      )}
                     </div>
-                  )}
-                </>
-              )}
-            </div>
+                  </details>
+                )
+              })}
+            {!isEmptyArray(this.markers.values) && (
+              <details open key={this.markers.payload}>
+                <summary
+                  className={cx("filter-list inner", {
+                    "is-active": !!value[this.markers.payload],
+                  })}
+                >
+                  {this.markers.shownValue}
+                </summary>
+                <div className="inner-items">
+                  {this.markers.values &&
+                    this.markers.values.map((item) => {
+                      return (
+                        <button
+                          title={item.name}
+                          key={item.name}
+                          className={
+                            value.markers &&
+                              value.markers.find((marker) => marker === item.name)
+                              ? "selected-filter"
+                              : ""
+                          }
+                          onClick={() =>
+                            this.handleMarkerFilterChange(item.name || "")
+                          }
+                        >
+                          <MarkerPreview
+                            shape={item.shape}
+                            color={item.color}
+                          />
+                          {item.name}
+                        </button>
+                      )
+                    })}
+                </div>
+              </details>
+            )}
           </div>
+          <SearchResults result={result} wasFiltered={!!wasFiltered} totalCount={totalCount} />
+        </div>
       </div>
     )
   }
