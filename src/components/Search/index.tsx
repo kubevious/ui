@@ -61,9 +61,6 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
       },
       wasFiltered: false,
     }
-    this.deleteFilter = this.deleteFilter.bind(this)
-    this.handleEditFilter = this.handleEditFilter.bind(this)
-    this.toggleFilter = this.toggleFilter.bind(this)
     this.checkForInputFilter = this.checkForInputFilter.bind(this)
     this.handleFilterInput = this.handleFilterInput.bind(this)
     this.fetchKeys = this.fetchKeys.bind(this)
@@ -253,157 +250,6 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
     return false
   }
 
-  deleteFilter(key: string, val: FilterType) {
-    this.setState(
-      (prevState: SearchState) => {
-        const valueInState = prevState.value
-        const savedInState = prevState.savedFilters
-        const currentFilters = valueInState[key] || []
-        const currentSavedFilters = savedInState[key] || []
-
-        if (!this.checkForInputFilter(key)) {
-          valueInState[key] && delete valueInState[key]
-          savedInState[key] && delete savedInState[key]
-          return {
-            value: { ...valueInState },
-            savedFilters: { ...savedInState },
-          }
-        }
-        if (typeof val !== "string") {
-          valueInState[key] = currentFilters.filter((filter: FilterType) =>
-            !this.keyCheck(filter, val.key || "")
-          )
-          savedInState[key] = currentSavedFilters.filter((filter: FilterType) =>
-            !this.keyCheck(filter, val.key || "")
-          )
-        }
-
-        isEmptyArray(valueInState[key]) && delete valueInState[key]
-        isEmptyArray(savedInState[key]) && delete savedInState[key]
-
-        return {
-          value: {
-            ...valueInState,
-          },
-          savedFilters: {
-            ...savedInState,
-          },
-        }
-      },
-      () => {
-        this.fetchResults(this.state.value)
-      }
-    )
-    return false
-  }
-
-  handleEditFilter(type: string, filterVal: FilterType): void {
-    this.setState((prevState: SearchState) => {
-      if (typeof filterVal === "string") {
-        return {
-          currentInput: {
-            ...prevState.currentInput,
-            [type]: {
-              disabled: true,
-            },
-          },
-        }
-      }
-      const { key, value } = filterVal
-
-      return {
-        currentInput: {
-          ...prevState.currentInput,
-          [type]: {
-            key,
-            value,
-            disabled: true,
-          },
-        },
-      }
-    })
-  }
-
-  toggleFilter(type: string, filterVal: FilterType) {
-    this.setState(
-      (prevState: SearchState) => {
-        const valueInState = prevState.value
-        const savedInState = prevState.savedFilters
-        if (!this.checkForInputFilter(type)) {
-          const deleteFromSaved = () => {
-            valueInState[type] = savedInState[type]
-            delete savedInState[type]
-          }
-
-          const addToSaved = () => {
-            savedInState[type] = valueInState[type]
-            delete valueInState[type]
-          }
-          savedInState[type] ? deleteFromSaved() : addToSaved()
-          return {
-            ...prevState,
-            value: { ...valueInState },
-            savedFilters: { ...savedInState },
-          }
-        }
-
-        let valueArray: FilterType[] = valueInState[type] || []
-        let savedArray: FilterType[] = savedInState[type] || []
-        let changedValueArray: FilterType[] = []
-        let changedSavedArray: FilterType[] = []
-        if (typeof filterVal !== "string") {
-          changedValueArray = valueArray.filter((el) =>
-            !this.keyCheck(el, filterVal.key || "")
-          )
-          changedSavedArray = savedArray.filter((el) =>
-            !this.keyCheck(el, filterVal.key || "")
-          )
-        }
-        if (savedInState[type]) {
-          const compareLength = changedSavedArray.length === savedArray.length
-
-          savedInState[type] = compareLength
-            ? [...savedArray, filterVal]
-            : changedSavedArray
-          valueInState[type] = compareLength
-            ? changedValueArray
-            : [...valueArray, filterVal]
-
-          if (isEmptyArray(valueInState[type])) {
-            return prevState
-          } else if (isEmptyArray(savedInState[type])) {
-            delete savedInState[type]
-            return prevState
-          }
-
-          return {
-            ...prevState,
-            value: {
-              ...valueInState,
-            },
-            savedFilters: {
-              ...savedInState,
-            },
-          }
-        }
-
-        valueInState[type] = changedValueArray
-        isEmptyArray(changedValueArray) && delete valueInState[type]
-        return {
-          ...prevState,
-          value: { ...valueInState },
-          savedFilters: {
-            ...savedInState,
-            [type]: [filterVal],
-          },
-        }
-      },
-      () => {
-        this.fetchResults(this.state.value)
-      }
-    )
-  }
-
   clearFilter(type: string): void {
     this.setState(
       (prevState: SearchState) => {
@@ -458,11 +304,9 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
         <SearchFilter
           value={value}
           savedFilters={savedFilters}
+          self={this}
           checkForInputFilter={this.checkForInputFilter}
           keyCheck={this.keyCheck}
-          handleEditFilter={this.handleEditFilter}
-          toggleFilter={this.toggleFilter}
-          deleteFilter={this.deleteFilter}
         />
         <div className="search-area">
           <div className="filter-list filter-box">
