@@ -39,7 +39,7 @@ steps:
     title: Prepare Test
     stage: prepare
     image: 'kubevious/node-builder:12'
-    working_directory: "${{main_clone}}/src"
+    working_directory: "${{main_clone}}"
     shell: bash
     commands:
       - "echo NODE_ENV=${NODE_ENV}"
@@ -50,7 +50,7 @@ steps:
     title: Test Mock UI
     stage: validate-mock
     image: cypress/included:4.8.0
-    working_directory: ${{main_clone}}/src
+    working_directory: ${{main_clone}}
     services:
       composition:
         ui:

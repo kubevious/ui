@@ -5,5 +5,4 @@ cd $MY_DIR
 
 export REACT_APP_MOCKED_DATA=true
 
-cd src
 npm start

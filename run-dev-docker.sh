@@ -3,11 +3,13 @@ MY_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$(basename "${BASH_SOURCE
 MY_DIR="$(dirname $MY_PATH)"
 cd $MY_DIR
 
+source configuration.sh
+
 docker run \
     -it \
     --rm \
-    --name 'kubevious-ui' \
-    -p 4000:80 \
-    --network kubevious \
+    --name "${CONTAINER_NAME}" \
+    -p ${SERVER_PORT}:80 \
+    --network ${NETWORK_NAME} \
     -e BACKEND_URL=kubevious-backend:4001 \
-    kubevious-ui-react:dev
+    ${IMAGE_NAME}

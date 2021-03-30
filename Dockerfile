@@ -1,15 +1,21 @@
 ###############################################################################
 # Step 1 : Builder image
-FROM kubevious/react-builder:12 as build
+FROM kubevious/node-builder:14 as build
+RUN node --version
+RUN npm --version
+# ENV NODE_ENV production
+# ENV NODE_ENV development
+# ENV PATH /app/node_modules/.bin:$PATH
+ENV SKIP_PREFLIGHT_CHECK true
 WORKDIR /app
-ENV NODE_ENV production
-ENV PATH /app/node_modules/.bin:$PATH
-COPY src/package.json ./
-COPY src/package-lock.json ./
-RUN npm ci --only=production
-COPY src/ ./
+COPY ./package*.json ./
+RUN npm ci
+COPY ./public ./public
+COPY ./tools ./tools
+COPY ./src ./src
+COPY ./tsconfig.json ./
+RUN ./tools/sync-public.sh
 RUN npm run build
-# RUN node --expose-gc --max-old-space-size=700 node_modules/react-scripts/scripts/build.js
 
 ###############################################################################
 # Step 2 : Runner image

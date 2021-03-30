@@ -5,5 +5,4 @@ cd $MY_DIR
 
 export BACKEND_URL=http://localhost:4001
 
-cd src
 npm start

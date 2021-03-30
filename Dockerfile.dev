@@ -1,9 +1,0 @@
-# https://mherman.org/blog/dockerizing-a-react-app/
-FROM kubevious/react-builder:12
-WORKDIR /app
-ENV PATH /app/node_modules/.bin:$PATH
-COPY src/package.json ./
-COPY src/package-lock.json ./
-RUN npm install
-COPY src/ ./
-CMD ["npm", "start"]
