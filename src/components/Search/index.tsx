@@ -1,11 +1,9 @@
 import _ from "the-lodash"
 import React, { Fragment } from "react"
 import Autocomplete from "react-autocomplete"
-import { isEmptyArray, isEmptyObject } from "../../utils/util"
+import { isEmptyArray } from "../../utils/util"
 import { KIND_TO_USER_MAPPING } from "@kubevious/helpers/dist/docs"
-import { prettyKind } from "../../utils/ui-utils"
 import { MarkerPreview } from '@kubevious/ui-rule-engine'
-import { DnShortcutComponent } from '@kubevious/ui-components';
 import { ClassComponent } from "@kubevious/ui-framework"
 import { FILTERS_LIST } from "../../boot/filterData"
 import cx from "classnames"
@@ -19,12 +17,13 @@ import {
   SearchValue,
   KindListValue,
   FilterType,
-  FilterObjectType,
 } from "./types"
 import { SelectedData, EditorItem } from "../../types"
 import { SearchInput } from "./SearchInput"
 import { SearchFilter } from "./SearchFilter"
 import { SearchResults } from "./SearchResults"
+import { SearchMarkers } from "./SearchMarkers"
+import { SearchAutocomplete } from "./SearchAutocomplete"
 
 export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
   markers: MarkersList
@@ -62,7 +61,16 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
       },
       wasFiltered: false,
     }
-    this.handleChange = this.handleChange.bind(this)
+    this.handleMarkerFilterChange = this.handleMarkerFilterChange.bind(this)
+    this.deleteFilter = this.deleteFilter.bind(this)
+    this.handleEditFilter = this.handleEditFilter.bind(this)
+    this.toggleFilter = this.toggleFilter.bind(this)
+    this.checkForInputFilter = this.checkForInputFilter.bind(this)
+    this.handleFilterInput = this.handleFilterInput.bind(this)
+    this.fetchKeys = this.fetchKeys.bind(this)
+    this.fetchValues = this.fetchValues.bind(this)
+    this.addInputField = this.addInputField.bind(this)
+    this.clearFilter = this.clearFilter.bind(this)
   }
 
   fetchResults(criteria: SearchValue): void {
@@ -143,29 +151,6 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
 
   checkForInputFilter(payload: string): boolean {
     return payload === "labels" || payload === "annotations"
-  }
-
-  handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
-    const input = e.target.value
-    this.setState(
-      (prevState: SearchState) => {
-        const valueInState = prevState.value || {}
-        if (!input) {
-          delete valueInState.criteria
-          return {
-            ...prevState,
-            value: { ...valueInState },
-          }
-        }
-        return {
-          ...prevState,
-          value: { ...valueInState, criteria: input },
-        }
-      },
-      () => {
-        this.fetchResults(this.state.value)
-      }
-    )
   }
 
   handleFilterChange(
@@ -553,7 +538,7 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
       <div className="Search-wrapper p-40 overflow-hide">
         <SearchInput
           criteria={value.criteria || ''}
-          handleChange={this.handleChange}
+          self={this}
         />
         <SearchFilter
           value={value}
@@ -577,123 +562,19 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
                     >
                       {el.shownValue}
                     </summary>
-                    <div className="inner-items">
+                    <div className="inner-items">zx
                       {this.checkForInputFilter(el.payload) ? (
-                        <div className="filter-input-box">
-                          {el.values &&
-                            el.values.map((item, index) => {
-                              const currentKey = currentInput[el.payload].key
-                              const currentVal = currentInput[el.payload].value
-                              return (
-                                <Fragment key={item.title}>
-                                  <label>{item.title}</label>
-                                  {item.title === "Label" ||
-                                    item.title === "Annotation" ? (
-                                    <Autocomplete
-                                      getItemValue={(value) => value}
-                                      items={autocomplete[el.payload].keys}
-                                      value={currentKey}
-                                      onChange={(e) =>
-                                        this.handleFilterInput(
-                                          e.target.value,
-                                          el.payload,
-                                          item.payload
-                                        )
-                                      }
-                                      onSelect={(val) =>
-                                        this.handleFilterInput(
-                                          val,
-                                          el.payload,
-                                          item.payload
-                                        )
-                                      }
-                                      renderItem={(content) => (
-                                        <div>{content}</div>
-                                      )}
-                                      renderMenu={(items) => (
-                                        <div
-                                          className="autocomplete"
-                                          children={items}
-                                        />
-                                      )}
-                                      renderInput={(props) => (
-                                        <input
-                                          disabled={
-                                            currentInput[el.payload].disabled
-                                          }
-                                          {...props}
-                                        />
-                                      )}
-                                      onMenuVisibilityChange={() =>
-                                        this.fetchKeys(el.payload, currentKey)
-                                      }
-                                    />
-                                  ) : (
-                                    <Autocomplete
-                                      getItemValue={(value) => value}
-                                      items={autocomplete[el.payload].values}
-                                      value={currentVal}
-                                      onChange={(e) =>
-                                        this.handleFilterInput(
-                                          e.target.value,
-                                          el.payload,
-                                          item.payload
-                                        )
-                                      }
-                                      onSelect={(val) =>
-                                        this.handleFilterInput(
-                                          val,
-                                          el.payload,
-                                          item.payload
-                                        )
-                                      }
-                                      renderItem={(content) => (
-                                        <div>{content.substring(0, 70)}</div>
-                                      )}
-                                      renderMenu={(items, index) => (
-                                        <div
-                                          key={index}
-                                          className="autocomplete"
-                                          children={items}
-                                        />
-                                      )}
-                                      renderInput={(props) => (
-                                        <input
-                                          disabled={!currentKey}
-                                          {...props}
-                                        />
-                                      )}
-                                      onMenuVisibilityChange={() =>
-                                        this.fetchValues(
-                                          el.payload,
-                                          currentKey,
-                                          currentVal
-                                        )
-                                      }
-                                    />
-                                  )}
-                                </Fragment>
-                              )
-                            })}
-                          {currentInput[el.payload].key &&
-                            currentInput[el.payload].value && (
-                              <div className="filter-input-btns">
-                                <button
-                                  type="button"
-                                  className="add-filter-btn"
-                                  onClick={() => this.addInputField(el.payload)}
-                                >
-                                  Add
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={() => this.clearFilter(el.payload)}
-                                >
-                                  Remove
-                                </button>
-                              </div>
-                            )}
-                        </div>
+                        <SearchAutocomplete
+                          values={el.values}
+                          payload={el.payload}
+                          currentInput={currentInput}
+                          autocomplete={autocomplete}
+                          handleFilterInput={this.handleFilterInput}
+                          fetchKeys={this.fetchKeys}
+                          fetchValues={this.fetchValues}
+                          addInputField={this.addInputField}
+                          clearFilter={this.clearFilter}
+                        />
                       ) : (
                         el.values &&
                         el.values.map((item) => (
@@ -717,41 +598,11 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
                 )
               })}
             {!isEmptyArray(this.markers.values) && (
-              <details open key={this.markers.payload}>
-                <summary
-                  className={cx("filter-list inner", {
-                    "is-active": !!value[this.markers.payload],
-                  })}
-                >
-                  {this.markers.shownValue}
-                </summary>
-                <div className="inner-items">
-                  {this.markers.values &&
-                    this.markers.values.map((item) => {
-                      return (
-                        <button
-                          title={item.name}
-                          key={item.name}
-                          className={
-                            value.markers &&
-                              value.markers.find((marker) => marker === item.name)
-                              ? "selected-filter"
-                              : ""
-                          }
-                          onClick={() =>
-                            this.handleMarkerFilterChange(item.name || "")
-                          }
-                        >
-                          <MarkerPreview
-                            shape={item.shape}
-                            color={item.color}
-                          />
-                          {item.name}
-                        </button>
-                      )
-                    })}
-                </div>
-              </details>
+              <SearchMarkers
+                markers={this.markers}
+                searchValue={value}
+                handleMarkerFilterChange={this.handleMarkerFilterChange}
+              />
             )}
           </div>
           <SearchResults result={result} wasFiltered={!!wasFiltered} totalCount={totalCount} />
