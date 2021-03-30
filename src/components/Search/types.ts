@@ -50,31 +50,35 @@ export type SearchValue = {
     }
 }
 
+export type CurrentInput = {
+    labels: {
+        key: string
+        value: string
+    }
+    annotations: {
+        key: string
+        value: string
+    }
+}
+
+export type Autocomplete = {
+    labels: {
+        keys: string[];
+        values: string[];
+    };
+    annotations: {
+        keys: string[];
+        values: string[];
+    };
+}
+
 export type SearchState = {
     result: SelectedData[]
     totalCount: number
     value: SearchValue
     savedFilters: SearchValue
-    currentInput: {
-        labels: {
-            key: string
-            value: string
-        }
-        annotations: {
-            key: string
-            value: string
-        }
-    }
-    autocomplete: {
-        labels: {
-            keys: string[]
-            values: string[]
-        }
-        annotations: {
-            keys: string[]
-            values: string[]
-        }
-    }
+    currentInput: CurrentInput
+    autocomplete: Autocomplete
     wasFiltered?: boolean,
     markers?: string[]
 
