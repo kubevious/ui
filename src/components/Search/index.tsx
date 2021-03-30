@@ -62,11 +62,6 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
       wasFiltered: false,
     }
     this.checkForInputFilter = this.checkForInputFilter.bind(this)
-    this.handleFilterInput = this.handleFilterInput.bind(this)
-    this.fetchKeys = this.fetchKeys.bind(this)
-    this.fetchValues = this.fetchValues.bind(this)
-    this.addInputField = this.addInputField.bind(this)
-    this.clearFilter = this.clearFilter.bind(this)
   }
 
   fetchResults(criteria: SearchValue): void {
@@ -76,45 +71,6 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
         this.setState({
           result: response,
           totalCount: response.length,
-        })
-      }
-    )
-  }
-
-  fetchValues(type: string, key: string, criteria: string): void {
-    if (!key) {
-      return
-    }
-    this.service.fetchAutocompleteValues(
-      type,
-      { key, criteria },
-      (response) => {
-        this.setState((prevState: SearchState) => {
-          prevState.autocomplete[type].values = response
-          return {
-            ...prevState,
-            autocomplete: {
-              ...prevState.autocomplete,
-            },
-          }
-        })
-      }
-    )
-  }
-
-  fetchKeys(type: string, criteria: string): void {
-    return this.service.fetchAutocompleteKeys(
-      type,
-      { criteria },
-      (response) => {
-        this.setState((prevState: SearchState) => {
-          prevState.autocomplete[type].keys = response
-          return {
-            ...prevState,
-            autocomplete: {
-              ...prevState.autocomplete,
-            },
-          }
         })
       }
     )
@@ -177,110 +133,6 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
     )
   }
 
-  handleFilterInput(value: string, name: string, title: FilterType): void {
-    this.setState((prevState: SearchState) => {
-      if (title === "key") {
-        this.fetchKeys(name, value)
-        prevState.currentInput[name].key = value
-        return {
-          ...prevState,
-          currentInput: {
-            ...prevState.currentInput,
-          },
-        }
-      }
-      const currentKey: string = prevState.currentInput[name].key
-      this.fetchValues(name, currentKey, value)
-      prevState.currentInput[name].value = value
-      return {
-        ...prevState,
-        currentInput: {
-          ...prevState.currentInput,
-        },
-      }
-    })
-  }
-
-  addInputField(type: string): boolean {
-    this.setState(
-      (prevState: SearchState) => {
-        const input = prevState.currentInput[type]
-        if (!input.key) {
-          return {
-            ...prevState,
-          }
-        }
-        const savedInState = prevState.savedFilters
-        const currentInputInState = prevState.currentInput
-        const searchValue: {
-          key: string
-          value: string
-        }[] = prevState.value[type] || []
-        const elementIndex = searchValue.findIndex((el) => el.key === input.key)
-        elementIndex !== -1
-          ? (searchValue[elementIndex] = input)
-          : searchValue.push(input)
-        const searchValueInSaved: {
-          key: string
-          value: string
-        }[] = savedInState[type] || []
-        const filteredSaved = searchValueInSaved.filter(
-          (el) => el.key !== input.key
-        )
-        savedInState[type] = filteredSaved
-        isEmptyArray(filteredSaved) && delete savedInState[type]
-        currentInputInState[type] = { key: "", value: "" }
-        return {
-          value: {
-            ...prevState.value,
-            [type]: searchValue,
-          },
-          savedFilters: {
-            ...savedInState,
-          },
-          currentInput: {
-            ...currentInputInState,
-          },
-        }
-      },
-      () => {
-        this.fetchResults(this.state.value)
-      }
-    )
-    return false
-  }
-
-  clearFilter(type: string): void {
-    this.setState(
-      (prevState: SearchState) => {
-        const { key }: { key: string } = prevState.currentInput[type]
-        const valueInState = prevState.value
-        const changedValueArray: FilterType[] =
-          valueInState[type] &&
-          valueInState[type].filter((el: FilterType) => this.keyCheck(el, key))
-        isEmptyArray(changedValueArray)
-          ? delete valueInState[type]
-          : (valueInState[type] = changedValueArray)
-        return {
-          ...prevState,
-          currentInput: {
-            ...prevState.currentInput,
-            [type]: {
-              key: "",
-              value: "",
-            },
-            value: {
-              ...valueInState,
-            },
-          },
-        }
-      },
-      () => {
-        this.fetchResults(this.state.value)
-      }
-    )
-  }
-
   keyCheck(el: FilterType, key: string): boolean {
     return typeof el !== "string" && el.key === key
   }
@@ -328,11 +180,7 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
                           payload={el.payload}
                           currentInput={currentInput}
                           autocomplete={autocomplete}
-                          handleFilterInput={this.handleFilterInput}
-                          fetchKeys={this.fetchKeys}
-                          fetchValues={this.fetchValues}
-                          addInputField={this.addInputField}
-                          clearFilter={this.clearFilter}
+                          self={this}
                         />
                       ) : (
                         el.values &&
