@@ -1,3 +1,4 @@
+import { Search } from "."
 import { SelectedData, EditorItem } from "../../types"
 
 export type List = {
@@ -82,4 +83,43 @@ export type SearchState = {
     wasFiltered?: boolean,
     markers?: string[]
 
+}
+
+export type FiltersList = {
+    payload: string;
+    shownValue: string;
+    values: {
+        title: string;
+        payload: string;
+    }[] | {
+        title: string;
+        payload: {
+            kind: string;
+            count: number;
+        };
+    }[];
+}
+
+export type SearchProps = {
+    isKinds?: boolean,
+    isMarkers?: boolean,
+    filterList?: FiltersList[]
+  }
+
+  export type SearchFilterItemProps = {
+    value: SearchValue
+    el: KindList
+    parent: Search
+    checkForInputFilter: (payload: string) => boolean
+    handleFilterChange: (
+        name: string,
+        title:
+            | string
+            | {
+                  kind: string
+                  count: number
+              }
+    ) => void
+    autocomplete: Autocomplete
+    currentInput: CurrentInput
 }

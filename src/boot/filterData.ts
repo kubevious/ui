@@ -1,6 +1,8 @@
+import { FiltersList } from "../components/Search/types"
+
 const alertsEnum = Object.freeze({ 0: "at-most", 1: "at-least" })
 
-export const FILTERS_LIST = [
+export const FILTERS_LIST: FiltersList[] = [
     {
         payload: "labels",
         shownValue: "Labels",

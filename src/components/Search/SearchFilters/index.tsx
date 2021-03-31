@@ -3,9 +3,9 @@ import { isEmptyArray, isEmptyObject } from "../../../utils/util"
 import { FilterObjectType, FilterType, SearchState, SearchValue } from "../types"
 import cx from "classnames"
 import { prettyKind } from "../../../utils/ui-utils"
-import { Search } from "../"
+import { Search } from ".."
 
-export const SearchFilter = ({
+export const SearchFilters = ({
     value,
     savedFilters,
     self,

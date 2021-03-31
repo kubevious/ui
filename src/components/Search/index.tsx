@@ -1,12 +1,8 @@
 import _ from "the-lodash"
-import React, { Fragment } from "react"
-import Autocomplete from "react-autocomplete"
+import React from "react"
 import { isEmptyArray } from "../../utils/util"
 import { KIND_TO_USER_MAPPING } from "@kubevious/helpers/dist/docs"
-import { MarkerPreview } from '@kubevious/ui-rule-engine'
 import { ClassComponent } from "@kubevious/ui-framework"
-import { FILTERS_LIST } from "../../boot/filterData"
-import cx from "classnames"
 
 import "./styles.scss"
 import { IDiagramService } from "@kubevious/ui-middleware"
@@ -17,22 +13,31 @@ import {
   SearchValue,
   KindListValue,
   FilterType,
+  FiltersList,
+  SearchProps, 
 } from "./types"
-import { SelectedData, EditorItem } from "../../types"
+import { EditorItem } from "../../types"
 import { SearchInput } from "./SearchInput"
-import { SearchFilter } from "./SearchFilter"
+import { SearchFilters } from "./SearchFilters"
 import { SearchResults } from "./SearchResults"
 import { SearchMarkers } from "./SearchMarkers"
-import { SearchAutocomplete } from "./SearchAutocomplete"
+import { SearchFilterExpander } from "./SearchFilterExpander"
 
-export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
+export class Search extends ClassComponent<SearchProps, SearchState, IDiagramService> {
   markers: MarkersList
   kinds: KindList
+  isKinds: boolean
+  isMarkers: boolean
+  filterList: FiltersList[]
   constructor(props) {
     super(props, null, { kind: "diagram" })
 
     this.kinds = this.getKindsList()
     this.markers = this.getMarkersList()
+
+    this.isKinds = props.isKinds
+    this.isMarkers = props.isMarkers
+    this.filterList = props.filterList || []
 
     this.state = {
       result: [],
@@ -62,13 +67,18 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
       wasFiltered: false,
     }
     this.checkForInputFilter = this.checkForInputFilter.bind(this)
+    this.handleFilterChange = this.handleFilterChange.bind(this)
   }
 
   fetchResults(criteria: SearchValue): void {
     this.service.fetchSearchResults(
       criteria,
-      (response: SelectedData[]) => {
-        this.setState({
+      (response: any) => {
+        response.results ? this.setState({
+          wasFiltered: response.wasFiltered,
+          result: response.result,
+          totalCount: response.totalCount
+      }) : this.setState({
           result: response,
           totalCount: response.length,
         })
@@ -147,13 +157,18 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
       wasFiltered,
       autocomplete,
     } = this.state
+
+    const filtersList = this.isKinds ? [
+      this.kinds,
+      ...this.filterList
+    ] : this.filterList
     return (
       <div className="Search-wrapper p-40 overflow-hide">
         <SearchInput
           criteria={value.criteria || ''}
           self={this}
         />
-        <SearchFilter
+        <SearchFilters
           value={value}
           savedFilters={savedFilters}
           self={this}
@@ -162,49 +177,21 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
         />
         <div className="search-area">
           <div className="filter-list filter-box">
-            {[this.kinds, ...FILTERS_LIST] &&
-              [this.kinds, ...FILTERS_LIST].map((el) => {
+            {filtersList &&
+              filtersList.map((el) => {
                 return (
-                  <details open key={el.payload}>
-                    <summary
-                      className={cx("filter-list inner", {
-                        "is-active": !!value[el.payload],
-                      })}
-                    >
-                      {el.shownValue}
-                    </summary>
-                    <div className="inner-items">
-                      {this.checkForInputFilter(el.payload) ? (
-                        <SearchAutocomplete
-                          values={el.values}
-                          payload={el.payload}
-                          currentInput={currentInput}
-                          autocomplete={autocomplete}
-                          self={this}
-                        />
-                      ) : (
-                        el.values &&
-                        el.values.map((item) => (
-                          <button
-                            key={item.title}
-                            className={
-                              value[el.payload] === item.payload
-                                ? "selected-filter"
-                                : ""
-                            }
-                            onClick={() =>
-                              this.handleFilterChange(el.payload, item.payload)
-                            }
-                          >
-                            {item.title}
-                          </button>
-                        ))
-                      )}
-                    </div>
-                  </details>
+                  <SearchFilterExpander
+                    value={value}
+                    el={el}
+                    parent={this}
+                    checkForInputFilter={this.checkForInputFilter}
+                    handleFilterChange={this.handleFilterChange}
+                    autocomplete={autocomplete}
+                    currentInput={currentInput}
+                  />
                 )
               })}
-            {!isEmptyArray(this.markers.values) && (
+            {!isEmptyArray(this.markers.values) && this.isMarkers && (
               <SearchMarkers
                 markers={this.markers}
                 searchValue={value}
