@@ -9,7 +9,6 @@ import { IDiagramService } from "@kubevious/ui-middleware"
 import {
   MarkersList,
   KindList,
-  SearchState,
   SearchValue,
   KindListValue,
   FilterType,
@@ -22,8 +21,36 @@ import { SearchFilters } from "./SearchFilters"
 import { SearchResults } from "./SearchResults"
 import { SearchMarkers } from "./SearchMarkers"
 import { SearchFilterExpander } from "./SearchFilterExpander"
+import { sharedState } from "../../configureService"
 
-export class Search extends ClassComponent<SearchProps, SearchState, IDiagramService> {
+const initialState = {
+  savedFilters: {},
+  currentInput: {
+    labels: {
+      key: "",
+      value: "",
+    },
+    annotations: {
+      key: "",
+      value: "",
+    },
+  },
+  autocomplete: {
+    labels: {
+      keys: [],
+      values: [],
+    },
+    annotations: {
+      keys: [],
+      values: [],
+    },
+  },
+}
+
+export class Search extends ClassComponent<SearchProps, any, IDiagramService> {
+  fetchSearchResults(criteria: SearchValue) {
+      this.fetchResults(criteria)
+  }
   markers: MarkersList
   kinds: KindList
   isKinds: boolean
@@ -38,50 +65,22 @@ export class Search extends ClassComponent<SearchProps, SearchState, IDiagramSer
     this.isKinds = props.isKinds
     this.isMarkers = props.isMarkers
     this.filterList = props.filterList || []
-
-    this.state = {
-      result: [],
-      totalCount: 0,
-      value: {},
-      savedFilters: {},
-      currentInput: {
-        labels: {
-          key: "",
-          value: "",
-        },
-        annotations: {
-          key: "",
-          value: "",
-        },
-      },
-      autocomplete: {
-        labels: {
-          keys: [],
-          values: [],
-        },
-        annotations: {
-          keys: [],
-          values: [],
-        },
-      },
-      wasFiltered: false,
-    }
-    this.checkForInputFilter = this.checkForInputFilter.bind(this)
-    this.handleFilterChange = this.handleFilterChange.bind(this)
+    this.state = initialState
+    this.fetchResults = this.fetchResults.bind(this)
   }
 
   fetchResults(criteria: SearchValue): void {
     this.service.fetchSearchResults(
       criteria,
       (response: any) => {
-        response.results ? this.setState({
-          wasFiltered: response.wasFiltered,
-          result: response.result,
-          totalCount: response.totalCount
-      }) : this.setState({
-          result: response,
-          totalCount: response.length,
-        })
+        if (response.results) {
+          sharedState.set('wasFiltered', response.wasFiltered)
+          sharedState.set('search_result', response.result)
+          sharedState.set('totalCount', response.totalCount)
+        } else {
+          sharedState.set('search_result', response)
+          sharedState.set('totalCount', response.length)
+        }
       }
     )
   }
@@ -111,37 +110,6 @@ export class Search extends ClassComponent<SearchProps, SearchState, IDiagramSer
     }
   }
 
-  checkForInputFilter(payload: string): boolean {
-    return payload === "labels" || payload === "annotations"
-  }
-
-  handleFilterChange(
-    name: string,
-    title: string | { kind: string; count: number }
-  ): void {
-    this.setState(
-      (prevState: SearchState) => {
-        const valueInState = prevState.value || {}
-        const savedFilters = prevState.savedFilters || {}
-        if (prevState.value[name] === title) {
-          delete valueInState[name]
-          return {
-            ...prevState,
-            value: { ...valueInState },
-          }
-        }
-        prevState.savedFilters[name] && delete savedFilters[name]
-        return {
-          ...prevState,
-          value: { ...valueInState, [name]: title },
-          savedFilters: { ...savedFilters },
-        }
-      },
-      () => {
-        this.fetchResults(this.state.value)
-      }
-    )
-  }
 
   keyCheck(el: FilterType, key: string): boolean {
     return typeof el !== "string" && el.key === key
@@ -149,14 +117,11 @@ export class Search extends ClassComponent<SearchProps, SearchState, IDiagramSer
 
   render() {
     const {
-      result,
-      totalCount,
-      value,
       savedFilters,
       currentInput,
-      wasFiltered,
       autocomplete,
     } = this.state
+    const value = sharedState.get('search_value') || {}
 
     const filtersList = this.isKinds ? [
       this.kinds,
@@ -164,15 +129,11 @@ export class Search extends ClassComponent<SearchProps, SearchState, IDiagramSer
     ] : this.filterList
     return (
       <div className="Search-wrapper p-40 overflow-hide">
-        <SearchInput
-          criteria={value.criteria || ''}
-          self={this}
-        />
+        <SearchInput />
         <SearchFilters
           value={value}
           savedFilters={savedFilters}
           self={this}
-          checkForInputFilter={this.checkForInputFilter}
           keyCheck={this.keyCheck}
         />
         <div className="search-area">
@@ -184,8 +145,6 @@ export class Search extends ClassComponent<SearchProps, SearchState, IDiagramSer
                     value={value}
                     el={el}
                     parent={this}
-                    checkForInputFilter={this.checkForInputFilter}
-                    handleFilterChange={this.handleFilterChange}
                     autocomplete={autocomplete}
                     currentInput={currentInput}
                   />
@@ -193,13 +152,11 @@ export class Search extends ClassComponent<SearchProps, SearchState, IDiagramSer
               })}
             {!isEmptyArray(this.markers.values) && this.isMarkers && (
               <SearchMarkers
-                markers={this.markers}
-                searchValue={value}
                 self={this}
               />
             )}
           </div>
-          <SearchResults result={result} wasFiltered={!!wasFiltered} totalCount={totalCount} />
+          <SearchResults />
         </div>
       </div>
     )

@@ -110,16 +110,6 @@ export type SearchProps = {
     value: SearchValue
     el: KindList
     parent: Search
-    checkForInputFilter: (payload: string) => boolean
-    handleFilterChange: (
-        name: string,
-        title:
-            | string
-            | {
-                  kind: string
-                  count: number
-              }
-    ) => void
     autocomplete: Autocomplete
     currentInput: CurrentInput
 }

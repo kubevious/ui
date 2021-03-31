@@ -1,18 +1,22 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { DnShortcutComponent } from "@kubevious/ui-components"
 import { SelectedData } from "../../../types"
 import { isEmptyArray } from "../../../utils/util"
+import { sharedState } from "../../../configureService"
 
-export const SearchResults = ({
-    wasFiltered,
-    result,
-    totalCount
-}: {
-    wasFiltered: boolean,
-    result: SelectedData[],
-    totalCount: number
-}) => {
+export const SearchResults = () => {
+    const [result, setResult] = useState<SelectedData[]>([])
+    const [totalCount, setTotalCount] = useState<number>(0)
+    const [wasFiltered, setWasFiltered] = useState<boolean>(false)
 
+    useEffect(() => {
+        sharedState.subscribe("search_result", (search_result) => {
+            setResult(search_result)
+            setTotalCount(sharedState.get("totalCount"))
+            setWasFiltered(sharedState.get("wasFiltered"))
+        })
+    }, [])
+    
     return (
         <div className="search-results">
             {isEmptyArray(result) ? (

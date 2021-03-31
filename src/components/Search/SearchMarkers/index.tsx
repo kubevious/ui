@@ -1,21 +1,33 @@
 import { MarkerPreview } from "@kubevious/ui-rule-engine"
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { MarkersList, SearchState, SearchValue } from "../types"
 import cx from "classnames"
 import { Search } from "../"
 import _ from "lodash"
 import { EditorItem } from "../../../types"
 import { isEmptyArray } from "../../../utils/util"
+import { sharedState } from "../../../configureService"
 
 export const SearchMarkers = ({
-    markers,
-    searchValue,
     self,
 }: {
-    markers: MarkersList,
-    searchValue: SearchValue
     self: Search
 }) => {
+    const [markers, setMarkers] = useState<MarkersList>({
+        payload: "markers",
+        shownValue: "Markers",
+        values: [],
+    })
+    const searchValue = sharedState.get('search_value') || {}
+
+    useEffect(() => {
+        const markersFromState = sharedState.get('marker_editor_items')
+        setMarkers({
+            payload: "markers",
+            shownValue: "Markers",
+            values: markersFromState,
+        })
+    }, [])
 
     //***
     //e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -24,7 +36,7 @@ export const SearchMarkers = ({
         self.setState(
             (prevState: SearchState) => {
                 const newMarker: EditorItem = _.filter(
-                    self.markers.values,
+                    markers.values,
                     (marker: EditorItem) => marker.name === title
                 )[0]
                 if (!newMarker.name) {
@@ -69,12 +81,17 @@ export const SearchMarkers = ({
                         value,
                     }
                 }
-                const changedMarkers = valueInState.markers ? [...valueInState.markers, newMarker.name] : [newMarker.name]
+                const changedMarkers = valueInState.markers
+                    ? [...valueInState.markers, newMarker.name]
+                    : [newMarker.name]
 
                 if (!isEmptyArray(savedMarkers)) {
                     return {
                         ...prevState,
-                        savedFilters: { ...savedFilters, markers: savedMarkers },
+                        savedFilters: {
+                            ...savedFilters,
+                            markers: savedMarkers,
+                        },
                         value: { ...valueInState, markers: savedMarkers },
                     }
                 }
@@ -87,7 +104,6 @@ export const SearchMarkers = ({
                         savedFilters,
                         value: valueInState,
                     }
-
                 }
 
                 return {
@@ -120,7 +136,9 @@ export const SearchMarkers = ({
                                 key={item.name}
                                 className={
                                     searchValue.markers &&
-                                        searchValue.markers.find((marker) => marker === item.name)
+                                    searchValue.markers.find(
+                                        (marker) => marker === item.name
+                                    )
                                         ? "selected-filter"
                                         : ""
                                 }
@@ -137,5 +155,6 @@ export const SearchMarkers = ({
                         )
                     })}
             </div>
-        </details>)
+        </details>
+    )
 }

@@ -8,8 +8,6 @@ export const SearchFilterExpander: React.FunctionComponent<SearchFilterItemProps
     value,
     el,
     parent,
-    checkForInputFilter,
-    handleFilterChange,
     autocomplete,
     currentInput,
 }) => {
@@ -26,8 +24,6 @@ export const SearchFilterExpander: React.FunctionComponent<SearchFilterItemProps
                 value={value}
                 el={el}
                 parent={parent}
-                checkForInputFilter={checkForInputFilter}
-                handleFilterChange={handleFilterChange}
                 autocomplete={autocomplete}
                 currentInput={currentInput}
             />

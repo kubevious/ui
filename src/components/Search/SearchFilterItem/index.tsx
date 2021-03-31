@@ -1,16 +1,30 @@
 import React from "react"
 import { SearchFilterItemProps } from "../types"
 import { SearchAutocomplete } from "../SearchAutocomplete"
+import { sharedState } from "../../../configureService"
+import { checkForInputFilter } from "../util"
 
 export const SearchFilterItem: React.FunctionComponent<SearchFilterItemProps> = ({
     value,
     el,
     parent,
-    checkForInputFilter,
-    handleFilterChange,
     autocomplete,
     currentInput,
 }) => {
+    const handleFilterChange = (
+      name: string,
+      title: string | { kind: string; count: number }
+    ): void => {
+      const valueInState = sharedState.get('search_value') || {}
+      const savedFilters = sharedState.get('savedFilters') || {}
+      if (valueInState[name] === title) {
+        delete valueInState[name]
+        sharedState.set('search_value', { ...valueInState })
+      }
+      savedFilters[name] && delete savedFilters[name]
+      sharedState.set('savedFilters', { ...savedFilters })
+      sharedState.set('search_value', { ...valueInState, [name]: title })
+    }
     return (
             <div className="inner-items">
                 {checkForInputFilter(el.payload) ? (

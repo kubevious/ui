@@ -1,36 +1,30 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { Search } from "../"
-import { SearchState } from "../types"
+import { sharedState } from "../../../configureService"
 
-export const SearchInput = ({
-    criteria,
-    self,
-}: {
-    criteria: string,
-    self: Search
-}) => {
+export const SearchInput = () => {
+    const [criteria, setCriteria] = useState<string>("")
+    useEffect(() => {
+        sharedState.subscribe("search_value", (search_value) => {
+            setCriteria(search_value ? search_value.criteria : "")
+        })
+    }, [])
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         const input = e.target.value
-        self.setState(
-            (prevState: SearchState) => {
-                const valueInState = prevState.value || {}
-                if (!input) {
-                    delete valueInState.criteria
-                    return {
-                        ...prevState,
-                        value: { ...valueInState },
-                    }
-                }
-                return {
-                    ...prevState,
-                    value: { ...valueInState, criteria: input },
-                }
-            },
-            () => {
-                self.fetchResults(self.state.value)
-            }
-        )
+        const valueInState = sharedState.get("search_value") || {}
+
+        if (!input) {
+            delete valueInState.criteria
+            sharedState.set("search_value", { ...valueInState })
+        } else {
+            sharedState.set("search_value", {
+                ...valueInState,
+                criteria: input,
+            })
+        }
+        const searchService = new Search([])
+        searchService.fetchSearchResults(sharedState.get("search_value") || {})
     }
     return (
         <div className="form-group has-success">
@@ -42,5 +36,6 @@ export const SearchInput = ({
                 autoFocus
                 onChange={(e) => handleChange(e)}
             />
-        </div>)
+        </div>
+    )
 }

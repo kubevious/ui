@@ -4,18 +4,17 @@ import { FilterObjectType, FilterType, SearchState, SearchValue } from "../types
 import cx from "classnames"
 import { prettyKind } from "../../../utils/ui-utils"
 import { Search } from ".."
+import { checkForInputFilter } from "../util"
 
 export const SearchFilters = ({
     value,
     savedFilters,
     self,
-    checkForInputFilter,
     keyCheck,
 }: {
     value: SearchValue,
     savedFilters: SearchValue,
     self: Search
-    checkForInputFilter: (payload: string) => boolean
     keyCheck: (el: FilterType, key: string) => boolean
 }) => {
     const handleEditFilter = (type: string, filterVal: FilterType): void => {
@@ -50,7 +49,7 @@ export const SearchFilters = ({
             (prevState: SearchState) => {
                 const valueInState = prevState.value
                 const savedInState = prevState.savedFilters
-                if (!self.checkForInputFilter(type)) {
+                if (!checkForInputFilter(type)) {
                     const deleteFromSaved = () => {
                         valueInState[type] = savedInState[type]
                         delete savedInState[type]
@@ -133,7 +132,7 @@ export const SearchFilters = ({
                 const currentFilters = valueInState[key] || []
                 const currentSavedFilters = savedInState[key] || []
 
-                if (!self.checkForInputFilter(key)) {
+                if (!checkForInputFilter(key)) {
                     valueInState[key] && delete valueInState[key]
                     savedInState[key] && delete savedInState[key]
                     return {
