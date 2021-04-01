@@ -15,4 +15,6 @@ touch ${PUBLIC_GIT_IGNORE}
 ./sync-public-from.sh '@kubevious/ui-rule-engine'
 ./sync-public-from.sh '@kubevious/ui-time-machine'
 
+sort -o ${PUBLIC_GIT_IGNORE} ${PUBLIC_GIT_IGNORE}
+
 exit 0
