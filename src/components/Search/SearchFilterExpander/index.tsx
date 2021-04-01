@@ -1,32 +1,24 @@
 import React from "react"
 import cx from "classnames"
-import { SearchFilterItemProps } from "../types"
-import { SearchFilterItem } from "../SearchFilterItem"
+// import { SearchFilterItem } from "../SearchFilterItem"
+import { FilterItem } from "../../../types"
+import { sharedState } from "../../../configureService"
 
 
-export const SearchFilterExpander: React.FunctionComponent<SearchFilterItemProps> = ({
-    value,
-    el,
-    parent,
-    autocomplete,
-    currentInput,
+export const SearchFilterExpander: React.FunctionComponent<{filter: FilterItem}> = ({
+    filter
 }) => {
+    const value = sharedState.get('search_value') || {}
     return (
-        <details open key={el.payload}>
+        <details open key={filter.payload}>
             <summary
                 className={cx("filter-list inner", {
-                    "is-active": !!value[el.payload],
+                    "is-active": !!value[filter.payload],
                 })}
             >
-                {el.shownValue}
+                {filter.title}
             </summary>
-            <SearchFilterItem
-                value={value}
-                el={el}
-                parent={parent}
-                autocomplete={autocomplete}
-                currentInput={currentInput}
-            />
+            <filter.component />
         </details>
     )
 }

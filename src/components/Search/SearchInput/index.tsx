@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
-import { Search } from "../"
 import { sharedState } from "../../../configureService"
+import { fetchSearchResult } from "../util"
 
 export const SearchInput = () => {
     const [criteria, setCriteria] = useState<string>("")
@@ -12,19 +12,19 @@ export const SearchInput = () => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         const input = e.target.value
-        const valueInState = sharedState.get("search_value") || {}
+        let valueInState = sharedState.get("search_value") || {}
 
         if (!input) {
             delete valueInState.criteria
-            sharedState.set("search_value", { ...valueInState })
         } else {
-            sharedState.set("search_value", {
+            valueInState = {
                 ...valueInState,
                 criteria: input,
-            })
+            }
         }
-        const searchService = new Search([])
-        searchService.fetchSearchResults(sharedState.get("search_value") || {})
+        sharedState.set("search_value", valueInState)
+
+        fetchSearchResult()
     }
     return (
         <div className="form-group has-success">

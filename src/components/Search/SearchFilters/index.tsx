@@ -1,171 +1,155 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { isEmptyArray, isEmptyObject } from "../../../utils/util"
-import { FilterObjectType, FilterType, SearchState, SearchValue } from "../types"
+import {
+    FilterObjectType,
+    FilterType,
+    SearchValue,
+} from "../types"
 import cx from "classnames"
 import { prettyKind } from "../../../utils/ui-utils"
-import { Search } from ".."
-import { checkForInputFilter } from "../util"
+import { checkForInputFilter, fetchSearchResult, keyCheck } from "../util"
+import { sharedState } from "../../../configureService"
 
-export const SearchFilters = ({
-    value,
-    savedFilters,
-    self,
-    keyCheck,
-}: {
-    value: SearchValue,
-    savedFilters: SearchValue,
-    self: Search
-    keyCheck: (el: FilterType, key: string) => boolean
-}) => {
+export const SearchFilters = () => {
+    const [searchValue, setSearchValue] = useState<SearchValue>({})
+    const [savedFilters, setSavedFilters] = useState<SearchValue>({})
+
+    useEffect(() => {
+        const savedFilters = sharedState.get("saved_filters") || {}
+        setSavedFilters(savedFilters)
+
+        const searchValue = sharedState.get("search_value") || {}
+        setSearchValue(searchValue)
+    }, [])
+
     const handleEditFilter = (type: string, filterVal: FilterType): void => {
-        self.setState((prevState: SearchState) => {
-            if (typeof filterVal === "string") {
-                return {
-                    currentInput: {
-                        ...prevState.currentInput,
-                        [type]: {
-                            disabled: true,
-                        },
-                    },
-                }
-            }
-            const { key, value } = filterVal
-
-            return {
-                currentInput: {
-                    ...prevState.currentInput,
-                    [type]: {
-                        key,
-                        value,
-                        disabled: true,
-                    },
+        const actualCurrentInput = sharedState.get("current_input") || {}
+        if (typeof filterVal === "string") {
+            sharedState.set("current_input", {
+                ...actualCurrentInput,
+                [type]: {
+                    disabled: true,
                 },
-            }
+            })
+
+            return
+        }
+        const { key, value } = filterVal
+        sharedState.set("current_input", {
+            ...actualCurrentInput,
+            [type]: {
+                key,
+                value,
+                disabled: true,
+            },
         })
     }
 
-    const toggleFilter = (type: string, filterVal: FilterType) => {
-        self.setState(
-            (prevState: SearchState) => {
-                const valueInState = prevState.value
-                const savedInState = prevState.savedFilters
-                if (!checkForInputFilter(type)) {
-                    const deleteFromSaved = () => {
-                        valueInState[type] = savedInState[type]
-                        delete savedInState[type]
-                    }
-
-                    const addToSaved = () => {
-                        savedInState[type] = valueInState[type]
-                        delete valueInState[type]
-                    }
-                    savedInState[type] ? deleteFromSaved() : addToSaved()
-                    return {
-                        ...prevState,
-                        value: { ...valueInState },
-                        savedFilters: { ...savedInState },
-                    }
-                }
-
-                let valueArray: FilterType[] = valueInState[type] || []
-                let savedArray: FilterType[] = savedInState[type] || []
-                let changedValueArray: FilterType[] = []
-                let changedSavedArray: FilterType[] = []
-                if (typeof filterVal !== "string") {
-                    changedValueArray = valueArray.filter((el) =>
-                        !self.keyCheck(el, filterVal.key || "")
-                    )
-                    changedSavedArray = savedArray.filter((el) =>
-                        !self.keyCheck(el, filterVal.key || "")
-                    )
-                }
-                if (savedInState[type]) {
-                    const compareLength = changedSavedArray.length === savedArray.length
-
-                    savedInState[type] = compareLength
-                        ? [...savedArray, filterVal]
-                        : changedSavedArray
-                    valueInState[type] = compareLength
-                        ? changedValueArray
-                        : [...valueArray, filterVal]
-
-                    if (isEmptyArray(valueInState[type])) {
-                        return prevState
-                    } else if (isEmptyArray(savedInState[type])) {
-                        delete savedInState[type]
-                        return prevState
-                    }
-
-                    return {
-                        ...prevState,
-                        value: {
-                            ...valueInState,
-                        },
-                        savedFilters: {
-                            ...savedInState,
-                        },
-                    }
-                }
-
-                valueInState[type] = changedValueArray
-                isEmptyArray(changedValueArray) && delete valueInState[type]
-                return {
-                    ...prevState,
-                    value: { ...valueInState },
-                    savedFilters: {
-                        ...savedInState,
-                        [type]: [filterVal],
-                    },
-                }
-            },
-            () => {
-                self.fetchResults(self.state.value)
+    const changeToggleFilter = (type: string, filterVal: FilterType) => {
+        const valueInState = sharedState.get("search_value") || {}
+        const savedInState = sharedState.get("saved_filters") || {}
+        if (!checkForInputFilter(type)) {
+            const deleteFromSaved = () => {
+                valueInState[type] = savedInState[type]
+                delete savedInState[type]
             }
-        )
+
+            const addToSaved = () => {
+                savedInState[type] = valueInState[type]
+                delete valueInState[type]
+            }
+            savedInState[type] ? deleteFromSaved() : addToSaved()
+            sharedState.set("search_value", valueInState)
+            sharedState.set("saved_filters", savedInState)
+            return
+        }
+
+        let valueArray: FilterType[] = valueInState[type] || []
+        let savedArray: FilterType[] = savedInState[type] || []
+        let changedValueArray: FilterType[] = []
+        let changedSavedArray: FilterType[] = []
+        if (typeof filterVal !== "string") {
+            changedValueArray = valueArray.filter((el) =>
+                keyCheck(el, filterVal.key || "")
+            )
+            changedSavedArray = savedArray.filter((el) =>
+                keyCheck(el, filterVal.key || "")
+            )
+        }
+        if (savedInState[type]) {
+            const compareLength = changedSavedArray.length === savedArray.length
+
+            savedInState[type] = compareLength
+                ? [...savedArray, filterVal]
+                : changedSavedArray
+            valueInState[type] = compareLength
+                ? changedValueArray
+                : [...valueArray, filterVal]
+
+            if (isEmptyArray(valueInState[type])) {
+                return
+            } else if (isEmptyArray(savedInState[type])) {
+                delete savedInState[type]
+                return
+            }
+
+            sharedState.set("search_value", valueInState)
+            sharedState.set("saved_filters", savedInState)
+            return
+        }
+
+        valueInState[type] = changedValueArray
+        isEmptyArray(changedValueArray) && delete valueInState[type]
+        sharedState.set("search_value", valueInState)
+        sharedState.set("saved_filters", {
+            ...savedInState,
+            [type]: [filterVal],
+        })
+        return
+    }
+
+
+    const toggleFilter = (type: string, filterVal: FilterType) => {
+        changeToggleFilter(type, filterVal)
+        fetchSearchResult()
+    }
+
+    const handleDeleteFilter = (key: string, val: FilterType) => {
+        deleteFilter(key, val)
+        fetchSearchResult()
     }
 
     const deleteFilter = (key: string, val: FilterType) => {
-        self.setState(
-            (prevState: SearchState) => {
-                const valueInState = prevState.value
-                const savedInState = prevState.savedFilters
-                const currentFilters = valueInState[key] || []
-                const currentSavedFilters = savedInState[key] || []
+        const valueInState = sharedState.get("search_value") || {}
+        const savedInState = sharedState.get("saved_filters") || {}
+        const currentFilters = valueInState[key] || []
+        const currentSavedFilters = savedInState[key] || []
 
-                if (!checkForInputFilter(key)) {
-                    valueInState[key] && delete valueInState[key]
-                    savedInState[key] && delete savedInState[key]
-                    return {
-                        value: { ...valueInState },
-                        savedFilters: { ...savedInState },
-                    }
-                }
-                if (typeof val !== "string") {
-                    valueInState[key] = currentFilters.filter((filter: FilterType) =>
-                        !self.keyCheck(filter, val.key || "")
-                    )
-                    savedInState[key] = currentSavedFilters.filter((filter: FilterType) =>
-                        !self.keyCheck(filter, val.key || "")
-                    )
-                }
+        if (!checkForInputFilter(key)) {
+            valueInState[key] && delete valueInState[key]
+            savedInState[key] && delete savedInState[key]
 
-                isEmptyArray(valueInState[key]) && delete valueInState[key]
-                isEmptyArray(savedInState[key]) && delete savedInState[key]
+            sharedState.set("search_value", valueInState)
+            sharedState.set("saved_filters", savedInState)
 
-                return {
-                    value: {
-                        ...valueInState,
-                    },
-                    savedFilters: {
-                        ...savedInState,
-                    },
-                }
-            },
-            () => {
-                self.fetchResults(self.state.value)
-            }
-        )
-        return false
+            return
+        }
+        if (typeof val !== "string") {
+            valueInState[key] = currentFilters.filter((filter: FilterType) =>
+                keyCheck(filter, val.key || "")
+            )
+            savedInState[
+                key
+            ] = currentSavedFilters.filter((filter: FilterType) =>
+                keyCheck(filter, val.key || "")
+            )
+        }
+
+        isEmptyArray(valueInState[key]) && delete valueInState[key]
+        isEmptyArray(savedInState[key]) && delete savedInState[key]
+
+        sharedState.set("search_value", valueInState)
+        sharedState.set("saved_filters", savedInState)
     }
 
     const renderPrettyView = (val: FilterObjectType) => {
@@ -175,8 +159,8 @@ export const SearchFilters = ({
         }
         return val && Array.isArray(val)
             ? val.map((criteria, index) =>
-                index === val.length - 1 ? criteria : `${criteria} | `
-            )
+                  index === val.length - 1 ? criteria : `${criteria} | `
+              )
             : `${key}: ${value && value.substring(0, 50)}`
     }
 
@@ -194,16 +178,15 @@ export const SearchFilters = ({
     }
 
     // val: FilterType
-    const renderDividedActiveFilters = (
-        key: string,
-        val: any,
-    ) => {
+    const renderDividedActiveFilters = (key: string, val: any) => {
         if (!val) {
             return
         }
 
         const saved = savedFilters[key] || []
-        const sumOfValues = value[key] ? value[key].concat(saved) : saved
+        const sumOfValues = searchValue[key]
+            ? searchValue[key].concat(saved)
+            : saved
 
         return (
             sumOfValues.sort(compareForSort) &&
@@ -253,21 +236,24 @@ export const SearchFilters = ({
                 <button
                     className="filter-btn del"
                     title="Delete"
-                    onClick={() => deleteFilter(type, val)}
+                    onClick={() => handleDeleteFilter(type, val)}
                 >
                     &times;
-        </button>
+                </button>
             </div>
         )
     }
 
-
     return (
         <div className="active-filters">
-            {(!isEmptyObject(value) || !isEmptyObject(savedFilters)) &&
-                Object.entries(Object.assign({}, value, savedFilters)).sort() && (
+            {(!isEmptyObject(searchValue) || !isEmptyObject(savedFilters)) &&
+                Object.entries(
+                    Object.assign({}, searchValue, savedFilters)
+                ).sort() && (
                     <>
-                        {Object.entries(Object.assign({}, value, savedFilters))
+                        {Object.entries(
+                            Object.assign({}, searchValue, savedFilters)
+                        )
                             .sort()
                             .map(
                                 ([key, val]) =>
@@ -278,5 +264,6 @@ export const SearchFilters = ({
                             )}
                     </>
                 )}
-        </div>)
+        </div>
+    )
 }

@@ -395,7 +395,7 @@ export class StateHandler {
                 if (marker_editor_items) {
                     markerDict = _.makeDict(
                         marker_editor_items,
-                        (x: { name: any }) => x.name,
+                        (x: any) => x.name,
                         (x: { shape: any; color: any }) => ({
                             shape: x.shape,
                             color: x.color,

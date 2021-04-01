@@ -9,7 +9,7 @@ import { getRandomDnList } from "./utils"
 
 import { IRuleService } from "@kubevious/ui-middleware"
 
-let MOCK_RULES_ARRAY = [
+let MOCK_RULES_ARRAY: any = [
     {
         enabled: true,
         name: "rule 1",
@@ -30,7 +30,11 @@ let MOCK_RULES_ARRAY = [
         script: "script-3",
     },
 ]
-let MOCK_RULES = _.makeDict(MOCK_RULES_ARRAY, (x) => x.name, x => x)
+let MOCK_RULES = _.makeDict(
+    MOCK_RULES_ARRAY,
+    (x) => x.name,
+    (x) => x
+)
 for (const x of _.values(MOCK_RULES)) {
     x.items = []
     x.logs = []
@@ -102,12 +106,12 @@ export class MockRuleService implements IRuleService {
     close() {}
 
     private _notifyRules() {
-        const id = new Date().toISOString();
+        const id = new Date().toISOString()
         this._remoteTrack.start({
             id: id,
-            method: 'GET',
-            url: '/',
-            headers: {}
+            method: "GET",
+            url: "/",
+            headers: {},
         })
 
         this.backendFetchRuleList((result) => {
@@ -120,12 +124,15 @@ export class MockRuleService implements IRuleService {
         }
 
         setTimeout(() => {
-            this._remoteTrack.finish({
-                id: id,
-                method: 'GET',
-                url: '/',
-                headers: {}
-            }, {});
+            this._remoteTrack.finish(
+                {
+                    id: id,
+                    method: "GET",
+                    url: "/",
+                    headers: {},
+                },
+                {}
+            )
         }, 1000)
     }
 

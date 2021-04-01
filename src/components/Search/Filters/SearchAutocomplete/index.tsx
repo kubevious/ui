@@ -1,8 +1,9 @@
 import React, { Fragment } from "react"
 import Autocomplete from "react-autocomplete"
-import { CurrentInput, FilterType, KindListValue, SearchState } from "../types"
-import { Search } from "../"
-import { isEmptyArray } from "../../../utils/util"
+import { CurrentInput, FilterType, KindListValue, SearchState } from "../../types"
+import { Search } from "../.."
+import { isEmptyArray } from "../../../../utils/util"
+import { keyCheck } from "../../util"
 
 export const SearchAutocomplete = ({
 	values,
@@ -136,7 +137,7 @@ export const SearchAutocomplete = ({
 				const valueInState = prevState.value
 				const changedValueArray: FilterType[] =
 					valueInState[type] &&
-					valueInState[type].filter((el: FilterType) => self.keyCheck(el, key))
+					valueInState[type].filter((el: FilterType) => keyCheck(el, key))
 				isEmptyArray(changedValueArray)
 					? delete valueInState[type]
 					: (valueInState[type] = changedValueArray)

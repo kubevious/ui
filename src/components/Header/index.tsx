@@ -10,7 +10,6 @@ import { ClassComponent } from "@kubevious/ui-framework"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSpinner } from "@fortawesome/free-solid-svg-icons"
 import moment from "moment"
-import { FILTERS_LIST } from "../../boot/filterData"
 
 import "./styles.scss"
 import { IMiscService } from "@kubevious/ui-middleware"
@@ -54,13 +53,10 @@ export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscServic
     }
 
     openSearch(): void {
+        this.sharedState.set("is_kinds", true)
         this.sharedState.set("popup_window", {
             title: "Search",
-            content: <Search
-                isKinds
-                isMarkers
-                filterList={FILTERS_LIST}
-            />,
+            content: <Search />,
         })
     }
 

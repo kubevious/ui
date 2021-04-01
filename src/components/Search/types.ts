@@ -55,10 +55,12 @@ export type CurrentInput = {
     labels: {
         key: string
         value: string
+        disabled?: boolean
     }
     annotations: {
         key: string
         value: string
+        disabled?: boolean
     }
 }
 

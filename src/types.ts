@@ -62,3 +62,19 @@ export type DnOptions = {
     relativeTo?: string
 }
 
+export interface FilterData {
+    isEnabled: boolean
+    criteria: FilterCriteria[]
+}
+
+export interface FilterCriteria {
+    caption: string
+    values: any
+}
+
+export interface FilterItem {
+    payload: string
+    title: string
+    component: React.ComponentType
+    data?: FilterData
+}

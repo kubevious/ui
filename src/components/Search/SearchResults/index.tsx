@@ -12,8 +12,8 @@ export const SearchResults = () => {
     useEffect(() => {
         sharedState.subscribe("search_result", (search_result) => {
             setResult(search_result)
-            setTotalCount(sharedState.get("totalCount"))
-            setWasFiltered(sharedState.get("wasFiltered"))
+            setTotalCount(sharedState.get("total_count"))
+            setWasFiltered(sharedState.get("was_filtered"))
         })
     }, [])
     
