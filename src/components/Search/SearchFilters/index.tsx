@@ -55,7 +55,6 @@ export const SearchFilters: FC<{
 
     return (
         <div className="active-filters">
-            <div>{JSON.stringify(activeFilters, null, 4)}</div>
             <>{activeFilters.map((val) => renderActiveFilters(val))}</>
         </div>
     )
