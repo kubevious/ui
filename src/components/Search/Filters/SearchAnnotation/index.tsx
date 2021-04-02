@@ -25,6 +25,7 @@ export const SearchAnnotation: FC<FilterComponentProps> = ({
     data,
     addFilter,
     removeFilter,
+    removeAllFilters
 }) => {
     const [currentValue, setCurrentValue] = useState<string>("")
     const [currentKey, setCurrentKey] = useState<string>("")
@@ -66,7 +67,7 @@ export const SearchAnnotation: FC<FilterComponentProps> = ({
     }
 
     const addInputField = (key?: string): void => {
-        addFilter(key || currentKey, `Annotation ${key || currentKey}`, currentValue);
+        addFilter(key || currentKey, `${key || currentKey} ${currentValue}`, currentValue);
         setCurrentValue('')
         setCurrentKey('')
         setEditedAnnotations({})
@@ -83,8 +84,6 @@ export const SearchAnnotation: FC<FilterComponentProps> = ({
 
     return (
         <div className="filter-input-box">
-            <div>{JSON.stringify(data, null, 4)}</div>
-
             <Fragment key="Annotation">
                 <label>Annotation</label>
                 <Autocomplete
