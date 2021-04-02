@@ -1,9 +1,6 @@
-import React, { FC, useEffect, useState } from "react"
-import { isEmptyArray, isEmptyObject } from "../../../utils/util"
-import { FilterObjectType, FilterType, SearchValue } from "../types"
+import React, { FC } from "react"
 import cx from "classnames"
-import { prettyKind } from "../../../utils/ui-utils"
-import { checkForInputFilter, keyCheck } from "../util"
+import { checkForInputFilter } from "../util"
 import { sharedState } from "../../../configureService"
 
 import { FilterValue } from "../types"

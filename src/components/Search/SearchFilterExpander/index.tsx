@@ -1,6 +1,5 @@
 import React from "react"
 import cx from "classnames"
-// import { SearchFilterItem } from "../SearchFilterItem"
 import { FilterItem } from "../types"
 import { sharedState } from "../../../configureService"
 

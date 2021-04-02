@@ -1,6 +1,6 @@
 import React, { FC, useState, useEffect } from "react"
 import { MarkerPreview } from "@kubevious/ui-rule-engine"
-import { MarkersList, SearchValue } from "../../types"
+import { MarkersList } from "./types"
 import _ from "lodash"
 import { EditorItem } from "../../../../types"
 import { FilterComponentProps } from "../../types"

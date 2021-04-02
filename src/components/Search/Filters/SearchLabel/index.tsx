@@ -25,6 +25,7 @@ export const SearchLabel: FC<FilterComponentProps> = ({
     data,
     addFilter,
     removeFilter,
+    removeAllFilters
 }) => {
     const [currentValue, setCurrentValue] = useState<string>("")
     const [currentKey, setCurrentKey] = useState<string>("")
@@ -66,7 +67,7 @@ export const SearchLabel: FC<FilterComponentProps> = ({
     }
 
     const addInputField = (key?: string): void => {
-        addFilter(key || currentKey, `Label ${key || currentKey}`, currentValue);
+        addFilter(key || currentKey, `${key || currentKey}: ${currentValue}`, currentValue);
         setCurrentValue('')
         setCurrentKey('')
         setEditedLabels({})
@@ -82,8 +83,6 @@ export const SearchLabel: FC<FilterComponentProps> = ({
     }
     return (
         <div className="filter-input-box">
-            <div>{JSON.stringify(data, null, 4)}</div>
-
             <Fragment key="Label">
                 <label>Label</label>
                 <Autocomplete
