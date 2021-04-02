@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react"
+import React, { Fragment, useState, useEffect, FC } from "react"
 import Autocomplete from "react-autocomplete"
 import { CurrentInput, FilterType } from "../../types"
 import { isEmptyArray } from "../../../../utils/util"
@@ -11,6 +11,7 @@ import {
 import { sharedState } from "../../../../configureService"
 
 import "../../styles.scss"
+import { FilterComponentProps } from "../../types"
 
 const initialCurrentInput = {
     labels: {
@@ -33,7 +34,7 @@ const initialAutocomplete = {
     },
 }
 
-export const SearchLabel = () => {
+export const SearchLabel : FC<FilterComponentProps>  = ({ addFilter, removeFilter, getAllFilters }) => {
     const [currentInput, setCurrentInput] = useState<CurrentInput>(
         initialCurrentInput
     )

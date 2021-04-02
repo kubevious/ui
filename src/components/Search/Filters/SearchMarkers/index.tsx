@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react"
+import React, { FC, useState, useEffect } from "react"
 import { MarkerPreview } from "@kubevious/ui-rule-engine"
 import { MarkersList, SearchValue } from "../../types"
 import _ from "lodash"
 import { EditorItem } from "../../../../types"
+import { FilterComponentProps } from "../../types"
 import { isEmptyArray } from "../../../../utils/util"
 import { sharedState } from "../../../../configureService"
 import { fetchSearchResult } from "../../util"
 
-export const SearchMarkers = () => {
+export const SearchMarkers : FC<FilterComponentProps> = ({ addFilter, removeFilter, getAllFilters }) => {
     const [searchValue, setSearchValue] = useState<SearchValue>({})
     const [markers, setMarkers] = useState<MarkersList>({
         payload: "markers",
@@ -36,6 +37,8 @@ export const SearchMarkers = () => {
         if (!newMarker.name) {
             return
         }
+
+        addFilter(newMarker.name, `Marker ${newMarker.name}`, true);
 
         const valueInState = sharedState.get("search_value") || {}
         const savedFilters = sharedState.get("saved_filters") || {}

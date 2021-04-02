@@ -1,12 +1,13 @@
 import React from "react"
 import cx from "classnames"
 // import { SearchFilterItem } from "../SearchFilterItem"
-import { FilterItem } from "../../../types"
+import { FilterItem } from "../types"
 import { sharedState } from "../../../configureService"
 
 
 export const SearchFilterExpander: React.FunctionComponent<{filter: FilterItem}> = ({
-    filter
+    filter,
+    children
 }) => {
     const value = sharedState.get('search_value') || {}
     return (
@@ -18,7 +19,8 @@ export const SearchFilterExpander: React.FunctionComponent<{filter: FilterItem}>
             >
                 {filter.title}
             </summary>
-            <filter.component />
+
+            {children}
         </details>
     )
 }

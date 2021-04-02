@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { FC, useEffect, useState } from "react"
 import { isEmptyArray, isEmptyObject } from "../../../utils/util"
 import {
     FilterObjectType,
@@ -10,7 +10,10 @@ import { prettyKind } from "../../../utils/ui-utils"
 import { checkForInputFilter, fetchSearchResult, keyCheck } from "../util"
 import { sharedState } from "../../../configureService"
 
-export const SearchFilters = () => {
+import { FilterValue } from '../types';
+
+export const SearchFilters : FC<{ activeFilters : FilterValue[] }> = 
+({ activeFilters }) => {
     const [searchValue, setSearchValue] = useState<SearchValue>({})
     const [savedFilters, setSavedFilters] = useState<SearchValue>({})
 
@@ -246,6 +249,11 @@ export const SearchFilters = () => {
 
     return (
         <div className="active-filters">
+            <div>
+                {
+                JSON.stringify(activeFilters, null, 4)
+                }
+            </div>
             {(!isEmptyObject(searchValue) || !isEmptyObject(savedFilters)) &&
                 Object.entries(
                     Object.assign({}, searchValue, savedFilters)

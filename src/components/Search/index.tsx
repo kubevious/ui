@@ -6,7 +6,9 @@ import "./styles.scss"
 import { IDiagramService } from "@kubevious/ui-middleware"
 import {
   SearchValue,
-  SearchProps, 
+  SearchProps,
+  SearchData,
+  FilterValue, 
 } from "./types"
 import { SearchInput } from "./SearchInput"
 import { SearchFilters } from "./SearchFilters"
@@ -14,7 +16,29 @@ import { SearchResults } from "./SearchResults"
 import { sharedState } from "../../configureService"
 import { SearchFilterList } from "./SearchFilterList"
 
-const initialState = {
+import { FILTERS_LIST } from "./search-metadata"
+
+const initialSearchData : SearchData = {
+  components: _.makeDict(FILTERS_LIST, x => x.payload, x => ({
+    searchId: x.searchId,
+    filters: {}
+  }))
+}
+
+
+interface TSearchState
+{
+  searchData: SearchData,
+  activeFilters : FilterValue[],
+  currentInput: any,
+  autocomplete: any,
+}
+
+const initialState : TSearchState= {
+
+  searchData: initialSearchData,
+  activeFilters : [],
+
   currentInput: {
     labels: {
       key: "",
@@ -37,7 +61,8 @@ const initialState = {
   },
 }
 
-export class Search extends ClassComponent<SearchProps, any, IDiagramService> {
+
+export class Search extends ClassComponent<SearchProps, TSearchState, IDiagramService> {
   fetchSearchResults(criteria: SearchValue) {
       this.fetchResults(criteria)
   }
@@ -47,6 +72,7 @@ export class Search extends ClassComponent<SearchProps, any, IDiagramService> {
   fetchAutocompleteValues(type: string, key: string, criteria: string): void {
     this.fetchValues(type, key, criteria)
   }
+  
 
   constructor(props) {
     super(props, null, { kind: "diagram" })
@@ -55,6 +81,11 @@ export class Search extends ClassComponent<SearchProps, any, IDiagramService> {
     this.fetchResults = this.fetchResults.bind(this)
     this.fetchKeys = this.fetchKeys.bind(this)
     this.fetchValues = this.fetchValues.bind(this)
+
+    this.addFilter = this.addFilter.bind(this);
+    this.removeFilter = this.removeFilter.bind(this);
+    this.removeAllFilters = this.removeAllFilters.bind(this);
+    this.getAllFilters = this.getAllFilters.bind(this);
   }
 
 	fetchValues(type: string, key: string, criteria: string): void {
@@ -100,17 +131,108 @@ export class Search extends ClassComponent<SearchProps, any, IDiagramService> {
     )
   }
 
+  addFilter(searchId: string, filterId: string, caption: string, value: any)
+  {
+    const {
+      searchData,
+    } = this.state
+
+    if (!searchData.components[searchId]) {
+      searchData.components[searchId] = {
+        searchId: searchId,
+        filters: {}
+      }
+    }
+
+    searchData.components[searchId].filters[filterId] = {
+      searchId: searchId, 
+      filterId: filterId, 
+      caption: caption, 
+      value: value, 
+    }
+
+    this._handleSearchDataChange();
+  }
+
+  removeFilter(searchId: string, filterId: string)
+  {
+    const {
+      searchData,
+    } = this.state
+
+    if (searchData.components[searchId]) {
+      delete searchData.components[searchId].filters[filterId];
+    }
+
+    this._handleSearchDataChange();
+  }
+
+  removeAllFilters(searchId: string)
+  {
+    const {
+      searchData,
+    } = this.state
+
+    if (searchData.components[searchId]) {
+      searchData.components[searchId].filters = {};
+    }
+
+    this._handleSearchDataChange();
+  }
+
+  getAllFilters(searchId: string) : FilterValue[]
+  {
+    const {
+      searchData,
+    } = this.state
+
+    if (searchData.components[searchId]) {
+      return _.values(searchData.components[searchId].filters);
+    }
+
+    return []
+  }
+
+  private _handleSearchDataChange()
+  {
+    const {
+      searchData,
+    } = this.state
+
+    console.log("[_handleSearchDataChange] SearchData: ", searchData);
+
+    let activeFilters : FilterValue[] = [];
+    for(let componentData of _.values(searchData.components))
+    {
+      activeFilters = _.concat(activeFilters, _.values(componentData.filters));
+    }
+
+    this.setState({
+      activeFilters: activeFilters,
+      searchData: searchData
+    })
+  }
+
+
   render() {
     const {
       currentInput,
       autocomplete,
+      activeFilters,
+      searchData
     } = this.state
     return (
       <div className="Search-wrapper p-40 overflow-hide">
         <SearchInput />
-        <SearchFilters />
+        <SearchFilters activeFilters={activeFilters} />
         <div className="search-area">
-          <SearchFilterList />
+          <SearchFilterList
+            searchData={searchData}
+            addFilter={this.addFilter}
+            removeFilter={this.removeFilter}
+            removeAllFilters={this.removeAllFilters}
+            getAllFilters={this.getAllFilters}
+            />
           <SearchResults />
         </div>
       </div>

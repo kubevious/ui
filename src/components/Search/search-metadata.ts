@@ -1,16 +1,19 @@
-import { SearchLabel } from "../components/Search/Filters/SearchLabel"
-import { SearchMarkers } from "../components/Search/Filters/SearchMarkers"
-import { FilterItem } from "../types"
+import { FilterItem } from "./types"
+
+import { SearchLabel } from "./Filters/SearchLabel"
+import { SearchMarkers } from "./Filters/SearchMarkers"
 
 const alertsEnum = Object.freeze({ 0: "at-most", 1: "at-least" })
 
 export const FILTERS_LIST: FilterItem[] = [
     {
+        searchId: 'markers',
         payload: "markers",
         title: "Markers",
         component: SearchMarkers
     },
     {
+        searchId: 'labels',
         payload: "labels",
         title: "Labels",
         component: SearchLabel

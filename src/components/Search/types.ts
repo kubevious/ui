@@ -106,12 +106,70 @@ export type SearchProps = {
     isKinds?: boolean,
     isMarkers?: boolean,
     filterList?: FiltersList[]
-  }
+}
 
-  export type SearchFilterItemProps = {
+export type SearchFilterItemProps = {
     value: SearchValue
     el: KindList
     parent: Search
     autocomplete: Autocomplete
     currentInput: CurrentInput
 }
+
+// TODO: Move types above to /Filters/**/types.ts
+
+/********/
+
+
+
+export interface FilterData {
+    isEnabled: boolean
+    criteria: FilterCriteria[]
+}
+
+export interface FilterCriteria {
+    caption: string
+    values: any
+}
+
+export interface FilterComponentProps
+{
+    data: FilterComponentData,
+    addFilter: (filterId: string, caption: string, value: any) => void,
+    removeFilter: (filterId: string) => void,
+    removeAllFilters: () => void,
+    getAllFilters: () => FilterValue[],
+}
+
+export interface FilterItem {
+    searchId: string
+    payload: string
+    title: string
+    component: React.ComponentType<FilterComponentProps>
+    data?: FilterData
+}
+
+
+/*******/
+
+
+export interface SearchData
+{
+    components: Record<string, FilterComponentData>
+}
+
+export interface FilterComponentData
+{
+    searchId: string,
+    filters: Record<string, FilterValue>
+}
+
+export interface FilterValue
+{
+    searchId: string,
+    filterId: string,
+    caption: string
+    value: any
+}
+
+
