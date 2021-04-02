@@ -167,8 +167,9 @@ export interface FilterValue
 {
     searchId: string,
     filterId: string,
-    caption: string
+    caption: string,
     value: any
+    isActiveFilter: boolean
 }
 
 

@@ -12,11 +12,14 @@ import { sharedState } from "../../../configureService"
 
 import { FilterValue } from '../types';
 
-export const SearchFilters : FC<{ activeFilters : FilterValue[] }> = 
-({ activeFilters }) => {
+export const SearchFilters : FC<{
+    activeFilters : FilterValue[],
+    removeFilter: (searchId: string, filterId: string) => void,
+    toogleVisibilityFilter: (searchId: string, filterId: string) => void
+}> = 
+({ activeFilters, removeFilter, toogleVisibilityFilter }) => {
     const [searchValue, setSearchValue] = useState<SearchValue>({})
     const [savedFilters, setSavedFilters] = useState<SearchValue>({})
-
     useEffect(() => {
         const savedFilters = sharedState.get("saved_filters") || {}
         setSavedFilters(savedFilters)
@@ -115,6 +118,12 @@ export const SearchFilters : FC<{ activeFilters : FilterValue[] }> =
     const toggleFilter = (type: string, filterVal: FilterType) => {
         changeToggleFilter(type, filterVal)
         fetchSearchResult()
+    }
+
+    const test2 = (val: FilterValue) => {
+        const valueInState = sharedState.get("search_value") || {}
+        const savedInState = sharedState.get("saved_filters") || {}
+        console.log('test2 :>> ', valueInState, savedInState);
     }
 
     const handleDeleteFilter = (key: string, val: FilterType) => {
@@ -247,6 +256,43 @@ export const SearchFilters : FC<{ activeFilters : FilterValue[] }> =
         )
     }
 
+    const test = (val: FilterValue) => {
+        return (<div
+                className={cx("active-filter-box", {
+                    deactivated: !val.isActiveFilter,
+                })}
+                key={val.caption}
+            >
+                <span className="filter-key">{`${val.searchId}: `}</span>
+                <span className="filter-val">
+                    {val.caption}
+                </span>
+                {/* {checkForInputFilter(type) && (
+                    <button
+                        className="filter-btn edit"
+                        onClick={() => handleEditFilter(type, val)}
+                    ></button>
+                )} */}
+                <button
+                    className={cx("filter-btn toggle-show", {
+                        hide: !val.isActiveFilter,
+                    })}
+                    title="Toggle show/hide"
+                    onClick={() => toogleVisibilityFilter(val.searchId, val.filterId)}
+                />
+                <button
+                    className="filter-btn del"
+                    title="Delete"
+                    onClick={() => removeFilter(val.searchId, val.filterId)}
+                >
+                    &times;
+                </button>
+            </div>)
+    }
+
+    activeFilters.forEach(val => {
+        console.log('activeFilters :>> ', val);
+    })
     return (
         <div className="active-filters">
             <div>
@@ -254,12 +300,15 @@ export const SearchFilters : FC<{ activeFilters : FilterValue[] }> =
                 JSON.stringify(activeFilters, null, 4)
                 }
             </div>
-            {(!isEmptyObject(searchValue) || !isEmptyObject(savedFilters)) &&
+            {/* {(!isEmptyObject(searchValue) || !isEmptyObject(savedFilters)) &&
                 Object.entries(
                     Object.assign({}, searchValue, savedFilters)
-                ).sort() && (
+                ).sort() && ( */}
                     <>
-                        {Object.entries(
+                    {
+                        activeFilters.map(val => test(val))
+                    }
+                        {/* {Object.entries(
                             Object.assign({}, searchValue, savedFilters)
                         )
                             .sort()
@@ -269,9 +318,9 @@ export const SearchFilters : FC<{ activeFilters : FilterValue[] }> =
                                     (checkForInputFilter(key) && val
                                         ? renderDividedActiveFilters(key, val)
                                         : renderActiveFilters(key, val))
-                            )}
+                            )} */}
                     </>
-                )}
+                {/* )} */}
         </div>
     )
 }

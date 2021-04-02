@@ -9,7 +9,6 @@ import { sharedState } from "../../../../configureService"
 import { fetchSearchResult } from "../../util"
 
 export const SearchMarkers : FC<FilterComponentProps> = ({ data, addFilter, removeFilter, removeAllFilters }) => {
-    const [searchValue, setSearchValue] = useState<SearchValue>({})
     const [markers, setMarkers] = useState<MarkersList>({
         payload: "markers",
         shownValue: "Markers",
@@ -17,9 +16,6 @@ export const SearchMarkers : FC<FilterComponentProps> = ({ data, addFilter, remo
     })
 
     useEffect(() => {
-        const searchValue = sharedState.get("search_value") || {}
-        setSearchValue(searchValue)
-
         const markersFromState = sharedState.get("marker_editor_items")
         setMarkers({
             payload: "markers",
@@ -111,43 +107,38 @@ export const SearchMarkers : FC<FilterComponentProps> = ({ data, addFilter, remo
     }
 
     const handleMarkerFilterChange = (title: string): void => {
-        markerFilterChange(title)
+        const isActive = data.filters[title]
+        !!isActive ? removeFilter(title) : markerFilterChange(title)
         fetchSearchResult()
     }
 
     return (
             <div className="inner-items">
-                <div>
-                    {
-                        JSON.stringify(data, null, 4)
-                    }
-                </div>
                 {markers.values &&
                     markers.values.map((item) => {
+                        const name = item.name || ''
                         return (
                             <button
-                                title={item.name}
-                                key={item.name}
+                                title={name}
+                                key={name}
                                 className={
-                                    searchValue.markers &&
-                                    searchValue.markers.find(
-                                        (marker) => marker === item.name
-                                    )
+                                    data.filters[name]
                                         ? "selected-filter"
                                         : ""
                                 }
                                 onClick={() =>
-                                    handleMarkerFilterChange(item.name || "")
+                                    handleMarkerFilterChange(name)
                                 }
                             >
                                 <MarkerPreview
                                     shape={item.shape}
                                     color={item.color}
                                 />
-                                {item.name}
+                                {name}
                             </button>
                         )
-                    })}
+                    })
+                }
             </div>
     )
 }

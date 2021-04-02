@@ -390,3 +390,21 @@
 button:focus {
     outline: none;
 }
+
+.clearButton {
+    width: 100%;
+    color: white;
+    font-weight: 700;
+    text-decoration: none;
+    border-radius: 3px;
+    background: darkgreen;
+    border: 3px solid black;
+    transition: 0.2s;
+    margin-bottom: 3px;
+}
+
+.clearButton:hover { background: rgb(53, 167, 110); }
+.clearButton:active {
+  background: rgb(33,147,90);
+  box-shadow: 0 3px rgb(33,147,90) inset;
+}

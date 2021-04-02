@@ -1,5 +1,4 @@
 import { Search } from "."
-import { sharedState } from "../../configureService"
 import { FilterType } from "./types"
 
 export const checkForInputFilter = (payload: string): boolean => {
@@ -12,7 +11,7 @@ export const keyCheck = (el: FilterType, key: string): boolean => {
 
 export const fetchSearchResult = () => {
     const searchService = new Search([])
-    searchService.fetchSearchResults(sharedState.get("search_value") || {})
+    searchService.fetchSearchResults()
 }
 
 export const fetchAutocomplete = (type: string, criteria: string): void => {

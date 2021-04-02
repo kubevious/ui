@@ -70,6 +70,7 @@ export const SearchFilterList: React.FunctionComponent<SearchFilterListProps> =
                     }
 
                     const onFilterRemoveAll = () => {
+                        console.log('filter.searchId :>> ', filter.searchId );
                         removeAllFilters(filter.searchId);
                     }
 
@@ -78,6 +79,7 @@ export const SearchFilterList: React.FunctionComponent<SearchFilterListProps> =
                             key={index}
                             filter={filter}
                         >
+                            <button className="clearButton" onClick={() => onFilterRemoveAll()}>Clear filters</button>
                             <filter.component 
                                 data={filterSearchData}
                                 addFilter={onFilterAdd} 
