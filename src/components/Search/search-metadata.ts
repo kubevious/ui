@@ -3,8 +3,11 @@ import { FilterItem } from "./types"
 import { SearchLabel } from "./Filters/SearchLabel"
 import { SearchMarkers } from "./Filters/SearchMarkers"
 import { SearchAnnotation } from "./Filters/SearchAnnotation"
+import { SearchWarnings } from "./Filters/SearchWarnings"
+import { SearchErrors } from "./Filters/SearchErrors"
+import { SearchKinds } from "./Filters/SearchKinds"
 
-const alertsEnum = Object.freeze({ 0: "at-most", 1: "at-least" })
+export const alertsEnum = Object.freeze({ 0: "at-most", 1: "at-least" })
 
 export const FILTERS_LIST: FilterItem[] = [
     {
@@ -25,73 +28,22 @@ export const FILTERS_LIST: FilterItem[] = [
         title: "Annotations",
         component: SearchAnnotation
     },
-    
-    // {
-    //     payload: "labels",
-    //     shownValue: "Labels",
-    //     values: [
-    //         {
-    //             title: "Label",
-    //             payload: "key",
-    //         },
-    //         {
-    //             title: "Value",
-    //             payload: "value",
-    //         },
-    //     ],
-    // },
-    // {
-    //     payload: "annotations",
-    //     shownValue: "Annotations",
-    //     values: [
-    //         {
-    //             title: "Annotation",
-    //             payload: "key",
-    //         },
-    //         {
-    //             title: "Value",
-    //             payload: "value",
-    //         },
-    //     ],
-    // },
-    // {
-    //     payload: "error",
-    //     shownValue: "Errors",
-    //     values: [
-    //         {
-    //             title: "With errors",
-    //             payload: {
-    //                 kind: alertsEnum[1],
-    //                 count: 1,
-    //             },
-    //         },
-    //         {
-    //             title: "Without errors",
-    //             payload: {
-    //                 kind: alertsEnum[0],
-    //                 count: 0,
-    //             },
-    //         },
-    //     ],
-    // },
-    // {
-    //     payload: "warn",
-    //     shownValue: "Warnings",
-    //     values: [
-    //         {
-    //             title: "With warnings",
-    //             payload: {
-    //                 kind: alertsEnum[1],
-    //                 count: 1,
-    //             },
-    //         },
-    //         {
-    //             title: "Without warnings",
-    //             payload: {
-    //                 kind: alertsEnum[0],
-    //                 count: 0,
-    //             },
-    //         },
-    //     ],
-    // },
+    {
+        searchId: 'warnings',
+        payload: "warnings",
+        title: "Warnings",
+        component: SearchWarnings
+    },
+    {
+        searchId: 'errors',
+        payload: "errors",
+        title: "Errors",
+        component: SearchErrors
+    },
+    {
+        searchId: 'kind',
+        payload: "kind",
+        title: "Kinds",
+        component: SearchKinds
+    },
 ]
