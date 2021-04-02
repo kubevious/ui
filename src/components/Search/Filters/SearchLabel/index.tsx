@@ -66,7 +66,7 @@ export const SearchLabel: FC<FilterComponentProps> = ({
     }
 
     const addInputField = (key?: string): void => {
-        addFilter(key || currentKey, `${key || currentKey}: ${currentValue}`, currentValue);
+        addFilter(key || currentKey, `${key || currentKey}=${currentValue}`, currentValue);
         setCurrentValue('')
         setCurrentKey('')
         setEditedLabels({})
