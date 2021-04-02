@@ -138,7 +138,6 @@ export interface FilterComponentProps
     addFilter: (filterId: string, caption: string, value: any) => void,
     removeFilter: (filterId: string) => void,
     removeAllFilters: () => void,
-    getAllFilters: () => FilterValue[],
 }
 
 export interface FilterItem {

@@ -8,7 +8,7 @@ import { isEmptyArray } from "../../../../utils/util"
 import { sharedState } from "../../../../configureService"
 import { fetchSearchResult } from "../../util"
 
-export const SearchMarkers : FC<FilterComponentProps> = ({ addFilter, removeFilter, getAllFilters }) => {
+export const SearchMarkers : FC<FilterComponentProps> = ({ data, addFilter, removeFilter, removeAllFilters }) => {
     const [searchValue, setSearchValue] = useState<SearchValue>({})
     const [markers, setMarkers] = useState<MarkersList>({
         payload: "markers",
@@ -117,6 +117,11 @@ export const SearchMarkers : FC<FilterComponentProps> = ({ addFilter, removeFilt
 
     return (
             <div className="inner-items">
+                <div>
+                    {
+                        JSON.stringify(data, null, 4)
+                    }
+                </div>
                 {markers.values &&
                     markers.values.map((item) => {
                         return (

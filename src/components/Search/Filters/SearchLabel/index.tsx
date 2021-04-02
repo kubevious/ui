@@ -34,7 +34,7 @@ const initialAutocomplete = {
     },
 }
 
-export const SearchLabel : FC<FilterComponentProps>  = ({ addFilter, removeFilter, getAllFilters }) => {
+export const SearchLabel : FC<FilterComponentProps>  = ({ data, addFilter, removeFilter, removeAllFilters }) => {
     const [currentInput, setCurrentInput] = useState<CurrentInput>(
         initialCurrentInput
     )
@@ -177,6 +177,12 @@ export const SearchLabel : FC<FilterComponentProps>  = ({ addFilter, removeFilte
 
     return (
         <div className="filter-input-box">
+            <div>
+                {
+                    JSON.stringify(data, null, 4)
+                }
+            </div>
+            
             {values.map((item, index) => {
                 console.log(
                     'autocomplete["labels"] :>> ',

@@ -73,10 +73,6 @@ export const SearchFilterList: React.FunctionComponent<SearchFilterListProps> =
                         removeAllFilters(filter.searchId);
                     }
 
-                    const onFilterGet = () => {
-                        return getAllFilters(filter.searchId);
-                    }
-
                     return (
                         <SearchFilterExpander
                             key={index}
@@ -87,7 +83,6 @@ export const SearchFilterList: React.FunctionComponent<SearchFilterListProps> =
                                 addFilter={onFilterAdd} 
                                 removeFilter={onFilterRemove} 
                                 removeAllFilters={onFilterRemoveAll}
-                                getAllFilters={onFilterGet} 
                                 />
                         </SearchFilterExpander>
                     )
