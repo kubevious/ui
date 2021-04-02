@@ -4,9 +4,7 @@ import { MarkersList, SearchValue } from "../../types"
 import _ from "lodash"
 import { EditorItem } from "../../../../types"
 import { FilterComponentProps } from "../../types"
-import { isEmptyArray } from "../../../../utils/util"
 import { sharedState } from "../../../../configureService"
-import { fetchSearchResult } from "../../util"
 
 export const SearchMarkers : FC<FilterComponentProps> = ({ data, addFilter, removeFilter, removeAllFilters }) => {
     const [markers, setMarkers] = useState<MarkersList>({
@@ -35,81 +33,11 @@ export const SearchMarkers : FC<FilterComponentProps> = ({ data, addFilter, remo
         }
 
         addFilter(newMarker.name, `Marker ${newMarker.name}`, true);
-
-        const valueInState = sharedState.get("search_value") || {}
-        const savedFilters = sharedState.get("saved_filters") || {}
-        const markerExists = _.filter(
-            valueInState.markers,
-            (marker: string) => marker === newMarker.name
-        )
-
-        const savedMarkers = _.filter(
-            savedFilters.markers,
-            (marker: string) => marker !== newMarker.name
-        )
-
-        if (!isEmptyArray(markerExists)) {
-            const filteredMarkers = _.filter(
-                valueInState.markers || savedFilters.markers,
-                (marker: string) => marker !== newMarker.name
-            )
-            const value = { ...valueInState, markers: filteredMarkers }
-
-            if (isEmptyArray(filteredMarkers)) {
-                delete value.markers
-            }
-
-            if (!isEmptyArray(savedMarkers)) {
-                delete savedFilters.markers
-            }
-
-            sharedState.set("search_value", value)
-            sharedState.set("saved_filters", savedFilters)
-
-            return
-        }
-
-        const changedMarkers = valueInState.markers
-            ? [...valueInState.markers, newMarker.name]
-            : [newMarker.name]
-
-        if (!isEmptyArray(savedMarkers)) {
-            sharedState.set("search_value", {
-                ...valueInState,
-                markers: savedMarkers,
-            })
-            sharedState.set("saved_filters", {
-                ...savedFilters,
-                markers: savedMarkers,
-            })
-
-            return
-        }
-
-        delete savedFilters.markers
-
-        if (isEmptyArray(changedMarkers)) {
-            delete valueInState.markers
-
-            sharedState.set("search_value", valueInState)
-            sharedState.set("saved_filters", savedFilters)
-
-            return
-        }
-
-        sharedState.set("search_value", {
-            ...valueInState,
-            markers: changedMarkers,
-        })
-        sharedState.set("saved_filters", savedFilters)
-
-        return
     }
 
     const handleMarkerFilterChange = (title: string): void => {
         const isActive = data.filters[title]
         !!isActive ? removeFilter(title) : markerFilterChange(title)
-        fetchSearchResult()
     }
 
     return (

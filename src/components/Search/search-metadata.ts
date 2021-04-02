@@ -2,6 +2,7 @@ import { FilterItem } from "./types"
 
 import { SearchLabel } from "./Filters/SearchLabel"
 import { SearchMarkers } from "./Filters/SearchMarkers"
+import { SearchAnnotation } from "./Filters/SearchAnnotation"
 
 const alertsEnum = Object.freeze({ 0: "at-most", 1: "at-least" })
 
@@ -17,6 +18,12 @@ export const FILTERS_LIST: FilterItem[] = [
         payload: "labels",
         title: "Labels",
         component: SearchLabel
+    },
+    {
+        searchId: 'annotations',
+        payload: "annotations",
+        title: "Annotations",
+        component: SearchAnnotation
     },
     
     // {

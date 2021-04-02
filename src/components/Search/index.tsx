@@ -63,13 +63,14 @@ export class Search extends ClassComponent<
     IDiagramService
 > {
     fetchSearchResults() {
-        const { searchData } = this.state
         const criteria = sharedState.get("search_input")
-        let activeFilters: SearchValue = {
-          criteria
+        const { searchData } = this.state
+        let activeFilters: SearchValue = {}
+        if (criteria) {
+          activeFilters = { criteria }
         }
         const components = Object.keys(searchData.components)
-        console.log('criteria :>> ', searchData);
+
         components.forEach(component => {
           const filters = Object.keys(searchData.components[component].filters)
 
@@ -140,10 +141,9 @@ export class Search extends ClassComponent<
 
     fetchResults(criteria: any): void {
         this.service.fetchSearchResults(criteria, (response: any) => {
-          console.log('criteria :>> ', criteria);
             if (response.results) {
                 sharedState.set("was_filtered", response.wasFiltered)
-                sharedState.set("search_result", response.result)
+                sharedState.set("search_result", response.results)
                 sharedState.set("total_count", response.totalCount)
             } else {
                 sharedState.set("search_result", response)
@@ -154,14 +154,6 @@ export class Search extends ClassComponent<
 
     addFilter(searchId: string, filterId: string, caption: string, value: any) {
         const { searchData } = this.state
-        console.log(
-            "searchData :>> ",
-            searchId,
-            filterId,
-            caption,
-            value,
-            searchData
-        )
         if (!searchData.components[searchId]) {
             searchData.components[searchId] = {
                 searchId: searchId,
@@ -227,6 +219,8 @@ export class Search extends ClassComponent<
             activeFilters: activeFilters,
             searchData: searchData,
         })
+
+        this.fetchSearchResults()
     }
 
     toogleVisibilityFilter = (searchId: string, filterId: string) => {
@@ -239,13 +233,11 @@ export class Search extends ClassComponent<
         ].isActiveFilter = !isActiveFilter
 
         this._handleSearchDataChange()
-        this.fetchSearchResults()
+
     }
 
     render() {
         const {
-            currentInput,
-            autocomplete,
             activeFilters,
             searchData,
         } = this.state

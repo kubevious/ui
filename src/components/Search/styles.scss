@@ -54,6 +54,7 @@
     }
 
     .filter-box {
+        min-width: 235px;
         display: flex;
         flex-flow: column;
         flex-basis: 15%;
@@ -180,7 +181,7 @@
         text-align: left;
         z-index: 20000;
         margin-left: 3px;
-        width: 235px;
+        width: 220px;
         max-height: 250px;
         overflow-y: auto;
     }
@@ -200,7 +201,7 @@
     .filter-input-btns {
         display: flex;
         justify-content: space-between;
-        margin: 10px 5px;
+        padding: 10px 5px;
 
         & button {
             border: none;
@@ -230,9 +231,12 @@
 }
 .active-filters {
     position: relative;
+    max-height: 300px;
     display: flex;
     flex-wrap: wrap;
-
+    overflow-y: auto;
+    margin-bottom: 10px;
+    
     &:empty {
         height: 3rem;
     }

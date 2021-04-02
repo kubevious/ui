@@ -70,7 +70,6 @@ export const SearchFilterList: React.FunctionComponent<SearchFilterListProps> =
                     }
 
                     const onFilterRemoveAll = () => {
-                        console.log('filter.searchId :>> ', filter.searchId );
                         removeAllFilters(filter.searchId);
                     }
 
