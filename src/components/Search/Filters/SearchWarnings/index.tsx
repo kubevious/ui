@@ -1,52 +1,58 @@
 import React, { FC } from "react"
 import { FilterComponentProps } from "../../types"
-import { alertsEnum } from "../../search-metadata"
 
 export const SearchWarnings : FC<FilterComponentProps> = ({ data, addFilter, removeFilter, removeAllFilters }) => {
-    const selectedWarning = data.filters?.warnings?.caption
+    const selectedFilter = data.filters?.value?.caption
 
-    const handleFilterChange = (
-        title: { kind: string; count: number }
-      ): void => {
-        title.kind === selectedWarning
-            ? removeFilter("warnings")
-            : addFilter("warnings", title.kind, title)
-      }
+    const handleFilterChange = (entry: FilterEntry): void => {
+        if (entry.caption === selectedFilter) {
+            removeFilter("value")
+        } else {
+            addFilter("value", entry.caption, entry.value)
+        }
+    }
 
     return (
         <div className="inner-items">
-            <button
-                key='With warnings'
-                className={
-                    alertsEnum[1] === selectedWarning
-                        ? "selected-filter"
-                        : ""
-                }
-                onClick={() =>
-                    handleFilterChange({
-                        kind: alertsEnum[1],
-                        count: 1
-                    })
-                }
-            >
-                With warnings
-            </button>
-            <button
-                key='Without warnings'
-                className={
-                    alertsEnum[0] === selectedWarning
-                        ? "selected-filter"
-                        : ""
-                }
-                onClick={() =>
-                    handleFilterChange({
-                        kind: alertsEnum[0],
-                        count: 0
-                    })
-                }
-            >
-                Without warnings
-            </button>
+            { FILTER_ENTRIES.map((option, index) => 
+                <button
+                    key={index}
+                    className={
+                        option.caption === selectedFilter
+                            ? "selected-filter"
+                            : ""
+                    }
+                    onClick={() =>
+                        handleFilterChange(option)
+                    }
+                >
+                    {option.caption}
+                </button>
+            )}
         </div>
     )
 }
+
+
+interface FilterEntry
+{
+    caption: string,
+    value: any
+}
+
+const FILTER_ENTRIES : FilterEntry[] = [
+    {
+        caption: 'With warnings',
+        value: {
+            kind: "at-least",
+            count: 1,
+        }
+    },
+    {
+        caption: 'Without warnings',
+        value: {
+            kind: "at-most",
+            count: 0,
+        }
+    },
+]

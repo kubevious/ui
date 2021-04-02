@@ -86,7 +86,7 @@ export interface FilterValue
     filterId: string,
     caption: string,
     value: any
-    isActiveFilter: boolean
+    isEnabled: boolean
 }
 
 

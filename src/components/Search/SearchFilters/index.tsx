@@ -21,7 +21,7 @@ export const SearchFilters: FC<{
         return (
             <div
                 className={cx("active-filter-box", {
-                    deactivated: !val.isActiveFilter,
+                    deactivated: !val.isEnabled,
                 })}
                 key={val.caption}
             >
@@ -35,7 +35,7 @@ export const SearchFilters: FC<{
                 )}
                 <button
                     className={cx("filter-btn toggle-show", {
-                        hide: !val.isActiveFilter,
+                        hide: !val.isEnabled,
                     })}
                     title="Toggle show/hide"
                     onClick={() =>

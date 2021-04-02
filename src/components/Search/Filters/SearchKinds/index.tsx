@@ -10,7 +10,8 @@ export const SearchKinds: FC<FilterComponentProps> = ({
     removeFilter,
     removeAllFilters,
 }) => {
-    const selectedKind = data.filters?.kind?.caption
+    const selectedKinds = data.filters;
+    
     const [kinds, setKinds] = useState<KindList>({
         payload: "kind",
         shownValue: "Kind",
@@ -35,9 +36,10 @@ export const SearchKinds: FC<FilterComponentProps> = ({
     }, [])
 
     const kindFilterChange = (title: string, payload: string): void => {
-        selectedKind === payload
-            ? removeFilter("kind")
-            : addFilter("kind", title, payload)
+        removeAllFilters()
+        if (!selectedKinds[payload]) {
+            addFilter(payload, title, true)
+        }
     }
 
     return (
@@ -48,7 +50,7 @@ export const SearchKinds: FC<FilterComponentProps> = ({
                         <button
                             key={item.payload}
                             className={
-                                selectedKind === item.title
+                                selectedKinds[item.payload]
                                     ? "selected-filter"
                                     : ""
                             }

@@ -22,7 +22,6 @@ const initialAutocomplete = {
 }
 
 export const SearchAnnotation: FC<FilterComponentProps> = ({
-    data,
     addFilter,
     removeFilter,
     removeAllFilters

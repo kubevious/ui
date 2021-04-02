@@ -1,7 +1,7 @@
 import _ from "lodash"
 
 import React from "react"
-import { FilterValue, SearchData } from "../types"
+import { FilterComponentData, FilterValue, SearchData } from "../types"
 import { SearchFilterExpander } from "../SearchFilterExpander"
 import { FilterItem } from "../types"
 
@@ -23,7 +23,17 @@ export const SearchFilterList: React.FunctionComponent<SearchFilterListProps> =
             {FILTERS_LIST &&
                 FILTERS_LIST.map((filter: FilterItem, index) => {
 
-                    const filterSearchData = searchData.components[filter.searchId];
+                    const sourceFilterSearchData = searchData.components[filter.searchId];
+                    const filterSearchData : FilterComponentData = {
+                        searchId: sourceFilterSearchData.searchId,
+                        filters: {}
+                    }
+                    for(let filter of _.values(sourceFilterSearchData.filters))
+                    {
+                        if (filter.isEnabled) {
+                            filterSearchData.filters[filter.filterId] = filter;
+                        }
+                    }
 
                     const onFilterAdd = (filterId: string, caption: string, value: any) => {
                         addFilter(filter.searchId, filterId, caption, value);

@@ -4,7 +4,7 @@ import { ClassComponent } from "@kubevious/ui-framework"
 
 import "./styles.scss"
 import { IDiagramService } from "@kubevious/ui-middleware"
-import { SearchProps, SearchData, FilterValue } from "./types"
+import { SearchProps, SearchData, FilterValue, FilterItem } from "./types"
 import { SearchInput } from "./SearchInput"
 import { SearchFilters } from "./SearchFilters"
 import { SearchResults } from "./SearchResults"
@@ -16,7 +16,7 @@ import { FILTERS_LIST } from "./search-metadata"
 const initialSearchData: SearchData = {
     components: _.makeDict(
         FILTERS_LIST,
-        (x) => x.payload,
+        (x) => x.searchId,
         (x) => ({
             searchId: x.searchId,
             filters: {},
@@ -64,65 +64,32 @@ export class Search extends ClassComponent<
 > {
     fetchSearchResults() {
         const criteria = sharedState.get("search_input")
-        const { searchData } = this.state
-        let activeFilters = {}
+        const { searchData, activeFilters } = this.state
+        let backendData = {}
         if (criteria) {
-          activeFilters = { criteria }
+          backendData = { criteria }
         }
-        const components = Object.keys(searchData.components)
 
-        components.forEach(component => {
-          const filters = Object.keys(searchData.components[component].filters)
+        for(let componentData of _.values(searchData.components))
+        {
+            const componentMetadata = this._metadataDict[componentData.searchId];
 
-          filters.forEach(val => {
-            const { isActiveFilter, filterId, value } = searchData.components[component].filters[val]
-            if(isActiveFilter) {
-              const componentFilters = activeFilters[component] || []
-              switch(component) {
-                case 'errors': 
-                    activeFilters = {
-                        ...activeFilters,
-                        error: value,
+            for(let filterData of _.values(componentData.filters))
+            {
+                if (filterData.isEnabled)
+                {
+                    if (!backendData[componentMetadata.payload]) {
+                        backendData[componentMetadata.payload] = {}
                     }
-                    break;
-                case 'warnings': 
-                    activeFilters = {
-                        ...activeFilters,
-                        warn: value,
-                    }
-                    break;
-                case 'kind': 
-                    activeFilters = {
-                        ...activeFilters,
-                        kind: value,
-                    }
-                    break;
-                case 'annotations':
-                case 'labels': 
-                    activeFilters = {
-                        ...activeFilters,
-                        [component]: [
-                            {   
-                                ...activeFilters[component],
-                                [filterId]: value
-                            }
-                        ]
-                    }
-                    break;
-                default:
-                    activeFilters = {
-                        ...activeFilters,
-                        [component]: [...componentFilters, filterId],
-                    }
-                    break;
-              }
-              
+
+                    backendData[componentMetadata.payload][filterData.filterId] = filterData.value;
+                }
             }
-          })
-          return searchData.components[component].filters
-        })
+        }
 
-        this.fetchResults(activeFilters)
+        console.log("[SEARCH QUERY DATA] ", JSON.stringify(backendData, null, 4));
+
+        this.fetchResults(backendData)
     }
     fetchAutocomplete(type: string, criteria: string): void {
         this.fetchKeys(type, criteria)
@@ -131,8 +98,12 @@ export class Search extends ClassComponent<
         this.fetchValues(type, key, criteria)
     }
 
+    private _metadataDict : Record<string, FilterItem>;
+
     constructor(props) {
         super(props, null, { kind: "diagram" })
+
+        this._metadataDict = _.makeDict(FILTERS_LIST, x => x.searchId, x => x);
 
         this.state = initialState
         this.fetchResults = this.fetchResults.bind(this)
@@ -200,7 +171,7 @@ export class Search extends ClassComponent<
             filterId: filterId,
             caption: caption,
             value: value,
-            isActiveFilter: true,
+            isEnabled: true,
         }
 
         this._handleSearchDataChange()
@@ -259,12 +230,12 @@ export class Search extends ClassComponent<
 
     toogleVisibilityFilter = (searchId: string, filterId: string) => {
         const { searchData } = this.state
-        const { isActiveFilter } = searchData.components[searchId].filters[
+        const { isEnabled } = searchData.components[searchId].filters[
             filterId
         ]
         searchData.components[searchId].filters[
             filterId
-        ].isActiveFilter = !isActiveFilter
+        ].isEnabled = !isEnabled
 
         this._handleSearchDataChange()
 

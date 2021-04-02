@@ -22,7 +22,6 @@ const initialAutocomplete = {
 }
 
 export const SearchLabel: FC<FilterComponentProps> = ({
-    data,
     addFilter,
     removeFilter,
     removeAllFilters

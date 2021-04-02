@@ -7,9 +7,13 @@ import { SearchWarnings } from "./Filters/SearchWarnings"
 import { SearchErrors } from "./Filters/SearchErrors"
 import { SearchKinds } from "./Filters/SearchKinds"
 
-export const alertsEnum = Object.freeze({ 0: "at-most", 1: "at-least" })
-
 export const FILTERS_LIST: FilterItem[] = [
+    {
+        searchId: 'kinds',
+        payload: "kinds",
+        title: "Kinds",
+        component: SearchKinds
+    },
     {
         searchId: 'markers',
         payload: "markers",
@@ -39,11 +43,5 @@ export const FILTERS_LIST: FilterItem[] = [
         payload: "errors",
         title: "Errors",
         component: SearchErrors
-    },
-    {
-        searchId: 'kind',
-        payload: "kind",
-        title: "Kinds",
-        component: SearchKinds
     },
 ]
