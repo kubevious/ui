@@ -4,7 +4,7 @@ import { ClassComponent } from "@kubevious/ui-framework"
 
 import "./styles.scss"
 import { IDiagramService } from "@kubevious/ui-middleware"
-import { SearchValue, SearchProps, SearchData, FilterValue } from "./types"
+import { SearchProps, SearchData, FilterValue } from "./types"
 import { SearchInput } from "./SearchInput"
 import { SearchFilters } from "./SearchFilters"
 import { SearchResults } from "./SearchResults"
@@ -65,7 +65,7 @@ export class Search extends ClassComponent<
     fetchSearchResults() {
         const criteria = sharedState.get("search_input")
         const { searchData } = this.state
-        let activeFilters: SearchValue = {}
+        let activeFilters = {}
         if (criteria) {
           activeFilters = { criteria }
         }
@@ -74,15 +74,49 @@ export class Search extends ClassComponent<
         components.forEach(component => {
           const filters = Object.keys(searchData.components[component].filters)
 
-          filters.forEach(value => {
-            const { isActiveFilter, filterId } = searchData.components[component].filters[value]
+          filters.forEach(val => {
+            const { isActiveFilter, filterId, value } = searchData.components[component].filters[val]
             if(isActiveFilter) {
               const componentFilters = activeFilters[component] || []
-              
-              activeFilters = {
-                ...activeFilters,
-                [component]: [...componentFilters, filterId],
+              switch(component) {
+                case 'errors': 
+                    activeFilters = {
+                        ...activeFilters,
+                        error: value,
+                    }
+                    break;
+                case 'warnings': 
+                    activeFilters = {
+                        ...activeFilters,
+                        warn: value,
+                    }
+                    break;
+                case 'kind': 
+                    activeFilters = {
+                        ...activeFilters,
+                        kind: value,
+                    }
+                    break;
+                case 'annotations':
+                case 'labels': 
+                    activeFilters = {
+                        ...activeFilters,
+                        [component]: [
+                            {   
+                                ...activeFilters[component],
+                                [filterId]: value
+                            }
+                        ]
+                    }
+                    break;
+                default:
+                    activeFilters = {
+                        ...activeFilters,
+                        [component]: [...componentFilters, filterId],
+                    }
+                    break;
               }
+              
             }
           })
           return searchData.components[component].filters
