@@ -12,16 +12,16 @@ export const SearchFilterExpander: React.FunctionComponent<{filter: FilterItem, 
     children
 }) => {
     const activedFilters = sharedState.get('actived_filters') || []
-
+    const isActive = activedFilters.includes(filter.payload)
     return (
         <details open key={filter.payload}>
             <summary
                 className={cx("filter-list inner", {
-                    "is-active": activedFilters.includes(filter.payload),
+                    "is-active": isActive,
                 })}
             >
                 {filter.title}
-                <FontAwesomeIcon className="clearButton" icon={faTrash} onClick={(e: React.MouseEvent<SVGSVGElement, MouseEvent>) => removeAllFilters(e)} />
+                {isActive && <FontAwesomeIcon className="clearButton" icon={faTrash} onClick={(e: React.MouseEvent<SVGSVGElement, MouseEvent>) => removeAllFilters(e)} />}
             </summary>
 
             {children}
