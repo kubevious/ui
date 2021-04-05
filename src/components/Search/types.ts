@@ -12,25 +12,8 @@ export type FilterObjectType = {
 
 export type FilterType = FilterObjectType | string
 
-export type FiltersList = {
-    payload: string;
-    shownValue: string;
-    values: {
-        title: string;
-        payload: string;
-    }[] | {
-        title: string;
-        payload: {
-            kind: string;
-            count: number;
-        };
-    }[];
-}
-
 export type SearchProps = {
-    isKinds?: boolean,
-    isMarkers?: boolean,
-    filterList?: FiltersList[]
+    filterList: FilterItem[]
 }
 
 // TODO: Move types above to /Filters/**/types.ts

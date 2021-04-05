@@ -11,50 +11,11 @@ import { SearchResults } from "./SearchResults"
 import { sharedState } from "../../configureService"
 import { SearchFilterList } from "./SearchFilterList"
 
-import { FILTERS_LIST } from "./search-metadata"
-
-const initialSearchData: SearchData = {
-    components: _.makeDict(
-        FILTERS_LIST,
-        (x) => x.searchId,
-        (x) => ({
-            searchId: x.searchId,
-            filters: {},
-        })
-    ),
-}
-
 interface TSearchState {
     searchData: SearchData
     activeFilters: FilterValue[]
     currentInput: any
     autocomplete: any
-}
-
-const initialState: TSearchState = {
-    searchData: initialSearchData,
-    activeFilters: [],
-
-    currentInput: {
-        labels: {
-            key: "",
-            value: "",
-        },
-        annotations: {
-            key: "",
-            value: "",
-        },
-    },
-    autocomplete: {
-        labels: {
-            keys: [],
-            values: [],
-        },
-        annotations: {
-            keys: [],
-            values: [],
-        },
-    },
 }
 
 export class Search extends ClassComponent<
@@ -92,21 +53,63 @@ export class Search extends ClassComponent<
 
         this.fetchResults(backendData)
     }
+
     fetchAutocomplete(type: string, criteria: string): void {
         this.fetchKeys(type, criteria)
     }
+
     fetchAutocompleteValues(type: string, key: string, criteria: string): void {
         this.fetchValues(type, key, criteria)
     }
 
     private _metadataDict : Record<string, FilterItem>;
+    private _filterList : FilterItem[];
 
+    initialSearchData: SearchData;
+
+    initialState: TSearchState;
     constructor(props) {
         super(props, null, { kind: "diagram" })
 
-        this._metadataDict = _.makeDict(FILTERS_LIST, x => x.searchId, x => x);
+        this._metadataDict = _.makeDict(this.props.filterList, x => x.searchId, x => x);
+        this._filterList = this.props.filterList
+        this.initialSearchData = {
+            components: _.makeDict(
+                this._filterList,
+                (x) => x.searchId,
+                (x) => ({
+                    searchId: x.searchId,
+                    filters: {},
+                })
+            ),
+        }
+        this.initialState = {
+            searchData: this.initialSearchData,
+            activeFilters: [],
+        
+            currentInput: {
+                labels: {
+                    key: "",
+                    value: "",
+                },
+                annotations: {
+                    key: "",
+                    value: "",
+                },
+            },
+            autocomplete: {
+                labels: {
+                    keys: [],
+                    values: [],
+                },
+                annotations: {
+                    keys: [],
+                    values: [],
+                },
+            },
+        }
 
-        this.state = initialState
+        this.state = this.initialState
         this.fetchResults = this.fetchResults.bind(this)
         this.fetchKeys = this.fetchKeys.bind(this)
         this.fetchValues = this.fetchValues.bind(this)
@@ -247,16 +250,19 @@ export class Search extends ClassComponent<
             activeFilters,
             searchData,
         } = this.state
+
         return (
             <div className="Search-wrapper p-40 overflow-hide">
                 <SearchInput />
                 <SearchFilters
+                    filterList={this._filterList}
                     activeFilters={activeFilters}
                     removeFilter={this.removeFilter}
                     toogleVisibilityFilter={this.toogleVisibilityFilter}
                 />
                 <div className="search-area">
                     <SearchFilterList
+                        filterList={this._filterList}
                         searchData={searchData}
                         addFilter={this.addFilter}
                         removeFilter={this.removeFilter}

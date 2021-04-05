@@ -2,14 +2,14 @@ import React, { FC } from "react"
 import cx from "classnames"
 import { sharedState } from "../../../configureService"
 
-import { FILTERS_LIST } from "../search-metadata"
-import { FilterValue } from "../types"
+import { FilterItem, FilterValue } from "../types"
 
 export const SearchFilters: FC<{
+    filterList: FilterItem[]
     activeFilters: FilterValue[]
     removeFilter: (searchId: string, filterId: string) => void
     toogleVisibilityFilter: (searchId: string, filterId: string) => void
-}> = ({ activeFilters, removeFilter, toogleVisibilityFilter }) => {
+}> = ({ filterList, activeFilters, removeFilter, toogleVisibilityFilter }) => {
     const handleEditFilter = (type: string, filter: string, value : any): void => {
         sharedState.set(`edited_filter_${type}`, {
                 filter,
@@ -18,7 +18,7 @@ export const SearchFilters: FC<{
     }
 
     const renderActiveFilters = (val: FilterValue) => {
-        const filterComponent = FILTERS_LIST
+        const filterComponent = filterList
             .filter(filterValue => 
                 filterValue.searchId === val.searchId
             )[0]

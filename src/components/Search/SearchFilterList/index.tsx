@@ -5,47 +5,64 @@ import { FilterComponentData, FilterValue, SearchData } from "../types"
 import { SearchFilterExpander } from "../SearchFilterExpander"
 import { FilterItem } from "../types"
 
-import { FILTERS_LIST } from "../search-metadata"
 
-export interface SearchFilterListProps
-{
-  searchData : SearchData
-  addFilter(searchId: string, filterId: string, caption: string, value: any) : void
-  removeFilter(searchId: string, filterId: string) : void
-  removeAllFilters(searchId: string) : void
-  getAllFilters(searchId: string) : FilterValue[]
+export interface SearchFilterListProps {
+    filterList: FilterItem[]
+    searchData: SearchData
+    addFilter(
+        searchId: string,
+        filterId: string,
+        caption: string,
+        value: any
+    ): void
+    removeFilter(searchId: string, filterId: string): void
+    removeAllFilters(searchId: string): void
+    getAllFilters(searchId: string): FilterValue[]
 }
 
-export const SearchFilterList: React.FunctionComponent<SearchFilterListProps> = 
-({ searchData, addFilter, removeFilter, removeAllFilters, getAllFilters }) => {
+export const SearchFilterList: React.FunctionComponent<SearchFilterListProps> = ({
+    filterList,
+    searchData,
+    addFilter,
+    removeFilter,
+    removeAllFilters,
+    getAllFilters,
+}) => {
     return (
         <div className="filter-list filter-box">
-            {FILTERS_LIST &&
-                FILTERS_LIST.map((filter: FilterItem, index) => {
-
-                    const sourceFilterSearchData = searchData.components[filter.searchId];
-                    const filterSearchData : FilterComponentData = {
+            {filterList &&
+                filterList.map((filter: FilterItem, index) => {
+                    const sourceFilterSearchData =
+                        searchData.components[filter.searchId]
+                    const filterSearchData: FilterComponentData = {
                         searchId: sourceFilterSearchData.searchId,
-                        filters: {}
+                        filters: {},
                     }
-                    for(let filter of _.values(sourceFilterSearchData.filters))
-                    {
+                    for (let filter of _.values(
+                        sourceFilterSearchData.filters
+                    )) {
                         if (filter.isEnabled) {
-                            filterSearchData.filters[filter.filterId] = filter;
+                            filterSearchData.filters[filter.filterId] = filter
                         }
                     }
 
-                    const onFilterAdd = (filterId: string, caption: string, value: any) => {
-                        addFilter(filter.searchId, filterId, caption, value);
+                    const onFilterAdd = (
+                        filterId: string,
+                        caption: string,
+                        value: any
+                    ) => {
+                        addFilter(filter.searchId, filterId, caption, value)
                     }
 
                     const onFilterRemove = (filterId: string) => {
-                        removeFilter(filter.searchId, filterId);
+                        removeFilter(filter.searchId, filterId)
                     }
 
-                    const onFilterRemoveAll = (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
+                    const onFilterRemoveAll = (
+                        e: React.MouseEvent<SVGSVGElement, MouseEvent>
+                    ) => {
                         e.preventDefault()
-                        removeAllFilters(filter.searchId);
+                        removeAllFilters(filter.searchId)
                     }
 
                     return (
@@ -54,12 +71,12 @@ export const SearchFilterList: React.FunctionComponent<SearchFilterListProps> =
                             filter={filter}
                             removeAllFilters={onFilterRemoveAll}
                         >
-                            <filter.component 
+                            <filter.component
                                 data={filterSearchData}
-                                addFilter={onFilterAdd} 
-                                removeFilter={onFilterRemove} 
+                                addFilter={onFilterAdd}
+                                removeFilter={onFilterRemove}
                                 removeAllFilters={onFilterRemoveAll}
-                                />
+                            />
                         </SearchFilterExpander>
                     )
                 })}
