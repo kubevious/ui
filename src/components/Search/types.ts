@@ -54,7 +54,7 @@ export interface FilterComponentProps
     data: FilterComponentData,
     addFilter: (filterId: string, caption: string, value: any) => void,
     removeFilter: (filterId: string) => void,
-    removeAllFilters: () => void,
+    removeAllFilters: (e) => void,
 }
 
 export interface FilterItem {

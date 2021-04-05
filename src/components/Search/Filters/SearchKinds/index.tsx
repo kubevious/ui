@@ -35,8 +35,8 @@ export const SearchKinds: FC<FilterComponentProps> = ({
         getKindsList()
     }, [])
 
-    const kindFilterChange = (title: string, payload: string): void => {
-        removeAllFilters()
+    const kindFilterChange = (title: string, payload: string, e): void => {
+        removeAllFilters(e)
         if (!selectedKinds[payload]) {
             addFilter(payload, title, true)
         }
@@ -54,8 +54,8 @@ export const SearchKinds: FC<FilterComponentProps> = ({
                                     ? "selected-filter"
                                     : ""
                             }
-                            onClick={() =>
-                                kindFilterChange(item.title, item.payload)
+                            onClick={(e) =>
+                                kindFilterChange(item.title, item.payload, e)
                             }
                         >
                             {item.title || ""}

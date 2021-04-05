@@ -43,7 +43,8 @@ export const SearchFilterList: React.FunctionComponent<SearchFilterListProps> =
                         removeFilter(filter.searchId, filterId);
                     }
 
-                    const onFilterRemoveAll = () => {
+                    const onFilterRemoveAll = (e) => {
+                        e.preventDefault()
                         removeAllFilters(filter.searchId);
                     }
 
@@ -51,8 +52,8 @@ export const SearchFilterList: React.FunctionComponent<SearchFilterListProps> =
                         <SearchFilterExpander
                             key={index}
                             filter={filter}
+                            removeAllFilters={onFilterRemoveAll}
                         >
-                            <button className="clearButton" onClick={() => onFilterRemoveAll()}>Clear filters</button>
                             <filter.component 
                                 data={filterSearchData}
                                 addFilter={onFilterAdd} 
