@@ -5,7 +5,8 @@ import { AutocompleteValues } from "../types"
 import { FilterComponentProps } from "../types"
 import { INITIAL_AUTOCOMPLETE } from "../constants"
 import { sharedState } from "@kubevious/ui-framework/dist/global"
-import { FilterType, fetchAutocomplete, fetchAutocompleteValues } from "@kubevious/ui-search"
+import { FilterType } from "@kubevious/ui-search"
+import { fetchAutocomplete, fetchAutocompleteValues } from "../utils"
 
 export const SearchAnnotation: FC<FilterComponentProps> = ({
     addFilter,
