@@ -54,7 +54,7 @@ export interface FilterComponentProps
     data: FilterComponentData,
     addFilter: (filterId: string, caption: string, value: any) => void,
     removeFilter: (filterId: string) => void,
-    removeAllFilters: (e) => void,
+    removeAllFilters: (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => void,
 }
 
 export interface FilterItem {

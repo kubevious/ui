@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faTrash } from "@fortawesome/free-solid-svg-icons"
 
 
-export const SearchFilterExpander: React.FunctionComponent<{filter: FilterItem, removeAllFilters: (e) => void}> = ({
+export const SearchFilterExpander: React.FunctionComponent<{filter: FilterItem, removeAllFilters: (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => void}> = ({
     filter,
     removeAllFilters,
     children
@@ -21,7 +21,7 @@ export const SearchFilterExpander: React.FunctionComponent<{filter: FilterItem, 
                 })}
             >
                 {filter.title}
-                <FontAwesomeIcon className="clearButton" icon={faTrash} onClick={(e) => removeAllFilters(e)} />
+                <FontAwesomeIcon className="clearButton" icon={faTrash} onClick={(e: React.MouseEvent<SVGSVGElement, MouseEvent>) => removeAllFilters(e)} />
             </summary>
 
             {children}

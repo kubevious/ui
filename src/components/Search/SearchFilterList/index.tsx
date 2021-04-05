@@ -43,7 +43,7 @@ export const SearchFilterList: React.FunctionComponent<SearchFilterListProps> =
                         removeFilter(filter.searchId, filterId);
                     }
 
-                    const onFilterRemoveAll = (e) => {
+                    const onFilterRemoveAll = (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
                         e.preventDefault()
                         removeAllFilters(filter.searchId);
                     }
