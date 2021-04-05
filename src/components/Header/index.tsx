@@ -3,8 +3,8 @@ import _ from "the-lodash"
 import bugImg from "../../assets/header-btns/bug.svg"
 import slackImg from "../../assets/header-btns/slack.svg"
 import githubImg from "../../assets/header-btns/github.svg"
+import { Search } from "@kubevious/ui-search"
 import { About } from "../About"
-import { Search } from "../Search"
 import { Notifications } from "../Notifications"
 import { ClassComponent } from "@kubevious/ui-framework"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -15,7 +15,7 @@ import "./styles.scss"
 import { IMiscService } from "@kubevious/ui-middleware"
 import { GoldenLayoutWindowInfo } from "@kubevious/ui-components"
 import { HeaderProps, HeaderState } from "./types"
-import { FILTERS_LIST } from "../Search/search-metadata"
+import { FILTERS_LIST } from "../../utils/search-metadata"
 
 export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscService> {
     constructor(props : HeaderProps | Readonly<HeaderProps>) {

@@ -12,3 +12,8 @@ export type HeaderState = {
 export type HeaderProps = {
     windows:  GoldenLayoutWindowInfo[]
 }
+
+export type List = {
+    payload: string
+    shownValue: string
+}

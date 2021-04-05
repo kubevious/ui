@@ -1,4 +1,4 @@
-import { FilterComponentData } from "@kubevious/ui-search";
+import { FilterComponentData } from "@kubevious/ui-search"
 
 export interface FilterEntry {
     caption: string
@@ -7,13 +7,13 @@ export interface FilterEntry {
 
 export interface AutocompleteValues {
     labels: {
-        keys: [];
-        values: [];
-    };
+        keys: []
+        values: []
+    }
     annotations: {
-        keys: [];
-        values: [];
-    };
+        keys: []
+        values: []
+    }
 }
 
 export interface FilterComponentProps {
