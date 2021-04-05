@@ -2,7 +2,6 @@ import React, { Fragment, useState, useEffect, FC } from "react"
 import Autocomplete from "react-autocomplete"
 import { AutocompleteValues } from "../types"
 
-import "../../styles.scss"
 import { FilterComponentProps } from "../types"
 import { INITIAL_AUTOCOMPLETE } from "../constants"
 import { sharedState } from "@kubevious/ui-framework/dist/global"

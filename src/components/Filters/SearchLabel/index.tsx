@@ -4,7 +4,6 @@ import { AutocompleteValues } from "../types"
 import { sharedState } from "@kubevious/ui-framework/dist/global"
 import { FilterType, fetchAutocomplete, fetchAutocompleteValues } from "@kubevious/ui-search"
 
-import "../../styles.scss"
 import { FilterComponentProps } from "../types"
 import { INITIAL_AUTOCOMPLETE } from "../constants"
 
