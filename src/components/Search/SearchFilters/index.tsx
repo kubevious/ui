@@ -1,8 +1,8 @@
 import React, { FC } from "react"
 import cx from "classnames"
-import { checkForInputFilter } from "../util"
 import { sharedState } from "../../../configureService"
 
+import { FILTERS_LIST } from "../search-metadata"
 import { FilterValue } from "../types"
 
 export const SearchFilters: FC<{
@@ -18,6 +18,11 @@ export const SearchFilters: FC<{
     }
 
     const renderActiveFilters = (val: FilterValue) => {
+        const filterComponent = FILTERS_LIST
+            .filter(filterValue => 
+                filterValue.searchId === val.searchId
+            )[0]
+
         return (
             <div
                 className={cx("active-filter-box", {
@@ -27,7 +32,7 @@ export const SearchFilters: FC<{
             >
                 <span className="filter-key">{`${val.searchId}: `}</span>
                 <span className="filter-val">{val.caption}</span>
-                {checkForInputFilter(val.searchId) && (
+                {filterComponent.isEditable && (
                     <button
                         className="filter-btn edit"
                         onClick={() => handleEditFilter(val.searchId, val.filterId, val.value)}

@@ -1,10 +1,6 @@
 import { Search } from "."
 import { FilterType } from "./types"
 
-export const checkForInputFilter = (payload: string): boolean => {
-    return payload === "labels" || payload === "annotations"
-}
-
 export const keyCheck = (el: FilterType, key: string): boolean => {
     return typeof el !== "string" && el.key === key
 }

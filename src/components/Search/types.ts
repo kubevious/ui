@@ -63,6 +63,7 @@ export interface FilterItem {
     title: string
     component: React.ComponentType<FilterComponentProps>
     data?: FilterData
+    isEditable?: boolean
 }
 
 

@@ -24,13 +24,15 @@ export const FILTERS_LIST: FilterItem[] = [
         searchId: 'labels',
         payload: "labels",
         title: "Labels",
-        component: SearchLabel
+        component: SearchLabel,
+        isEditable: true
     },
     {
         searchId: 'annotations',
         payload: "annotations",
         title: "Annotations",
-        component: SearchAnnotation
+        component: SearchAnnotation,
+        isEditable: true
     },
     {
         searchId: 'warnings',
