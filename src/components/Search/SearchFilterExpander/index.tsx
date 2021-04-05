@@ -8,12 +8,13 @@ export const SearchFilterExpander: React.FunctionComponent<{filter: FilterItem}>
     filter,
     children
 }) => {
-    const value = sharedState.get('search_value') || {}
+    const activedFilters = sharedState.get('actived_filters') || []
+
     return (
         <details open key={filter.payload}>
             <summary
                 className={cx("filter-list inner", {
-                    "is-active": !!value[filter.payload],
+                    "is-active": activedFilters.includes(filter.payload),
                 })}
             >
                 {filter.title}

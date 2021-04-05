@@ -87,6 +87,7 @@ export class Search extends ClassComponent<
             }
         }
 
+        sharedState.set('actived_filters', Object.keys(backendData))
         console.log("[SEARCH QUERY DATA] ", JSON.stringify(backendData, null, 4));
 
         this.fetchResults(backendData)
