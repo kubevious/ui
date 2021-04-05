@@ -25,7 +25,7 @@ export class Search extends ClassComponent<
 > {
     fetchSearchResults() {
         const criteria = sharedState.get("search_input")
-        const { searchData, activeFilters } = this.state
+        const { searchData } = this.state
         let backendData = {}
         if (criteria) {
           backendData = { criteria }
@@ -54,12 +54,12 @@ export class Search extends ClassComponent<
         this.fetchResults(backendData)
     }
 
-    fetchAutocomplete(type: string, criteria: string): void {
-        this.fetchKeys(type, criteria)
+    fetchAutocompleteKeys(type: string, criteria: any, cb: (data: any) => any): void {
+        this.service.fetchAutocompleteKeys(type, criteria, cb)
     }
 
-    fetchAutocompleteValues(type: string, key: string, criteria: string): void {
-        this.fetchValues(type, key, criteria)
+    fetchAutocompleteValues(type: string, criteria: any, cb: (data: any) => any): void {
+        this.service.fetchAutocompleteValues(type, criteria, cb)
     }
 
     private _metadataDict : Record<string, FilterItem>;
@@ -111,41 +111,14 @@ export class Search extends ClassComponent<
 
         this.state = this.initialState
         this.fetchResults = this.fetchResults.bind(this)
-        this.fetchKeys = this.fetchKeys.bind(this)
-        this.fetchValues = this.fetchValues.bind(this)
+        this.fetchAutocompleteKeys = this.fetchAutocompleteKeys.bind(this)
+        this.fetchAutocompleteValues = this.fetchAutocompleteValues.bind(this)
 
         this.addFilter = this.addFilter.bind(this)
         this.removeFilter = this.removeFilter.bind(this)
         this.removeAllFilters = this.removeAllFilters.bind(this)
         this.toogleVisibilityFilter = this.toogleVisibilityFilter.bind(this)
         this.getAllFilters = this.getAllFilters.bind(this)
-    }
-
-    fetchValues(type: string, key: string, criteria: string): void {
-        if (!key) {
-            return
-        }
-        this.service.fetchAutocompleteValues(
-            type,
-            { key, criteria },
-            (response) => {
-                const autocomplete = sharedState.get("autocomplete") || {}
-                autocomplete[type].values = response
-                sharedState.set("autocomplete", autocomplete)
-            }
-        )
-    }
-
-    fetchKeys(type: string, criteria: string): void {
-        return this.service.fetchAutocompleteKeys(
-            type,
-            { criteria },
-            (response) => {
-                const autocomplete = sharedState.get("autocomplete") || {}
-                autocomplete[type].keys = response
-                sharedState.set("autocomplete", autocomplete)
-            }
-        )
     }
 
     fetchResults(criteria: any): void {

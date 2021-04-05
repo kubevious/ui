@@ -19,11 +19,11 @@ export const SearchFilters: FC<{
 
     const renderActiveFilters = (val: FilterValue) => {
         const filterComponent = filterList
-            .filter(filterValue => 
+            .find(filterValue => 
                 filterValue.searchId === val.searchId
-            )[0]
+            )
 
-        return (
+            return (
             <div
                 className={cx("active-filter-box", {
                     deactivated: !val.isEnabled,
@@ -32,7 +32,7 @@ export const SearchFilters: FC<{
             >
                 <span className="filter-key">{`${val.searchId}: `}</span>
                 <span className="filter-val">{val.caption}</span>
-                {filterComponent.isEditable && (
+                {filterComponent?.isEditable && (
                     <button
                         className="filter-btn edit"
                         onClick={() => handleEditFilter(val.searchId, val.filterId, val.value)}
