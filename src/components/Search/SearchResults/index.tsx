@@ -3,6 +3,7 @@ import { DnShortcutComponent } from "@kubevious/ui-components"
 import { SelectedData } from "../../../types"
 import { isEmptyArray } from "../../../utils/util"
 import { sharedState } from "../../../configureService"
+import { LIMITED_RESULTS_MSG, NO_ITEMS_MATCHING_MSG, NO_SEARCH_RESULT_MSG } from "../constants"
 
 export const SearchResults = () => {
     const [result, setResult] = useState<SelectedData[]>([])
@@ -16,14 +17,14 @@ export const SearchResults = () => {
             setWasFiltered(sharedState.get("was_filtered"))
         })
     }, [])
-    
+
     return (
         <div className="search-results">
             {isEmptyArray(result) ? (
                 <div className="result-placeholder">
                     {wasFiltered
-                        ? "No items matching search criteria"
-                        : "No search criteria defined"}
+                        ? NO_ITEMS_MATCHING_MSG
+                        : NO_SEARCH_RESULT_MSG}
                 </div>
             ) : (
                 <>
@@ -33,11 +34,11 @@ export const SearchResults = () => {
                         ))}
                     {result.length < totalCount && (
                         <div className="limited-results-msg">
-                            The first 200 items are shown. Please refine your search
-                            query to see more
+                            {LIMITED_RESULTS_MSG}
                         </div>
                     )}
                 </>
             )}
-        </div>)
+        </div>
+    )
 }

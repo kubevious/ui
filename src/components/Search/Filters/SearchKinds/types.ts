@@ -1,4 +1,4 @@
-import { List } from "../../types";
+import { List } from "../../types"
 
 export type KindListValue = {
     title: string

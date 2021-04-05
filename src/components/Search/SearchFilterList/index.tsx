@@ -1,10 +1,9 @@
 import _ from "lodash"
 
 import React from "react"
-import { FilterComponentData, FilterValue, SearchData } from "../types"
+import { FilterComponentData, SearchData } from "../types"
 import { SearchFilterExpander } from "../SearchFilterExpander"
 import { FilterItem } from "../types"
-
 
 export interface SearchFilterListProps {
     filterList: FilterItem[]
@@ -17,7 +16,6 @@ export interface SearchFilterListProps {
     ): void
     removeFilter(searchId: string, filterId: string): void
     removeAllFilters(searchId: string): void
-    getAllFilters(searchId: string): FilterValue[]
 }
 
 export const SearchFilterList: React.FunctionComponent<SearchFilterListProps> = ({
@@ -26,7 +24,6 @@ export const SearchFilterList: React.FunctionComponent<SearchFilterListProps> = 
     addFilter,
     removeFilter,
     removeAllFilters,
-    getAllFilters,
 }) => {
     return (
         <div className="filter-list filter-box">
@@ -59,7 +56,7 @@ export const SearchFilterList: React.FunctionComponent<SearchFilterListProps> = 
                     }
 
                     const onFilterRemoveAll = (
-                        e: React.MouseEvent<SVGSVGElement, MouseEvent>
+                        e: React.MouseEvent<SVGSVGElement, MouseEvent> | React.MouseEvent<HTMLButtonElement, MouseEvent>
                     ) => {
                         e.preventDefault()
                         removeAllFilters(filter.searchId)

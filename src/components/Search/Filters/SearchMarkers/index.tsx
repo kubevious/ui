@@ -6,7 +6,12 @@ import { EditorItem } from "../../../../types"
 import { FilterComponentProps } from "../../types"
 import { sharedState } from "../../../../configureService"
 
-export const SearchMarkers : FC<FilterComponentProps> = ({ data, addFilter, removeFilter, removeAllFilters }) => {
+export const SearchMarkers: FC<FilterComponentProps> = ({
+    data,
+    addFilter,
+    removeFilter,
+    removeAllFilters,
+}) => {
     const [markers, setMarkers] = useState<MarkersList>({
         payload: "markers",
         shownValue: "Markers",
@@ -32,7 +37,7 @@ export const SearchMarkers : FC<FilterComponentProps> = ({ data, addFilter, remo
             return
         }
 
-        addFilter(newMarker.name, `Marker ${newMarker.name}`, true);
+        addFilter(newMarker.name, `Marker ${newMarker.name}`, true)
     }
 
     const handleMarkerFilterChange = (title: string): void => {
@@ -41,32 +46,27 @@ export const SearchMarkers : FC<FilterComponentProps> = ({ data, addFilter, remo
     }
 
     return (
-            <div className="inner-items">
-                {markers.values &&
-                    markers.values.map((item) => {
-                        const name = item.name || ''
-                        return (
-                            <button
-                                title={name}
-                                key={name}
-                                className={
-                                    data.filters[name]
-                                        ? "selected-filter"
-                                        : ""
-                                }
-                                onClick={() =>
-                                    handleMarkerFilterChange(name)
-                                }
-                            >
-                                <MarkerPreview
-                                    shape={item.shape}
-                                    color={item.color}
-                                />
-                                {name}
-                            </button>
-                        )
-                    })
-                }
-            </div>
+        <div className="inner-items">
+            {markers.values &&
+                markers.values.map((item) => {
+                    const name = item.name || ""
+                    return (
+                        <button
+                            title={name}
+                            key={name}
+                            className={
+                                data.filters[name] ? "selected-filter" : ""
+                            }
+                            onClick={() => handleMarkerFilterChange(name)}
+                        >
+                            <MarkerPreview
+                                shape={item.shape}
+                                color={item.color}
+                            />
+                            {name}
+                        </button>
+                    )
+                })}
+        </div>
     )
 }

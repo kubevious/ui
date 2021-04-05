@@ -1,56 +1,48 @@
 import React, { Fragment, useState, useEffect, FC } from "react"
 import Autocomplete from "react-autocomplete"
 import { FilterType } from "../../types"
-import {
-    fetchAutocomplete,
-    fetchAutocompleteValues,
-} from "../../util"
+import { fetchAutocomplete, fetchAutocompleteValues } from "../../util"
 import { sharedState } from "../../../../configureService"
 
 import "../../styles.scss"
 import { FilterComponentProps } from "../../types"
-
-const initialAutocomplete = {
-    labels: {
-        keys: [],
-        values: [],
-    },
-    annotations: {
-        keys: [],
-        values: [],
-    },
-}
+import { INITIAL_AUTOCOMPLETE } from "../../constants"
 
 export const SearchAnnotation: FC<FilterComponentProps> = ({
     addFilter,
     removeFilter,
-    removeAllFilters
 }) => {
     const [currentValue, setCurrentValue] = useState<string>("")
     const [currentKey, setCurrentKey] = useState<string>("")
-    const [editedAnnotations, setEditedAnnotations] = useState<{filter?: string, value?: string}>({})
+    const [editedAnnotations, setEditedAnnotations] = useState<{
+        filter?: string
+        value?: string
+    }>({})
 
     const [autocomplete, setAutocomplete] = useState<Autocomplete>(
-        initialAutocomplete
+        INITIAL_AUTOCOMPLETE
     )
 
     useEffect(() => {
-        sharedState.set("autocomplete", initialAutocomplete)
+        sharedState.set("autocomplete", INITIAL_AUTOCOMPLETE)
     }, [])
 
     useEffect(() => {
-        sharedState.subscribe("edited_filter_annotations", (edited_filter_annotations) => {
-            if (edited_filter_annotations) {
-                setEditedAnnotations(edited_filter_annotations || {})
-                setCurrentValue(edited_filter_annotations.value)
-                setCurrentKey(edited_filter_annotations.filter)
+        sharedState.subscribe(
+            "edited_filter_annotations",
+            (edited_filter_annotations) => {
+                if (edited_filter_annotations) {
+                    setEditedAnnotations(edited_filter_annotations || {})
+                    setCurrentValue(edited_filter_annotations.value)
+                    setCurrentKey(edited_filter_annotations.filter)
+                }
             }
-        })
+        )
     }, [])
 
     useEffect(() => {
         sharedState.subscribe("autocomplete", (autocomplete) => {
-            setAutocomplete(autocomplete || initialAutocomplete)
+            setAutocomplete(autocomplete || INITIAL_AUTOCOMPLETE)
         })
     }, [])
 
@@ -66,17 +58,21 @@ export const SearchAnnotation: FC<FilterComponentProps> = ({
     }
 
     const addInputField = (key?: string): void => {
-        addFilter(key || currentKey, `${key || currentKey}=${currentValue}`, currentValue);
-        setCurrentValue('')
-        setCurrentKey('')
+        addFilter(
+            key || currentKey,
+            `${key || currentKey}=${currentValue}`,
+            currentValue
+        )
+        setCurrentValue("")
+        setCurrentKey("")
         setEditedAnnotations({})
         sharedState.set("edited_filter_annotations", null)
     }
 
     const handleClearFilter = (key?: string) => {
-        removeFilter(key ||currentKey)
-        setCurrentValue('')
-        setCurrentKey('')
+        removeFilter(key || currentKey)
+        setCurrentValue("")
+        setCurrentKey("")
         setEditedAnnotations({})
         sharedState.set("edited_filter_annotations", null)
     }
@@ -116,10 +112,7 @@ export const SearchAnnotation: FC<FilterComponentProps> = ({
                         <div className="autocomplete" children={items} />
                     )}
                     renderInput={(props) => (
-                        <input
-                            disabled={!currentKey.trim()}
-                            {...props}
-                        />
+                        <input disabled={!currentKey.trim()} {...props} />
                     )}
                     onMenuVisibilityChange={() =>
                         fetchAutocomplete("annotations", currentValue)
@@ -133,11 +126,13 @@ export const SearchAnnotation: FC<FilterComponentProps> = ({
                         className="add-filter-btn"
                         onClick={() => addInputField(editedAnnotations.filter)}
                     >
-                        {!!editedAnnotations.filter ? 'Update' : 'Add'}
+                        {!!editedAnnotations.filter ? "Update" : "Add"}
                     </button>
                     <button
                         type="button"
-                        onClick={() => handleClearFilter(editedAnnotations.filter)}
+                        onClick={() =>
+                            handleClearFilter(editedAnnotations.filter)
+                        }
                     >
                         Remove
                     </button>

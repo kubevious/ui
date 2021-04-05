@@ -10,20 +10,23 @@ export const SearchFilters: FC<{
     removeFilter: (searchId: string, filterId: string) => void
     toogleVisibilityFilter: (searchId: string, filterId: string) => void
 }> = ({ filterList, activeFilters, removeFilter, toogleVisibilityFilter }) => {
-    const handleEditFilter = (type: string, filter: string, value : any): void => {
+    const handleEditFilter = (
+        type: string,
+        filter: string,
+        value: any
+    ): void => {
         sharedState.set(`edited_filter_${type}`, {
-                filter,
-                value
+            filter,
+            value,
         })
     }
 
     const renderActiveFilters = (val: FilterValue) => {
-        const filterComponent = filterList
-            .find(filterValue => 
-                filterValue.searchId === val.searchId
-            )
+        const filterComponent = filterList.find(
+            (filterValue) => filterValue.searchId === val.searchId
+        )
 
-            return (
+        return (
             <div
                 className={cx("active-filter-box", {
                     deactivated: !val.isEnabled,
@@ -35,7 +38,13 @@ export const SearchFilters: FC<{
                 {filterComponent?.isEditable && (
                     <button
                         className="filter-btn edit"
-                        onClick={() => handleEditFilter(val.searchId, val.filterId, val.value)}
+                        onClick={() =>
+                            handleEditFilter(
+                                val.searchId,
+                                val.filterId,
+                                val.value
+                            )
+                        }
                     ></button>
                 )}
                 <button

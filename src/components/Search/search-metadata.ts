@@ -9,41 +9,41 @@ import { SearchKinds } from "./Filters/SearchKinds"
 
 export const FILTERS_LIST: FilterItem[] = [
     {
-        searchId: 'kinds',
+        searchId: "kinds",
         payload: "kinds",
         title: "Kinds",
-        component: SearchKinds
+        component: SearchKinds,
     },
     {
-        searchId: 'markers',
+        searchId: "markers",
         payload: "markers",
         title: "Markers",
-        component: SearchMarkers
+        component: SearchMarkers,
     },
     {
-        searchId: 'labels',
+        searchId: "labels",
         payload: "labels",
         title: "Labels",
         component: SearchLabel,
-        isEditable: true
+        isEditable: true,
     },
     {
-        searchId: 'annotations',
+        searchId: "annotations",
         payload: "annotations",
         title: "Annotations",
         component: SearchAnnotation,
-        isEditable: true
+        isEditable: true,
     },
     {
-        searchId: 'warnings',
+        searchId: "warnings",
         payload: "warnings",
         title: "Warnings",
-        component: SearchWarnings
+        component: SearchWarnings,
     },
     {
-        searchId: 'errors',
+        searchId: "errors",
         payload: "errors",
         title: "Errors",
-        component: SearchErrors
+        component: SearchErrors,
     },
 ]

@@ -1,5 +1,6 @@
 import React, { FC } from "react"
-import { FilterComponentProps } from "../../types"
+import { FILTER_ENTRIES_ERRORS } from "../../constants"
+import { FilterComponentProps, FilterEntry } from "../../types"
 
 export const SearchErrors: FC<FilterComponentProps> = ({
     data,
@@ -18,7 +19,7 @@ export const SearchErrors: FC<FilterComponentProps> = ({
 
     return (
         <div className="inner-items">
-            { FILTER_ENTRIES.map((option, index) => 
+            {FILTER_ENTRIES_ERRORS.map((option, index) => (
                 <button
                     key={index}
                     className={
@@ -26,37 +27,11 @@ export const SearchErrors: FC<FilterComponentProps> = ({
                             ? "selected-filter"
                             : ""
                     }
-                    onClick={() =>
-                        handleFilterChange(option)
-                    }
+                    onClick={() => handleFilterChange(option)}
                 >
                     {option.caption}
                 </button>
-            )}
+            ))}
         </div>
     )
 }
-
-
-interface FilterEntry
-{
-    caption: string,
-    value: any
-}
-
-const FILTER_ENTRIES : FilterEntry[] = [
-    {
-        caption: 'With errors',
-        value: {
-            kind: "at-least",
-            count: 1,
-        }
-    },
-    {
-        caption: 'Without errors',
-        value: {
-            kind: "at-most",
-            count: 0,
-        }
-    },
-]

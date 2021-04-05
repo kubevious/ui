@@ -1,7 +1,12 @@
 import React, { FC } from "react"
-import { FilterComponentProps } from "../../types"
+import { FILTER_ENTRIES_WARNINGS } from "../../constants"
+import { FilterComponentProps, FilterEntry } from "../../types"
 
-export const SearchWarnings : FC<FilterComponentProps> = ({ data, addFilter, removeFilter, removeAllFilters }) => {
+export const SearchWarnings: FC<FilterComponentProps> = ({
+    data,
+    addFilter,
+    removeFilter,
+}) => {
     const selectedFilter = data.filters?.value?.caption
 
     const handleFilterChange = (entry: FilterEntry): void => {
@@ -14,7 +19,7 @@ export const SearchWarnings : FC<FilterComponentProps> = ({ data, addFilter, rem
 
     return (
         <div className="inner-items">
-            { FILTER_ENTRIES.map((option, index) => 
+            {FILTER_ENTRIES_WARNINGS.map((option, index) => (
                 <button
                     key={index}
                     className={
@@ -22,37 +27,11 @@ export const SearchWarnings : FC<FilterComponentProps> = ({ data, addFilter, rem
                             ? "selected-filter"
                             : ""
                     }
-                    onClick={() =>
-                        handleFilterChange(option)
-                    }
+                    onClick={() => handleFilterChange(option)}
                 >
                     {option.caption}
                 </button>
-            )}
+            ))}
         </div>
     )
 }
-
-
-interface FilterEntry
-{
-    caption: string,
-    value: any
-}
-
-const FILTER_ENTRIES : FilterEntry[] = [
-    {
-        caption: 'With warnings',
-        value: {
-            kind: "at-least",
-            count: 1,
-        }
-    },
-    {
-        caption: 'Without warnings',
-        value: {
-            kind: "at-most",
-            count: 0,
-        }
-    },
-]

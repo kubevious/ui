@@ -10,8 +10,8 @@ export const SearchKinds: FC<FilterComponentProps> = ({
     removeFilter,
     removeAllFilters,
 }) => {
-    const selectedKinds = data.filters;
-    
+    const selectedKinds = data.filters
+
     const [kinds, setKinds] = useState<KindList>({
         payload: "kind",
         shownValue: "Kind",
@@ -35,7 +35,11 @@ export const SearchKinds: FC<FilterComponentProps> = ({
         getKindsList()
     }, [])
 
-    const kindFilterChange = (title: string, payload: string, e): void => {
+    const kindFilterChange = (
+        title: string,
+        payload: string,
+        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ): void => {
         removeAllFilters(e)
         if (!selectedKinds[payload]) {
             addFilter(payload, title, true)

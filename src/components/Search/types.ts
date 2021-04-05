@@ -20,8 +20,6 @@ export type SearchProps = {
 
 /********/
 
-
-
 export interface FilterData {
     isEnabled: boolean
     criteria: FilterCriteria[]
@@ -32,12 +30,15 @@ export interface FilterCriteria {
     values: any
 }
 
-export interface FilterComponentProps
-{
-    data: FilterComponentData,
-    addFilter: (filterId: string, caption: string, value: any) => void,
-    removeFilter: (filterId: string) => void,
-    removeAllFilters: (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => void,
+export interface FilterComponentProps {
+    data: FilterComponentData
+    addFilter: (filterId: string, caption: string, value: any) => void
+    removeFilter: (filterId: string) => void
+    removeAllFilters: (
+        e:
+            | React.MouseEvent<HTMLButtonElement, MouseEvent>
+            | React.MouseEvent<SVGSVGElement, MouseEvent>
+    ) => void
 }
 
 export interface FilterItem {
@@ -49,28 +50,26 @@ export interface FilterItem {
     isEditable?: boolean
 }
 
-
 /*******/
 
-
-export interface SearchData
-{
+export interface SearchData {
     components: Record<string, FilterComponentData>
 }
 
-export interface FilterComponentData
-{
-    searchId: string,
+export interface FilterComponentData {
+    searchId: string
     filters: Record<string, FilterValue>
 }
 
-export interface FilterValue
-{
-    searchId: string,
-    filterId: string,
-    caption: string,
+export interface FilterValue {
+    searchId: string
+    filterId: string
+    caption: string
     value: any
     isEnabled: boolean
 }
 
-
+export interface FilterEntry {
+    caption: string
+    value: any
+}

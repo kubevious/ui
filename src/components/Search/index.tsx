@@ -14,8 +14,6 @@ import { SearchFilterList } from "./SearchFilterList"
 interface TSearchState {
     searchData: SearchData
     activeFilters: FilterValue[]
-    currentInput: any
-    autocomplete: any
 }
 
 export class Search extends ClassComponent<
@@ -28,51 +26,67 @@ export class Search extends ClassComponent<
         const { searchData } = this.state
         let backendData = {}
         if (criteria) {
-          backendData = { criteria }
+            backendData = { criteria }
         }
 
-        for(let componentData of _.values(searchData.components))
-        {
-            const componentMetadata = this._metadataDict[componentData.searchId];
+        for (let componentData of _.values(searchData.components)) {
+            const componentMetadata = this._metadataDict[componentData.searchId]
 
-            for(let filterData of _.values(componentData.filters))
-            {
-                if (filterData.isEnabled)
-                {
+            for (let filterData of _.values(componentData.filters)) {
+                if (filterData.isEnabled) {
                     if (!backendData[componentMetadata.payload]) {
                         backendData[componentMetadata.payload] = {}
                     }
 
-                    backendData[componentMetadata.payload][filterData.filterId] = filterData.value;
+                    backendData[componentMetadata.payload][
+                        filterData.filterId
+                    ] = filterData.value
                 }
             }
         }
 
-        sharedState.set('actived_filters', Object.keys(backendData))
-        console.log("[SEARCH QUERY DATA] ", JSON.stringify(backendData, null, 4));
+        sharedState.set("actived_filters", Object.keys(backendData))
+        console.log(
+            "[SEARCH QUERY DATA] ",
+            JSON.stringify(backendData, null, 4)
+        )
 
         this.fetchResults(backendData)
     }
 
-    fetchAutocompleteKeys(type: string, criteria: any, cb: (data: any) => any): void {
+    fetchAutocompleteKeys(
+        type: string,
+        criteria: any,
+        cb: (data: any) => any
+    ): void {
         this.service.fetchAutocompleteKeys(type, criteria, cb)
     }
 
-    fetchAutocompleteValues(type: string, criteria: any, cb: (data: any) => any): void {
+    fetchAutocompleteValues(
+        type: string,
+        criteria: any,
+        cb: (data: any) => any
+    ): void {
         this.service.fetchAutocompleteValues(type, criteria, cb)
     }
 
-    private _metadataDict : Record<string, FilterItem>;
-    private _filterList : FilterItem[];
+    private _metadataDict: Record<string, FilterItem>
+    private _filterList: FilterItem[]
 
-    initialSearchData: SearchData;
+    initialSearchData: SearchData
 
-    initialState: TSearchState;
+    initialState: TSearchState
     constructor(props) {
         super(props, null, { kind: "diagram" })
 
-        this._metadataDict = _.makeDict(this.props.filterList, x => x.searchId, x => x);
+        this._metadataDict = _.makeDict(
+            this.props.filterList,
+            (x) => x.searchId,
+            (x) => x
+        )
+
         this._filterList = this.props.filterList
+
         this.initialSearchData = {
             components: _.makeDict(
                 this._filterList,
@@ -86,27 +100,6 @@ export class Search extends ClassComponent<
         this.initialState = {
             searchData: this.initialSearchData,
             activeFilters: [],
-        
-            currentInput: {
-                labels: {
-                    key: "",
-                    value: "",
-                },
-                annotations: {
-                    key: "",
-                    value: "",
-                },
-            },
-            autocomplete: {
-                labels: {
-                    keys: [],
-                    values: [],
-                },
-                annotations: {
-                    keys: [],
-                    values: [],
-                },
-            },
         }
 
         this.state = this.initialState
@@ -207,22 +200,14 @@ export class Search extends ClassComponent<
 
     toogleVisibilityFilter = (searchId: string, filterId: string) => {
         const { searchData } = this.state
-        const { isEnabled } = searchData.components[searchId].filters[
-            filterId
-        ]
-        searchData.components[searchId].filters[
-            filterId
-        ].isEnabled = !isEnabled
+        const { isEnabled } = searchData.components[searchId].filters[filterId]
+        searchData.components[searchId].filters[filterId].isEnabled = !isEnabled
 
         this._handleSearchDataChange()
-
     }
 
     render() {
-        const {
-            activeFilters,
-            searchData,
-        } = this.state
+        const { activeFilters, searchData } = this.state
 
         return (
             <div className="Search-wrapper p-40 overflow-hide">
@@ -240,7 +225,6 @@ export class Search extends ClassComponent<
                         addFilter={this.addFilter}
                         removeFilter={this.removeFilter}
                         removeAllFilters={this.removeAllFilters}
-                        getAllFilters={this.getAllFilters}
                     />
                     <SearchResults />
                 </div>
