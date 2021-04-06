@@ -1,6 +1,7 @@
 import _ from "the-lodash"
 
 import { MockDiagramService } from "./MockDiagramService"
+import { MockSearchService } from "./MockSearchService"
 import { MockWebSocketService } from "./MockWebSocketService"
 import { MockRuleService } from "./MockRuleService"
 import { MockMarkerService } from "./MockMarkerService"
@@ -26,6 +27,10 @@ export class MockRootApiService {
 
         app.registerService({ kind: "diagram" }, () => {
             return new MockDiagramService(this, sharedState)
+        })
+
+        app.registerService({ kind: "search" }, () => {
+            return new MockSearchService(this, sharedState)
         })
 
         app.registerService({ kind: "misc" }, () => {

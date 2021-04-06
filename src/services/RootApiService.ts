@@ -2,6 +2,7 @@ import _ from 'the-lodash'
 
 import { WebSocketService } from './WebSocketService'
 import { DiagramService } from './DiagramService'
+import { SearchService } from './SearchService'
 import { RuleService } from './RuleService'
 import { MarkerService } from './MarkerService'
 import { MiscService } from './MiscService'
@@ -32,6 +33,11 @@ export class RootApiService {
         app.registerService({ kind: 'diagram' }, () => {
             const client = app.httpClient('/api/v1');
             return new DiagramService(client, sharedState, this.socketService());
+        });
+
+        app.registerService({ kind: 'search' }, () => {
+            const client = app.httpClient('/api/v1');
+            return new SearchService(client, sharedState, this.socketService());
         });
 
         app.registerService({ kind: 'misc' }, () => {
