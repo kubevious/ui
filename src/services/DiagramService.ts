@@ -152,15 +152,47 @@ export class DiagramService extends BaseService implements IDiagramService {
             });
     }
 
-    fetchAutocompleteKeys(type, criteria, cb) {
-        return this.client.post(`/search/${type}`, criteria )
+    autocompleteLabelKeys(criteria: string, cb: (data: string[]) => any)
+    {
+        const body = {
+            criteria: criteria
+        }
+        return this.client.post<string[]>(`/search/labels`, body)
             .then(result =>
                 cb(result.data)
             )
     }
 
-    fetchAutocompleteValues(type, criteria, cb) {
-        return this.client.post(`/search/${type}/values`, criteria )
+    autocompleteLabelValues(key: string, criteria: string, cb: (data: string[]) => any)
+    {
+        const body = {
+            key: key,
+            criteria: criteria
+        }
+        return this.client.post<string[]>(`/search/labels/values`, body)
+            .then(result =>
+                cb(result.data))
+    }
+
+
+    autocompleteAnnotationKeys(criteria: string, cb: (data: string[]) => any)
+    {
+        const body = {
+            criteria: criteria
+        }
+        return this.client.post<string[]>(`/search/annotations`, body)
+            .then(result =>
+                cb(result.data)
+            )
+    }
+
+    autocompleteAnnotationValues(key: string, criteria: string, cb: (data: string[]) => any)
+    {
+        const body = {
+            key: key,
+            criteria: criteria
+        }
+        return this.client.post<string[]>(`/search/annotations/values`, body)
             .then(result =>
                 cb(result.data))
     }

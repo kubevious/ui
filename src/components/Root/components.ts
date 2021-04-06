@@ -5,6 +5,7 @@ import { Properties, Summary } from '@kubevious/ui-properties'
 import { Timeline } from '@kubevious/ui-time-machine'
 
 import { GoldenLayoutWindowInfo, GoldenLayoutLocation } from '@kubevious/ui-components';
+import { FilterSearchLabel } from '@kubevious/ui-search';
 
 export const components : GoldenLayoutWindowInfo[] = [
     {
@@ -22,6 +23,13 @@ export const components : GoldenLayoutWindowInfo[] = [
         title: "Universe",
         skipClose: true,
     },
+    // {
+    //     id: "testComponent",
+    //     component: FilterSearchLabel,
+    //     location: GoldenLayoutLocation.main,
+    //     title: "TEST",
+    //     skipClose: true,
+    // },
     {
         id: "ruleEditorComponent",
         component: RuleEditor,

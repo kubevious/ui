@@ -217,15 +217,24 @@ export class MockDiagramService implements IDiagramService {
         cb(_.cloneDeep(HISTORY_ALERTS))
     }
 
-    fetchAutocompleteKeys(
-        type: string,
-        criteria: any,
-        cb: (data: any) => any
-    ): void {}
+    autocompleteLabelKeys(criteria: string, cb: (data: string[]) => any)
+    {
+        
+    }
 
-    fetchAutocompleteValues(
-        type: string,
-        criteria: any,
-        cb: (data: any) => any
-    ): void {}
+    autocompleteLabelValues(key: string, criteria: string, cb: (data: string[]) => any)
+    {
+        
+    }
+
+    autocompleteAnnotationKeys(criteria: string, cb: (data: string[]) => any)
+    {
+        
+    }
+
+    autocompleteAnnotationValues(key: string, criteria: string, cb: (data: string[]) => any)
+    {
+
+    }
+
 }

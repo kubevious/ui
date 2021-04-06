@@ -117,10 +117,12 @@ export class Root extends ClassComponent<{}, RootState> {
 
         this.subscribeToSharedState("popup_window", (popup_window) => {
             if (popup_window) {
-                this.setState({
-                    showPopup: true,
-                    popupContent: popup_window.content,
-                })
+                setTimeout(() => {
+                    this.setState({
+                        showPopup: true,
+                        popupContent: popup_window.content,
+                    })
+                }, 10)
             } else {
                 this.setState({
                     showPopup: false,

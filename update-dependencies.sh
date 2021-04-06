@@ -10,6 +10,7 @@ npm update \
     @kubevious/ui-components \
     @kubevious/ui-diagram \
     @kubevious/ui-alerts \
+    @kubevious/ui-search \
     @kubevious/ui-properties \
     @kubevious/ui-rule-engine \
     @kubevious/ui-time-machine \

@@ -15,7 +15,7 @@ import "./styles.scss"
 import { IMiscService } from "@kubevious/ui-middleware"
 import { GoldenLayoutWindowInfo } from "@kubevious/ui-components"
 import { HeaderProps, HeaderState } from "./types"
-import { FILTERS_LIST } from "../../utils/search-metadata"
+import { SEARCH_FILTER_METADATA } from "../Search/search-metadata"
 
 export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscService> {
     constructor(props : HeaderProps | Readonly<HeaderProps>) {
@@ -57,7 +57,7 @@ export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscServic
         this.sharedState.set("is_kinds", true)
         this.sharedState.set("popup_window", {
             title: "Search",
-            content: <Search filterList={FILTERS_LIST}/>,
+            content: <Search filterList={SEARCH_FILTER_METADATA}/>,
         })
     }
 
