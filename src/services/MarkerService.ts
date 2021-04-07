@@ -31,7 +31,7 @@ export class MarkerService extends BaseService implements IMarkerService {
     }
 
     backendCreateMarker(config: any, targetName: string, cb: (data: any) => any) : void {
-        this.client.post('/marker/' + targetName, config)
+        this.client.post('/marker/' + targetName, {}, config)
             .then(result => {
                 cb(result.data) //any
                 return null;
@@ -54,7 +54,7 @@ export class MarkerService extends BaseService implements IMarkerService {
     }
 
     backendImportItems(markers: any, cb: (data: any) => any) : void {
-        this.client.post('/markers/import', markers)
+        this.client.post('/markers/import', {}, markers)
             .then(result => {
                 cb(result.data); // any
                 return null;

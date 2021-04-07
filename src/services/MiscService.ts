@@ -62,7 +62,7 @@ export class MiscService extends BaseService implements IMiscService {
     }
 
     submitFeedback(data: any, cb: (data: any) => any) : void {
-        this.client.post('/api/v1/support/feedback', data)
+        this.client.post('/api/v1/support/feedback', {}, data)
             .then(result => {
                 cb(result.data)
                 return null;
@@ -70,7 +70,7 @@ export class MiscService extends BaseService implements IMiscService {
     }
 
     submitSnooze(data: any, cb: (data: any) => any) : void {
-        this.client.post('/api/v1/support/notification/snooze', data)
+        this.client.post('/api/v1/support/notification/snooze', {}, data)
             .then(result => {
                 cb(result.data)
                 return null;

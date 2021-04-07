@@ -17,7 +17,7 @@ export class SearchService extends BaseService implements ISearchService {
             return;
         }
 
-        return this.client.post('/diagram/search', criteria)
+        return this.client.post('/diagram/search', {}, criteria)
             .then(result => {
                 cb(result.data);
             })
@@ -28,7 +28,7 @@ export class SearchService extends BaseService implements ISearchService {
         const body = {
             criteria: criteria
         }
-        return this.client.post<string[]>(`/search/labels`, body)
+        return this.client.post<string[]>(`/search/labels`, {}, body)
             .then(result =>
                 cb(result.data)
             )
@@ -40,7 +40,7 @@ export class SearchService extends BaseService implements ISearchService {
             key: key,
             criteria: criteria
         }
-        return this.client.post<string[]>(`/search/labels/values`, body)
+        return this.client.post<string[]>(`/search/labels/values`, {}, body)
             .then(result =>
                 cb(result.data))
     }
@@ -51,7 +51,7 @@ export class SearchService extends BaseService implements ISearchService {
         const body = {
             criteria: criteria
         }
-        return this.client.post<string[]>(`/search/annotations`, body)
+        return this.client.post<string[]>(`/search/annotations`, {}, body)
             .then(result =>
                 cb(result.data)
             )
@@ -63,7 +63,7 @@ export class SearchService extends BaseService implements ISearchService {
             key: key,
             criteria: criteria
         }
-        return this.client.post<string[]>(`/search/annotations/values`, body)
+        return this.client.post<string[]>(`/search/annotations/values`, {}, body)
             .then(result =>
                 cb(result.data))
     }

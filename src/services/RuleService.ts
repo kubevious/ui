@@ -30,7 +30,7 @@ export class RuleService extends BaseService implements IRuleService {
     }
 
     backendCreateRule(config: any, name: string, cb: (data: any) => any) : void {
-        this.client.post('/rule/' + name, config)
+        this.client.post('/rule/' + name, {}, config)
             .then(result => {
                 cb(result.data)
                 return null;
@@ -54,7 +54,7 @@ export class RuleService extends BaseService implements IRuleService {
     }
 
     backendImportItems(rules: any, cb: (data: any) => any) : void {
-        this.client.post('/rules/import', rules)
+        this.client.post('/rules/import', {}, rules)
             .then(result => {
                 cb(result.data);
                 return null;
