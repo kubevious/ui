@@ -8,6 +8,7 @@ import { ISharedState } from "@kubevious/ui-framework"
 import { getRandomDnList } from "./utils"
 
 import { IRuleService } from "@kubevious/ui-middleware"
+import { RuleResult, RuleStatus } from "@kubevious/ui-middleware/dist/services/rule"
 
 let MOCK_RULES_ARRAY: any = [
     {
@@ -103,37 +104,58 @@ export class MockRuleService implements IRuleService {
         )
     }
 
-    close() {}
+    close()
+    {
+
+    }
+
+
+    subscribeRuleStatuses(cb: ((items: RuleStatus[]) => void)) : void
+    {
+        this.backendFetchRuleList((result) => {
+            cb(result)
+        })
+    }
+
+    subscribeRuleResult(cb: ((result: RuleResult) => void))
+    {
+        return {
+            update: (ruleName : string) => {
+            },
+            close: () => {
+            }
+        }
+    }
 
     private _notifyRules() {
-        const id = new Date().toISOString()
-        this._remoteTrack.start({
-            id: id,
-            method: "GET",
-            url: "/",
-            headers: {},
-        })
+        // const id = new Date().toISOString()
+        // this._remoteTrack.start({
+        //     id: id,
+        //     method: "GET",
+        //     url: "/",
+        //     headers: {},
+        // })
 
-        this.backendFetchRuleList((result) => {
-            this.sharedState.set("rule_editor_items", result)
-        })
+        // this.backendFetchRuleList((result) => {
+        //     this.sharedState.set("rule_editor_items", result)
+        // })
 
-        const name = this.sharedState.get("rule_editor_selected_rule_id")
-        if (name) {
-            this._notifyRuleStatus(name)
-        }
+        // const name = this.sharedState.get("rule_editor_selected_rule_id")
+        // if (name) {
+        //     this._notifyRuleStatus(name)
+        // }
 
-        setTimeout(() => {
-            this._remoteTrack.finish(
-                {
-                    id: id,
-                    method: "GET",
-                    url: "/",
-                    headers: {},
-                },
-                {}
-            )
-        }, 1000)
+        // setTimeout(() => {
+        //     this._remoteTrack.finish(
+        //         {
+        //             id: id,
+        //             method: "GET",
+        //             url: "/",
+        //             headers: {},
+        //         },
+        //         {}
+        //     )
+        // }, 1000)
     }
 
     private _notifyRuleStatus(name: string) {

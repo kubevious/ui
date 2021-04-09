@@ -1,5 +1,5 @@
 import _ from 'the-lodash';
-import { HttpClient, ISharedState } from '@kubevious/ui-framework';
+import { HttpClient } from '@kubevious/ui-framework';
 import { IMiscService, IWebSocketService } from '@kubevious/ui-middleware';
 
 import { BaseService } from './BaseService'
@@ -7,9 +7,9 @@ import { version } from '../version';
 
 export class MiscService extends BaseService implements IMiscService {
 
-    constructor(client: HttpClient, sharedState: ISharedState, socket: IWebSocketService)
+    constructor(client: HttpClient, socket: IWebSocketService)
     {
-        super(client, sharedState, socket)
+        super(client, socket)
 
         this._setupWebSocket();
     }

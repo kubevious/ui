@@ -14,35 +14,33 @@ export class RootApiService {
 
         app.initHttpClient('');
 
-        const sharedState = app.sharedState;
-
         app.registerService({ kind: 'socket' }, () => {
             return new WebSocketService();
         });
 
         app.registerService({ kind: 'rule' }, () => {
             const client = app.httpClient('/api/v1');
-            return new RuleService(client, sharedState, this.socketService());
+            return new RuleService(client, this.socketService());
         });
 
         app.registerService({ kind: 'marker' }, () => {
             const client = app.httpClient('/api/v1');
-            return new MarkerService(client, sharedState, this.socketService());
+            return new MarkerService(client, this.socketService());
         });
 
         app.registerService({ kind: 'diagram' }, () => {
             const client = app.httpClient('/api/v1');
-            return new DiagramService(client, sharedState, this.socketService());
+            return new DiagramService(client, this.socketService());
         });
 
         app.registerService({ kind: 'search' }, () => {
             const client = app.httpClient('/api/v1');
-            return new SearchService(client, sharedState, this.socketService());
+            return new SearchService(client, this.socketService());
         });
 
         app.registerService({ kind: 'misc' }, () => {
             const client = app.httpClient('');
-            return new MiscService(client, sharedState, this.socketService());
+            return new MiscService(client, this.socketService());
         });
     }
 

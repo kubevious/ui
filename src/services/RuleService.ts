@@ -1,17 +1,11 @@
 import _ from 'the-lodash';
-import { HttpClient, ISharedState } from '@kubevious/ui-framework';
-import { IRuleService, IWebSocketService } from '@kubevious/ui-middleware';
+import { IRuleService } from '@kubevious/ui-middleware';
 
 import { BaseService } from './BaseService'
+import { RuleResult, RuleStatus } from '@kubevious/ui-middleware/dist/services/rule';
 
 export class RuleService extends BaseService implements IRuleService {
 
-    constructor(client: HttpClient, sharedState: ISharedState, socket: IWebSocketService)
-    {
-        super(client, sharedState, socket)
-
-        this._setupWebSocket();
-    }
 
     backendFetchRuleList(cb: (data: any) => any) : void {
         this.client.get('/rules')
@@ -61,33 +55,37 @@ export class RuleService extends BaseService implements IRuleService {
             });
     }
 
-    private _setupWebSocket()
+    subscribeRuleStatuses(cb: ((items: RuleStatus[]) => void)) : void
     {
-        this.sharedState.set('rule_editor_items', []);
+        cb([]);
 
         this._socketSubscribe({ kind: 'rules-statuses' }, value => {
             if (!value) {
                 value = [];
             }
-            this.sharedState.set('rule_editor_items', value)
+            cb(value);
+        });
+    }
+
+    subscribeRuleResult(cb: ((result: RuleResult) => void))
+    {
+        const socketScope = this._socketScope((value, target) => {
+            cb(value);
         });
 
-        const selectedRuleScope = this._socketScope((value, target) => {
-
-            this.sharedState.set('rule_editor_selected_rule_status', value);
-
-        });
-
-        this.sharedState.subscribe('rule_editor_selected_rule_id',
-            (rule_editor_selected_rule_id) => {
-
-                selectedRuleScope.replace([
+        return {
+            update: (ruleName : string) => {
+                socketScope.replace([
                     { 
                         kind: 'rule-result',
-                        name: rule_editor_selected_rule_id
+                        name: ruleName
                     }
                 ]);
-
-            });
+            },
+            close: () => {
+                socketScope.close();
+            }
+        }
     }
+
 }

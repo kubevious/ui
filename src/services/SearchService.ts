@@ -1,15 +1,7 @@
+import { ISearchService } from '@kubevious/ui-middleware';
 import { BaseService } from './BaseService'
-import moment from 'moment'
-import { HttpClient, ISharedState } from '@kubevious/ui-framework';
-import { ISearchService, IWebSocketService } from '@kubevious/ui-middleware';
 
 export class SearchService extends BaseService implements ISearchService {
-
-    constructor(client: HttpClient, sharedState: ISharedState, socket: IWebSocketService)
-    {
-        super(client, sharedState, socket)
-
-    }
 
     fetchSearchResults(criteria, cb) {
         if (Object.keys(criteria).length === 0) {

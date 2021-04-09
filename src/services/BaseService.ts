@@ -1,49 +1,30 @@
 import _ from 'the-lodash';
 
-import { HttpClient, ISharedState } from '@kubevious/ui-framework'
+import { BaseHttpService, HttpClient, ISharedState } from '@kubevious/ui-framework';
+
 import { IWebSocketService } from '@kubevious/ui-middleware';
 import { WebSocketTarget, WebSocketSubscription, WebSocketScope } from '@kubevious/ui-middleware';
 
-export class BaseService
+export class BaseService extends BaseHttpService
 {
-    private _client: HttpClient;
-    private _sharedState: ISharedState;
     private _socket: IWebSocketService;
 
     private _socketHandlers : WebSocketSubscription[] = [];
     private _socketScopes : WebSocketScope [] = [];
 
-    constructor(client: HttpClient, sharedState: ISharedState, socket: IWebSocketService)
+    constructor(client: HttpClient, socket: IWebSocketService)
     {
-        console.log('[BaseService] ' + this.constructor.name + ' :: create');
-
-        this._client = client;
-        this._sharedState = sharedState;
+        super(client)
         this._socket = socket;
-
-        if (!this.client) {
-            throw new Error("Client not provided");
-        }
-        if (!this.sharedState) {
-            throw new Error("SharedState not provided");
-        }
-    }
-
-    get client() {
-        return this._client;
-    }
-
-    get sharedState() {
-        return this._sharedState;
     }
 
     get socket() {
         return this._socket;
     }
 
-    close()
+    public close()
     {
-        console.log('[BaseService] ' + this.constructor.name + ' :: destroy');
+        super.close();
 
         for(const handler of this._socketHandlers)
         {

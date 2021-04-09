@@ -1,18 +1,11 @@
 import _ from 'the-lodash';
+
+import { IMarkerService } from '@kubevious/ui-middleware';
+import { MarkerResult, MarkerStatus } from '@kubevious/ui-middleware/dist/services/marker';
+
 import { BaseService } from './BaseService'
 
-import { HttpClient, ISharedState } from '@kubevious/ui-framework';
-
-import { IMarkerService, IWebSocketService } from '@kubevious/ui-middleware';
-
 export class MarkerService extends BaseService implements IMarkerService {
-
-    constructor(client: HttpClient, sharedState: ISharedState, socket: IWebSocketService)
-    {
-        super(client, sharedState, socket)
-
-        this._setupWebSocket();
-    }
 
     backendFetchMarkerList(cb: (data: any) => any) : void {
         this.client.get('/markers')
@@ -61,36 +54,37 @@ export class MarkerService extends BaseService implements IMarkerService {
             });
     }
 
-    private _setupWebSocket()
+    subscribeMarkerStatuses(cb: ((items: MarkerStatus[]) => void))
     {
-        this.sharedState.set('marker_editor_items', []);
+        cb([]);
 
         this._socketSubscribe({ kind: 'markers-statuses' }, value => {
             if (!value) {
                 value = [];
             }
-            this.sharedState.set('marker_editor_items', value)
+            cb(value);
         });
-
-        const selectedMarkerScope = this._socketScope((value, target) => {
-
-            this.sharedState.set('rule_editor_selected_marker_status', value);
-
-        });
-
-        this.sharedState.subscribe('marker_editor_selected_marker_id',
-            (marker_editor_selected_marker_id) => {
-
-                if (marker_editor_selected_marker_id)
-                {
-                    selectedMarkerScope.replace([
-                        { 
-                            kind: 'marker-result',
-                            name: marker_editor_selected_marker_id
-                        }
-                    ]);
-                }
-
-            });
     }
+
+    subscribeMarkerResult(cb: ((result: MarkerResult) => void))
+    {
+        const socketScope = this._socketScope((value, target) => {
+            cb(value);
+        });
+
+        return {
+            update: (markerName : string) => {
+                socketScope.replace([
+                    { 
+                        kind: 'marker-result',
+                        name: markerName
+                    }
+                ]);
+            },
+            close: () => {
+                socketScope.close();
+            }
+        }
+    }
+
 }

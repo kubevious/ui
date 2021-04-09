@@ -1,6 +1,6 @@
 import { BaseService } from './BaseService'
 import moment from 'moment'
-import { HttpClient, ISharedState } from '@kubevious/ui-framework';
+import { HttpClient } from '@kubevious/ui-framework';
 import { IDiagramService, IWebSocketService } from '@kubevious/ui-middleware';
 
 export class DiagramService extends BaseService implements IDiagramService {
@@ -9,9 +9,9 @@ export class DiagramService extends BaseService implements IDiagramService {
     private _timelinePreviewHandlers : any[] = [];
     private _intervals : any[] = [];
 
-    constructor(client: HttpClient, sharedState: ISharedState, socket: IWebSocketService)
+    constructor(client: HttpClient, socket: IWebSocketService)
     {
-        super(client, sharedState, socket)
+        super(client, socket)
 
         this._setupWebSocket();
 

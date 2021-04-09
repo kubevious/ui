@@ -9,6 +9,7 @@ import { getRandomDnList } from './utils';
 import { MockRootApiService } from './MockRootApiService';
 
 import { IMarkerService } from '@kubevious/ui-middleware'
+import { MarkerResult, MarkerStatus } from '@kubevious/ui-middleware/dist/services/marker';
 
 const MOCK_MARKERS_ARRAY : any[] = []
 
@@ -63,32 +64,61 @@ export class MockMarkerService implements IMarkerService {
         
     }
 
-    private _notifyMarkers() {
-        const id = new Date().toISOString();
-        this._remoteTrack.start({
-            id: id,
-            method: 'GET',
-            url: '/',
-            headers: {}
-        })
 
+    subscribeMarkerStatuses(cb: ((items: MarkerStatus[]) => void))
+    {
         this.backendFetchMarkerList((result) => {
-            this.sharedState.set('marker_editor_items', result);
+            cb(result);
         })
+    }
 
-        const name = this.sharedState.get('marker_editor_selected_marker_id');
-        if (name) {
-            this._notifyMarkerStatus(name);
+    subscribeMarkerResult(cb: ((result: MarkerResult) => void))
+    {
+        return {
+            update: (markerName : string) => {
+                // if (markerName) 
+                // {
+
+                // }
+                // socketScope.replace([
+                //     { 
+                //         kind: 'marker-result',
+                //         name: markerName
+                //     }
+                // ]);
+            },
+            close: () => {
+                // socketScope.close();
+            }
         }
+    }
 
-        setTimeout(() => {
-            this._remoteTrack.finish({
-                id: id,
-                method: 'GET',
-                url: '/',
-                headers: {}
-            }, {});
-        }, 1000)
+    private _notifyMarkers() {
+        // const id = new Date().toISOString();
+        // this._remoteTrack.start({
+        //     id: id,
+        //     method: 'GET',
+        //     url: '/',
+        //     headers: {}
+        // })
+
+        // this.backendFetchMarkerList((result) => {
+        //     this.sharedState.set('marker_editor_items', result);
+        // })
+
+        // const name = this.sharedState.get('marker_editor_selected_marker_id');
+        // if (name) {
+        //     this._notifyMarkerStatus(name);
+        // }
+
+        // setTimeout(() => {
+        //     this._remoteTrack.finish({
+        //         id: id,
+        //         method: 'GET',
+        //         url: '/',
+        //         headers: {}
+        //     }, {});
+        // }, 1000)
     }
 
     private _notifyMarkerStatus(name) {
