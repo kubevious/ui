@@ -6,6 +6,8 @@ import { MockWebSocketService } from "./MockWebSocketService"
 import { MockRuleService } from "./MockRuleService"
 import { MockMarkerService } from "./MockMarkerService"
 import { MockMiscService } from "./MockMiscService"
+import { MockUserService } from "./MockUserService"
+
 
 import { app } from "@kubevious/ui-framework"
 
@@ -36,6 +38,10 @@ export class MockRootApiService {
         app.registerService({ kind: "misc" }, () => {
             return new MockMiscService(this, sharedState)
         })
+
+        app.registerService({ kind: 'user' }, () => {
+            return new MockUserService();
+        });
     }
 
     socketService() {
@@ -71,5 +77,9 @@ export class MockRootApiService {
         return app.serviceRegistry.resolveService<MockMiscService>({
             kind: "misc",
         })
+    }
+
+    userService() {
+        return app.serviceRegistry.resolveService<MockUserService>({ kind: 'developer' });
     }
 }

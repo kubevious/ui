@@ -6,6 +6,7 @@ import { Timeline } from '@kubevious/ui-time-machine'
 
 import { GoldenLayoutWindowInfo, GoldenLayoutLocation } from '@kubevious/ui-components';
 import { FilterSearchLabel } from '@kubevious/ui-search';
+import { RestTool,SharedStateDebugger, WebsocketTool } from '@kubevious/ui-dev-tools/dist';
 
 export const components : GoldenLayoutWindowInfo[] = [
     {
@@ -42,6 +43,24 @@ export const components : GoldenLayoutWindowInfo[] = [
         location: GoldenLayoutLocation.main,
         title: "Marker Editor",
     },
+    // {
+    //     id: "restToolComponent",
+    //     component: RestTool,
+    //     location: GoldenLayoutLocation.main,
+    //     title: "Rest Tool",
+    // },
+    // {
+    //     id: "sharedStateDebuggerComponent",
+    //     component: SharedStateDebugger,
+    //     location: GoldenLayoutLocation.main,
+    //     title: "Rest Tool",
+    // },
+    // {
+    //     id: "websocketToolcomponent",
+    //     component: WebsocketTool,
+    //     location: GoldenLayoutLocation.main,
+    //     title: "Rest Tool",
+    // },
     {
         id: "propertiesComponent",
         component: Properties,

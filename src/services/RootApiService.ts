@@ -6,6 +6,7 @@ import { SearchService } from './SearchService'
 import { RuleService } from './RuleService'
 import { MarkerService } from './MarkerService'
 import { MiscService } from './MiscService'
+import { UserService } from './UserService';
 
 import { app } from '@kubevious/ui-framework';
 
@@ -42,6 +43,11 @@ export class RootApiService {
             const client = app.httpClient('');
             return new MiscService(client, this.socketService());
         });
+
+        app.registerService({ kind: 'user' }, () => {
+            const client = app.httpClient('/api/v1');
+            return new UserService(client);
+        });
     }
 
     socketService() {
@@ -71,5 +77,7 @@ export class RootApiService {
         return app.serviceRegistry.resolveService<MiscService>({ kind: 'misc' });
     }
 
-    
+    userService() {
+        return app.serviceRegistry.resolveService<UserService>({ kind: 'developer' });
+    }
 }
