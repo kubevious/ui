@@ -1,25 +1,36 @@
-import React from "react"
-import _ from "the-lodash"
-import bugImg from "../../assets/header-btns/bug.svg"
-import slackImg from "../../assets/header-btns/slack.svg"
-import githubImg from "../../assets/header-btns/github.svg"
-import { Search } from "@kubevious/ui-search"
-import { About } from "../About"
-import { Notifications } from "../Notifications"
-import { ClassComponent } from "@kubevious/ui-framework"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faSpinner } from "@fortawesome/free-solid-svg-icons"
-import moment from "moment"
+import {
+    RestTool,
+    SharedStateDebugger,
+    WebsocketTool,
+} from '@kubevious/ui-dev-tools/dist';
+import React from 'react';
+import _ from 'the-lodash';
+import bugImg from '../../assets/header-btns/bug.svg';
+import slackImg from '../../assets/header-btns/slack.svg';
+import githubImg from '../../assets/header-btns/github.svg';
+import { Search } from '@kubevious/ui-search';
+import { ENDPOINTS } from '../../boot/endpoints';
+import { About } from '../About';
+import { Notifications } from '../Notifications';
+import { ClassComponent } from '@kubevious/ui-framework';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner, faVials, faBug } from '@fortawesome/free-solid-svg-icons';
+import { faRocketchat } from '@fortawesome/free-brands-svg-icons';
+import moment from 'moment';
 
-import "./styles.scss"
-import { IMiscService } from "@kubevious/ui-middleware"
-import { GoldenLayoutWindowInfo } from "@kubevious/ui-components"
-import { HeaderProps, HeaderState } from "./types"
-import { SEARCH_FILTER_METADATA } from "../Search/search-metadata"
+import './styles.scss';
+import { IMiscService } from '@kubevious/ui-middleware';
+import { GoldenLayoutWindowInfo } from '@kubevious/ui-components';
+import { HeaderProps, HeaderState } from './types';
+import { SEARCH_FILTER_METADATA } from '../Search/search-metadata';
 
-export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscService> {
-    constructor(props : HeaderProps | Readonly<HeaderProps>) {
-        super(props, null, { kind: "misc" })
+export class Header extends ClassComponent<
+    HeaderProps,
+    HeaderState,
+    IMiscService
+> {
+    constructor(props: HeaderProps | Readonly<HeaderProps>) {
+        super(props, null, { kind: 'misc' });
 
         this.state = {
             showSettings: false,
@@ -27,38 +38,64 @@ export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscServic
             hasNotifications: false,
             time_machine_enabled: false,
             time_machine_target_date: null,
-            visible_windows: {}
-        }
+            visible_windows: {},
+        };
 
-        this.openAbout = this.openAbout.bind(this)
-        this.openSearch = this.openSearch.bind(this)
-        this.detectIsVisible = this.detectIsVisible.bind(this)
-        this.renderSettings = this.renderSettings.bind(this)
-        this.openNotifications = this.openNotifications.bind(this)
-        this.deactivateTimemachine = this.deactivateTimemachine.bind(this)
-        this.handleWindowVisibilityChange = this.handleWindowVisibilityChange.bind(this)
-
+        this.openAbout = this.openAbout.bind(this);
+        this.openSearch = this.openSearch.bind(this);
+        this.openRestTool = this.openRestTool.bind(this);
+        this.renderSettings = this.renderSettings.bind(this);
+        this.detectIsVisible = this.detectIsVisible.bind(this);
+        this.openWebsocketTool = this.openWebsocketTool.bind(this);
+        this.openNotifications = this.openNotifications.bind(this);
+        this.deactivateTimemachine = this.deactivateTimemachine.bind(this);
+        this.openSharedStateDebugger = this.openSharedStateDebugger.bind(this);
+        this.handleWindowVisibilityChange = this.handleWindowVisibilityChange.bind(
+            this
+        );
     }
 
     openAbout(): void {
-        this.sharedState.set("popup_window", {
-            title: "About",
-        })
+        this.sharedState.set('popup_window', {
+            title: 'About',
+        });
 
         this.service.fetchAbout((result) => {
-            this.sharedState.set("popup_window", {
-                title: "About",
+            this.sharedState.set('popup_window', {
+                title: 'About',
                 content: <About result={result} />,
-            })
-        })
+            });
+        });
     }
 
     openSearch(): void {
-        this.sharedState.set("is_kinds", true)
-        this.sharedState.set("popup_window", {
-            title: "Search",
-            content: <Search filterList={SEARCH_FILTER_METADATA}/>,
-        })
+        this.sharedState.set('is_kinds', true);
+        this.sharedState.set('popup_window', {
+            title: 'Search',
+            content: <Search filterList={SEARCH_FILTER_METADATA} />,
+        });
+    }
+
+    openRestTool(): void {
+        this.sharedState.set('endpoints', ENDPOINTS);
+        this.sharedState.set('popup_window', {
+            title: 'Rest Tool',
+            content: <RestTool />,
+        });
+    }
+
+    openSharedStateDebugger(): void {
+        this.sharedState.set('popup_window', {
+            title: 'Shared State Debugger',
+            content: <SharedStateDebugger />,
+        });
+    }
+
+    openWebsocketTool(): void {
+        this.sharedState.set('popup_window', {
+            title: 'Websocket Tool',
+            content: <WebsocketTool />,
+        });
     }
 
     detectIsVisible(item: GoldenLayoutWindowInfo): boolean {
@@ -69,30 +106,30 @@ export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscServic
     }
 
     openNotifications(): void {
-        this.sharedState.set("popup_window", {
-            title: "Notifications",
+        this.sharedState.set('popup_window', {
+            title: 'Notifications',
             content: <Notifications />,
-        })
+        });
     }
 
     deactivateTimemachine(): void {
-        this.sharedState.set("time_machine_enabled", false)
+        this.sharedState.set('time_machine_enabled', false);
     }
 
     handleWindowVisibilityChange(windowInfo: GoldenLayoutWindowInfo) {
-        const visible_windows = this.sharedState.get("visible_windows");
+        const visible_windows = this.sharedState.get('visible_windows');
         if (this.detectIsVisible(windowInfo)) {
             delete visible_windows[windowInfo.id];
         } else {
             visible_windows[windowInfo.id] = true;
         }
-        this.sharedState.set("visible_windows", visible_windows);
+        this.sharedState.set('visible_windows', visible_windows);
     }
 
     renderSettings(): JSX.Element {
-        const { windows } = this.props
+        const { windows } = this.props;
 
-        const closableWindows = windows.filter(x => !x.skipClose);
+        const closableWindows = windows.filter((x) => !x.skipClose);
 
         return (
             <div
@@ -101,15 +138,13 @@ export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscServic
                 onMouseEnter={() => this.setState({ showSettings: true })}
                 onMouseLeave={() => this.setState({ showSettings: false })}
             >
-                {closableWindows.map((
-                    item
-                ) => (
+                {closableWindows.map((item) => (
                     <span className="s-menu-item" key={item.id}>
                         <label
                             className="ccheck"
                             id={`toolWindowShowHideLabel${item.id}`}
                         >
-                            {this.detectIsVisible(item) ? "Hide" : "Show"}{" "}
+                            {this.detectIsVisible(item) ? 'Hide' : 'Show'}{' '}
                             {item.title}
                             <input
                                 type="checkbox"
@@ -124,49 +159,48 @@ export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscServic
                     </span>
                 ))}
             </div>
-        )
+        );
     }
 
     componentDidMount() {
-
-        this.subscribeToSharedState("visible_windows", (visible_windows) => {
+        this.subscribeToSharedState('visible_windows', (visible_windows) => {
             this.setState({
-                visible_windows: visible_windows
-            })
+                visible_windows: visible_windows,
+            });
         });
 
-        this.subscribeToSharedState("is_loading", (is_loading) => {
-            this.setState({ isLoading: is_loading })
-        })
+        this.subscribeToSharedState('is_loading', (is_loading) => {
+            this.setState({ isLoading: is_loading });
+        });
 
         this.subscribeToSharedState(
-            ["time_machine_enabled", "time_machine_target_date"],
+            ['time_machine_enabled', 'time_machine_target_date'],
             ({
                 time_machine_enabled,
                 time_machine_target_date,
             }: {
-                time_machine_enabled: boolean
-                time_machine_target_date: Date
+                time_machine_enabled: boolean;
+                time_machine_target_date: Date;
             }) => {
                 if (time_machine_enabled && time_machine_target_date) {
                     this.setState({
                         time_machine_enabled,
                         time_machine_target_date,
-                    })
+                    });
                 } else {
                     this.setState({
                         time_machine_enabled: false,
                         time_machine_target_date: null,
-                    })
+                    });
                 }
             }
-        )
+        );
 
-        this.subscribeToSharedState("notifications_info", (info) => {
+        this.subscribeToSharedState('notifications_info', (info) => {
             const hasNotifications =
-                info && _.isNotNullOrUndefined(info.count) && info.count > 0
-            this.setState({ hasNotifications: hasNotifications })
-        })
+                info && _.isNotNullOrUndefined(info.count) && info.count > 0;
+            this.setState({ hasNotifications: hasNotifications });
+        });
     }
 
     render() {
@@ -176,7 +210,7 @@ export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscServic
             isLoading,
             time_machine_enabled,
             time_machine_target_date,
-        } = this.state
+        } = this.state;
 
         return (
             <div className="header">
@@ -187,9 +221,9 @@ export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscServic
                 {time_machine_enabled && (
                     <div id="history-info" className="history-info">
                         <span>
-                            Time Machine Active:{" "}
+                            Time Machine Active:{' '}
                             {moment(time_machine_target_date).format(
-                                "MMM DD hh:mm:ss A"
+                                'MMM DD hh:mm:ss A'
                             )}
                         </span>
                         <button
@@ -208,10 +242,60 @@ export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscServic
                                 type="button"
                                 className="btn btn-notifications"
                                 onClick={this.openNotifications}
-                            ></button>
+                            />
                             <span className="tooltiptext">Notifications</span>
                         </div>
                     )}
+
+                    <div className="btn-container">
+                        <button
+                            id="btnHeaderSearch"
+                            type="button"
+                            className="btn btn-dev-tool"
+                            onClick={this.openSharedStateDebugger}
+                        >
+                            <FontAwesomeIcon
+                                icon={faBug}
+                                color="white"
+                                size="lg"
+                            />
+                        </button>
+                        <span className="tooltiptext">
+                            Shared State Debugger
+                        </span>
+                    </div>
+
+                    <div className="btn-container">
+                        <button
+                            id="btnHeaderSearch"
+                            type="button"
+                            className="btn btn-dev-tool"
+                            onClick={this.openRestTool}
+                        >
+                            <FontAwesomeIcon
+                                icon={faVials}
+                                color="white"
+                                size="lg"
+                            />
+                        </button>
+                        <span className="tooltiptext">REST Tool</span>
+                    </div>
+
+                    <div className="btn-container">
+                        <button
+                            id="btnHeaderSearch"
+                            type="button"
+                            className="btn btn-dev-tool"
+                            onClick={this.openWebsocketTool}
+                        >
+                            <FontAwesomeIcon
+                                icon={faRocketchat}
+                                color="white"
+                                size="lg"
+                            />
+                        </button>
+                        <span className="tooltiptext">Websocket Tool</span>
+                    </div>
 
                     <div className="btn-container">
                         <button
@@ -242,7 +326,7 @@ export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscServic
                             type="button"
                             className="btn btn-about"
                             onClick={this.openAbout}
-                        ></button>
+                        />
                         <span className="tooltiptext">About Kubevious</span>
                     </div>
 
@@ -280,6 +364,6 @@ export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscServic
                     </div>
                 </div>
             </div>
-        )
+        );
     }
 }

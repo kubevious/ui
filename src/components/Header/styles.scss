@@ -168,3 +168,14 @@
         }
     }
 }
+
+.popup-contents {
+  .shared-state-debugger, .rest-tool, .websocket-tool {
+    padding: 40px;
+    overflow-y: hidden;
+
+    &:hover {
+      overflow-y: auto;
+    }
+  }
+}
