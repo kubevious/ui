@@ -121,6 +121,10 @@
             background-image: url("/img/header-btns/about.svg");
         }
 
+        .btn-dev-tool {
+            padding: 2px;
+        }
+
         .btn-settings {
             position: relative;
             background: url("/img/header-btns/settings.svg") no-repeat center
@@ -167,15 +171,4 @@
             }
         }
     }
-}
-
-.popup-contents {
-  .shared-state-debugger, .rest-tool, .websocket-tool {
-    padding: 40px;
-    overflow-y: hidden;
-
-    &:hover {
-      overflow-y: auto;
-    }
-  }
 }

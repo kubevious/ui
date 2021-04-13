@@ -1,8 +1,4 @@
-import {
-    RestTool,
-    SharedStateDebugger,
-    WebsocketTool,
-} from '@kubevious/ui-dev-tools/dist';
+import { DevToolsPage } from '@kubevious/ui-dev-tools'
 import React from 'react';
 import _ from 'the-lodash';
 import bugImg from '../../assets/header-btns/bug.svg';
@@ -14,8 +10,7 @@ import { About } from '../About';
 import { Notifications } from '../Notifications';
 import { ClassComponent } from '@kubevious/ui-framework';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner, faVials, faBug } from '@fortawesome/free-solid-svg-icons';
-import { faRocketchat } from '@fortawesome/free-brands-svg-icons';
+import { faSpinner, faBug } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment';
 
 import './styles.scss';
@@ -43,13 +38,11 @@ export class Header extends ClassComponent<
 
         this.openAbout = this.openAbout.bind(this);
         this.openSearch = this.openSearch.bind(this);
-        this.openRestTool = this.openRestTool.bind(this);
+        this.openDevTools = this.openDevTools.bind(this);
         this.renderSettings = this.renderSettings.bind(this);
         this.detectIsVisible = this.detectIsVisible.bind(this);
-        this.openWebsocketTool = this.openWebsocketTool.bind(this);
         this.openNotifications = this.openNotifications.bind(this);
         this.deactivateTimemachine = this.deactivateTimemachine.bind(this);
-        this.openSharedStateDebugger = this.openSharedStateDebugger.bind(this);
         this.handleWindowVisibilityChange = this.handleWindowVisibilityChange.bind(
             this
         );
@@ -76,25 +69,11 @@ export class Header extends ClassComponent<
         });
     }
 
-    openRestTool(): void {
+    openDevTools(): void {
         this.sharedState.set('endpoints', ENDPOINTS);
         this.sharedState.set('popup_window', {
-            title: 'Rest Tool',
-            content: <RestTool />,
-        });
-    }
-
-    openSharedStateDebugger(): void {
-        this.sharedState.set('popup_window', {
-            title: 'Shared State Debugger',
-            content: <SharedStateDebugger />,
-        });
-    }
-
-    openWebsocketTool(): void {
-        this.sharedState.set('popup_window', {
-            title: 'Websocket Tool',
-            content: <WebsocketTool />,
+            title: 'Dev Tools',
+            content: <DevToolsPage />,
         });
     }
 
@@ -249,10 +228,9 @@ export class Header extends ClassComponent<
 
                     <div className="btn-container">
                         <button
-                            id="btnHeaderSearch"
                             type="button"
                             className="btn btn-dev-tool"
-                            onClick={this.openSharedStateDebugger}
+                            onClick={this.openDevTools}
                         >
                             <FontAwesomeIcon
                                 icon={faBug}
@@ -260,41 +238,7 @@ export class Header extends ClassComponent<
                                 size="lg"
                             />
                         </button>
-                        <span className="tooltiptext">
-                            Shared State Debugger
-                        </span>
-                    </div>
-
-                    <div className="btn-container">
-                        <button
-                            id="btnHeaderSearch"
-                            type="button"
-                            className="btn btn-dev-tool"
-                            onClick={this.openRestTool}
-                        >
-                            <FontAwesomeIcon
-                                icon={faVials}
-                                color="white"
-                                size="lg"
-                            />
-                        </button>
-                        <span className="tooltiptext">REST Tool</span>
-                    </div>
-
-                    <div className="btn-container">
-                        <button
-                            id="btnHeaderSearch"
-                            type="button"
-                            className="btn btn-dev-tool"
-                            onClick={this.openWebsocketTool}
-                        >
-                            <FontAwesomeIcon
-                                icon={faRocketchat}
-                                color="white"
-                                size="lg"
-                            />
-                        </button>
-                        <span className="tooltiptext">Websocket Tool</span>
+                        <span className="tooltiptext">Dev Tools</span>
                     </div>
 
                     <div className="btn-container">
