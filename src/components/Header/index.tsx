@@ -1,4 +1,4 @@
-import { DevToolsPage } from '@kubevious/ui-dev-tools'
+import { DevToolsPage } from '@kubevious/ui-dev-tools';
 import React from 'react';
 import _ from 'the-lodash';
 import bugImg from '../../assets/header-btns/bug.svg';
@@ -18,6 +18,8 @@ import { IMiscService } from '@kubevious/ui-middleware';
 import { GoldenLayoutWindowInfo } from '@kubevious/ui-components';
 import { HeaderProps, HeaderState } from './types';
 import { SEARCH_FILTER_METADATA } from '../Search/search-metadata';
+
+const isDevMode = process.env.REACT_APP_DEV_MODE;
 
 export class Header extends ClassComponent<
     HeaderProps,
@@ -226,20 +228,22 @@ export class Header extends ClassComponent<
                         </div>
                     )}
 
-                    <div className="btn-container">
-                        <button
-                            type="button"
-                            className="btn btn-dev-tool"
-                            onClick={this.openDevTools}
-                        >
-                            <FontAwesomeIcon
-                                icon={faBug}
-                                color="white"
-                                size="lg"
-                            />
-                        </button>
-                        <span className="tooltiptext">Dev Tools</span>
-                    </div>
+                    {isDevMode && (
+                        <div className="btn-container">
+                            <button
+                                type="button"
+                                className="btn btn-dev-tool"
+                                onClick={this.openDevTools}
+                            >
+                                <FontAwesomeIcon
+                                    icon={faBug}
+                                    color="white"
+                                    size="lg"
+                                />
+                            </button>
+                            <span className="tooltiptext">Dev Tools</span>
+                        </div>
+                    )}
 
                     <div className="btn-container">
                         <button
