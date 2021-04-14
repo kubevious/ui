@@ -2,57 +2,48 @@ import _ from 'the-lodash';
 import { IRuleService } from '@kubevious/ui-middleware';
 
 import { BaseService } from './BaseService'
-import { RuleResult, RuleStatus } from '@kubevious/ui-middleware/dist/services/rule';
+import { RuleConfig, RuleListItem, RuleResult, RulesExportData, RulesImportData, RuleStatus } from '@kubevious/ui-middleware/dist/services/rule';
 
 export class RuleService extends BaseService implements IRuleService {
-
-
-    backendFetchRuleList(cb: (data: any) => any) : void {
-        this.client.get('/rules')
-            .then(result => {
-                cb(result.data);
-                return null;
-            });
+    
+    getRuleList(): Promise<RuleListItem[]> {
+        return this.client.get<RuleListItem[]>('/rules')
+            .then(result => result.data);
     }
 
-    backendFetchRule(id: string, cb: (data: any) => any) : void {
-        this.client.get('/rule/' + id)
-            .then(result => {
-                cb(result.data);
-                return null;
-            });
+    getRule(name: string): Promise<RuleConfig | null> {
+        return this.client.get<RuleConfig | null>(`/rule/${name}`)
+            .then(result => result.data);
     }
 
-    backendCreateRule(config: any, name: string, cb: (data: any) => any) : void {
-        this.client.post('/rule/' + name, {}, config)
-            .then(result => {
-                cb(result.data)
-                return null;
-            });
+    createRule(config: RuleConfig, name: string): Promise<RuleConfig> {
+        return this.client.post<RuleConfig>(`/rule/${name}`, {}, config)
+            .then(result => result.data);
     }
 
-    backendDeleteRule(id: string, cb: (data: any) => any) : void {
-        this.client.delete('/rule/' + id)
-            .then(result => {
-                cb(result.data);
-                return null;
-            });
+    deleteRule(name: string): Promise<void> {
+        return this.client.delete(`/rule/${name}`)
+            .then(() => { });
     }
 
-    backendExportItems(cb: (data: any) => any) : void {
-        this.client.get('/rules/export')
-            .then(result => {
-                cb(result.data);
-                return null;
-            });
+    exportRules(): Promise<RulesExportData> {
+        return this.client.get<RulesExportData>('/rules/export')
+            .then(result => result.data);
     }
 
-    backendImportItems(rules: any, cb: (data: any) => any) : void {
-        this.client.post('/rules/import', {}, rules)
-            .then(result => {
-                cb(result.data);
-                return null;
-            });
+    importRules(data: RulesImportData): Promise<void> {
+        return this.client.post<void>('/rules/import', {}, data)
+            .then(result => {});
+    }
+
+    getRulesStatuses(): Promise<RuleStatus[]> {
+        return this.client.get<RuleStatus[]>('/rules-statuses')
+            .then(result => result.data);
+    }
+
+    getRuleResult(name: string): Promise<RuleResult> {
+        return this.client.get<RuleResult>(`/rules-result/${name}`)
+            .then(result => result.data);
     }
 
     subscribeRuleStatuses(cb: ((items: RuleStatus[]) => void)) : void

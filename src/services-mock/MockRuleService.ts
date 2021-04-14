@@ -1,4 +1,5 @@
 import _ from "the-lodash"
+import { Promise } from 'the-promise'
 import { MOCK_MARKERS } from "./MockMarkerService"
 import { MockRootApiService } from "./MockRootApiService"
 
@@ -8,7 +9,7 @@ import { ISharedState } from "@kubevious/ui-framework"
 import { getRandomDnList } from "./utils"
 
 import { IRuleService } from "@kubevious/ui-middleware"
-import { RuleResult, RuleStatus } from "@kubevious/ui-middleware/dist/services/rule"
+import { RuleConfig, RuleListItem, RuleResult, RulesExportData, RulesImportData, RuleStatus } from "@kubevious/ui-middleware/dist/services/rule"
 
 let MOCK_RULES_ARRAY: any = [
     {
@@ -104,17 +105,26 @@ export class MockRuleService implements IRuleService {
         )
     }
 
+    getRulesStatuses(): Promise<RuleStatus[]> {
+        throw new Error("Method not implemented.")
+    }
+
+    getRuleResult(name: string): Promise<RuleResult> {
+        throw new Error("Method not implemented.")
+    }
+
     close()
     {
 
     }
 
-
     subscribeRuleStatuses(cb: ((items: RuleStatus[]) => void)) : void
     {
-        this.backendFetchRuleList((result) => {
-            cb(result)
-        })
+        // TODO: FIX THIS
+        this.getRuleList()
+            .then((result) => {
+                cb(result as RuleStatus[])
+            })
     }
 
     subscribeRuleResult(cb: ((result: RuleResult) => void))
@@ -197,71 +207,67 @@ export class MockRuleService implements IRuleService {
         return item
     }
 
-    backendFetchRuleList(cb: (data: any) => any): void {
+    getRuleList() : Promise<RuleListItem[]> {
         let list = _.values(MOCK_RULES)
         list = list.map((x) => this._makeRuleListItem(x))
-        setTimeout(() => {
-            cb(list)
-        }, 100)
+        return Promise.timeout(100)
+            .then(() => list);
     }
 
-    backendFetchRule(name: string, cb: (data: any) => any): void {
+    getRule(name: string) : Promise<RuleConfig | null> {
         const item = MOCK_RULES[name]
         let ruleItem = this._makeRuleItem(item)
-        setTimeout(() => {
-            cb(ruleItem)
-        }, 500)
+        return Promise.timeout(500)
+            .then(() => ruleItem);
     }
 
-    backendCreateRule(rule: any, name: string, cb: (data: any) => any): void {
-        rule = _.clone({ ...rule, items: [], logs: [] })
+    createRule(config: RuleConfig, name: string) : Promise<RuleConfig> {
+        let rule = _.clone({ ...config, items: [], logs: [] })
 
-        if (MOCK_RULES[name]) {
-            this._backendUpdateRule(rule, name, cb)
-            return
+        if (name != config.name) {
+            delete MOCK_RULES[name];
         }
 
         MOCK_RULES[rule.name] = rule
 
-        cb(rule)
         this._notifyRules()
+
+        return Promise.resolve(config);
     }
 
-    _backendUpdateRule(rule, name, cb) {
-        MOCK_RULES[rule.name] = _.clone({ ...rule, items: [], logs: [] })
-
+    deleteRule(name: string) : Promise<void> {
         delete MOCK_RULES[name]
-
-        cb(rule)
         this._notifyRules()
+        return Promise.resolve();
     }
 
-    backendDeleteRule(id: string, cb: (data: any) => any): void {
-        delete MOCK_RULES[id]
-        cb({})
-        this._notifyRules()
-    }
-
-    backendExportItems(cb: (data: any) => any): void {
-        const data = {
+    exportRules() : Promise<RulesExportData> {
+        const data : RulesExportData = {
             kind: "rules",
             items: _.cloneDeep(_.values(MOCK_RULES)),
         }
-        cb(data)
+        return Promise.resolve(data);
     }
 
-    backendImportItems(rules: any, cb: (data: any) => any): void {
-        if (rules.deleteExtra) {
+    importRules(data: RulesImportData) : Promise<void> {
+        if (data.deleteExtra) {
             MOCK_RULES = []
         }
 
-        for (const x of rules.data.items) {
-            x.items = []
-            x.logs = []
-            MOCK_RULES[x.name] = x
+        for (const x of data.data.items) {
+            MOCK_RULES[x.name] = {
+                enabled: x.name,
+                name: x.name,
+                target: x.target,
+                script: x.script,
+                items: [],
+                logs: [],
+                is_current: false,
+            }
         }
 
-        cb({})
         this._notifyRules()
+
+        return Promise.resolve();
     }
 }

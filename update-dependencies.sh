@@ -5,6 +5,7 @@ cd $MY_DIR
 
 npm update \
     the-lodash \
+    the-promise \
     @kubevious/ui-framework \
     @kubevious/ui-middleware \
     @kubevious/ui-components \

@@ -1,4 +1,5 @@
 import _ from 'the-lodash'
+import { Promise } from 'the-promise'
 
 import { COLORS, SHAPES } from '../boot/markerData'
 
@@ -9,7 +10,7 @@ import { getRandomDnList } from './utils';
 import { MockRootApiService } from './MockRootApiService';
 
 import { IMarkerService } from '@kubevious/ui-middleware'
-import { MarkerResult, MarkerStatus } from '@kubevious/ui-middleware/dist/services/marker';
+import { MarkerConfig, MarkerListItem, MarkerResult, MarkersExportData, MarkersImportData, MarkerStatus } from '@kubevious/ui-middleware/dist/services/marker';
 
 const MOCK_MARKERS_ARRAY : any[] = []
 
@@ -58,18 +59,25 @@ export class MockMarkerService implements IMarkerService {
                 this._notifyMarkerStatus(marker_editor_selected_marker_id);
             })
     }
+    getMarkerStatuses(): Promise<MarkerStatus[]> {
+        throw new Error('Method not implemented.')
+    }
+    getMarkerResult(name: string): Promise<MarkerResult> {
+        throw new Error('Method not implemented.')
+    }
 
     close()
     {
         
     }
 
-
     subscribeMarkerStatuses(cb: ((items: MarkerStatus[]) => void))
     {
-        this.backendFetchMarkerList((result) => {
-            cb(result);
-        })
+        // TODO: FIX THIS
+        this.getMarkerList()
+            .then((result) => {
+                cb(result as MarkerStatus[]);
+            })
     }
 
     subscribeMarkerResult(cb: ((result: MarkerResult) => void))
@@ -158,52 +166,41 @@ export class MockMarkerService implements IMarkerService {
         return item;
     }
 
-    backendFetchMarkerList(cb: (data: any) => any) : void {
+    getMarkerList() : Promise<MarkerListItem[]> {
         let list = _.values(MOCK_MARKERS);
         list = list.map(x => this._makeMarkerListItem(x));
-        setTimeout(() => {
-            cb(list);
-        }, 100);
+        return Promise.timeout(100)
+            .then(() => list);
     }
 
-    backendFetchMarker(name: string, cb: (data: any) => any) : void {
+    getMarker(name: string) : Promise<MarkerConfig | null> {
         let item = MOCK_MARKERS[name];
         item = this._makeMarkerItem(item);
-        setTimeout(() => {
-            cb(item);
-        }, 500);
+        return Promise.timeout(500)
+            .then(() => item);
     }
 
-    backendCreateMarker(marker: any, name: string, cb: (data: any) => any) : void {
-        marker = _.clone({ ...marker, items: [], logs: [] });
+    createMarker(config: MarkerConfig, name: string) : Promise<MarkerConfig> {
+        let marker = _.clone({ ...config, items: [], logs: [] });
 
-        if (MOCK_MARKERS[name]) {
-            this._backendUpdateMarker(marker, name, cb)
-            return
+        if (name != config.name) {
+            delete MOCK_MARKERS[name];
         }
 
         MOCK_MARKERS[marker.name] = marker
 
-        cb(marker);
         this._notifyMarkers();
+
+        return Promise.resolve(config);
     }
 
-    private _backendUpdateMarker(marker, name, cb) {
-        MOCK_MARKERS[marker.name] = _.clone({ ...marker });
-
-        delete MOCK_MARKERS[name]
-
-        cb(marker)
-        this._notifyMarkers();
-    }
-
-    backendDeleteMarker(name: string, cb: (data: any) => any) : void{
+    deleteMarker(name: string) : Promise<void> {
         delete MOCK_MARKERS[name];
-        cb({});
         this._notifyMarkers();
+        return Promise.resolve();
     }
 
-    backendExportItems(cb: (data: any) => any) : void {
+    exportMarkers() : Promise<MarkersExportData> {
         let data = _.cloneDeep(_.values(MOCK_MARKERS));
         data = data.map(x => ({
             name: x.name,
@@ -211,25 +208,30 @@ export class MockMarkerService implements IMarkerService {
             color: x.color,
         }));
 
-        const response = {
+        const response : MarkersExportData = {
             kind: 'markers',
             items: data,
         }
-        cb(response);
+        return Promise.resolve(response);
     }
 
-    backendImportItems(markers: any, cb: (data: any) => any) : void {
-        if (markers.deleteExtra) {
+    importMarkers(data: MarkersImportData) : Promise<void> {
+        if (data.deleteExtra) {
             MOCK_MARKERS = {};
         }
 
-        for (const x of markers.data.items) {
-            x.items = []
-            x.logs = []
-            MOCK_MARKERS[x.name] = x;
+        for (const x of data.data.items) {
+            MOCK_MARKERS[x.name] = {
+                name: x.name,
+                shape: x.shape,
+                color: x.color,
+                items: [],
+                logs: [],
+                is_current: false
+            };
         }
 
-        cb({});
         this._notifyMarkers();
+        return Promise.resolve();
     }
 }
