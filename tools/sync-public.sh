@@ -4,10 +4,6 @@ MY_DIR="$(dirname $MY_PATH)"
 
 cd ${MY_DIR}
 
-export PUBLIC_GIT_IGNORE=${MY_DIR}/../public/.gitignore
-rm ${PUBLIC_GIT_IGNORE}
-touch ${PUBLIC_GIT_IGNORE}
-
 ./sync-public-from.sh '@kubevious/ui-components'
 ./sync-public-from.sh '@kubevious/ui-properties'
 ./sync-public-from.sh '@kubevious/ui-diagram'
@@ -15,6 +11,10 @@ touch ${PUBLIC_GIT_IGNORE}
 ./sync-public-from.sh '@kubevious/ui-rule-engine'
 ./sync-public-from.sh '@kubevious/ui-time-machine'
 
-sort -o ${PUBLIC_GIT_IGNORE} ${PUBLIC_GIT_IGNORE}
+cd ${MY_DIR}/../public
+touch gitignore
+sort -o gitignore .gitignore
+rm .gitignore
+mv gitignore .gitignore
 
 exit 0
