@@ -4,6 +4,8 @@ MY_DIR="$(dirname $MY_PATH)"
 
 cd ${MY_DIR}
 
+export PUBLIC_GIT_IGNORE=${MY_DIR}/../public/.gitignore
+
 ./sync-public-from.sh '@kubevious/ui-components'
 ./sync-public-from.sh '@kubevious/ui-properties'
 ./sync-public-from.sh '@kubevious/ui-diagram'

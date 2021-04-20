@@ -37,3 +37,9 @@ do
         cp -f "${SOURCE_FILE}" "${DEST_FILE}"
     fi
 done
+
+cd ${MY_DIR}/../public
+touch gitignore
+sort -u .gitignore >> gitignore
+rm .gitignore
+mv gitignore .gitignore
