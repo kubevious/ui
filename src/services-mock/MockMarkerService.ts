@@ -59,10 +59,10 @@ export class MockMarkerService implements IMarkerService {
                 this._notifyMarkerStatus(marker_editor_selected_marker_id);
             })
     }
-    getMarkerStatuses(): Promise<MarkerStatus[]> {
+    getItemStatuses(): Promise<MarkerStatus[]> {
         throw new Error('Method not implemented.')
     }
-    getMarkerResult(name: string): Promise<MarkerResult> {
+    getItemResult(name: string): Promise<MarkerResult> {
         throw new Error('Method not implemented.')
     }
 
@@ -71,16 +71,16 @@ export class MockMarkerService implements IMarkerService {
         
     }
 
-    subscribeMarkerStatuses(cb: ((items: MarkerStatus[]) => void))
+    subscribeItemStatuses(cb: ((items: MarkerStatus[]) => void))
     {
         // TODO: FIX THIS
-        this.getMarkerList()
+        this.getList()
             .then((result) => {
                 cb(result as MarkerStatus[]);
             })
     }
 
-    subscribeMarkerResult(cb: ((result: MarkerResult) => void))
+    subscribeItemResult(cb: ((result: MarkerResult) => void))
     {
         return {
             update: (markerName : string) => {
@@ -166,21 +166,21 @@ export class MockMarkerService implements IMarkerService {
         return item;
     }
 
-    getMarkerList() : Promise<MarkerListItem[]> {
+    getList() : Promise<MarkerListItem[]> {
         let list = _.values(MOCK_MARKERS);
         list = list.map(x => this._makeMarkerListItem(x));
         return Promise.timeout(100)
             .then(() => list);
     }
 
-    getMarker(name: string) : Promise<MarkerConfig | null> {
+    getItem(name: string) : Promise<MarkerConfig | null> {
         let item = MOCK_MARKERS[name];
         item = this._makeMarkerItem(item);
         return Promise.timeout(500)
             .then(() => item);
     }
 
-    createMarker(config: MarkerConfig, name: string) : Promise<MarkerConfig> {
+    createItem(config: MarkerConfig, name: string) : Promise<MarkerConfig> {
         let marker = _.clone({ ...config, items: [], logs: [] });
 
         if (name != config.name) {
@@ -194,13 +194,13 @@ export class MockMarkerService implements IMarkerService {
         return Promise.resolve(config);
     }
 
-    deleteMarker(name: string) : Promise<void> {
+    deleteItem(name: string) : Promise<void> {
         delete MOCK_MARKERS[name];
         this._notifyMarkers();
         return Promise.resolve();
     }
 
-    exportMarkers() : Promise<MarkersExportData> {
+    exportItems() : Promise<MarkersExportData> {
         let data = _.cloneDeep(_.values(MOCK_MARKERS));
         data = data.map(x => ({
             name: x.name,
@@ -215,7 +215,7 @@ export class MockMarkerService implements IMarkerService {
         return Promise.resolve(response);
     }
 
-    importMarkers(data: MarkersImportData) : Promise<void> {
+    importItems(data: MarkersImportData) : Promise<void> {
         if (data.deleteExtra) {
             MOCK_MARKERS = {};
         }
