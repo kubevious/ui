@@ -9,7 +9,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@kubevious/helpers": "^1.0.52",
     "@kubevious/ui-alerts": "^1.0.20",
-    "@kubevious/ui-components": "^1.0.68",
+    "@kubevious/ui-components": "^1.0.72",
     "@kubevious/ui-dev-tools": "^1.0.12",
     "@kubevious/ui-diagram": "^1.0.17",
     "@kubevious/ui-framework": "^1.0.40",
