@@ -4,5 +4,6 @@ MY_DIR="$(dirname $MY_PATH)"
 cd $MY_DIR
 
 export REACT_APP_MOCKED_DATA=true
+export REACT_APP_DEV_MODE=true
 
 npm start
