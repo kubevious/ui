@@ -15,7 +15,7 @@
     "@kubevious/ui-framework": "^1.0.40",
     "@kubevious/ui-middleware": "^1.0.24",
     "@kubevious/ui-properties": "^1.0.22",
-    "@kubevious/ui-rule-engine": "^1.0.33",
+    "@kubevious/ui-rule-engine": "^1.0.34",
     "@kubevious/ui-search": "^1.0.30",
     "@kubevious/ui-time-machine": "^1.0.15",
     "@kubevious/websocket-client": "^1.0.11",
