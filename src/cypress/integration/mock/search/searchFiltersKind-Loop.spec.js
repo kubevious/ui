@@ -68,7 +68,7 @@ describe('SearchFilters', () => {
     {
 
       it(`NEW filter list, Kind ${kind.name}`, () => {
-        cy.visit('https://demo.kubevious.io/');
+        cy.visit('/');
         cy.get('#btnHeaderSearch').click();
         cy.get(".filter-list")
           .find("details")

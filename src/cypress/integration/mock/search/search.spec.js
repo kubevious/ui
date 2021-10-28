@@ -6,12 +6,13 @@ describe('SearchSection', () => {
         cy.get('#popup').should('be.visible')
     });
 
-    it('Search', () => {
+    it.only('Search', () => {
         cy.visit('/');
         cy.get('#btnHeaderSearch').click();
         cy.get('.tooltiptext').should('not.be.visible')
         cy.get('.form-control')
-        cy.contains('Search').should('be.visible')
+        cy.wait(1000);
+        cy .contains('Search').should('be.visible')
     });
 
 

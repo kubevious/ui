@@ -16,7 +16,7 @@ describe('SearchWithMultipleFilters', () => {
 
 
 
-    it('filter list, KindContainer', 'search for openfaas', () => {
+    it.only('filter list, KindContainer, search for openfaas', () => {
         cy.visit('https://demo.kubevious.io/');
         cy.get('#btnHeaderSearch').click();
         cy.get(".filter-list")
@@ -57,10 +57,10 @@ describe('SearchWithMultipleFilters', () => {
 
         cy.get('.form-control').type("openfaas{enter}");
         cy.get('.search-results')
-            .find('.dn-shortcut')
-            .filter(':contains("faas-idler")')
-            .its('length')
-            .should('be.gte', 1)
+          .find('.dn-shortcut')
+          .filter(':contains("faas-idler")')
+          .its('length')
+          .should('be.gte', 1)
     });
 
 
@@ -117,7 +117,7 @@ describe('SearchWithMultipleFilters', () => {
     });
 
 
-    it.only('filter list, KindApplication, WithoutWarnings, WithoutErrors, search for openfaas', () => {
+    it('filter list, KindApplication, WithoutWarnings, WithoutErrors, search for openfaas', () => {
         cy.visit('https://demo.kubevious.io/');
         cy.get('#btnHeaderSearch').click();
         cy.get(".filter-list")
@@ -149,7 +149,7 @@ describe('SearchWithMultipleFilters', () => {
             .should('be.gte', 1)
     });
 
-    it.only('filter list, KindApplication, WithWarnings, WithErrors, search for openfaas', () => {
+    it('filter list, KindApplication, WithWarnings, WithErrors, search for openfaas', () => {
         cy.visit('https://demo.kubevious.io/');
         cy.get('#btnHeaderSearch').click();
         cy.get(".filter-list")
@@ -182,7 +182,7 @@ describe('SearchWithMultipleFilters', () => {
     });
 
 
-    it.only('filter list, KindApplication, WithoutWarnings, WithErrors, search for openfaas', () => {
+    it('filter list, KindApplication, WithoutWarnings, WithErrors, search for openfaas', () => {
         cy.visit('https://demo.kubevious.io/');
         cy.get('#btnHeaderSearch').click();
         cy.get(".filter-list")

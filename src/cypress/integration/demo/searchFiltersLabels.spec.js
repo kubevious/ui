@@ -1,6 +1,6 @@
 describe('Test Search Filters, Labels', () => {
 
-  it('filter list, Label/Value Autocomplete', () => {
+  it.only('filter list, Label/Value Autocomplete', () => {
     cy.visit('https://demo.kubevious.io/');
     cy.get('#btnHeaderSearch').click();
 
@@ -287,7 +287,7 @@ describe('Test Search Filters, Labels', () => {
 
   });
 
-  it.only('Testing filter boxes', () => {
+  it('Testing filter boxes', () => {
     cy.visit('https://demo.kubevious.io/');
     cy.get('#btnHeaderSearch').click();
 

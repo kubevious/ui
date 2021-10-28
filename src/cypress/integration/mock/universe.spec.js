@@ -2,7 +2,7 @@ describe('Universe TestCases', () => {
 
     it("tests an app and it's properties", () => {
         cy.visit('https://demo.kubevious.io/');
-        // cy.visit('http://localhost:4000/');
+        //cy.visit('http://localhost:4000/');
         
 
         cy.contains('Universe').click()
