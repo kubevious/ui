@@ -14,6 +14,6 @@ $ npm install
 $ ./run-dev.sh
 ```
 
-Make sure to also run the **Backend** and **Parser** components.
+Make sure to also run the **[Backend](https://github.com/kubevious/backend#local-setup-and-development)** and **[Parser](https://github.com/kubevious/parser#local-setup-and-development)** components.
 
 Application will be available from [http://localhost:4000](http://localhost:4000)
