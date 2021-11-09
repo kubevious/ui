@@ -10,10 +10,11 @@
 # Install NPM dependencies
 $ npm install
 
-# Run Kubevious Backend
+# Run Kubevious Frontend
 $ ./run-dev.sh
 ```
 
+Application will be available at [http://localhost:4000](http://localhost:4000)
+
 Make sure to also run the **[Backend](https://github.com/kubevious/backend#local-setup-and-development)** and **[Parser](https://github.com/kubevious/parser#local-setup-and-development)** components.
 
-Application will be available from [http://localhost:4000](http://localhost:4000)
