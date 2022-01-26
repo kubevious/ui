@@ -8,7 +8,7 @@
     "@fortawesome/free-regular-svg-icons": "^5.15.1",
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
     "@fortawesome/react-fontawesome": "^0.1.12",
-    "@kubevious/helpers": "^1.0.31",
+    "@kubevious/helpers": "^1.0.51",
     "axios": "^0.19.2",
     "bootstrap": "^4.5.0",
     "c3": "^0.7.20",
@@ -47,7 +47,7 @@
     "build-svg-dict": "node build-marker-image-dict",
     "cypress": "cypress open",
     "cy:run": "cypress run --browser chrome",
-    "cy:run-ci": "cypress run --browser chrome",
+    "cy:run-ci": "cypress run --browser chrome --spec 'cypress/integration/mock/**/*.js'",
     "ci": "start-server-and-test start http://localhost:4000 cy:run-ci"
   },
   "author": "Ruben Hakopian <ruben.hakopian@gmail.com>",
@@ -71,7 +71,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
-    "cypress": "^4.8.0",
+    "cypress": "^6.5.0",
     "cypress-file-upload": "^4.0.7",
     "start-server-and-test": "^1.11.0"
   }
