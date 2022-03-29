@@ -9,7 +9,6 @@ docker run \
     -it \
     --rm \
     --name "${CONTAINER_NAME}" \
-    -p ${SERVER_PORT}:80 \
     --network ${NETWORK_NAME} \
     -e BACKEND_URL=kubevious-backend:4001 \
     ${IMAGE_NAME}
