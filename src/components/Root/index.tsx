@@ -170,9 +170,9 @@ export class Root extends ClassComponent<{}, RootState> {
 
                     {showPopup && <Popup popupContent={popupContent} closePopup={closePopup} />}
 
-                    {isError && error && (
+                    {/* {isError && error && (
                         <ErrorBox error={error} closeError={this.closeError} />
-                    )}
+                    )} */}
                 </div>
             </>
         )

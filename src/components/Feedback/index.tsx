@@ -2,7 +2,7 @@ import React from "react"
 import { ClassComponent } from "@kubevious/ui-framework"
 import { Snooze } from "../Snooze"
 import { PostFeedback } from "../PostFeedback"
-import $ from "jquery"
+// import $ from "jquery"
 import _ from "the-lodash"
 import cx from "classnames"
 
@@ -138,7 +138,8 @@ export class Feedback extends ClassComponent<
     }
 
     setClicked(e: React.FocusEvent<HTMLButtonElement>): void {
-        $(`.user-single-select .${e.target.name}`).removeClass("clicked")
+        // TODO: FIX ME. DO NOT USE jQUERY
+        // $(`.user-single-select .${e.target.name}`).removeClass("clicked")
         e.target.classList.add("clicked")
     }
 

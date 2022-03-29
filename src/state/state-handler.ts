@@ -7,7 +7,9 @@ import { SharedState } from "@kubevious/ui-framework/dist"
 import { IDiagramService } from "@kubevious/ui-middleware"
 import { TimelineUtils } from "@kubevious/ui-time-machine"
 import { PersistableParams } from "../types"
-import { ChartData } from "@kubevious/ui-time-machine/dist/Timeline/type"
+
+// import { ChartData } from "@kubevious/ui-time-machine/dist/Timeline/type"
+type ChartData = any;
 
 export class StateHandler {
     private _timelineUtils: TimelineUtils
@@ -389,21 +391,21 @@ export class StateHandler {
     }
 
     _handleMarkerListChange(): void {
-        this.sharedState
-            .subscribe("marker_editor_items", (marker_editor_items) => {
-                let markerDict = {}
-                if (marker_editor_items) {
-                    markerDict = _.makeDict(
-                        marker_editor_items,
-                        (x: { name: any }) => x.name,
-                        (x: { shape: any; color: any }) => ({
-                            shape: x.shape,
-                            color: x.color,
-                        })
-                    )
-                }
+        // this.sharedState
+        //     .subscribe("marker_editor_items", (marker_editor_items) => {
+        //         let markerDict = {}
+        //         if (marker_editor_items) {
+        //             markerDict = _.makeDict(
+        //                 marker_editor_items,
+        //                 (x: { name: any }) => x.name,
+        //                 (x: { shape: any; color: any }) => ({
+        //                     shape: x.shape,
+        //                     color: x.color,
+        //                 })
+        //             )
+        //         }
 
-                this.sharedState.set("markers_dict", markerDict)
-            })
+        //         this.sharedState.set("markers_dict", markerDict)
+        //     })
     }
 }

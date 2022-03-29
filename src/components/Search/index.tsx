@@ -62,59 +62,59 @@ export class Search extends ClassComponent<{}, SearchState, IDiagramService> {
   }
 
   fetchResults(criteria: SearchValue): void {
-    this.service.fetchSearchResults(
-      criteria,
-      (response: {
-        results: SelectedData[]
-        totalCount: number
-        wasFiltered: boolean
-      }) => {
-        this.setState({
-          result: response.results,
-          totalCount: response.totalCount,
-          wasFiltered: response.wasFiltered,
-        })
-      }
-    )
+    // this.service.fetchSearchResults(
+    //   criteria,
+    //   (response: {
+    //     results: SelectedData[]
+    //     totalCount: number
+    //     wasFiltered: boolean
+    //   }) => {
+    //     this.setState({
+    //       result: response.results,
+    //       totalCount: response.totalCount,
+    //       wasFiltered: response.wasFiltered,
+    //     })
+    //   }
+    // )
   }
 
   fetchValues(type: string, key: string, criteria: string): void {
     if (!key) {
       return
     }
-    this.service.fetchAutocompleteValues(
-      type,
-      { key, criteria },
-      (response) => {
-        this.setState((prevState: SearchState) => {
-          prevState.autocomplete[type].values = response
-          return {
-            ...prevState,
-            autocomplete: {
-              ...prevState.autocomplete,
-            },
-          }
-        })
-      }
-    )
+    // this.service.fetchAutocompleteValues(
+    //   type,
+    //   { key, criteria },
+    //   (response) => {
+    //     this.setState((prevState: SearchState) => {
+    //       prevState.autocomplete[type].values = response
+    //       return {
+    //         ...prevState,
+    //         autocomplete: {
+    //           ...prevState.autocomplete,
+    //         },
+    //       }
+    //     })
+    //   }
+    // )
   }
 
   fetchKeys(type: string, criteria: string): void {
-    return this.service.fetchAutocompleteKeys(
-      type,
-      { criteria },
-      (response) => {
-        this.setState((prevState: SearchState) => {
-          prevState.autocomplete[type].keys = response
-          return {
-            ...prevState,
-            autocomplete: {
-              ...prevState.autocomplete,
-            },
-          }
-        })
-      }
-    )
+    // return this.service.fetchAutocompleteKeys(
+    //   type,
+    //   { criteria },
+    //   (response) => {
+    //     this.setState((prevState: SearchState) => {
+    //       prevState.autocomplete[type].keys = response
+    //       return {
+    //         ...prevState,
+    //         autocomplete: {
+    //           ...prevState.autocomplete,
+    //         },
+    //       }
+    //     })
+    //   }
+    // )
   }
 
   getKindsList(): KindList {

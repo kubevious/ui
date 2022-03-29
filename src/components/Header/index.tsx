@@ -7,8 +7,7 @@ import { About } from "../About"
 import { Search } from "../Search"
 import { Notifications } from "../Notifications"
 import { ClassComponent } from "@kubevious/ui-framework"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faSpinner } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon, FASolidIcons } from "@kubevious/ui-components"
 import moment from "moment"
 
 import "./styles.scss"
@@ -180,7 +179,7 @@ export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscServic
             <div className="header">
                 <a className="logo" href="/" />
                 <div className="loading-icon">
-                    {isLoading && <FontAwesomeIcon icon={faSpinner} spin />}
+                    {isLoading && <FontAwesomeIcon icon={FASolidIcons.faSpinner} spin />}
                 </div>
                 {time_machine_enabled && (
                     <div id="history-info" className="history-info">

@@ -8,7 +8,7 @@ export class WebSocketService implements IWebSocketService
 
     constructor()
     {
-        this._socket = new WebSocketClient({
+        this._socket = new WebSocketClient('project-socket', {
             path: '/socket'
         });
         this._socket.run();

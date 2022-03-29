@@ -10,7 +10,6 @@ COPY ./tools ./tools
 COPY ./src ./src
 COPY ./tsconfig.json ./
 RUN ./tools/sync-public.sh
-ENV REACT_APP_MOCKED_DATA true
 RUN npm run build
 
 ###############################################################################

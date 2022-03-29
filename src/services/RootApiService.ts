@@ -11,7 +11,7 @@ import { app } from '@kubevious/ui-framework';
 export class RootApiService {
     constructor() {
 
-        app.initHttpClient('');
+        this._registerHttpClients();
 
         const sharedState = app.sharedState;
 
@@ -20,22 +20,22 @@ export class RootApiService {
         });
 
         app.registerService({ kind: 'rule' }, () => {
-            const client = app.httpClient('/api/v1');
-            return new RuleService(client, sharedState, this.socketService());
+            const client = this.httpClient('/api/v1');
+            return new RuleService(client);
         });
 
         app.registerService({ kind: 'marker' }, () => {
-            const client = app.httpClient('/api/v1');
-            return new MarkerService(client, sharedState, this.socketService());
+            const client = this.httpClient('/api/v1');
+            return new MarkerService(client);
         });
 
         app.registerService({ kind: 'diagram' }, () => {
-            const client = app.httpClient('/api/v1');
+            const client = this.httpClient('/api/v1');
             return new DiagramService(client, sharedState, this.socketService());
         });
 
         app.registerService({ kind: 'misc' }, () => {
-            const client = app.httpClient('');
+            const client = this.httpClient('');
             return new MiscService(client, sharedState, this.socketService());
         });
     }
@@ -68,4 +68,14 @@ export class RootApiService {
     }
 
     
+    private _registerHttpClients()
+    {
+        app.initHttpClient({ level: 'root' });
+    }
+
+    private httpClient(urlBase: string)
+    {
+        return app.httpClient({ level: 'root' }, urlBase);
+    }
+
 }
