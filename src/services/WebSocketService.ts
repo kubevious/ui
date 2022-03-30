@@ -33,6 +33,6 @@ export class WebSocketService implements IWebSocketService
 
     updateContext(updatedContext: WebSocketTarget): void
     {
-        
+        this._socket.updateContext(updatedContext);
     }
 }
