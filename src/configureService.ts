@@ -1,4 +1,4 @@
-import { RootApiService } from "./services/RootApiService"
+import { RootApiFactory } from "./services/RootApiFactory"
 // import { KubeviousHandler } from "./state/kubevious-handler"
 
 import { app } from "@kubevious/ui-framework"
@@ -22,11 +22,10 @@ app.sharedState.init();
 export const sharedState = app.sharedState
 
 
-function apiFactory(): RootApiService {
-    return new RootApiService()
+export function setupApiFactory(): RootApiFactory {
+    console.log("[setupApiFactory]");
+    const factory = new RootApiFactory();
+    return factory;
 }
-
-export const api = apiFactory()
-
 
 // new KubeviousHandler()

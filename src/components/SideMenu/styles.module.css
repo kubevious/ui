@@ -1,4 +1,4 @@
-.beta {
+.logoLabel {
     font-family: 'Montserrat', sans-serif !important;
     font-size: 11px;
     font-weight: bold;
@@ -6,4 +6,5 @@
     color: #f2bf58;
     position: absolute;
     right: 32px;
+    top: 20px;
 }

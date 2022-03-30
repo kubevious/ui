@@ -8,32 +8,24 @@ import { SideMenuItemKey } from './side-menu';
 // import { ClusterCreator } from '../pages/setup/ClusterCreator';
 // import { ClusterEditor } from '../pages/setup/ClusterEditor';
 // import { ClusterTokenPage } from '../pages/setup/ClusterTokenPage';
-// import { RulesPage } from '../pages/setup/RulesPage';
+import { RulesPage } from '../pages/rules/RulesPage';
 import { MarkersPage } from '../pages/rules/MarkersPage';
 // import { ValidatorsPage } from '../pages/setup/ValidatorsPage';
 // import { ValidatorDetailsPage } from  '../pages/setup/ValidatorDetailsPage';
 
 // import { ClustersBrowserPage } from '../pages/operational/ClustersBrowserPage';
-// import { ClusterViewerPage } from '../pages/operational/ClusterViewerPage';
+import { ClusterBrowserPage } from '../pages/operational/ClusterBrowserPage';
 // import { SearchPage } from '../pages/operational/SearchPage';
 // import { Universe } from '../pages/operational/Universe';
 // import { WebsocketTool } from '@kubevious/ui-dev-tools';
 // import { SupportPage } from '../pages/help/Support';
-// import { ProfilePage } from '../pages/account/Profile';
-// import { BillingPage } from '../pages/account/Billing';
-// import { TeamPage } from '../pages/account/Team';
 
-// import { SlackPage } from '../pages/integrations/Slack';
-// import { SlackRedirectPage } from '../pages/integrations/SlackRedirect';
 
 import { AboutPage } from '../pages/project/About';
 
 
-// export const AUTH_SETUP_PAGE = '/auth/setup';
-// export const AUTH_ACCOUNT_SETUP_PAGE = '/auth/account-setup';
-// export const CLUSTER_BROWSER_PAGE = "/browser/cluster";
-// export const RULE_PAGE = "/rules";
-// export const SLACK_INTEGRATION_PAGE = '/integrations/slack';
+export const CLUSTER_BROWSER_PAGE = "/browser";
+export const RULE_PAGE = "/rules";
 // export const DASHBOARD_PAGE = '/dashboard';
 
 // export const ACCOUNT_READY_PAGE = DASHBOARD_PAGE;
@@ -96,12 +88,12 @@ export const pagesData: PagesData<SideMenuItemKey> = {
         //     component: ValidatorDetailsPage,
         //     isDefaultMenuPage: true,
         // },
-        // {
-        //     url: RULE_PAGE,
-        //     sideMenu: SideMenuItemKey.rules,
-        //     component: RulesPage,
-        //     isDefaultMenuPage: true,
-        // },
+        {
+            url: RULE_PAGE,
+            sideMenu: SideMenuItemKey.rules,
+            component: RulesPage,
+            isDefaultMenuPage: true,
+        },
         {
             url: '/markers',
             sideMenu: SideMenuItemKey.markers,
@@ -110,23 +102,11 @@ export const pagesData: PagesData<SideMenuItemKey> = {
         },
 
         // // Operational
-        // {
-        //     url: '/browser',
-        //     sideMenu: SideMenuItemKey.browser,
-        //     component: ClustersBrowserPage,
-        //     isDefaultMenuPage: true,
-        // },
-        // {
-        //     url: CLUSTER_BROWSER_PAGE,
-        //     sideMenu: SideMenuItemKey.browser,
-        //     component: ClusterViewerPage,
-        // },
-        // {
-        //     url: '/universe',
-        //     sideMenu: SideMenuItemKey.universe,
-        //     component: Universe,
-        //     isDefaultMenuPage: true,
-        // },
+        {
+            url: CLUSTER_BROWSER_PAGE,
+            sideMenu: SideMenuItemKey.browser,
+            component: ClusterBrowserPage,
+        },
         // {
         //     url: '/search',
         //     sideMenu: SideMenuItemKey.search,
@@ -134,19 +114,7 @@ export const pagesData: PagesData<SideMenuItemKey> = {
         //     isDefaultMenuPage: true,
         // },
 
-        // // Integrations
-        // {
-        //     url: SLACK_INTEGRATION_PAGE,
-        //     sideMenu: SideMenuItemKey.slack,
-        //     component: SlackPage,
-        //     isDefaultMenuPage: true,
-        // },
-        // {
-        //     url: '/integrations/slack/oauth_redirect',
-        //     sideMenu: SideMenuItemKey.slack,
-        //     component: SlackRedirectPage,
-        //     isDefaultMenuPage: true,
-        // },
+      
 
         // // Help
         // {
@@ -155,27 +123,6 @@ export const pagesData: PagesData<SideMenuItemKey> = {
         //     component: SupportPage,
         //     isDefaultMenuPage: true,
         // },
-
-        // // Account
-        // {
-        //     url: '/team',
-        //     sideMenu: SideMenuItemKey.team,
-        //     component: TeamPage,
-        //     isDefaultMenuPage: true,
-        // },
-        // {
-        //     url: '/profile',
-        //     sideMenu: SideMenuItemKey.profile,
-        //     component: ProfilePage,
-        //     isDefaultMenuPage: true,
-        // },
-        // {
-        //     url: '/billing',
-        //     sideMenu: SideMenuItemKey.billing,
-        //     component: BillingPage,
-        //     isDefaultMenuPage: true,
-        // },
-        
 
         // // DevTools
         // {

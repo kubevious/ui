@@ -38,7 +38,7 @@ export const SideMenu: FC<SideMenuProps> = ({ isCollapsed }) => {
     return (
         <BaseSideMenu
             header={<>
-                <span className={styles.beta}>BETA</span>
+                <span className={styles.logoLabel}>OPEN-SOURCE</span>
                 <img src="/img/logoBig.svg" alt="logo" />
             </>}
             collapsedHeader={<>

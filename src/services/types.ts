@@ -12,5 +12,7 @@ export enum WebSocketKind
     rule_result = 'rule-result',
     markers_list = 'markers-list',
     markers_statuses = 'markers-statuses',
-    marker_result = 'marker-result'
+    marker_result = 'marker-result',
+
+    cluster_reporting_status = 'cluster_reporting_status'
 }

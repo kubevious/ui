@@ -5,10 +5,12 @@ import { DiagramService } from './DiagramService'
 import { RuleService } from './RuleService'
 import { MarkerService } from './MarkerService'
 import { MiscService } from './MiscService'
+import { ClusterService } from './ClusterService';
+import { HistoryService } from './HistoryService';
 
 import { app } from '@kubevious/ui-framework';
 
-export class RootApiService {
+export class RootApiFactory {
     constructor() {
 
         this._registerHttpClients();
@@ -19,13 +21,23 @@ export class RootApiService {
             return new WebSocketService();
         });
 
+        app.registerService({ kind: 'cluster' }, () => {
+            const client = this.httpClient('/api/v1/cluster');
+            return new ClusterService(client);
+        });
+
+        app.registerService({ kind: 'history' }, () => {
+            const client = this.httpClient('/api/v1/history');
+            return new HistoryService(client);
+        });
+
         app.registerService({ kind: 'rule' }, () => {
-            const client = this.httpClient('/api/v1');
+            const client = this.httpClient('/api/v1/rule-engine');
             return new RuleService(client);
         });
 
         app.registerService({ kind: 'marker' }, () => {
-            const client = this.httpClient('/api/v1');
+            const client = this.httpClient('/api/v1/rule-engine');
             return new MarkerService(client);
         });
 

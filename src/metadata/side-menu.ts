@@ -24,19 +24,26 @@ export enum SideMenuItemKey {
 }
 
 export const SIDE_MENU_DATA : SideMenuSection[] = [
+
     {
-        name: 'Dashboard',
+        name: 'Operational',
         items: [
             {
-                key: 'dashboard',
-                label: 'Dashboard',
-                icon: 'dashboard.svg',
-                url: '/dashboard',
+                key: 'browser',
+                label: 'Browser',
+                icon: 'browser.svg',
+                url: '/browser',
+            },
+            {
+                key: 'search',
+                label: 'Search',
+                icon: 'search.svg',
+                url: '/search',
             },
         ],
     },
     {
-        name: 'Setup',
+        name: 'Rules Engine',
         items: [
             {
                 key: 'validators',
@@ -58,23 +65,7 @@ export const SIDE_MENU_DATA : SideMenuSection[] = [
             },
         ],
     },
-    {
-        name: 'Operational',
-        items: [
-            {
-                key: 'browser',
-                label: 'Browser',
-                icon: 'browser.svg',
-                url: '/browser',
-            },
-            {
-                key: 'search',
-                label: 'Search',
-                icon: 'search.svg',
-                url: '/search',
-            },
-        ],
-    },
+   
     {
         name: 'Help',
         items: [
