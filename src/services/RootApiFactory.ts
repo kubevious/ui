@@ -1,12 +1,12 @@
 import _ from 'the-lodash'
 
 import { WebSocketService } from './WebSocketService'
-import { DiagramService } from './DiagramService'
 import { RuleService } from './RuleService'
 import { MarkerService } from './MarkerService'
 import { MiscService } from './MiscService'
 import { ClusterService } from './ClusterService';
 import { HistoryService } from './HistoryService';
+import { SearchService } from './SearchService'
 
 import { app } from '@kubevious/ui-framework';
 
@@ -41,9 +41,9 @@ export class RootApiFactory {
             return new MarkerService(client);
         });
 
-        app.registerService({ kind: 'diagram' }, () => {
+        app.registerService({ kind: 'search' }, () => {
             const client = this.httpClient('/api/v1');
-            return new DiagramService(client, sharedState, this.socketService());
+            return new SearchService(client);
         });
 
         app.registerService({ kind: 'misc' }, () => {
@@ -63,18 +63,7 @@ export class RootApiFactory {
     markerService() {
         return app.serviceRegistry.resolveService<MarkerService>({ kind: 'marker' });
     }
-
-    diagramService(params) {
-        let info;
-        if (params) {
-            info = _.clone(params);
-        } else {
-            info = {}
-        }
-        info.kind = 'diagram';
-        return app.serviceRegistry.resolveService<DiagramService>(info);
-    }
-
+    
     miscService() {
         return app.serviceRegistry.resolveService<MiscService>({ kind: 'misc' });
     }

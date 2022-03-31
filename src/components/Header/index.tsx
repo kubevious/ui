@@ -4,7 +4,6 @@ import bugImg from "../../assets/header-btns/bug.svg"
 import slackImg from "../../assets/header-btns/slack.svg"
 import githubImg from "../../assets/header-btns/github.svg"
 import { About } from "../About"
-import { Search } from "../Search"
 import { Notifications } from "../Notifications"
 import { ClassComponent } from "@kubevious/ui-framework"
 import { FontAwesomeIcon, FASolidIcons } from "@kubevious/ui-components"
@@ -29,13 +28,11 @@ export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscServic
         }
 
         this.openAbout = this.openAbout.bind(this)
-        this.openSearch = this.openSearch.bind(this)
         this.detectIsVisible = this.detectIsVisible.bind(this)
         this.renderSettings = this.renderSettings.bind(this)
         this.openNotifications = this.openNotifications.bind(this)
         this.deactivateTimemachine = this.deactivateTimemachine.bind(this)
         this.handleWindowVisibilityChange = this.handleWindowVisibilityChange.bind(this)
-
     }
 
     openAbout(): void {
@@ -48,13 +45,6 @@ export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscServic
                 title: "About",
                 content: <About result={result} />,
             })
-        })
-    }
-
-    openSearch(): void {
-        this.sharedState.set("popup_window", {
-            title: "Search",
-            content: <Search />,
         })
     }
 
@@ -209,16 +199,6 @@ export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscServic
                             <span className="tooltiptext">Notifications</span>
                         </div>
                     )}
-
-                    <div className="btn-container">
-                        <button
-                            id="btnHeaderSearch"
-                            type="button"
-                            className="btn btn-search"
-                            onClick={this.openSearch}
-                        />
-                        <span className="tooltiptext">Object Search</span>
-                    </div>
 
                     <div className="btn-container">
                         <button

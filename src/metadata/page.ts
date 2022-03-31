@@ -15,7 +15,7 @@ import { MarkersPage } from '../pages/rules/MarkersPage';
 
 // import { ClustersBrowserPage } from '../pages/operational/ClustersBrowserPage';
 import { ClusterBrowserPage } from '../pages/operational/ClusterBrowserPage';
-// import { SearchPage } from '../pages/operational/SearchPage';
+import { SearchPage } from '../pages/operational/SearchPage';
 // import { Universe } from '../pages/operational/Universe';
 // import { WebsocketTool } from '@kubevious/ui-dev-tools';
 // import { SupportPage } from '../pages/help/Support';
@@ -101,18 +101,18 @@ export const pagesData: PagesData<SideMenuItemKey> = {
             isDefaultMenuPage: true,
         },
 
-        // // Operational
+        // Operational
         {
             url: CLUSTER_BROWSER_PAGE,
             sideMenu: SideMenuItemKey.browser,
             component: ClusterBrowserPage,
         },
-        // {
-        //     url: '/search',
-        //     sideMenu: SideMenuItemKey.search,
-        //     component: SearchPage,
-        //     isDefaultMenuPage: true,
-        // },
+        {
+            url: '/search',
+            sideMenu: SideMenuItemKey.search,
+            component: SearchPage,
+            isDefaultMenuPage: true,
+        },
 
       
 
