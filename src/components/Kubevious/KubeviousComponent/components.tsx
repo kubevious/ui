@@ -2,7 +2,7 @@ import { Alerts } from '@kubevious/ui-alerts';
 import { Diagram } from '../Diagram';
 import { Properties } from '@kubevious/ui-properties';
 import { Timeline } from '@kubevious/ui-time-machine';
-// import { Summary } from '../Summary';
+import { Summary } from '../Summary';
 // import { NodeHistory } from '../NodeHistory';
 
 import { TOP_ROOTS, DiagramRoot } from '@kubevious/entity-meta';
@@ -10,14 +10,14 @@ import { GoldenLayoutWindowInfo, GoldenLayoutLocation } from '@kubevious/ui-comp
 
 export const layoutComponents: GoldenLayoutWindowInfo[] = [];
 
-// layoutComponents.push({
-//     id: 'summaryComponent',
-//     component: Summary,
-//     location: GoldenLayoutLocation.main,
-//     title: 'Summary',
-//     skipClose: true,
-//     allowVerticalScroll: false,
-// });
+layoutComponents.push({
+    id: 'summaryComponent',
+    component: Summary,
+    location: GoldenLayoutLocation.main,
+    title: 'Summary',
+    skipClose: true,
+    allowVerticalScroll: false,
+});
 
 export interface DiagramBrowserViewInfo {
     root: DiagramRoot,
