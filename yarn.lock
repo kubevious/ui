@@ -1686,10 +1686,10 @@
     postcss "^8.2.10"
     the-lodash "^2.0.9"
 
-"@kubevious/ui-browser@^1.0.29":
-  version "1.0.29"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-browser/-/ui-browser-1.0.29.tgz#c0775ef9bed3f1c2dcf0b7624f7e154b019fdec0"
-  integrity sha512-zwuz32vAVC23FKDMQNb1z6J7JUC2QTpYJQou9gdZ03p9IYwe0C9CvAa/g4sLDBpE3gQEo7Q5R2LVylxzfJlHeA==
+"@kubevious/ui-browser@^1.0.30":
+  version "1.0.30"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-browser/-/ui-browser-1.0.30.tgz#294723780141e8b4e8b3c0a59f973081a2f17d81"
+  integrity sha512-9DopAQZ3kYGkGdnJ4mwuzQKdl4XH90jpfI77/7RR92fwIBgVCtMjB0SYzEuZd0tKp82zUGWth/lsB7mgGHvUHg==
   dependencies:
     "@kubevious/entity-meta" "^1.0.56"
     "@kubevious/ui-components" "^1.0.204"
@@ -1702,10 +1702,10 @@
     the-lodash "^2.0.9"
     uuid "^8.3.2"
 
-"@kubevious/ui-components@^1.0.159", "@kubevious/ui-components@^1.0.182", "@kubevious/ui-components@^1.0.202", "@kubevious/ui-components@^1.0.204":
-  version "1.0.204"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-components/-/ui-components-1.0.204.tgz#a9591c1addf97af45a5ef480b4aa3c532d82d7e0"
-  integrity sha512-g+u4vH1Ur2I8q/ytKNosQahheolf2yeYiwIqC/Vuo4CUD1tdhTGsrjFeMALr7xsbq0fCw5VAqNhTyVrw1BnL0Q==
+"@kubevious/ui-components@^1.0.159", "@kubevious/ui-components@^1.0.182", "@kubevious/ui-components@^1.0.202", "@kubevious/ui-components@^1.0.204", "@kubevious/ui-components@^1.0.205":
+  version "1.0.205"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-components/-/ui-components-1.0.205.tgz#c1a734d81058a520550d18893b9313a989d5c820"
+  integrity sha512-+m9Lk6CPBwAEZ5hKnE3NyMUH5XaE6KhrG7Q4jbqa0b38fWtgOtSNwaFISxww8Lp/iL3QxN9NIrIrEwf/Q2q+Lg==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "6.1.1"
     "@fortawesome/free-brands-svg-icons" "6.1.1"
@@ -1793,15 +1793,15 @@
     js-yaml "^4.0.0"
     the-lodash "^2.0.9"
 
-"@kubevious/ui-rule-engine@^1.0.75":
-  version "1.0.75"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-rule-engine/-/ui-rule-engine-1.0.75.tgz#1886696814e51010102606cf85e25e7853c7d2bc"
-  integrity sha512-Sg4blmec5rildxDDIMSo3sJP/M7slmn27MzlqGBYlfTlhO4vfFodNEe5ROmeVQhHiaSVh+Vc2WdJop/sDb0oxw==
+"@kubevious/ui-rule-engine@^1.0.76":
+  version "1.0.76"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-rule-engine/-/ui-rule-engine-1.0.76.tgz#1495e07c9a75b929b0cf72af522b115b6de96960"
+  integrity sha512-h56VGtst4IJM6t/vCRBwhbxLCDdtT+0L8Q0V1TZHM854Y07KjCvIeakYAxWxSeVSjWFksR23linAx0EC4fJnMw==
   dependencies:
     "@kubevious/entity-meta" "^1.0.56"
-    "@kubevious/ui-components" "^1.0.202"
-    "@kubevious/ui-framework" "^1.0.56"
-    "@kubevious/ui-middleware" "^1.0.43"
+    "@kubevious/ui-components" "^1.0.204"
+    "@kubevious/ui-framework" "^1.0.57"
+    "@kubevious/ui-middleware" "^1.0.46"
     bootstrap "^5.0.0"
     classnames "^2.2.6"
     node-sass "^4.14.1"
@@ -1810,15 +1810,11 @@
     react-color "^2.19.3"
     the-lodash "^2.0.9"
 
-"@kubevious/ui-search@^1.0.46":
-  version "1.0.46"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-search/-/ui-search-1.0.46.tgz#763f5b6f2ca9de0eb5defabc471b1079d5385ea8"
-  integrity sha512-SLJpZfMD+X5aQ8Vw4BmEKw2GUsW4dIXfqA5wEZpu3/bbazrt770hyYs7gTaY5k1rFI62mA0vtpvSbIf3/tajxg==
+"@kubevious/ui-search@^1.0.47":
+  version "1.0.47"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-search/-/ui-search-1.0.47.tgz#1a3910e659137bad7161ed040ae5211c1a5c8d34"
+  integrity sha512-UbdZ2c28fo4geErG2yIUpCp+7v84JwxdQZN7uDOCgK7KpMpcxr0vd+1scpO+/0NCn+29g8WgA5a4VATFDcGX+w==
   dependencies:
-    "@fortawesome/fontawesome-svg-core" "^1.2.32"
-    "@fortawesome/free-regular-svg-icons" "^5.15.1"
-    "@fortawesome/free-solid-svg-icons" "^5.15.1"
-    "@fortawesome/react-fontawesome" "^0.1.12"
     "@kubevious/entity-meta" "^1.0.42"
     "@kubevious/ui-components" "^1.0.182"
     "@kubevious/ui-framework" "^1.0.50"
@@ -1843,10 +1839,10 @@
     postcss "^8.2.8"
     the-lodash "^2.0.9"
 
-"@kubevious/ui-validator-config@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-validator-config/-/ui-validator-config-1.0.2.tgz#3916d6fed7fa68a379975dd76aa65a69d630a512"
-  integrity sha512-8oSr7mWEWBdSYDAa5zZ/2gZlLZOJu1pxLCFkKpLz9SDZ+epZuKUGrAksOEFUNpV0L5AKlvImKbs07vbeDP36dQ==
+"@kubevious/ui-validator-config@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-validator-config/-/ui-validator-config-1.0.3.tgz#dbb1ee8cb8c21056338f96f4b1f48ba1a2d8bd4c"
+  integrity sha512-5Z7YXM8TPu3gNPniTTthp0l2wg+w0uQK1339Lw77mjzg3/ZLdqqFubsKGd/OjtGnFR4fBwuWGEWXP7WVakMSzA==
   dependencies:
     "@kubevious/entity-meta" "^1.0.56"
     "@kubevious/ui-components" "^1.0.204"
