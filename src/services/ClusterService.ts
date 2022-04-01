@@ -1,9 +1,7 @@
 import { app, BaseHttpService } from '@kubevious/ui-framework'
-// import { ClusterConfig, ClusterToken, ClusterReportingStatus } from "@kubevious/saas-models"
+import { ClusterReportingStatus } from '@kubevious/ui-middleware';
 import { IWebSocketService } from '@kubevious/ui-middleware';
 import { WebSocketKind } from './types';
-
-export type ClusterReportingStatus = any;
 
 export class ClusterService extends BaseHttpService
 {

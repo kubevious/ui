@@ -9,11 +9,12 @@
     "@kubevious/ui-components": "^1.0.204",
     "@kubevious/ui-dev-tools": "^1.0.20",
     "@kubevious/ui-framework": "^1.0.57",
-    "@kubevious/ui-middleware": "^1.0.43",
+    "@kubevious/ui-middleware": "^1.0.46",
     "@kubevious/ui-properties": "^1.0.51",
     "@kubevious/ui-rule-engine": "^1.0.75",
     "@kubevious/ui-search": "^1.0.46",
     "@kubevious/ui-time-machine": "^1.0.24",
+    "@kubevious/ui-validator-config": "^1.0.2",
     "@kubevious/websocket-client": "^1.0.19",
     "bootstrap": "^5.0.0",
     "classnames": "^2.2.6",
@@ -83,7 +84,7 @@
     "@popperjs/core": "^2.10.1",
     "the-lodash": "^2.0.9",
     "@kubevious/ui-framework": "^1.0.57",
-    "@kubevious/ui-middleware": "^1.0.43",
+    "@kubevious/ui-middleware": "^1.0.46",
     "@kubevious/ui-components": "^1.0.204",
     "@kubevious/ui-properties": "^1.0.51",
     "@kubevious/ui-rule-engine": "^1.0.75",
@@ -91,6 +92,7 @@
     "@kubevious/helpers": "^1.0.63",
     "@kubevious/websocket-client": "^1.0.19",
     "@kubevious/ui-browser": "^1.0.29",
-    "@kubevious/ui-dev-tools": "^1.0.20"
+    "@kubevious/ui-dev-tools": "^1.0.20",
+    "@kubevious/ui-search": "^1.0.46"
   }
 }

@@ -7,6 +7,7 @@ import { MiscService } from './MiscService'
 import { ClusterService } from './ClusterService';
 import { HistoryService } from './HistoryService';
 import { SearchService } from './SearchService'
+import { ValidatorService } from './ValidatorService';
 
 import { app } from '@kubevious/ui-framework';
 
@@ -39,6 +40,11 @@ export class RootApiFactory {
         app.registerService({ kind: 'marker' }, () => {
             const client = this.httpClient('/api/v1/rule-engine');
             return new MarkerService(client);
+        });
+
+        app.registerService({ kind: 'validator' }, () => {
+            const client = this.httpClient('/api/v1/validators');
+            return new ValidatorService(client);
         });
 
         app.registerService({ kind: 'search' }, () => {

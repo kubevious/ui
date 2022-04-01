@@ -4,19 +4,13 @@ import { SideMenuItemKey } from './side-menu';
 // import { DashboardPage } from '../pages/dashboard/DashboardPage';
 // import { RestToolPage } from '../components/DevTools/RestTool';
 
-// import { ClustersEditorListPage } from '../pages/setup/ClustersEditorListPage';
-// import { ClusterCreator } from '../pages/setup/ClusterCreator';
-// import { ClusterEditor } from '../pages/setup/ClusterEditor';
-// import { ClusterTokenPage } from '../pages/setup/ClusterTokenPage';
 import { RulesPage } from '../pages/rules/RulesPage';
 import { MarkersPage } from '../pages/rules/MarkersPage';
-// import { ValidatorsPage } from '../pages/setup/ValidatorsPage';
-// import { ValidatorDetailsPage } from  '../pages/setup/ValidatorDetailsPage';
+import { ValidatorsPage } from '@kubevious/ui-validator-config';
+import { ValidatorDetailsPage } from  '@kubevious/ui-validator-config';
 
-// import { ClustersBrowserPage } from '../pages/operational/ClustersBrowserPage';
 import { ClusterBrowserPage } from '../pages/operational/ClusterBrowserPage';
 import { SearchPage } from '../pages/operational/SearchPage';
-// import { Universe } from '../pages/operational/Universe';
 // import { WebsocketTool } from '@kubevious/ui-dev-tools';
 // import { SupportPage } from '../pages/help/Support';
 
@@ -30,8 +24,9 @@ export const RULE_PAGE = "/rules";
 
 // export const ACCOUNT_READY_PAGE = DASHBOARD_PAGE;
 
-// export const VALIDATORS_PAGE = '/validators';
-// export const VALIDATOR_DETAILS_PAGE = '/validators/details';
+
+export const VALIDATORS_PAGE = '/validators';
+export const VALIDATOR_DETAILS_PAGE = '/validators/details';
 
 export const pagesData: PagesData<SideMenuItemKey> = {
     pages: [
@@ -54,40 +49,19 @@ export const pagesData: PagesData<SideMenuItemKey> = {
         //     isDefaultMenuPage: true,
         // },
 
-        // // Setup
-        // {
-        //     url: '/clusters',
-        //     sideMenu: SideMenuItemKey.clusters,
-        //     component: ClustersEditorListPage,
-        //     isDefaultMenuPage: true,
-        // },
-        // {
-        //     url: '/clusters/register',
-        //     sideMenu: SideMenuItemKey.clusterEditor,
-        //     component: ClusterCreator,
-        // },
-        // {
-        //     url: '/clusters/editor',
-        //     sideMenu: SideMenuItemKey.clusterEditor,
-        //     component: ClusterEditor,
-        // },
-        // {
-        //     url: '/clusters/token',
-        //     sideMenu: SideMenuItemKey.clusterEditor,
-        //     component: ClusterTokenPage,
-        // },
-        // {
-        //     url: VALIDATORS_PAGE,
-        //     sideMenu: SideMenuItemKey.validators,
-        //     component: ValidatorsPage,
-        //     isDefaultMenuPage: true,
-        // },
-        // {
-        //     url: VALIDATOR_DETAILS_PAGE,
-        //     sideMenu: SideMenuItemKey.validators,
-        //     component: ValidatorDetailsPage,
-        //     isDefaultMenuPage: true,
-        // },
+        // Setup
+        {
+            url: VALIDATORS_PAGE,
+            sideMenu: SideMenuItemKey.validators,
+            component: ValidatorsPage,
+            isDefaultMenuPage: true,
+        },
+        {
+            url: VALIDATOR_DETAILS_PAGE,
+            sideMenu: SideMenuItemKey.validators,
+            component: ValidatorDetailsPage,
+            isDefaultMenuPage: true,
+        },
         {
             url: RULE_PAGE,
             sideMenu: SideMenuItemKey.rules,

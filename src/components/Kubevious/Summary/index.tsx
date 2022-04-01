@@ -2,7 +2,8 @@ import _ from 'the-lodash';
 import React from 'react';
 import { ClassComponent } from '@kubevious/ui-framework';
 import { SummaryBlock } from '../../SummaryBlock';
-import { ClusterReportingStatus, SummaryState } from './types';
+import { ClusterReportingStatus } from '@kubevious/ui-middleware';
+import { SummaryState } from './types';
 
 import styles from './styles.module.css';
 import { PageLinkButton } from '@kubevious/ui-components';

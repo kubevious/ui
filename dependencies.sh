@@ -12,6 +12,7 @@ REPO_DEPENDENCIES=(
     "@kubevious/ui-browser"
     "@kubevious/ui-search"
     "@kubevious/ui-dev-tools"
+    "@kubevious/ui-validator-config"
     "@kubevious/helpers"
     "@kubevious/websocket-client"
 )
@@ -28,6 +29,7 @@ FORCE_RESOLVE_DEPENDENCIES=(
     "@kubevious/ui-browser"
     "@kubevious/ui-search"
     "@kubevious/ui-dev-tools"
+    "@kubevious/ui-validator-config"
     "@kubevious/helpers"
     "@kubevious/websocket-client"
 )
