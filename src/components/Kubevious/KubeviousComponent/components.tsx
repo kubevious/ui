@@ -2,8 +2,8 @@ import { Alerts } from '@kubevious/ui-alerts';
 import { Diagram } from '../Diagram';
 import { Properties } from '@kubevious/ui-properties';
 import { Timeline } from '@kubevious/ui-time-machine';
+import { NodeHistory } from '@kubevious/ui-time-machine';
 import { Summary } from '../Summary';
-// import { NodeHistory } from '../NodeHistory';
 
 import { TOP_ROOTS, DiagramRoot } from '@kubevious/entity-meta';
 import { GoldenLayoutWindowInfo, GoldenLayoutLocation } from '@kubevious/ui-components';
@@ -71,12 +71,11 @@ layoutComponents.push({
     allowVerticalScroll: false,
 });
 
-// layoutComponents.push({
-//     id: "nodeHistoryComponent",
-//     // content: <NodeHistory />,
-//     component: NodeHistory,
-//     location: GoldenLayoutLocation.bottom,
-//     title: "Change History",
-//     height: 20,
-//     allowVerticalScroll: false,
-// });
+layoutComponents.push({
+    id: "nodeHistoryComponent",
+    component: NodeHistory,
+    location: GoldenLayoutLocation.bottom,
+    title: "Change History",
+    height: 20,
+    allowVerticalScroll: false,
+});

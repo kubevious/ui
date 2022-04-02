@@ -87,6 +87,7 @@ menu/dashboard.svg
 menu/markers.svg
 menu/open.svg
 menu/rules.svg
+menu/search.svg
 menu/support.svg
 menu/validators.svg
 popup.svg
@@ -95,6 +96,9 @@ props/teleport/source.svg
 props/teleport/source_orig.svg
 props/teleport/target.svg
 props/teleport/target_orig.svg
+search/edit.svg
+search/eye.svg
+search/hide.svg
 separator.svg
 summary/applications.svg
 summary/clusterCPU.svg

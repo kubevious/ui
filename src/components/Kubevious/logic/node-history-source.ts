@@ -2,7 +2,7 @@ import _ from 'the-lodash';
 import { ISharedState } from "@kubevious/ui-framework"
 import { HistoryService } from "../../../services/HistoryService";
 
-import { ObjectChangeHistory, QUERY_HIERARCHY, QUERY_NODE } from '../NodeHistory/types';
+import { ObjectChangeHistory, QUERY_HIERARCHY, QUERY_NODE } from "@kubevious/ui-time-machine";
 
 export class NodeHistorySource {
     private _sharedState: ISharedState

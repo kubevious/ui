@@ -4,15 +4,14 @@ import { SideMenuSection } from '@kubevious/ui-components';
 import { sharedState } from '../configureService';
 
 export enum SideMenuItemKey {
-    // Kubevious SaaS
-    // dashboard = 'dashboard',
-    validators = 'validators',
-    rules = 'rules',
-    markers = 'markers',
-
     // Operational
     browser = 'browser',
     search = 'search',
+
+    // Rules Engine
+    validators = 'validators',
+    rules = 'rules',
+    markers = 'markers',
 
     // Help
     support = 'support',

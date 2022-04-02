@@ -1,5 +1,6 @@
 import React, { FC, ReactNode } from 'react';
 import styles from './styles.module.css';
+import { Label } from '@kubevious/ui-components'
 
 export interface SectionBlockProps {
     title: ReactNode
@@ -7,7 +8,12 @@ export interface SectionBlockProps {
 
 export const SectionBlock: FC<SectionBlockProps> = ({ title, children }) => (
     <div className={styles.section}>
-        <div className={styles.title}>{title}</div>
+        <Label className={styles.title}
+               size="xlarge"
+               color="faded"
+                >
+            {title}
+        </Label> 
         { children }
     </div>
 );

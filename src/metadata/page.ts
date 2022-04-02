@@ -12,7 +12,7 @@ import { ValidatorDetailsPage } from  '@kubevious/ui-validator-config';
 import { ClusterBrowserPage } from '../pages/operational/ClusterBrowserPage';
 import { SearchPage } from '../pages/operational/SearchPage';
 // import { WebsocketTool } from '@kubevious/ui-dev-tools';
-// import { SupportPage } from '../pages/help/Support';
+import { SupportPage } from '../pages/help/Support';
 
 
 import { AboutPage } from '../pages/project/About';
@@ -90,13 +90,13 @@ export const pagesData: PagesData<SideMenuItemKey> = {
 
       
 
-        // // Help
-        // {
-        //     url: '/support',
-        //     sideMenu: SideMenuItemKey.support,
-        //     component: SupportPage,
-        //     isDefaultMenuPage: true,
-        // },
+        // Help
+        {
+            url: '/support',
+            sideMenu: SideMenuItemKey.support,
+            component: SupportPage,
+            isDefaultMenuPage: true,
+        },
 
         // // DevTools
         // {

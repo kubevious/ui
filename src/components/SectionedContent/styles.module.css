@@ -1,0 +1,11 @@
+.sectionedContent {
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.section {
+
+}

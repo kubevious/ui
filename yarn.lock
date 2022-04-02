@@ -1702,10 +1702,10 @@
     the-lodash "^2.0.9"
     uuid "^8.3.2"
 
-"@kubevious/ui-components@^1.0.159", "@kubevious/ui-components@^1.0.182", "@kubevious/ui-components@^1.0.202", "@kubevious/ui-components@^1.0.204", "@kubevious/ui-components@^1.0.205":
-  version "1.0.205"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-components/-/ui-components-1.0.205.tgz#c1a734d81058a520550d18893b9313a989d5c820"
-  integrity sha512-+m9Lk6CPBwAEZ5hKnE3NyMUH5XaE6KhrG7Q4jbqa0b38fWtgOtSNwaFISxww8Lp/iL3QxN9NIrIrEwf/Q2q+Lg==
+"@kubevious/ui-components@^1.0.182", "@kubevious/ui-components@^1.0.202", "@kubevious/ui-components@^1.0.204", "@kubevious/ui-components@^1.0.206":
+  version "1.0.206"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-components/-/ui-components-1.0.206.tgz#ff77f6c1b919826252470944dc62f3fb3afae23b"
+  integrity sha512-fM45IdKoOH2io9kykTwvKdPWycJGShY9Xc/26aVW0nx3F4NEtr4K9YU7pD9dzAW6MSNsmcQNts+mwwcY4/i53w==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "6.1.1"
     "@fortawesome/free-brands-svg-icons" "6.1.1"
@@ -1713,8 +1713,8 @@
     "@fortawesome/free-solid-svg-icons" "6.1.1"
     "@fortawesome/react-fontawesome" "0.1.18"
     "@kubevious/entity-meta" "^1.0.56"
-    "@kubevious/ui-framework" "^1.0.56"
-    "@kubevious/ui-middleware" "^1.0.43"
+    "@kubevious/ui-framework" "^1.0.57"
+    "@kubevious/ui-middleware" "^1.0.46"
     "@types/codemirror" "^5.60.5"
     bootstrap "^5.0.0"
     classnames "^2.2.6"
@@ -1825,13 +1825,14 @@
     the-lodash "^2.0.9"
     the-promise "^2.0.13"
 
-"@kubevious/ui-time-machine@^1.0.24":
-  version "1.0.24"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-time-machine/-/ui-time-machine-1.0.24.tgz#7723d88d5b141fb7debd3a826d63d8d7cc8da899"
-  integrity sha512-hYBcJKMszV7VYgsAoyd67iY0ycBzSv3FX8EmBNJBDdSCboWWmKuuQHVtjnNBg1s4YZRNPl956RfgC0mh+ki5uQ==
+"@kubevious/ui-time-machine@^1.0.26":
+  version "1.0.26"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-time-machine/-/ui-time-machine-1.0.26.tgz#7d35760b0739c64c265ce675ac0dae7de4a2b97b"
+  integrity sha512-aDKPzsJ1PDBfdrv+6bxqse/gO9wNA1HYQ6dbW0gwOU7F0gwwBgMbNmJVeuylUfzQc6QazEXSbJ9WKPYPvIQoTQ==
   dependencies:
-    "@kubevious/ui-components" "^1.0.159"
-    "@kubevious/ui-framework" "^1.0.50"
+    "@kubevious/ui-components" "^1.0.206"
+    "@kubevious/ui-framework" "^1.0.57"
+    "@kubevious/ui-middleware" "^1.0.46"
     classnames "^2.2.6"
     d3 "^6.5.0"
     jquery "^3.5.1"
