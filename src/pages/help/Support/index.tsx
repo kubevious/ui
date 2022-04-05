@@ -1,10 +1,9 @@
 import React, { FC } from 'react';
 
 import { InnerPage, Label, PageHeader, PageLink, PageLinkButton } from '@kubevious/ui-components';
+import { GITHUB_SUBMIT_ISSUE_URL } from '../../../metadata/social';
 
 import styles from './styles.module.css';
-
-const GITHUB_SUBMIT_ISSUE_URL = 'https://github.com/kubevious/kubevious/issues/new/choose';
 
 export const SupportPage: FC = () => {
 

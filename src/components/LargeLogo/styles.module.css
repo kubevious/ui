@@ -1,0 +1,18 @@
+.logoContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px; 
+}
+
+.logoLabel {
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 15.7px;
+    font-weight: bold;
+    line-height: 13px;
+    color: #f2bf58;
+    position: relative;
+    left: -14px;
+}

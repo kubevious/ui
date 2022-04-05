@@ -15,7 +15,7 @@ import { SearchPage } from '../pages/operational/SearchPage';
 import { SupportPage } from '../pages/help/Support';
 
 
-import { AboutPage } from '../pages/project/About';
+import { AboutPage } from '../pages/help/About';
 
 
 export const CLUSTER_BROWSER_PAGE = "/browser";
@@ -97,6 +97,13 @@ export const pagesData: PagesData<SideMenuItemKey> = {
             component: SupportPage,
             isDefaultMenuPage: true,
         },
+        {
+            url: '/about',
+            sideMenu: SideMenuItemKey.about,
+            component: AboutPage,
+            isDefaultMenuPage: true,
+        },
+        
 
         // // DevTools
         // {

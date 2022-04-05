@@ -13,15 +13,11 @@ export const WrappedRoute: FC<ProtectedWrappedRouteProps> = ({ component, ...res
     return (<Route
             {...rest}
             render={(props) => {
-            
 
                 return (
                     <MainTemplate>
                         {element}
                     </MainTemplate>
-                    // <div>
-                    //     asdfasdf
-                    // </div>
                 );
             }}
         />
