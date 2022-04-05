@@ -18,7 +18,7 @@ export class Notifications extends ClassComponent<{}, NotificationsState, IMiscS
     componentDidMount() {
         this.subscribeToSharedState("notifications", (notifications) => {
             if (!notifications || notifications.notifications.length == 0) {
-                const currentPopupWindow = this.sharedState.get("popup_window")
+                const currentPopupWindow = this.sharedState.tryGet("popup_window");
                 if (
                     currentPopupWindow &&
                     currentPopupWindow.title === "Notifications"

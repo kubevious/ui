@@ -1636,14 +1636,14 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@kubevious/entity-meta@^1.0.41", "@kubevious/entity-meta@^1.0.42", "@kubevious/entity-meta@^1.0.45", "@kubevious/entity-meta@^1.0.56":
+"@kubevious/entity-meta@^1.0.45", "@kubevious/entity-meta@^1.0.56":
   version "1.0.56"
   resolved "https://registry.yarnpkg.com/@kubevious/entity-meta/-/entity-meta-1.0.56.tgz#e2460fee0d7ae931b1da911725e9f0aa556a9e48"
   integrity sha512-KW9dhxn6bEGK9z4/426i8Un+/uPc1HLUoZA61okj26s+BKnB9uOte2PPGdl0tu/I0WIx2zZ9zMj21NywdfH09g==
   dependencies:
     the-lodash "^2.0.9"
 
-"@kubevious/helpers@^1.0.62", "@kubevious/helpers@^1.0.63":
+"@kubevious/helpers@^1.0.63":
   version "1.0.63"
   resolved "https://registry.yarnpkg.com/@kubevious/helpers/-/helpers-1.0.63.tgz#69070e0651e9770d331d15016ca8d13555b3ea9b"
   integrity sha512-/aJl7iYCfMu1wpTI3flYvR/xF+Yvz9ulUiXZ2MN+1VgYV9OczMtQCkrmnekDAnQ4SOhOY08/kCovgn1QBct5TA==
@@ -1673,28 +1673,28 @@
     the-logger "^2.0.14"
     the-promise "^2.0.13"
 
-"@kubevious/ui-alerts@^1.0.38":
-  version "1.0.38"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-alerts/-/ui-alerts-1.0.38.tgz#f701aa548b84c28efb0fb82c62c5f2eb5783eed4"
-  integrity sha512-r6tRfuHJD7XBBoS+NbZAiScx4XHpHBLAUVhjEivMLc2j0MH1ekx1RoeJLiQ5VJzW62MqoTmUPVyKJ10OtwJNQw==
+"@kubevious/ui-alerts@^1.0.39":
+  version "1.0.40"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-alerts/-/ui-alerts-1.0.40.tgz#23498c636f069647591cb577d7f5d5bafa1c03ff"
+  integrity sha512-teHf5eGYxV8lzWmAqDPdL24Pa7KVtn7Y0r0YaOUrajaR6EWsnX9HyP3DZ6OmyEZLaT8CfKKgmdCIfqzEjo7mHQ==
   dependencies:
-    "@kubevious/entity-meta" "^1.0.41"
-    "@kubevious/ui-components" "^1.0.182"
-    "@kubevious/ui-framework" "^1.0.50"
+    "@kubevious/entity-meta" "^1.0.56"
+    "@kubevious/ui-components" "^1.0.207"
+    "@kubevious/ui-framework" "^1.0.59"
     classnames "^2.2.6"
     popper.js "^1.16.1"
     postcss "^8.2.10"
     the-lodash "^2.0.9"
 
-"@kubevious/ui-browser@^1.0.30":
-  version "1.0.30"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-browser/-/ui-browser-1.0.30.tgz#294723780141e8b4e8b3c0a59f973081a2f17d81"
-  integrity sha512-9DopAQZ3kYGkGdnJ4mwuzQKdl4XH90jpfI77/7RR92fwIBgVCtMjB0SYzEuZd0tKp82zUGWth/lsB7mgGHvUHg==
+"@kubevious/ui-browser@^1.0.31":
+  version "1.0.31"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-browser/-/ui-browser-1.0.31.tgz#1a7819f3069207be80ed35f4f9daecf3254ff26e"
+  integrity sha512-NbBEVyZifmsO1qXqEj5IrUUQSoUOvnVzj/S7OYSrZD6/vxANB/MNXJgk59ccEhr8lQBgm4DyrOAJaqZDO/yYYw==
   dependencies:
     "@kubevious/entity-meta" "^1.0.56"
-    "@kubevious/ui-components" "^1.0.204"
-    "@kubevious/ui-framework" "^1.0.57"
-    "@kubevious/ui-middleware" "^1.0.43"
+    "@kubevious/ui-components" "^1.0.207"
+    "@kubevious/ui-framework" "^1.0.59"
+    "@kubevious/ui-middleware" "^1.0.46"
     bootstrap "^5.0.0"
     classnames "^2.2.6"
     react-custom-scrollbars-2 "^4.4.0"
@@ -1702,10 +1702,10 @@
     the-lodash "^2.0.9"
     uuid "^8.3.2"
 
-"@kubevious/ui-components@^1.0.182", "@kubevious/ui-components@^1.0.202", "@kubevious/ui-components@^1.0.204", "@kubevious/ui-components@^1.0.206":
-  version "1.0.206"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-components/-/ui-components-1.0.206.tgz#ff77f6c1b919826252470944dc62f3fb3afae23b"
-  integrity sha512-fM45IdKoOH2io9kykTwvKdPWycJGShY9Xc/26aVW0nx3F4NEtr4K9YU7pD9dzAW6MSNsmcQNts+mwwcY4/i53w==
+"@kubevious/ui-components@^1.0.207":
+  version "1.0.207"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-components/-/ui-components-1.0.207.tgz#df25e75d5b39d73d0347ea2791c2eb2d4b284723"
+  integrity sha512-TdnbzL7sQNL8J2F34NyMqS2rPMFSpjTzwDcSDDfNHxJAR9jFjVUu14rs0xrZxwSL85UfiiD+sIg8eJzTh3cL3Q==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "6.1.1"
     "@fortawesome/free-brands-svg-icons" "6.1.1"
@@ -1713,7 +1713,7 @@
     "@fortawesome/free-solid-svg-icons" "6.1.1"
     "@fortawesome/react-fontawesome" "0.1.18"
     "@kubevious/entity-meta" "^1.0.56"
-    "@kubevious/ui-framework" "^1.0.57"
+    "@kubevious/ui-framework" "^1.0.58"
     "@kubevious/ui-middleware" "^1.0.46"
     "@types/codemirror" "^5.60.5"
     bootstrap "^5.0.0"
@@ -1734,20 +1734,20 @@
     the-promise "^2.0.13"
     uuid "^8.3.2"
 
-"@kubevious/ui-dev-tools@^1.0.20":
-  version "1.0.20"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-dev-tools/-/ui-dev-tools-1.0.20.tgz#3a007a145c81db5645b995877806bc95cf26f075"
-  integrity sha512-J50tGen98mO7oYf0rzzk9UCxRIuvvHFRdz84Wv6elJABoEE2YgoKG5f4gVKp6ltntT1v7L7WtPh0WJQTfvZz6g==
+"@kubevious/ui-dev-tools@^1.0.21":
+  version "1.0.21"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-dev-tools/-/ui-dev-tools-1.0.21.tgz#71365b9cbc43a025a5447d6e68ab699b30c20f26"
+  integrity sha512-2kH5CTmVqJoaz2838/3dN3sURL2lCJQeKroVjpEVpIv+orVpVeNr/IWC7b6pGNYksbUkuzJLRQXbdCuB8wtqrg==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^1.2.32"
     "@fortawesome/free-brands-svg-icons" "^5.15.3"
     "@fortawesome/free-regular-svg-icons" "^5.15.1"
     "@fortawesome/free-solid-svg-icons" "^5.15.1"
     "@fortawesome/react-fontawesome" "^0.1.12"
-    "@kubevious/helpers" "^1.0.62"
-    "@kubevious/ui-components" "^1.0.182"
-    "@kubevious/ui-framework" "^1.0.50"
-    "@kubevious/ui-middleware" "^1.0.40"
+    "@kubevious/helpers" "^1.0.63"
+    "@kubevious/ui-components" "^1.0.207"
+    "@kubevious/ui-framework" "^1.0.59"
+    "@kubevious/ui-middleware" "^1.0.46"
     classnames "^2.2.6"
     codemirror "^5.60.0"
     golden-layout "^1.5.9"
@@ -1757,10 +1757,10 @@
     the-lodash "^2.0.9"
     the-promise "^2.0.13"
 
-"@kubevious/ui-framework@^1.0.50", "@kubevious/ui-framework@^1.0.56", "@kubevious/ui-framework@^1.0.57":
-  version "1.0.57"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-framework/-/ui-framework-1.0.57.tgz#04b0a5abd7d65854afa20d033c6b35da440bfcda"
-  integrity sha512-0YqZFVnnpkdtKy5LFa/OZqHvdqQ7OOn43L3vAGkq4f6BvDcVWuym2P7WyFib90Iyy1Pz0El59AAgEVp9VT8Mzg==
+"@kubevious/ui-framework@^1.0.58", "@kubevious/ui-framework@^1.0.59":
+  version "1.0.59"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-framework/-/ui-framework-1.0.59.tgz#b83eb7f90c951f4bd8753b9b9a4e0245a3240e0c"
+  integrity sha512-tVoh8NbZ8tdKdTFvkkXJhUViFeLNxL0VSjoP6AAgoPvWHL42kohEPU27abEY3znAvQmOfebx7Da7BjWSuL5FUw==
   dependencies:
     "@kubevious/http-client" "^1.0.19"
     moment "^2.29.1"
@@ -1770,37 +1770,37 @@
     the-promise "^2.0.13"
     uuid "^8.3.2"
 
-"@kubevious/ui-middleware@^1.0.40", "@kubevious/ui-middleware@^1.0.43", "@kubevious/ui-middleware@^1.0.46":
-  version "1.0.46"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-middleware/-/ui-middleware-1.0.46.tgz#10d8ca7739bbf32d44bf0158ea48a38b9a8124df"
-  integrity sha512-+vqrUrNL7QaJkQQkadI9IrBWNCFzt3kkrBcO6lIO/VT0TwpfVlwoVrnjHL8AifmKIgb4sb3fzA4JO4NVEunAkA==
+"@kubevious/ui-middleware@^1.0.46", "@kubevious/ui-middleware@^1.0.47":
+  version "1.0.47"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-middleware/-/ui-middleware-1.0.47.tgz#245e2f5dc48ca0b9db70d5a0f55fe7c006d8d4a3"
+  integrity sha512-yCcyVljXWyarA0LqpxtIv7+/PaZtPjZW2LvnXySYqj5esWz2LPy45YJn9GOeWPxxJbhJvEROlhgLVEYwu3zCSg==
   dependencies:
     "@kubevious/entity-meta" "^1.0.56"
     the-promise "^2.0.13"
 
-"@kubevious/ui-properties@^1.0.51":
-  version "1.0.51"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-properties/-/ui-properties-1.0.51.tgz#b22ca345868c8f8b42668d49c5243fb9335c1d88"
-  integrity sha512-jrAmMugts5sJ6wMSMSDiWoprkPNIs98fM69+5xOSqiVjmTDOgANS/qYYc7EXOKAOmGaj3Ti7w5vbhh65Y2A0zA==
+"@kubevious/ui-properties@^1.0.52":
+  version "1.0.52"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-properties/-/ui-properties-1.0.52.tgz#87aef3e0bcdb27f000238215eae9f4d071e0f669"
+  integrity sha512-SWgQiQH29M8rSf14BX6oXF1eOk1fl8Nh5QuKxiBsluUEYoSmgaTBxB2y1Dow/9xiFgHGIDOTl3erO0macnTt8w==
   dependencies:
     "@kubevious/entity-meta" "^1.0.56"
     "@kubevious/state-registry" "^1.0.13"
-    "@kubevious/ui-alerts" "^1.0.38"
-    "@kubevious/ui-components" "^1.0.202"
-    "@kubevious/ui-framework" "^1.0.56"
+    "@kubevious/ui-alerts" "^1.0.39"
+    "@kubevious/ui-components" "^1.0.207"
+    "@kubevious/ui-framework" "^1.0.59"
     bootstrap "^5.0.0-beta3"
     classnames "^2.2.6"
     js-yaml "^4.0.0"
     the-lodash "^2.0.9"
 
-"@kubevious/ui-rule-engine@^1.0.76":
-  version "1.0.76"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-rule-engine/-/ui-rule-engine-1.0.76.tgz#1495e07c9a75b929b0cf72af522b115b6de96960"
-  integrity sha512-h56VGtst4IJM6t/vCRBwhbxLCDdtT+0L8Q0V1TZHM854Y07KjCvIeakYAxWxSeVSjWFksR23linAx0EC4fJnMw==
+"@kubevious/ui-rule-engine@^1.0.77":
+  version "1.0.77"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-rule-engine/-/ui-rule-engine-1.0.77.tgz#c68d31677f02c36b406532b487fe1096fcab4cbd"
+  integrity sha512-RW+BZbY3OWUjM3gKgeKJJnwGfXxwjzhJNqki6WEl5w58A5SWaYUhUeFJccpQjsTRDoFzLn1qtzvLDweqcRu7Bg==
   dependencies:
     "@kubevious/entity-meta" "^1.0.56"
-    "@kubevious/ui-components" "^1.0.204"
-    "@kubevious/ui-framework" "^1.0.57"
+    "@kubevious/ui-components" "^1.0.207"
+    "@kubevious/ui-framework" "^1.0.59"
     "@kubevious/ui-middleware" "^1.0.46"
     bootstrap "^5.0.0"
     classnames "^2.2.6"
@@ -1810,28 +1810,28 @@
     react-color "^2.19.3"
     the-lodash "^2.0.9"
 
-"@kubevious/ui-search@^1.0.47":
-  version "1.0.47"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-search/-/ui-search-1.0.47.tgz#1a3910e659137bad7161ed040ae5211c1a5c8d34"
-  integrity sha512-UbdZ2c28fo4geErG2yIUpCp+7v84JwxdQZN7uDOCgK7KpMpcxr0vd+1scpO+/0NCn+29g8WgA5a4VATFDcGX+w==
+"@kubevious/ui-search@^1.0.48":
+  version "1.0.48"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-search/-/ui-search-1.0.48.tgz#d9d591a8c36faaa3f0e68710a978ca4d6a273ad7"
+  integrity sha512-/kODAVVyEkNWVsN662mwkBDqHprCU8tb7zXc9ZZAa4C+BQ9rJ954lY+D/wip13FWoiYyBbLCflcVR/FDls1q2A==
   dependencies:
-    "@kubevious/entity-meta" "^1.0.42"
-    "@kubevious/ui-components" "^1.0.182"
-    "@kubevious/ui-framework" "^1.0.50"
-    "@kubevious/ui-middleware" "^1.0.40"
+    "@kubevious/entity-meta" "^1.0.56"
+    "@kubevious/ui-components" "^1.0.207"
+    "@kubevious/ui-framework" "^1.0.59"
+    "@kubevious/ui-middleware" "^1.0.46"
     classnames "^2.2.6"
     react "^17.0.2"
     react-autocomplete "^1.8.1"
     the-lodash "^2.0.9"
     the-promise "^2.0.13"
 
-"@kubevious/ui-time-machine@^1.0.26":
-  version "1.0.26"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-time-machine/-/ui-time-machine-1.0.26.tgz#7d35760b0739c64c265ce675ac0dae7de4a2b97b"
-  integrity sha512-aDKPzsJ1PDBfdrv+6bxqse/gO9wNA1HYQ6dbW0gwOU7F0gwwBgMbNmJVeuylUfzQc6QazEXSbJ9WKPYPvIQoTQ==
+"@kubevious/ui-time-machine@^1.0.28":
+  version "1.0.28"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-time-machine/-/ui-time-machine-1.0.28.tgz#74826f89c25245391b6cd2ffd397639024a18317"
+  integrity sha512-yE4emljaJQTeX0RoYvAFF+FpDhMMH3YaCvRB+vjMJfs4DRftkTdtgiQc43//cXBkdj1J0cghinq+IDdKRYjHJw==
   dependencies:
-    "@kubevious/ui-components" "^1.0.206"
-    "@kubevious/ui-framework" "^1.0.57"
+    "@kubevious/ui-components" "^1.0.207"
+    "@kubevious/ui-framework" "^1.0.59"
     "@kubevious/ui-middleware" "^1.0.46"
     classnames "^2.2.6"
     d3 "^6.5.0"
@@ -1840,14 +1840,14 @@
     postcss "^8.2.8"
     the-lodash "^2.0.9"
 
-"@kubevious/ui-validator-config@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-validator-config/-/ui-validator-config-1.0.3.tgz#dbb1ee8cb8c21056338f96f4b1f48ba1a2d8bd4c"
-  integrity sha512-5Z7YXM8TPu3gNPniTTthp0l2wg+w0uQK1339Lw77mjzg3/ZLdqqFubsKGd/OjtGnFR4fBwuWGEWXP7WVakMSzA==
+"@kubevious/ui-validator-config@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-validator-config/-/ui-validator-config-1.0.4.tgz#6ef61f9ab77e02d8422bcd5f978f6ee2a568d49d"
+  integrity sha512-8himOKlqoI+lqYvG3WEFIkGKDcLlEjndMa+MSGQWB7ANn7Nq9BZjOJrECwo3g9PZU2OLNofvcU4SEc/Mzc9lBg==
   dependencies:
     "@kubevious/entity-meta" "^1.0.56"
-    "@kubevious/ui-components" "^1.0.204"
-    "@kubevious/ui-framework" "^1.0.57"
+    "@kubevious/ui-components" "^1.0.207"
+    "@kubevious/ui-framework" "^1.0.59"
     "@kubevious/ui-middleware" "^1.0.46"
     bootstrap "^5.0.0"
     classnames "^2.2.6"

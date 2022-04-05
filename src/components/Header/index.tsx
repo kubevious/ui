@@ -67,7 +67,7 @@ export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscServic
     }
 
     handleWindowVisibilityChange(windowInfo: GoldenLayoutWindowInfo) {
-        const visible_windows = this.sharedState.get("visible_windows");
+        const visible_windows = this.sharedState.get<Record<string, boolean>>("visible_windows", {});
         if (this.detectIsVisible(windowInfo)) {
             delete visible_windows[windowInfo.id];
         } else {

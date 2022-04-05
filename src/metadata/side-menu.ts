@@ -78,7 +78,7 @@ export const SIDE_MENU_DATA : SideMenuSection[] = [
     },
     {
         name: 'Dev Tools',
-        condition: () => sharedState.get("dev_tools_enabled"),
+        condition: () => sharedState.get("dev_tools_enabled", false),
         items: [
             {
                 key: SideMenuItemKey.sharedStateDebugger,
@@ -86,7 +86,7 @@ export const SIDE_MENU_DATA : SideMenuSection[] = [
                 faIcon: FASolidIcons.faBug,
                 onClick: () => {
                     const key = 'dev_tools_popup_content';
-                    if (sharedState.get(key)) {
+                    if (sharedState.tryGet(key)) {
                         sharedState.set(key, null);
                     } else {
                         sharedState.set(key, SideMenuItemKey.sharedStateDebugger);
@@ -99,7 +99,7 @@ export const SIDE_MENU_DATA : SideMenuSection[] = [
                 faIcon: FASolidIcons.faVials,
                 onClick: () => {
                     const key = 'dev_tools_popup_content';
-                    if (sharedState.get(key)) {
+                    if (sharedState.tryGet(key)) {
                         sharedState.set(key, null);
                     } else {
                         sharedState.set(key, SideMenuItemKey.restTool);
@@ -112,7 +112,7 @@ export const SIDE_MENU_DATA : SideMenuSection[] = [
                 faIcon: FABrandsIcons.faRocketchat,
                 onClick: () => {
                     const key = 'dev_tools_popup_content';
-                    if (sharedState.get(key)) {
+                    if (sharedState.tryGet(key)) {
                         sharedState.set(key, null);
                     } else {
                         sharedState.set(key, SideMenuItemKey.websocketTool);

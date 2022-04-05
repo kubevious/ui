@@ -31,7 +31,7 @@ export class NodeHistorySource {
                 if (selected_dn)
                 {
                     {
-                        const currentObjHistory = this._sharedState.get('selected_object_history') as ObjectChangeHistory;
+                        const currentObjHistory = this._sharedState.tryGet<ObjectChangeHistory>('selected_object_history');
                         if (currentObjHistory) {
                             if (currentObjHistory.dn !== selected_dn) {
                                 this._sharedState.set('selected_object_history', null);
@@ -56,7 +56,7 @@ export class NodeHistorySource {
                     }
 
                     {
-                        const currentObjHistory = this._sharedState.get('selected_object_history') as ObjectChangeHistory;
+                        const currentObjHistory = this._sharedState.tryGet<ObjectChangeHistory>('selected_object_history');
                         if (!currentObjHistory) {
                             const newObjHistory = {
                                 queryType: change_history_query_type,
@@ -73,27 +73,15 @@ export class NodeHistorySource {
                     {
                         this._historyService.fetchNodeHistory(selected_dn, change_history_next_token)
                             .then(result => {
-                                // console.log("[NODE-HISTORY] result: ", result);
-                                // const currQueryType = this._sharedState.get('change_history_query_type') || QUERY_NODE;
-                                // if ((selected_dn !== this._sharedState.get('selected_dn')) || 
-                                //     (change_history_query_type !== currQueryType))
-                                // {
-                                //     return;
-                                // }
 
-                                const currentObjHistory = this._sharedState.get('selected_object_history') as ObjectChangeHistory;
+                                const currentObjHistory = this._sharedState.tryGet<ObjectChangeHistory>('selected_object_history');
                                 if (!currentObjHistory) {
-                                    // console.log("[NODE-HISTORY] exit 1");
                                     return;
                                 }
                                 if (currentObjHistory.dn !== selected_dn) {
-                                    // console.log("[NODE-HISTORY] currentObjHistory.dn: ", currentObjHistory.dn);
-                                    // console.log("[NODE-HISTORY] selected_dn: ", selected_dn);
-                                    // console.log("[NODE-HISTORY] exit 2");
                                     return;
                                 }
                                 if (currentObjHistory.queryType !== change_history_query_type) {
-                                    // console.log("[NODE-HISTORY] exit 3");
                                     return;
                                 }
 
@@ -115,28 +103,15 @@ export class NodeHistorySource {
                     {
                         this._historyService.fetchHierarchyHistory(selected_dn, change_history_next_token)
                             .then(result => {
-                                // console.log("[NODE-HISTORY] HHH result: ", result);
 
-                                // const currQueryType = this._sharedState.get('change_history_query_type') || QUERY_NODE;
-                                // if ((selected_dn !== this._sharedState.get('selected_dn')) || 
-                                //     (change_history_query_type !== currQueryType))
-                                // {
-                                //     return;
-                                // }
-
-                                const currentObjHistory = this._sharedState.get('selected_object_history') as ObjectChangeHistory;
-                                // console.log("[NODE-HISTORY] currentObjHistory:", currentObjHistory);
+                                const currentObjHistory = this._sharedState.tryGet<ObjectChangeHistory>('selected_object_history');
                                 if (!currentObjHistory) {
-                                    // console.log("[NODE-HISTORY] HHH exit 1");
                                     return;
                                 }
                                 if (currentObjHistory.dn !== selected_dn) {
-                                    // console.log("[NODE-HISTORY] HHH exit 2");
                                     return;
                                 }
                                 if (currentObjHistory.queryType !== change_history_query_type) {
-                                    // console.log("[NODE-HISTORY] HHH exit 3");
-
                                     return;
                                 }
 

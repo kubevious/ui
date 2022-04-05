@@ -16,7 +16,7 @@ export class AlertsSource {
         this._sharedState = sharedState.user();
 
         this._socketScope = socket.scope((value, target) => {
-            if (target.dn === this._sharedState.get('selected_dn')) {
+            if (target.dn === this._sharedState.tryGet('selected_dn')) {
                 this._sharedState.set('selected_object_alerts', value);
             }
         });

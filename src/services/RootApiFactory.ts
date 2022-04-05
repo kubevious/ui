@@ -48,7 +48,7 @@ export class RootApiFactory {
         });
 
         app.registerService({ kind: 'search' }, () => {
-            const client = this.httpClient('/api/v1');
+            const client = this.httpClient('/api/v1/search');
             return new SearchService(client);
         });
 

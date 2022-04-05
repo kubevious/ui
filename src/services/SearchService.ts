@@ -8,7 +8,7 @@ export class SearchService extends BaseHttpService implements ISearchService {
     fetchSearchResults(criteria: any)
     {
         return this.client
-            .post<SearchQueryResult>("/project/search", {}, criteria)
+            .post<SearchQueryResult>("/results", {}, criteria)
             .then((result) => {
                 return result.data;
             });
@@ -17,7 +17,7 @@ export class SearchService extends BaseHttpService implements ISearchService {
     autocompleteLabelKeys(criteria)
     {
         return this.client
-            .post<string[]>("/project/labels", {}, { criteria : criteria })
+            .post<string[]>("/labels", {}, { criteria : criteria })
             .then((result) => {
                 return result.data;
             });
@@ -26,7 +26,7 @@ export class SearchService extends BaseHttpService implements ISearchService {
     autocompleteLabelValues(key, criteria)
     {
         return this.client
-            .post<string[]>("/project/labels/values", {}, { key: key, criteria : criteria })
+            .post<string[]>("/labels/values", {}, { key: key, criteria : criteria })
             .then((result) => {
                 return result.data;
             });
@@ -35,7 +35,7 @@ export class SearchService extends BaseHttpService implements ISearchService {
     autocompleteAnnotationKeys(criteria)
     {
         return this.client
-            .post<string[]>("/project/annotations", {}, { criteria : criteria })
+            .post<string[]>("/annotations", {}, { criteria : criteria })
             .then((result) => {
                 return result.data;
             });
@@ -44,7 +44,7 @@ export class SearchService extends BaseHttpService implements ISearchService {
     autocompleteAnnotationValues(key, criteria)
     {
         return this.client
-            .post<string[]>("/project/annotations/values", {}, { key: key, criteria : criteria })
+            .post<string[]>("/annotations/values", {}, { key: key, criteria : criteria })
             .then((result) => {
                 return result.data;
             });

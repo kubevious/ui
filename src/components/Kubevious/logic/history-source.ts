@@ -138,7 +138,7 @@ export class HistorySource {
                             const date = moment(time_machine_target_date);
                             this._historyService.fetchSnapshotAtDate(date.toDate())
                                 .then(result => {
-                                    if (time_machine_target_date !== this._sharedState.get("time_machine_target_date")) {
+                                    if (time_machine_target_date !== this._sharedState.tryGet("time_machine_target_date")) {
                                         return;
                                     }
                                     if (result) {
