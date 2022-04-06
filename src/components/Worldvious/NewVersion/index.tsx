@@ -1,12 +1,11 @@
 import React, { FC } from 'react';
 import Markdown from "markdown-to-jsx"
 import _ from "the-lodash"
-import { isEmptyArray } from "../../utils/util"
+import { isEmptyArray } from "../../../utils/util"
 
 import { WorldviousNewVersionInfo } from '@kubevious/ui-middleware/dist/services/worldvious'
 
 import "./styles.scss"
-import { Info } from "./types"
 
 export interface NewVersionProps
 {

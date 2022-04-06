@@ -1,8 +1,8 @@
 export type UserAnswers = {
-    [id: string]: Answer
+    [id: string]: UserAnswer
 }
 
-export type Answer = {
+export type UserAnswer = {
     id: string
     value?: string[]
     hasValue: boolean

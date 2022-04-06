@@ -1,6 +1,6 @@
 import React from "react"
 import _ from "the-lodash"
-import { Notifications } from "../Notifications"
+// import { Notifications } from "../Notifications"
 import { ClassComponent } from "@kubevious/ui-framework"
 import { FontAwesomeIcon, FASolidIcons } from "@kubevious/ui-components"
 
@@ -34,10 +34,10 @@ export class Header extends ClassComponent<HeaderProps, HeaderState, any> {
     }
 
     openNotifications(): void {
-        this.sharedState.set("popup_window", {
-            title: "Notifications",
-            content: <Notifications />,
-        })
+        // this.sharedState.set("popup_window", {
+        //     title: "Notifications",
+        //     content: <Notifications />,
+        // })
     }
 
     deactivateTimemachine(): void {

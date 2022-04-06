@@ -7,7 +7,7 @@ import { RequestList } from "../Notifications/types"
 import "./styles.scss"
 import { Kind } from "./types"
 
-export const NotificationList = ({ list }: { list: RequestList[] }) => {
+export const NotificationList = ({ list }: { list: any[] }) => {
     return (
         <div className="p-40">
             <div>
@@ -18,7 +18,7 @@ export const NotificationList = ({ list }: { list: RequestList[] }) => {
                 {list.map((item, index) => (
                     <div key={index}>
                         {item.kind === Kind.new_version && (
-                            <NewVersion info={item} />
+                            <NewVersion item={item} />
                         )}
                         {item.kind === Kind.feedback_request && (
                             <Feedback request={item} />
