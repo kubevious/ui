@@ -8,6 +8,7 @@ import { ClusterService } from './ClusterService';
 import { HistoryService } from './HistoryService';
 import { SearchService } from './SearchService'
 import { ValidatorService } from './ValidatorService';
+import { BackendStatusService } from './BackendStatusService';
 
 import { app } from '@kubevious/ui-framework';
 
@@ -20,6 +21,11 @@ export class RootApiFactory {
 
         app.registerService({ kind: 'socket' }, () => {
             return new WebSocketService();
+        });
+
+        app.registerService({ kind: 'backend-status' }, () => {
+            const client = this.httpClient('/api/v1');
+            return new BackendStatusService(client);
         });
 
         app.registerService({ kind: 'cluster' }, () => {

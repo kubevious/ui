@@ -7,12 +7,20 @@
     gap: 10px; 
 }
 
+.logoImg {
+    width: 172px;
+    height: 172px;
+    background-image: url('/img/logoSquareBig.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
 .logoLabel {
     font-family: 'Montserrat', sans-serif !important;
     font-size: 15.7px;
     font-weight: bold;
-    line-height: 13px;
+    line-height: 12px;
     color: #f2bf58;
     position: relative;
-    left: -14px;
+    left: -15px;
 }

@@ -1,13 +1,8 @@
 import React from "react"
 import _ from "the-lodash"
-import bugImg from "../../assets/header-btns/bug.svg"
-import slackImg from "../../assets/header-btns/slack.svg"
-import githubImg from "../../assets/header-btns/github.svg"
-import { About } from "../About"
 import { Notifications } from "../Notifications"
 import { ClassComponent } from "@kubevious/ui-framework"
 import { FontAwesomeIcon, FASolidIcons } from "@kubevious/ui-components"
-import moment from "moment"
 
 import "./styles.scss"
 import { IMiscService } from "@kubevious/ui-middleware"
@@ -22,30 +17,14 @@ export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscServic
             showSettings: false,
             isLoading: false,
             hasNotifications: false,
-            time_machine_enabled: false,
-            time_machine_target_date: null,
             visible_windows: {}
         }
 
-        this.openAbout = this.openAbout.bind(this)
         this.detectIsVisible = this.detectIsVisible.bind(this)
         this.renderSettings = this.renderSettings.bind(this)
         this.openNotifications = this.openNotifications.bind(this)
         this.deactivateTimemachine = this.deactivateTimemachine.bind(this)
         this.handleWindowVisibilityChange = this.handleWindowVisibilityChange.bind(this)
-    }
-
-    openAbout(): void {
-        this.sharedState.set("popup_window", {
-            title: "About",
-        })
-
-        this.service.fetchAbout((result) => {
-            this.sharedState.set("popup_window", {
-                title: "About",
-                content: <About result={result} />,
-            })
-        })
     }
 
     detectIsVisible(item: GoldenLayoutWindowInfo): boolean {
@@ -126,29 +105,6 @@ export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscServic
             this.setState({ isLoading: is_loading })
         })
 
-        this.subscribeToSharedState(
-            ["time_machine_enabled", "time_machine_target_date"],
-            ({
-                time_machine_enabled,
-                time_machine_target_date,
-            }: {
-                time_machine_enabled: boolean
-                time_machine_target_date: Date
-            }) => {
-                if (time_machine_enabled && time_machine_target_date) {
-                    this.setState({
-                        time_machine_enabled,
-                        time_machine_target_date,
-                    })
-                } else {
-                    this.setState({
-                        time_machine_enabled: false,
-                        time_machine_target_date: null,
-                    })
-                }
-            }
-        )
-
         this.subscribeToSharedState("notifications_info", (info) => {
             const hasNotifications =
                 info && _.isNotNullOrUndefined(info.count) && info.count > 0
@@ -161,8 +117,6 @@ export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscServic
             showSettings,
             hasNotifications,
             isLoading,
-            time_machine_enabled,
-            time_machine_target_date,
         } = this.state
 
         return (
@@ -171,22 +125,6 @@ export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscServic
                 <div className="loading-icon">
                     {isLoading && <FontAwesomeIcon icon={FASolidIcons.faSpinner} spin />}
                 </div>
-                {time_machine_enabled && (
-                    <div id="history-info" className="history-info">
-                        <span>
-                            Time Machine Active:{" "}
-                            {moment(time_machine_target_date).format(
-                                "MMM DD hh:mm:ss A"
-                            )}
-                        </span>
-                        <button
-                            className="button success deactivate"
-                            onClick={this.deactivateTimemachine}
-                        >
-                            Deactivate
-                        </button>
-                    </div>
-                )}
                 <div className="actions">
                     {hasNotifications && (
                         <div className="btn-container">
@@ -211,49 +149,6 @@ export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscServic
                             }
                         />
                         {showSettings && this.renderSettings()}
-                    </div>
-
-                    <div className="btn-container">
-                        <button
-                            id="btnHeaderAbout"
-                            type="button"
-                            className="btn btn-about"
-                            onClick={this.openAbout}
-                        ></button>
-                        <span className="tooltiptext">About Kubevious</span>
-                    </div>
-
-                    <div className="btn-container">
-                        <a
-                            href="https://github.com/kubevious/kubevious/issues/new/choose"
-                            target="_blank"
-                            className="btn btn-bug"
-                        >
-                            <img src={bugImg} alt="bug" />
-                        </a>
-                        <span className="tooltiptext">Report Issues</span>
-                    </div>
-
-                    <div className="btn-container">
-                        <a
-                            href="https://github.com/kubevious/kubevious"
-                            target="_blank"
-                            className="btn btn-github"
-                        >
-                            <img src={githubImg} alt="github" />
-                        </a>
-                        <span className="tooltiptext">GitHub Project</span>
-                    </div>
-
-                    <div className="btn-container">
-                        <a
-                            href="https://kubevious.io/slack"
-                            target="_blank"
-                            className="btn btn-slack"
-                        >
-                            <img src={slackImg} alt="slack" />
-                        </a>
-                        <span className="tooltiptext">Slack Channel</span>
                     </div>
                 </div>
             </div>

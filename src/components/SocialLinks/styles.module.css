@@ -1,0 +1,17 @@
+.socialLinksContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+
+    gap: 40px; 
+}
+
+.socialIcon, .socialIcon:link, .socialIcon:visited {
+    color: #FFFFFF;
+}
+.socialIcon:hover, .socialIcon:active {
+    color: #AAAAAA;
+}
+  

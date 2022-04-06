@@ -4,7 +4,7 @@ import styles from './styles.module.css';
 
 export const LargeLogo: FC = () => (
     <div className={styles.logoContainer}>
-        <img src="/img/logoSquareBig.svg" alt="logo" />
+        <div className={styles.logoImg}></div>
         <span className={styles.logoLabel}>OPEN-SOURCE</span>
     </div>
 );
