@@ -3,7 +3,7 @@ import _ from 'the-lodash'
 import { WebSocketService } from './WebSocketService'
 import { RuleService } from './RuleService'
 import { MarkerService } from './MarkerService'
-import { MiscService } from './MiscService'
+import { WorldviousService } from './WorldviousService'
 import { ClusterService } from './ClusterService';
 import { HistoryService } from './HistoryService';
 import { SearchService } from './SearchService'
@@ -16,9 +16,21 @@ export class RootApiFactory {
     constructor() {
 
         this._registerHttpClients();
+        this._registerServices();
+        
+    }
 
-        const sharedState = app.sharedState;
+    socketService() {
+        return app.serviceRegistry.resolveService<WebSocketService>({ kind: 'socket' });
+    }
+    
+    private _registerHttpClients()
+    {
+        app.initHttpClient({ level: 'root' });
+    }
 
+    private _registerServices()
+    {
         app.registerService({ kind: 'socket' }, () => {
             return new WebSocketService();
         });
@@ -58,32 +70,10 @@ export class RootApiFactory {
             return new SearchService(client);
         });
 
-        app.registerService({ kind: 'misc' }, () => {
-            const client = this.httpClient('');
-            return new MiscService(client, sharedState, this.socketService());
+        app.registerService({ kind: 'worldvious' }, () => {
+            const client = this.httpClient('/api/v1/support');
+            return new WorldviousService(client);
         });
-    }
-
-    socketService() {
-        return app.serviceRegistry.resolveService<WebSocketService>({ kind: 'socket' });
-    }
-
-    ruleService() {
-        return app.serviceRegistry.resolveService<RuleService>({ kind: 'rule' });
-    }
-
-    markerService() {
-        return app.serviceRegistry.resolveService<MarkerService>({ kind: 'marker' });
-    }
-    
-    miscService() {
-        return app.serviceRegistry.resolveService<MiscService>({ kind: 'misc' });
-    }
-
-    
-    private _registerHttpClients()
-    {
-        app.initHttpClient({ level: 'root' });
     }
 
     private httpClient(urlBase: string)

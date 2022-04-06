@@ -2,9 +2,8 @@ import { Promise } from 'the-promise'
 
 import { app, BaseHttpService, HttpClient } from '@kubevious/ui-framework'
 
-import { IMarkerService, IWebSocketService } from '@kubevious/ui-middleware'
+import { IMarkerService, IWebSocketService, WebSocketKind } from '@kubevious/ui-middleware'
 import { MarkerConfig, MarkerListItem, MarkerResult, MarkerResultSubscriber, MarkersExportData, MarkersImportData, MarkerStatus } from '@kubevious/ui-middleware/dist/services/marker';
-import { WebSocketKind } from './types';
 
 export class MarkerService extends BaseHttpService implements IMarkerService
 {

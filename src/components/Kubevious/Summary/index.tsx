@@ -7,7 +7,7 @@ import styles from './styles.module.css';
 import { PropertiesContents } from '@kubevious/ui-properties';
 import { AgentStatusComponent } from '../AgentStatusComponent' ;
 
-import { SectionedContent, SectionItem } from '../../SectionedContent';
+import { SectionedContent, SectionItem } from '@kubevious/ui-components';
 
 export class Summary extends ClassComponent<{}, SummaryState> {
     constructor(props: {} | Readonly<{}>) {

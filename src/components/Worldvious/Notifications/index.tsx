@@ -2,11 +2,11 @@ import React from "react"
 import { ClassComponent } from "@kubevious/ui-framework"
 
 import "./styles.scss"
-import { IMiscService } from "@kubevious/ui-middleware"
+import { IWorldviousService } from "@kubevious/ui-middleware"
 import { NotificationList } from "../NotificationList"
 import { NotificationsState } from "./types"
 
-export class Notifications extends ClassComponent<{}, NotificationsState, IMiscService> {
+export class Notifications extends ClassComponent<{}, NotificationsState, IWorldviousService> {
     constructor(props) {
         super(props, null, { kind: "misc" })
 

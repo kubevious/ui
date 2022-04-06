@@ -1,7 +1,6 @@
 import _ from 'the-lodash';
 import { ISharedState } from "@kubevious/ui-framework"
-import { IWebSocketService, WebSocketScope } from "@kubevious/ui-middleware"
-import { WebSocketKind } from '../../../services/types'
+import { IWebSocketService, WebSocketScope, WebSocketKind } from "@kubevious/ui-middleware"
 import { SnapshotPropsConfig } from '@kubevious/state-registry';
 import { PropsId, PropsKind } from '@kubevious/entity-meta';
 

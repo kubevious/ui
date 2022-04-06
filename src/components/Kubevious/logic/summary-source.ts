@@ -1,6 +1,5 @@
 import { ISharedState } from "@kubevious/ui-framework"
-import { IWebSocketService, WebSocketScope } from "@kubevious/ui-middleware"
-import { WebSocketKind } from '../../../services/types'
+import { IWebSocketService, WebSocketScope, WebSocketKind } from "@kubevious/ui-middleware"
 
 export class SummarySource {
     private _sharedState: ISharedState

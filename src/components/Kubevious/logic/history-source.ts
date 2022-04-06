@@ -34,11 +34,6 @@ export class HistorySource {
         this._sharedState.subscribe("latest_snapshot_id", () => {
             this._setupPreview();
         })
-
-        // this._socketScope = socket.scope((value, target) => {
-        //     this._sharedState.set('summary', value);
-        // });
-        // this._socketScope.replace([{ kind: WebSocketKind.props, dn: 'summary' }]);
     }
 
     close() {

@@ -1,10 +1,10 @@
 import React from "react"
 import { ClassComponent } from "@kubevious/ui-framework"
 import "./styles.scss"
-import { IMiscService } from "@kubevious/ui-middleware"
+import { IWorldviousService } from "@kubevious/ui-middleware"
 import { SnoozeProps, SnoozeState } from "./types"
 
-export class Snooze extends ClassComponent<SnoozeProps, SnoozeState, IMiscService> {
+export class Snooze extends ClassComponent<SnoozeProps, SnoozeState, IWorldviousService> {
     constructor(props) {
         super(props, null, { kind: "misc" })
 
@@ -39,7 +39,8 @@ export class Snooze extends ClassComponent<SnoozeProps, SnoozeState, IMiscServic
             days: days,
         }
 
-        this.service.submitSnooze(data, () => {})
+        // TODO: FIX ME
+        // this.service.submitSnooze(data, () => {})
     }
 
     render() {

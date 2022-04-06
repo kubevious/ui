@@ -1,7 +1,6 @@
 
 import { app, ISharedState } from '@kubevious/ui-framework';
-import { IWebSocketService } from '@kubevious/ui-middleware';
-import { WebSocketKind } from '../../../services/types';
+import { IWebSocketService, WebSocketKind} from '@kubevious/ui-middleware';
 
 import { ClusterStatusSource } from './cluster-status-source'
 import { DiagramSource } from '@kubevious/ui-browser'

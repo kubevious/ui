@@ -2,9 +2,8 @@ import { Promise } from 'the-promise'
 import { app } from '@kubevious/ui-framework';
 
 import { BaseHttpService, HttpClient } from '@kubevious/ui-framework'
-import { IRuleService, IWebSocketService } from "@kubevious/ui-middleware"
+import { IRuleService, IWebSocketService, WebSocketKind } from "@kubevious/ui-middleware"
 import { RuleConfig, RuleListItem, RuleResult, RuleResultSubscriber, RulesExportData, RulesImportData, RuleStatus } from "@kubevious/ui-middleware/dist/services/rule"
-import { WebSocketKind } from './types';
 
 export class RuleService extends BaseHttpService implements IRuleService {
 

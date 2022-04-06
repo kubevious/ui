@@ -5,11 +5,10 @@ import { ClassComponent } from "@kubevious/ui-framework"
 import { FontAwesomeIcon, FASolidIcons } from "@kubevious/ui-components"
 
 import "./styles.scss"
-import { IMiscService } from "@kubevious/ui-middleware"
 import { GoldenLayoutWindowInfo } from "@kubevious/ui-components"
 import { HeaderProps, HeaderState } from "./types"
 
-export class Header extends ClassComponent<HeaderProps, HeaderState, IMiscService> {
+export class Header extends ClassComponent<HeaderProps, HeaderState, any> {
     constructor(props : HeaderProps | Readonly<HeaderProps>) {
         super(props, null, { kind: "misc" })
 

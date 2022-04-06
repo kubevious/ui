@@ -8,13 +8,13 @@ import cx from "classnames"
 
 import "./styles.scss"
 
-import { IMiscService } from "@kubevious/ui-middleware"
+// import { IWorldviousService } from "@kubevious/ui-middleware"
 import { Answer, FeedbackState, Kind, FeedbackProps, Question } from "./types"
 
 export class Feedback extends ClassComponent<
     FeedbackProps,
     FeedbackState,
-    IMiscService
+    any
 > {
     constructor(props: FeedbackProps) {
         super(props, null, { kind: "misc" })
@@ -72,12 +72,13 @@ export class Feedback extends ClassComponent<
                 answers: answers,
             }
 
-            this.service.submitFeedback(data, () => {
-                this.sharedState.set("popup_window", {
-                    title: "Post Feedback",
-                    content: <PostFeedback />,
-                })
-            })
+            // TODO: FIX ME
+            // this.service.submitFeedback(data, () => {
+            //     this.sharedState.set("popup_window", {
+            //         title: "Post Feedback",
+            //         content: <PostFeedback />,
+            //     })
+            // })
         }
     }
 

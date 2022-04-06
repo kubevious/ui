@@ -1,7 +1,7 @@
 import _ from 'the-lodash';
 
-import { IDiagramBrowserService, IWebSocketService } from "@kubevious/ui-middleware"
-import { WebSocketKind } from './types';
+import { IDiagramBrowserService, IWebSocketService, WebSocketKind } from "@kubevious/ui-middleware"
+
 import { DiagramChildrenChangeCallback, DiagramNodeChangeCallback, IDiagramBrowserServiceSubscriber, NodeConfig } from '@kubevious/ui-middleware/dist/services/diagram-browser';
 import { makeDn } from '@kubevious/entity-meta';
 

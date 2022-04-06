@@ -15,6 +15,7 @@ export enum SideMenuItemKey {
 
     // Help
     support = 'support',
+    updates = 'updates',
     about = 'about',
 
     // DevTools
@@ -74,6 +75,12 @@ export const SIDE_MENU_DATA : SideMenuSection[] = [
                 label: 'Support',
                 icon: 'support.svg',
                 url: '/support',
+            },
+            {
+                key: 'updates',
+                label: 'Updates',
+                icon: 'updates.svg',
+                url: '/updates',
             },
             {
                 key: 'about',

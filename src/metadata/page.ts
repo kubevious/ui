@@ -1,29 +1,20 @@
 import { PagesData } from '../types/page';
 import { SideMenuItemKey } from './side-menu';
 
-// import { DashboardPage } from '../pages/dashboard/DashboardPage';
-// import { RestToolPage } from '../components/DevTools/RestTool';
+import { ClusterBrowserPage } from '../pages/operational/ClusterBrowserPage';
+import { SearchPage } from '../pages/operational/SearchPage';
 
 import { RulesPage } from '../pages/rules/RulesPage';
 import { MarkersPage } from '../pages/rules/MarkersPage';
 import { ValidatorsPage } from '@kubevious/ui-validator-config';
 import { ValidatorDetailsPage } from  '@kubevious/ui-validator-config';
 
-import { ClusterBrowserPage } from '../pages/operational/ClusterBrowserPage';
-import { SearchPage } from '../pages/operational/SearchPage';
-// import { WebsocketTool } from '@kubevious/ui-dev-tools';
 import { SupportPage } from '../pages/help/Support';
-
-
+import { UpdatesPage } from '../pages/help/Updates'
 import { AboutPage } from '../pages/help/About';
-
 
 export const CLUSTER_BROWSER_PAGE = "/browser";
 export const RULE_PAGE = "/rules";
-// export const DASHBOARD_PAGE = '/dashboard';
-
-// export const ACCOUNT_READY_PAGE = DASHBOARD_PAGE;
-
 
 export const VALIDATORS_PAGE = '/validators';
 export const VALIDATOR_DETAILS_PAGE = '/validators/details';
@@ -38,16 +29,6 @@ export const pagesData: PagesData<SideMenuItemKey> = {
             component: AboutPage,
             isDefaultMenuPage: true,
         },
-
-
-
-        // // Dashboard
-        // {
-        //     url: DASHBOARD_PAGE,
-        //     sideMenu: SideMenuItemKey.dashboard,
-        //     component: DashboardPage,
-        //     isDefaultMenuPage: true,
-        // },
 
         // Setup
         {
@@ -87,7 +68,6 @@ export const pagesData: PagesData<SideMenuItemKey> = {
             component: SearchPage,
             isDefaultMenuPage: true,
         },
-
       
 
         // Help
@@ -98,6 +78,12 @@ export const pagesData: PagesData<SideMenuItemKey> = {
             isDefaultMenuPage: true,
         },
         {
+            url: '/updates',
+            sideMenu: SideMenuItemKey.updates,
+            component: UpdatesPage,
+            isDefaultMenuPage: true,
+        },
+        {
             url: '/about',
             sideMenu: SideMenuItemKey.about,
             component: AboutPage,
@@ -105,18 +91,5 @@ export const pagesData: PagesData<SideMenuItemKey> = {
         },
         
 
-        // // DevTools
-        // {
-        //     url: '/dev/rest-tool',
-        //     sideMenu: SideMenuItemKey.restTool,
-        //     component: RestToolPage,
-        //     isDefaultMenuPage: true,
-        // },
-        // {
-        //     url: '/dev/websocket-tool',
-        //     sideMenu: SideMenuItemKey.websocketTool,
-        //     component: WebsocketTool,
-        //     isDefaultMenuPage: true,
-        // },
     ],
 };

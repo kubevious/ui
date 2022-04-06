@@ -1,8 +1,12 @@
 import { RootApiFactory } from "./services/RootApiFactory"
-// import { KubeviousHandler } from "./state/kubevious-handler"
+import { setupDevTools } from "./logic/dev-tools-initializer"
 
 import { app } from "@kubevious/ui-framework"
 
+export const sharedState = app.sharedState;
+
+setupDevTools(sharedState);
+setupDevTools(sharedState);
 
 app.sharedState.register("diagram_expanded_dns", {
     skipCompare: true,
@@ -16,10 +20,7 @@ app.sharedState.register("visible_windows", {
     skipCompare: true,
 })
 
-app.sharedState.init();
-
-
-export const sharedState = app.sharedState
+sharedState.init();
 
 
 export function setupApiFactory(): RootApiFactory {
