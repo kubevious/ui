@@ -6,9 +6,6 @@ export type UserAnswer = {
     id: string
     value?: string[]
     hasValue: boolean
-    options?: {
-        [id: string]: boolean
-    }
 }
 
 export type MissingAnswers = {

@@ -1,15 +1,23 @@
-import React from "react"
-import Markdown from "markdown-to-jsx"
-import "./styles.scss"
+import React, { FC } from "react"
+import { WorldviousMarkdown } from "../WorldviousMarkdown"
 import { Snooze } from "../Snooze"
-import { Request } from "./types"
+import { WorldviousMessageData } from "@kubevious/ui-middleware/dist/services/worldvious"
 
-export const MessageNotification = ({ request }: { request: Request}): JSX.Element => {
+import { WorldviousBlock } from '../WorldviousBlock'
+
+
+export interface MessageNotificationProps
+{
+    item : WorldviousMessageData;
+}
+
+export const MessageNotification : FC<MessageNotificationProps> = ({ item }) => {
     return (
-        <div className="separate-container message-block">
-            <h3>{request.title}</h3>
-            {request.content && <Markdown>{request.content}</Markdown>}
-            <Snooze id={request.id} kind={request.kind} />
-        </div>
+        <WorldviousBlock title={item.title}>
+
+            <WorldviousMarkdown content={item.content} />
+
+            <Snooze id={item.id} kind={item.kind} />
+        </WorldviousBlock>
     )
 }

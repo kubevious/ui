@@ -1,184 +1,144 @@
 import React, { FC, useState } from 'react';
-// import $ from "jquery"
 import _ from "the-lodash"
 import cx from "classnames"
 
-import "./styles.scss"
+import { Label, Textarea } from '@kubevious/ui-components';
+import styles from './styles.module.css';
 
-import { UserAnswer, WorldviousFeedbackQuestionKind  } from "../types"
-import { WorldviousFeedbackQuestion } from '@kubevious/ui-middleware/dist/services/worldvious'
-
+import { UserAnswer  } from "../types"
+import { WorldviousFeedbackQuestion,
+         WorldviousFeedbackQuestionKind
+        } from '@kubevious/ui-middleware/dist/services/worldvious'
 
 export interface QuestionProps
 {
     question : WorldviousFeedbackQuestion;
-    missingAnswers : Record<string, boolean>;
+    answer? : UserAnswer;
+    isMissingAnswer: boolean;
 
-    updateAnswer : (answer: UserAnswer) => void;
+    updateAnswer : (value: string[]) => void;
 }
 
-export const Question : FC<QuestionProps> = ({ question, missingAnswers, updateAnswer }) => {
+export const Question : FC<QuestionProps> = ({ question, answer, isMissingAnswer, updateAnswer }) => {
 
+    const currentValues = answer?.value ?? [];
+    const currentValue = _.first(currentValues) ?? null;
 
+    const handleInputChange = (value : string) => {
 
-    const handleInputChange = (e : any) => {
-
-        const value = e.target.value;
-        let hasValue = false
         if (_.isNotNullOrUndefined(value) && value.length > 0) {
-            hasValue = true
+            updateAnswer([value]);
+        } else {
+            updateAnswer([]);
         }
 
-        updateAnswer({
-            id: e.target.name,
-            value: value,
-            hasValue: hasValue,
-        });
-        
     }
 
-    const handleSubmit = () => {
+    const handleMultiselect = (option : string) => {
 
-    }
+        const optionsDict = _.makeDict(answer?.value ?? [], x => x, x => true);
 
-    const handleMultiselect = () => {
+        if (optionsDict[option])
+        {
+            delete optionsDict[option];
+        } else {
+            optionsDict[option] = true;
+        }
 
+        updateAnswer(_.keys(optionsDict));
     }
 
     const setClicked = () => {
 
     }
 
-    switch (question.kind)
-    {
-        case WorldviousFeedbackQuestionKind.input:
-            return (
-                <div className="user-input">
-                    <label
-                        className={cx(
-                            "input-question",
-                            { "non-optional": !question.optional },
-                            {
-                                "missing-answer":
-                                    missingAnswers[question.id],
-                            }
-                        )}
-                    >
-                        {question.text}
-                    </label>
-                    <textarea
-                        placeholder="Type here..."
-                        name={question.id}
-                        onChange={handleInputChange}
-                    ></textarea>
-                </div>
-            );
+    const renderQuestion = () => {
+        switch (question.kind)
+        {
+            case WorldviousFeedbackQuestionKind.input:
+                return (<div>
 
-        case WorldviousFeedbackQuestionKind.rate:
-            return (
-                <div className="user-rate">
-                    <label
-                        className={cx(
-                            "rate-question",
-                            { "non-optional": !question.optional },
-                            {
-                                "missing-answer":
-                                    missingAnswers[question.id],
-                            }
-                        )}
-                    >
-                        {question.text}
-                    </label>
+                    <Textarea 
+                              onChange={(e) => handleInputChange(e.target.value)} />
+                    
+                </div>);
+
+            case WorldviousFeedbackQuestionKind.rate:
+                return (
+                    
                     <div
                         role="group"
-                        className="rate-stars"
-                        onChange={handleInputChange}
+                        className={styles.rateStars}
+                        onChange={(e : any) => handleInputChange(e?.target?.value ?? null)}
                     >
                         {[5, 4, 3, 2, 1].map((val) => (
-                            <input
+                            <input key={val}
                                 type="radio"
                                 id={`star${val}`}
-                                key={val}
                                 name={question.id}
                                 value={val}
                             />
                         ))}
                     </div>
-                </div>
-            );
+                );
 
-        case WorldviousFeedbackQuestionKind.single_select:
-            return (
-                <div className="user-single-select">
-                    <label
-                        className={cx(
-                            "select-question",
-                            { "non-optional": !question.optional },
-                            {
-                                "missing-answer":
-                                    missingAnswers[question.id],
-                            }
-                        )}
-                    >
-                        {question.text}
-                    </label>
-                    <div role="group" className="select-buttons">
-                        {question.options &&
-                            question.options.map((option, index) => {
-                                return (
-                                    <button
-                                        key={index}
-                                        type="button"
-                                        name={question.id}
-                                        className={question.id}
-                                        onClick={handleInputChange}
-                                        onFocus={setClicked}
-                                        value={option}
-                                    >
-                                        {option}
-                                    </button>
-                                )
-                            })}
-                    </div>
+            case WorldviousFeedbackQuestionKind.single_select:
+                return <div className={styles.buttonsContainer}>
+                    {question.options &&
+                        question.options.map((option, index) => {
+                            return (
+                                <button
+                                    key={index}
+                                    type="button"
+                                    name={question.id}
+                                    className={cx(styles.selectButton, {[styles.selectButtonSelected]: currentValues.includes(option) })}
+                                    onClick={(e) => handleInputChange(option)}
+                                    onFocus={setClicked}
+                                    value={option}
+                                >
+                                    {option}
+                                </button>
+                            )
+                        })}
                 </div>
-            )
 
-        case WorldviousFeedbackQuestionKind.multi_select:
-            return (
-                <div className="user-select">
-                    <label
-                        className={cx(
-                            "select-question",
-                            { "non-optional": !question.optional },
-                            {
-                                "missing-answer":
-                                    missingAnswers[question.id],
-                            }
-                        )}
-                    >
-                        {question.text}
-                    </label>
-                    <div role="group" className="select-buttons">
-                        {question.options &&
-                            question.options.map((option, index) => {
-                                return (
-                                    <button
-                                        key={index}
-                                        type="button"
-                                        name={question.id}
-                                        onClick={handleMultiselect}
-                                        value={option}
-                                    >
-                                        {option}
-                                    </button>
-                                )
-                            })}
-                    </div>
-                </div>
-            );
+            case WorldviousFeedbackQuestionKind.multi_select:
+                return <div className={styles.buttonsContainer}>
+                    {question.options &&
+                        question.options.map((option, index) => {
+                            return (
+                                <button
+                                    key={index}
+                                    type="button"
+                                    name={question.id}
+                                    className={cx(styles.selectButton, {[styles.selectButtonSelected]: currentValues.includes(option) })}
+                                    onClick={(e) => handleMultiselect(option)}
+                                    value={option}
+                                >
+                                    {option}
+                                </button>
+                            )
+                        })}
+                </div>;
 
-        default:
-            return <>
-            </>
+            default:
+                return <>
+                </>
+        }
     }
+
+    return <div className={styles.questionContainer}>
+
+        <div className={styles.title}>
+            <Label text={question.text}
+                   className={cx({
+                       [styles.nonOptionalLabel]: !question.optional,
+                       [styles.missingValueLabel]: isMissingAnswer,
+                    })} 
+            
+            />
+        </div>
+
+        {renderQuestion()}
+    </div>
 }

@@ -1,34 +1,40 @@
-import React from "react"
+import React, { FC } from "react"
 import { Feedback } from "../Feedback"
 import { MessageNotification } from "../MessageNotification"
 import { NewVersion } from "../NewVersion"
-import { RequestList } from "../Notifications/types"
 
-import "./styles.scss"
-import { Kind } from "./types"
+import {
+    WorldviousVersionInfoResult,
+    WorldviousNotificationKind,
+    WorldviousFeedbackRequest,
+    WorldviousMessageData,
+    WorldviousNewVersionInfo
+} from "@kubevious/ui-middleware/dist/services/worldvious"
 
-export const NotificationList = ({ list }: { list: any[] }) => {
+import styles from './styles.module.css';
+
+export interface NotificationListProps
+{
+    versionInfo: WorldviousVersionInfoResult;
+}
+
+export const NotificationList : FC<NotificationListProps> = ({ versionInfo }) => {
     return (
-        <div className="p-40">
-            <div>
-                <h3 className="heading-text">Notifications</h3>
-            </div>
-            <div className="notification-container overflow-hide">
-                {!list && <>You have no more notifications.</>}
-                {list.map((item, index) => (
-                    <div key={index}>
-                        {item.kind === Kind.new_version && (
-                            <NewVersion item={item} />
-                        )}
-                        {item.kind === Kind.feedback_request && (
-                            <Feedback request={item} />
-                        )}
-                        {item.kind === Kind.message && (
-                            <MessageNotification request={item} />
-                        )}
-                    </div>
-                ))}
-            </div>
+        <div className={styles.notifications}>
+            {!versionInfo.notifications && <>You have no more notifications.</>}
+            {versionInfo.notifications.map((item, index) => (
+                <div key={index}>
+                    {item.kind === WorldviousNotificationKind.newVersion && (
+                        <NewVersion item={item as WorldviousNewVersionInfo} />
+                    )}
+                    {item.kind === WorldviousNotificationKind.feedbackRequest && (
+                        <Feedback item={item as WorldviousFeedbackRequest} />
+                    )}
+                    {item.kind === WorldviousNotificationKind.message && (
+                        <MessageNotification item={item as WorldviousMessageData} />
+                    )}
+                </div>
+            ))}
         </div>
     )
 }

@@ -1770,10 +1770,10 @@
     the-promise "^2.0.13"
     uuid "^8.3.2"
 
-"@kubevious/ui-middleware@^1.0.46", "@kubevious/ui-middleware@^1.0.54":
-  version "1.0.54"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-middleware/-/ui-middleware-1.0.54.tgz#7e6e3a64ff9f1f0f4d2356eef8e2e49fd23bde9d"
-  integrity sha512-FGmxtv1S0/DjQiQSVo1rbDTL072J4XH/PW9bUndE88PVW7zR53j0XEpC8EsTfxHl8Ko5XJWeX9ulwfq4hfzMKg==
+"@kubevious/ui-middleware@^1.0.46", "@kubevious/ui-middleware@^1.0.57":
+  version "1.0.57"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-middleware/-/ui-middleware-1.0.57.tgz#633d3281cbeef5057cb9786e06245d5d47cd8ec9"
+  integrity sha512-PLf+ILtzQZqLm1hA3xGD6yIjaH3OHSBHuAmoNV3ryuB3L6rVrj9rc5YuUx9EJVMvWE/3hGc63z50J0jBCg3YRw==
   dependencies:
     "@kubevious/entity-meta" "^1.0.56"
     the-promise "^2.0.13"

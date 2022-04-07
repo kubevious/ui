@@ -1,0 +1,100 @@
+.questionContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.title {
+    text-align: center;
+}
+
+.missingValueLabel {
+    color: red;
+    font-weight: 600;
+}
+
+.nonOptionalLabel::after {
+    content: " *";
+    color: #c59b08;
+    display: contents;
+}
+
+
+.buttonsContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.selectButton {
+    min-width: 100px;
+    height: 35px;
+    border: 1px solid #ffc107;
+    border-radius: 3px;
+    background: transparent;
+    color: white;
+    margin: 0 10px 10px 0;
+    font-weight: 700;
+    text-align: center;
+}
+.selectButton:hover {
+    color: black;
+    background: #ffc107;
+}
+.selectButton:active, .selectButton:focus {
+    outline: none;
+    border: 1px solid #ffc107;
+}
+
+.selectButtonSelected  {
+    color: black;
+    background: #ffc107;
+    border: 1px solid #ffc107;
+    outline: none;
+}
+.selectButtonSelected:hover {
+    background: #ffc107aa;
+    color: white;
+}
+
+
+.rateStars {
+    display: flex;
+    flex-direction: row;
+    direction: rtl;
+    justify-content: center;
+    gap: 10px;
+}
+.rateStars input {
+    white-space: nowrap;
+    cursor: pointer;
+    font-size: 40px;
+    color: #ccc;
+    width: 40px;
+    height: 60px;
+    visibility: hidden;
+}
+.rateStars input:before {
+    content: "★";
+    visibility: visible;
+}
+
+.rateStars > input:checked ~ input,
+.rateStars > input:checked {
+    color: #ffc700;
+}
+
+.rateStars:not(:checked) > input:hover,
+.rateStars:not(:checked) > input:hover ~ input {
+    color: #deb217;
+}
+
+.rateStars > input:checked + input:hover,
+.rateStars > input:checked + input:hover ~ input,
+.rateStars > input:checked ~ input:hover,
+.rateStars > input:checked ~ input:hover ~ input,
+.rateStars > input:hover ~ input:checked ~ input {
+    color: #c59b08;
+}

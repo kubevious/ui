@@ -1,25 +1,41 @@
-.feedback-popup {
-    width: 80%;
+
+.feedbackQuestionContainer {
+     /* position: relative;
+     margin-bottom: 15px;
+     width: 100%; */
 }
 
-.post-feedback {
-    margin-top: 50px !important;
-    height: fit-content !important;
+.actionContainer {
+    text-align: center;
+}
+
+.submitError {
+    background: #970303aa;
+    /* width: 350px; */
+    color: white;
+    padding: 10px;
+    align-self: center;
+}
+
+/* 
+.feedback-popup {
+    width: 80%;
 }
 
 .feedback-info {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     padding-left: 20px;
+    max-width: 900px;
+    margin: auto;
 
     & * {
         display: flex;
         flex-direction: column;
-        align-items: center;
-        margin-bottom: 10px;
+        // align-items: center;
+        // margin-bottom: 10px;
         font-family: "Montserrat", sans-serif;
-        font-weight: 700;
+        font-weight: 500;
     }
 
     button {
@@ -27,15 +43,24 @@
         justify-content: center;
     }
 
+    // .feedback-question {
+
+    // }
+
+    // .feedback-question > div {
+    //     position: relative;
+    //     width: 100%;
+    // }
+
     .input-question,
     textarea {
-        align-self: flex-start;
-        margin-left: 20px;
+        align-self: center;
     }
 
     .rate-stars {
         flex-direction: row;
         direction: rtl;
+        margin-top: -10px;
 
         & input {
             margin-left: 25px;
@@ -81,7 +106,8 @@
     .user-input textarea {
         resize: none;
         border: none;
-        width: 90%;
+        margin: auto;
+        // width: 90%;
         height: 150px;
         background-color: #c4c4c4;
 
@@ -93,6 +119,7 @@
 
     .select-buttons {
         flex-direction: row;
+        flex-wrap: wrap;
 
         & button {
             min-width: 100px;
@@ -101,7 +128,7 @@
             border-radius: 3px;
             background: transparent;
             color: white;
-            margin: 0 10px;
+            margin: 0 10px 10px 0;
             font-weight: 700;
 
             &:hover {
@@ -126,6 +153,18 @@
                 color: white;
             }
         }
+    }
+
+    .non-optional::after {
+        content: " *";
+        color: #c59b08;
+        display: contents;
+    }
+
+
+    .missing-answer {
+        color: red;
+        font-weight: 600;
     }
 }
 
@@ -189,4 +228,4 @@
 .submit-share {
     margin-bottom: 30px;
     font-size: 24px;
-}
+} */

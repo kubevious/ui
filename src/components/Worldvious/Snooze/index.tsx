@@ -1,41 +1,31 @@
-import React from "react"
-import { ClassComponent } from "@kubevious/ui-framework"
-import "./styles.scss"
+import React, { FC, useState } from "react"
+import { useService } from "@kubevious/ui-framework"
+
 import { IWorldviousService } from "@kubevious/ui-middleware"
-import { SnoozeProps, SnoozeState } from "./types"
+import { WorldviousNotificationKind } from "@kubevious/ui-middleware/dist/services/worldvious"
+import { Button } from "@kubevious/ui-components"
 
-export class Snooze extends ClassComponent<SnoozeProps, SnoozeState, IWorldviousService> {
-    constructor(props) {
-        super(props, null, { kind: "misc" })
+import styles from './styles.module.css';
 
-        this.state = {
-            isSnoozed: false,
-        }
+export type SnoozeState = {
+    isSnoozed: boolean
+}
 
-        this.handleSnooze = this.handleSnooze.bind(this)
-        this.handleMarkAsRead = this.handleMarkAsRead.bind(this)
-    }
+export type SnoozeProps = {
+    id: string
+    kind: WorldviousNotificationKind
+}
 
-    get id(): string | undefined {
-        return this.props.id
-    }
+export const Snooze : FC<SnoozeProps> = ({ id, kind }) => {
 
-    get kind(): string | undefined {
-        return this.props.kind
-    }
+    const [isSnoozed, setIsSnoozed] = useState<boolean>(false);
 
-    handleMarkAsRead(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
-        this._submit(e, null)
-    }
+    const service = useService<IWorldviousService>({ kind: 'worldvious' });
 
-    handleSnooze(e: React.MouseEvent<HTMLButtonElement, MouseEvent>, days: number): void {
-        this._submit(e, days)
-    }
-
-    _submit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>, days: number | null) {
+    const submit = (days: number | null) => {
         const data = {
-            kind: this.kind,
-            id: this.id,
+            kind: kind,
+            id: id,
             days: days,
         }
 
@@ -43,46 +33,35 @@ export class Snooze extends ClassComponent<SnoozeProps, SnoozeState, IWorldvious
         // this.service.submitSnooze(data, () => {})
     }
 
-    render() {
-        const { isSnoozed } = this.state
-        return (
-            <div className="snooze-btn">
-                {this.kind == "message" && (
-                    <>
-                        <button
-                            className="button light"
-                            onClick={this.handleMarkAsRead}
-                        >
-                            Mark as read
-                        </button>
-                    </>
-                )}
-                {isSnoozed ? (
-                    <>
-                        <button
-                            name="tomorrow"
-                            className="button light left-btn"
-                            onClick={(e) => this.handleSnooze(e, 1)}
-                        >
-                            Tomorrow
-                        </button>
-                        <button
-                            name="week"
-                            className="button light right-btn"
-                            onClick={(e) => this.handleSnooze(e, 7)}
-                        >
-                            In a week
-                        </button>
-                    </>
-                ) : (
-                    <button
-                        className="button light"
-                        onClick={() => this.setState({ isSnoozed: true })}
-                    >
-                        Remind later
-                    </button>
-                )}
-            </div>
-        )
-    }
+    return (
+        <div className={styles.snoozeButtons}>
+            
+            {kind == WorldviousNotificationKind.message && (
+                <>
+                    <Button onClick={() => submit(null)}
+                            type='ghost'>
+                        Mark as read
+                    </Button>
+                </>
+            )}
+            
+            {isSnoozed ? (
+                <>
+                    <Button onClick={() => submit(1)}
+                            type='dark'>
+                        Tomorrow
+                    </Button>
+                    <Button onClick={() => submit(7)}
+                            type='dark'>
+                        In a week
+                    </Button>
+                </>
+            ) : (
+                <Button onClick={() => setIsSnoozed(true)}
+                        type='ghost'>
+                    Remind later
+                </Button>
+            )}
+        </div>
+    )
 }

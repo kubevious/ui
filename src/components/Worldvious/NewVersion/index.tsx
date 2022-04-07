@@ -1,11 +1,13 @@
 import React, { FC } from 'react';
-import Markdown from "markdown-to-jsx"
+import { WorldviousMarkdown } from "../WorldviousMarkdown"
 import _ from "the-lodash"
 import { isEmptyArray } from "../../../utils/util"
 
 import { WorldviousNewVersionInfo } from '@kubevious/ui-middleware/dist/services/worldvious'
+import { WorldviousBlock } from '../WorldviousBlock';
 
-import "./styles.scss"
+import styles from './styles.module.css';
+import { PageLink, PageLinkButton } from '@kubevious/ui-components/dist';
 
 export interface NewVersionProps
 {
@@ -18,44 +20,43 @@ export const NewVersion : FC<NewVersionProps> = ({ item }) => {
         version = "v" + version
     }
     return (
-        <div className="separate-container new-version-inner">
-            <h3>
-                {item.name} ({version}) Available!
-            </h3>
-            <a
-                href={item.url}
-                target="_blank"
-                className="install-btn button success"
-            >
+        <WorldviousBlock title={`${item.name} (${version}) Available!`}>
+
+            <div className={styles.installContainer}>
+                <PageLinkButton path={item.url} target="_blank">
                 Install Now
-            </a>
-            <div>
+                </PageLinkButton>
+
                 or visit:
-                <a href={item.url} target="_blank" className="target-link">
+                
+                <PageLink path={item.url} target="_blank"> 
                     {item.url}
-                </a>
+                </PageLink>
             </div>
+
             {item.features && !isEmptyArray(item.features) && (
-                <>
+                <div className={styles.section}>
                     <h3>Features</h3>
                     <ul>
                         {item.features.map((elem, index) => (
                             <li key={index}>{elem}</li>
                         ))}
                     </ul>
-                </>
+                </div>
             )}
             {item.changes && !isEmptyArray(item.changes) && (
-                <>
+                <div className={styles.section}>
                     <h3>Changes</h3>
                     <ul>
                         {item.changes.map((elem, index) => (
                             <li key={index}>{elem}</li>
                         ))}
                     </ul>
-                </>
+                </div>
             )}
-            {item.content && <Markdown>{item.content}</Markdown>}
-        </div>
+
+            <WorldviousMarkdown content={item.content} />
+
+        </WorldviousBlock>
     )
 }

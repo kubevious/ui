@@ -1,0 +1,14 @@
+.messageBlock tbody tr:nth-child(2n + 1) {
+    background-color: rgba(143, 143, 143, 0.205);
+}
+
+.messageBlock td,
+.messageBlock th {
+    border: 2px solid gray;
+    padding: 10px;
+}
+
+.messageBlock img {
+    width: 40%;
+    height: 100%;
+}
