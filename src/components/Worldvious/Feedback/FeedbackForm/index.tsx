@@ -1,13 +1,10 @@
 import React, { FC, useState } from 'react';
-import { useService } from "@kubevious/ui-framework"
-import { Snooze } from "../../Snooze"
-// import $ from "jquery"
+import { app, useService } from "@kubevious/ui-framework"
 import _ from "the-lodash"
 import cx from "classnames"
 
 import styles from './styles.module.css';
 
-// import { IWorldviousService } from "@kubevious/ui-middleware"
 import { UserAnswer } from "../types"
 import { IWorldviousService, WorldviousAnswer, WorldviousFeedbackQuestion, WorldviousFeedbackRequest, WorldviousFeedbackSubmitData } from '@kubevious/ui-middleware/dist/services/worldvious'
 
@@ -68,10 +65,11 @@ export const FeedbackForm : FC<FeedbackFormProps> = ({ item, onPostSubmit }) => 
                 answers: dataAnswers,
             }
 
-            console.log("XXXXX ", data);
             service!.submitFeedback(data)
                 .then(() => {
-                    console.log("!!!!!! ", data);
+                    
+                    app.operationLog.report("Feedback submitted.");
+                    
                     if (onPostSubmit) {
                         onPostSubmit();
                     }
@@ -111,20 +109,12 @@ export const FeedbackForm : FC<FeedbackFormProps> = ({ item, onPostSubmit }) => 
                 </div>
             )}
 
-
             <div className={styles.actionContainer}>
                 <Button onClick={handleSubmit}>
                     Submit Feedback
                 </Button>
             </div>
 
-            {/* <div >
-                <pre>
-                    {JSON.stringify(answers, null, 4)}
-                </pre>
-            </div> */}
-
-            <Snooze id={item.id} kind={item.kind} />
         </>
     )
 };

@@ -1,8 +1,8 @@
 import React, { FC, useState } from "react"
-import { useService } from "@kubevious/ui-framework"
+import { app, useService } from "@kubevious/ui-framework"
 
 import { IWorldviousService } from "@kubevious/ui-middleware"
-import { WorldviousNotificationKind } from "@kubevious/ui-middleware/dist/services/worldvious"
+import { WorldviousNotificationKind, WorldviousFeedbackSnoozeData } from "@kubevious/ui-middleware/dist/services/worldvious"
 import { Button } from "@kubevious/ui-components"
 
 import styles from './styles.module.css';
@@ -12,25 +12,34 @@ export type SnoozeState = {
 }
 
 export type SnoozeProps = {
-    id: string
-    kind: WorldviousNotificationKind
+    id: string,
+    kind: WorldviousNotificationKind,
+    onClear? : () => void;
 }
 
-export const Snooze : FC<SnoozeProps> = ({ id, kind }) => {
+export const Snooze : FC<SnoozeProps> = ({ id, kind, onClear }) => {
 
     const [isSnoozed, setIsSnoozed] = useState<boolean>(false);
 
     const service = useService<IWorldviousService>({ kind: 'worldvious' });
 
     const submit = (days: number | null) => {
-        const data = {
+        const data : WorldviousFeedbackSnoozeData = {
             kind: kind,
             id: id,
-            days: days,
+            days: days ?? 0,
         }
 
-        // TODO: FIX ME
-        // this.service.submitSnooze(data, () => {})
+        service!.submitSnooze(data)
+            .then(() => {
+
+                app.operationLog.report("Update snoozed.");
+                
+                if (onClear) {
+                    onClear();
+                }
+            })
+
     }
 
     return (

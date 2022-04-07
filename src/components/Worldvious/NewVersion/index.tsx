@@ -29,9 +29,9 @@ export const NewVersion : FC<NewVersionProps> = ({ item }) => {
 
                 or visit:
                 
-                <PageLink path={item.url} target="_blank"> 
-                    {item.url}
-                </PageLink>
+                <PageLink path={item.url}
+                          name={item.url}
+                          target="_blank" /> 
             </div>
 
             {item.features && !isEmptyArray(item.features) && (

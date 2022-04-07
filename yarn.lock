@@ -1770,10 +1770,10 @@
     the-promise "^2.0.13"
     uuid "^8.3.2"
 
-"@kubevious/ui-middleware@^1.0.46", "@kubevious/ui-middleware@^1.0.57":
-  version "1.0.57"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-middleware/-/ui-middleware-1.0.57.tgz#633d3281cbeef5057cb9786e06245d5d47cd8ec9"
-  integrity sha512-PLf+ILtzQZqLm1hA3xGD6yIjaH3OHSBHuAmoNV3ryuB3L6rVrj9rc5YuUx9EJVMvWE/3hGc63z50J0jBCg3YRw==
+"@kubevious/ui-middleware@^1.0.46", "@kubevious/ui-middleware@^1.0.58":
+  version "1.0.58"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-middleware/-/ui-middleware-1.0.58.tgz#26c57b1912c9ea2765be78e951306cd043f19f73"
+  integrity sha512-zLi2cwE7msB/OrafCq4Ftw2M3whXSy5wVyTKenN51U3FO0YkbanVwWC6Ulue9Sc+pTnR8LjGZF6E+CYaOmGjeg==
   dependencies:
     "@kubevious/entity-meta" "^1.0.56"
     the-promise "^2.0.13"
@@ -1793,10 +1793,10 @@
     js-yaml "^4.0.0"
     the-lodash "^2.0.9"
 
-"@kubevious/ui-rule-engine@^1.0.77":
-  version "1.0.77"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-rule-engine/-/ui-rule-engine-1.0.77.tgz#c68d31677f02c36b406532b487fe1096fcab4cbd"
-  integrity sha512-RW+BZbY3OWUjM3gKgeKJJnwGfXxwjzhJNqki6WEl5w58A5SWaYUhUeFJccpQjsTRDoFzLn1qtzvLDweqcRu7Bg==
+"@kubevious/ui-rule-engine@^1.0.78":
+  version "1.0.78"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-rule-engine/-/ui-rule-engine-1.0.78.tgz#b999063ba9e69618e5b6f81563c4de3434bf0794"
+  integrity sha512-W4bHFGbkfyFwXpCef68crvmvbhrgvJU7qhLaSdIisLjzl9eRNRh6mSkfhK1w0diZpzW+gsGdm+cWrHU+rSIOVg==
   dependencies:
     "@kubevious/entity-meta" "^1.0.56"
     "@kubevious/ui-components" "^1.0.207"

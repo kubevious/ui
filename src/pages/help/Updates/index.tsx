@@ -32,7 +32,6 @@ export const UpdatesPage: FC = () => {
                 <NotificationList versionInfo={versionInfo} />
             }
 
-
         </InnerPage>
     );
 };

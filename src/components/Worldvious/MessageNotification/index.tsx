@@ -9,15 +9,16 @@ import { WorldviousBlock } from '../WorldviousBlock'
 export interface MessageNotificationProps
 {
     item : WorldviousMessageData;
+    onClear? : () => void;
 }
 
-export const MessageNotification : FC<MessageNotificationProps> = ({ item }) => {
+export const MessageNotification : FC<MessageNotificationProps> = ({ item, onClear }) => {
     return (
         <WorldviousBlock title={item.title}>
 
             <WorldviousMarkdown content={item.content} />
 
-            <Snooze id={item.id} kind={item.kind} />
+            <Snooze id={item.id} kind={item.kind} onClear={onClear} />
         </WorldviousBlock>
     )
 }

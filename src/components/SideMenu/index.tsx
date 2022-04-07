@@ -16,7 +16,11 @@ export const SideMenu: FC<SideMenuProps> = ({ isCollapsed }) => {
 
     const sharedState = useSharedState();
 
-    subscribeToSharedState("dev_tools_enabled", () => {
+    subscribeToSharedState(
+        [
+            'dev_tools_enabled',
+            'notifications_info'
+        ], () => {
         setMainSections(SIDE_MENU_DATA);
         forceUpdate();
     });

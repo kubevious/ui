@@ -3,6 +3,8 @@ import { SideMenuSection } from '@kubevious/ui-components';
 
 import { sharedState } from '../configureService';
 
+import { hasWorldviousUpdates } from '../logic/worldvious';
+
 export enum SideMenuItemKey {
     // Operational
     browser = 'browser',
@@ -81,6 +83,7 @@ export const SIDE_MENU_DATA : SideMenuSection[] = [
                 label: 'Updates',
                 icon: 'updates.svg',
                 url: '/updates',
+                condition: hasWorldviousUpdates,
             },
             {
                 key: 'about',
