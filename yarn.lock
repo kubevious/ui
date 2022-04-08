@@ -1702,10 +1702,10 @@
     the-lodash "^2.0.9"
     uuid "^8.3.2"
 
-"@kubevious/ui-components@^1.0.207":
-  version "1.0.207"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-components/-/ui-components-1.0.207.tgz#df25e75d5b39d73d0347ea2791c2eb2d4b284723"
-  integrity sha512-TdnbzL7sQNL8J2F34NyMqS2rPMFSpjTzwDcSDDfNHxJAR9jFjVUu14rs0xrZxwSL85UfiiD+sIg8eJzTh3cL3Q==
+"@kubevious/ui-components@^1.0.207", "@kubevious/ui-components@^1.0.208", "@kubevious/ui-components@^1.0.210":
+  version "1.0.210"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-components/-/ui-components-1.0.210.tgz#5b04b49e20ce3e0239abd27cd3dcaabf2e0e826a"
+  integrity sha512-AO0FIVP9IeDjBuMfNHcTlhbIybTprZGi+ZighMKu1A/lHvd2zlnWMDEerMMkcMBOUpFBT40JlwLLMH8YLZoU5Q==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "6.1.1"
     "@fortawesome/free-brands-svg-icons" "6.1.1"
@@ -1734,10 +1734,10 @@
     the-promise "^2.0.13"
     uuid "^8.3.2"
 
-"@kubevious/ui-dev-tools@^1.0.21":
-  version "1.0.21"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-dev-tools/-/ui-dev-tools-1.0.21.tgz#71365b9cbc43a025a5447d6e68ab699b30c20f26"
-  integrity sha512-2kH5CTmVqJoaz2838/3dN3sURL2lCJQeKroVjpEVpIv+orVpVeNr/IWC7b6pGNYksbUkuzJLRQXbdCuB8wtqrg==
+"@kubevious/ui-dev-tools@^1.0.22":
+  version "1.0.22"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-dev-tools/-/ui-dev-tools-1.0.22.tgz#cf124dfbc5a0d20098423bffaf1b24c7638cd7a3"
+  integrity sha512-C3ZRWZvsDanNRz7NSqXzkVzoXaE1ISOrVTrePyivSEgOol6RRvDyAKqz2AHxxa8iucJ9QeVMqQdfP8rqssqbQw==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^1.2.32"
     "@fortawesome/free-brands-svg-icons" "^5.15.3"
@@ -1745,9 +1745,10 @@
     "@fortawesome/free-solid-svg-icons" "^5.15.1"
     "@fortawesome/react-fontawesome" "^0.1.12"
     "@kubevious/helpers" "^1.0.63"
-    "@kubevious/ui-components" "^1.0.207"
+    "@kubevious/http-client" "^1.0.19"
+    "@kubevious/ui-components" "^1.0.210"
     "@kubevious/ui-framework" "^1.0.59"
-    "@kubevious/ui-middleware" "^1.0.46"
+    "@kubevious/ui-middleware" "^1.0.59"
     classnames "^2.2.6"
     codemirror "^5.60.0"
     golden-layout "^1.5.9"
@@ -1770,12 +1771,13 @@
     the-promise "^2.0.13"
     uuid "^8.3.2"
 
-"@kubevious/ui-middleware@^1.0.46", "@kubevious/ui-middleware@^1.0.58":
-  version "1.0.58"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-middleware/-/ui-middleware-1.0.58.tgz#26c57b1912c9ea2765be78e951306cd043f19f73"
-  integrity sha512-zLi2cwE7msB/OrafCq4Ftw2M3whXSy5wVyTKenN51U3FO0YkbanVwWC6Ulue9Sc+pTnR8LjGZF6E+CYaOmGjeg==
+"@kubevious/ui-middleware@^1.0.46", "@kubevious/ui-middleware@^1.0.58", "@kubevious/ui-middleware@^1.0.59":
+  version "1.0.59"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-middleware/-/ui-middleware-1.0.59.tgz#214d5ff9985c7099bd0480ab671135f2d35dce70"
+  integrity sha512-Wk/uhWu/uk8rRO23gaJTnh9i+GffX0YL8nXYEharOI1g0TmZHou6gjtWhhjDPEcOXMbizBfp2Sf9vQJKe/v0Ag==
   dependencies:
     "@kubevious/entity-meta" "^1.0.56"
+    "@kubevious/http-client" "^1.0.19"
     the-promise "^2.0.13"
 
 "@kubevious/ui-properties@^1.0.52":
@@ -1793,10 +1795,10 @@
     js-yaml "^4.0.0"
     the-lodash "^2.0.9"
 
-"@kubevious/ui-rule-engine@^1.0.78":
-  version "1.0.78"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-rule-engine/-/ui-rule-engine-1.0.78.tgz#b999063ba9e69618e5b6f81563c4de3434bf0794"
-  integrity sha512-W4bHFGbkfyFwXpCef68crvmvbhrgvJU7qhLaSdIisLjzl9eRNRh6mSkfhK1w0diZpzW+gsGdm+cWrHU+rSIOVg==
+"@kubevious/ui-rule-engine@^1.0.79":
+  version "1.0.79"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-rule-engine/-/ui-rule-engine-1.0.79.tgz#adb7767fb9e8479abdef2dbdc9476c7ddd6a4060"
+  integrity sha512-gqbBNmh7ZheLS7rXr3NXJ+nbp9n2N0MIUQxYPh/rDUNNpyb4GK0MNJqycboQ5SQN7QpIJMzLw95A0Gi6FYPO4w==
   dependencies:
     "@kubevious/entity-meta" "^1.0.56"
     "@kubevious/ui-components" "^1.0.207"
@@ -1856,6 +1858,19 @@
     react "^17.0.2"
     react-color "^2.19.3"
     react-router-dom "5.2.0"
+    the-lodash "^2.0.9"
+
+"@kubevious/ui-worldvious@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-worldvious/-/ui-worldvious-1.0.2.tgz#4fec734599a249eaa8e1310b9785b1a56643dc0a"
+  integrity sha512-ddaZUw61o5DSc3SDqc3O5FlOZCHeXF7xeswdsJanjn75MCA7kQ5cigvUoPvX0lo+65iPCHRV5h7yXD6FNZMnAQ==
+  dependencies:
+    "@kubevious/ui-components" "^1.0.208"
+    "@kubevious/ui-framework" "^1.0.59"
+    "@kubevious/ui-middleware" "^1.0.58"
+    bootstrap "^5.0.0"
+    classnames "^2.2.6"
+    markdown-to-jsx "^7.1.7"
     the-lodash "^2.0.9"
 
 "@kubevious/websocket-client@^1.0.19":
@@ -8852,7 +8867,7 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
-markdown-to-jsx@^7.0.1:
+markdown-to-jsx@^7.1.7:
   version "7.1.7"
   resolved "https://registry.yarnpkg.com/markdown-to-jsx/-/markdown-to-jsx-7.1.7.tgz#a5f22102fb12241c8cea1ca6a4050bb76b23a25d"
   integrity sha512-VI3TyyHlGkO8uFle0IOibzpO1c1iJDcXcS/zBrQrXQQvJ2tpdwVzVZ7XdKsyRz1NdRmre4dqQkMZzUHaKIG/1w==
@@ -11285,7 +11300,7 @@ react-codemirror2@^7.2.1:
   resolved "https://registry.yarnpkg.com/react-codemirror2/-/react-codemirror2-7.2.1.tgz#38dab492fcbe5fb8ebf5630e5bb7922db8d3a10c"
   integrity sha512-t7YFmz1AXdlImgHXA9Ja0T6AWuopilub24jRaQdPVbzUJVNKIYuy3uCFZYa7CE5S3UW6SrSa5nAqVQvtzRF9gw==
 
-react-color@^2.18.1, react-color@^2.19.3:
+react-color@^2.19.3:
   version "2.19.3"
   resolved "https://registry.yarnpkg.com/react-color/-/react-color-2.19.3.tgz#ec6c6b4568312a3c6a18420ab0472e146aa5683d"
   integrity sha512-LEeGE/ZzNLIsFWa1TMe8y5VYqr7bibneWmvJwm1pCn/eNmrabWDh659JSPn9BuaMpEfU83WTOJfnCcjDZwNQTA==

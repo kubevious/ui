@@ -13,6 +13,9 @@
     background-image: url('/img/logoSquareBig.svg');
     background-repeat: no-repeat;
     background-position: center;
+
+    box-sizing: border-box;
+    margin-left: 15px;
 }
 
 .logoLabel {
@@ -22,5 +25,5 @@
     line-height: 12px;
     color: #f2bf58;
     position: relative;
-    left: -15px;
+    left: -7px;
 }

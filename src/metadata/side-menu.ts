@@ -1,30 +1,8 @@
-import { FASolidIcons, FABrandsIcons } from '@kubevious/ui-components';
 import { SideMenuSection } from '@kubevious/ui-components';
 
-import { sharedState } from '../configureService';
+import { devToolsSideMenu } from '../logic/dev-tools-initializer';
 
 import { hasWorldviousUpdates } from '../logic/worldvious';
-
-export enum SideMenuItemKey {
-    // Operational
-    browser = 'browser',
-    search = 'search',
-
-    // Rules Engine
-    validators = 'validators',
-    rules = 'rules',
-    markers = 'markers',
-
-    // Help
-    support = 'support',
-    updates = 'updates',
-    about = 'about',
-
-    // DevTools
-    restTool = 'restTool',
-    sharedStateDebugger = 'sharedStateDebugger',
-    websocketTool = 'websocketTool',
-}
 
 export const SIDE_MENU_DATA : SideMenuSection[] = [
 
@@ -93,50 +71,7 @@ export const SIDE_MENU_DATA : SideMenuSection[] = [
             },            
         ],
     },
-    {
-        name: 'Dev Tools',
-        condition: () => sharedState.get("dev_tools_enabled", false),
-        items: [
-            {
-                key: SideMenuItemKey.sharedStateDebugger,
-                label: 'Shared State Debugger',
-                faIcon: FASolidIcons.faBug,
-                onClick: () => {
-                    const key = 'dev_tools_popup_content';
-                    if (sharedState.tryGet(key)) {
-                        sharedState.set(key, null);
-                    } else {
-                        sharedState.set(key, SideMenuItemKey.sharedStateDebugger);
-                    }
-                },
-            },
-            {
-                key: SideMenuItemKey.restTool,
-                label: 'REST Tool',
-                faIcon: FASolidIcons.faVials,
-                onClick: () => {
-                    const key = 'dev_tools_popup_content';
-                    if (sharedState.tryGet(key)) {
-                        sharedState.set(key, null);
-                    } else {
-                        sharedState.set(key, SideMenuItemKey.restTool);
-                    }
-                },
-            },
-            {
-                key: SideMenuItemKey.websocketTool,
-                label: 'Websocket Tool',
-                faIcon: FABrandsIcons.faRocketchat,
-                onClick: () => {
-                    const key = 'dev_tools_popup_content';
-                    if (sharedState.tryGet(key)) {
-                        sharedState.set(key, null);
-                    } else {
-                        sharedState.set(key, SideMenuItemKey.websocketTool);
-                    }
-                },
-            },
-        ],
-    },
+
+    devToolsSideMenu()
 ];
 

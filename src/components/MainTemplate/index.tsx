@@ -1,11 +1,8 @@
-import React, { FC, ReactNode, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { subscribeToSharedState } from '@kubevious/ui-framework';
 import { ErrorBox, Popup, OperationLog } from '@kubevious/ui-components';
 
 import { sharedState } from '../../configureService';
-import { RestTool, WebsocketTool, SharedStateDebugger } from '@kubevious/ui-dev-tools';
-import { ENDPOINTS } from '../../metadata/endpoints';
-import { SideMenuItemKey } from '../../metadata/side-menu';
 
 import { ConfirmationDialog } from '@kubevious/ui-components'
 import { HttpClientError } from '@kubevious/http-client'
@@ -22,8 +19,6 @@ export const MainTemplate: FC = ({ children }) => {
 
     const [showPopup, setShowPopup] = useState<boolean>(true);
     const [popupContent, setPopupContent] = useState<any>(null);
-
-    const [devToolsPopupContent, setDevToolsPopupContent] = useState<SideMenuItemKey | null>(null);
 
     subscribeToSharedState(['is_error', 'error'], ({ is_error, error }: { is_error: boolean; error: Error | null }) => {
         setIsError(is_error);
@@ -45,14 +40,6 @@ export const MainTemplate: FC = ({ children }) => {
         }
     });
 
-    subscribeToSharedState('dev_tools_popup_content', (content) => {
-        setDevToolsPopupContent(content);
-
-        if (content === SideMenuItemKey.restTool) {
-            sharedState.set('endpoints', ENDPOINTS);
-        }
-    });
-
     subscribeToSharedState('is_side_menu_collapsed', (value) => {
         setCollapsed(value);
     })
@@ -66,17 +53,8 @@ export const MainTemplate: FC = ({ children }) => {
         sharedState.set('popup_window', null);
     };
 
-    const closeDevToolsPopup = () => sharedState.set('dev_tools_popup_content', null);
-
-    const devToolsContent: Record<string, ReactNode> = {
-        [SideMenuItemKey.sharedStateDebugger]: <SharedStateDebugger />,
-        [SideMenuItemKey.websocketTool]: <WebsocketTool />,
-        [SideMenuItemKey.restTool]: <RestTool />,
-    };
-
     return (<div className={styles.mainContainer}>
         <SideMenu isCollapsed={isCollapsed} />
-
 
         <div className={styles.mainComponent}
              >
@@ -92,10 +70,6 @@ export const MainTemplate: FC = ({ children }) => {
         }
 
         {showPopup && <Popup popupContent={popupContent} closePopup={closePopup} />}
-
-        {devToolsPopupContent && (
-            <Popup popupContent={devToolsContent[devToolsPopupContent!]} closePopup={closeDevToolsPopup} />
-        )}
 
         <ConfirmationDialog />
 

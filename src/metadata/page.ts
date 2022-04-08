@@ -1,5 +1,5 @@
 import { PagesData } from '../types/page';
-import { SideMenuItemKey } from './side-menu';
+import { SideMenuItemKey } from './side-menu-keys';
 
 import { ClusterBrowserPage } from '../pages/operational/ClusterBrowserPage';
 import { SearchPage } from '../pages/operational/SearchPage';
@@ -10,7 +10,7 @@ import { ValidatorsPage } from '@kubevious/ui-validator-config';
 import { ValidatorDetailsPage } from  '@kubevious/ui-validator-config';
 
 import { SupportPage } from '../pages/help/Support';
-import { UpdatesPage } from '../pages/help/Updates'
+import { UpdatesPage } from '@kubevious/ui-worldvious'
 import { AboutPage } from '../pages/help/About';
 
 export const CLUSTER_BROWSER_PAGE = "/browser";

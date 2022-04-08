@@ -1,11 +1,12 @@
 import React from 'react';
 import { PageLinkButton } from '@kubevious/ui-components';
 import { PageTemplate } from '../hocs/PageTemplate';
+import { LargeLogo } from '../components/LargeLogo';
 
 export const NotFoundPage = () => (
     <PageTemplate>
         <div style={{ marginBottom: '30px' }}>
-            <img src="/img/hacker.svg" alt="hacker" />
+            <LargeLogo />
         </div>
 
         <div
@@ -34,7 +35,7 @@ export const NotFoundPage = () => (
         </div>
 
         <div>
-            <PageLinkButton path="/dashboard">Go to Home</PageLinkButton>
+            <PageLinkButton path="/">Go to Home</PageLinkButton>
         </div>
         
     </PageTemplate>

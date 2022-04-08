@@ -3,43 +3,6 @@ import { HttpMethod } from '@kubevious/ui-framework';
 
 export const ENDPOINTS: EndpointInfo[] = [
 
-    {
-        name: '/auth/project/list',
-        method: HttpMethod.GET,
-    },
-    {
-        name: '/auth/project/login',
-        method: HttpMethod.POST,
-        sample: {
-            body: {
-                project: '',
-            },
-        },
-    },
-    {
-        name: '/auth/user/initialize',
-        method: HttpMethod.POST,
-    },
-    {
-        name: '/auth/user/check-ready',
-        method: HttpMethod.GET,
-    },
-
-    {
-        name: '/auth/user/profile',
-        method: HttpMethod.GET,
-    },
-    {
-        name: '/auth/user/profile',
-        method: HttpMethod.POST,
-        sample: {
-            body: {
-                first_name: 'Chuck',
-                last_name: 'Norris',
-                company: 'Coke',
-            },
-        },        
-    },
 
     {
         name: '/project/summary',

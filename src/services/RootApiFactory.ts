@@ -9,6 +9,7 @@ import { HistoryService } from './HistoryService';
 import { SearchService } from './SearchService'
 import { ValidatorService } from './ValidatorService';
 import { BackendStatusService } from './BackendStatusService';
+import { DeveloperService } from './DeveloperService';
 
 import { app } from '@kubevious/ui-framework';
 
@@ -73,6 +74,11 @@ export class RootApiFactory {
         app.registerService({ kind: 'worldvious' }, () => {
             const client = this.httpClient('/api/v1/support');
             return new WorldviousService(client);
+        });
+
+        app.registerService({ kind: 'developer' }, () => {
+            const client = this.httpClient('/api/v1');
+            return new DeveloperService(client);
         });
     }
 
