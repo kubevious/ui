@@ -2,18 +2,20 @@ import React from 'react';
 import { FABrandsIcons, FASolidIcons, SideMenuSection } from "@kubevious/ui-components";
 import { app, SharedState } from "@kubevious/ui-framework"
 import { ENDPOINTS } from "../metadata/endpoints";
+import { WEBSOCKET_ENDPOINTS } from "../metadata/websocket-endpoints";
 import { SideMenuItemKey } from "../metadata/side-menu-keys";
 import { RestTool, WebsocketTool, SharedStateDebugger } from '@kubevious/ui-dev-tools';
 
 export function setupDevTools(sharedState: SharedState)
 {
+    sharedState.set('endpoints', ENDPOINTS);
+    sharedState.set('websocket_endpoints', WEBSOCKET_ENDPOINTS);
+
     if (process.env.REACT_APP_ENABLE_DEV_TOOLS) {
-        sharedState.set('endpoints', ENDPOINTS);
         sharedState.set('dev_tools_enabled', true);
     }
     
     (window as any).openDevTools = () => {
-        sharedState.set('endpoints', ENDPOINTS);
         sharedState.set('dev_tools_enabled', true);
     }
 
