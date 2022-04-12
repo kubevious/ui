@@ -1664,10 +1664,10 @@
     the-lodash "^2.0.9"
     uuid "^8.3.2"
 
-"@kubevious/ui-components@^1.0.207", "@kubevious/ui-components@^1.0.214", "@kubevious/ui-components@^1.0.218":
-  version "1.0.218"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-components/-/ui-components-1.0.218.tgz#760896c93beeb3418b0ae7db06cf52c64dba2147"
-  integrity sha512-cO+XrRLugzuJoeuT3KfCmEkgWSHACNjmlO9wShfSuovCbtGedhbGpEybhM2Hs9zFoQqLEqMRfmASjQ+KBl+1Ow==
+"@kubevious/ui-components@^1.0.207", "@kubevious/ui-components@^1.0.214", "@kubevious/ui-components@^1.0.220":
+  version "1.0.220"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-components/-/ui-components-1.0.220.tgz#629a3edf5cf55b7664c7efc79ba7808195b1120e"
+  integrity sha512-m1pWUJe2++rRStbqNBWuTZv2nX20NYRD2uNTSbTYt8/wtPnv4SUE2mvyOy34ynCVTCITMRyAggm9AS57nDFGoQ==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "6.1.1"
     "@fortawesome/free-brands-svg-icons" "6.1.1"
@@ -1749,15 +1749,15 @@
     js-yaml "^4.0.0"
     the-lodash "^2.0.9"
 
-"@kubevious/ui-rule-engine@^1.0.80":
-  version "1.0.80"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-rule-engine/-/ui-rule-engine-1.0.80.tgz#b9b74b06ecb9548a298650c415fb7680887dfbe2"
-  integrity sha512-PjBgFNKHhW7+Nmz0Gl/LriwScVSf1iLgFVkbBd43Dsj2ydJJL1CO6GCLWIPxoPAMWS5rLYDtJDvdbYOdRorlLw==
+"@kubevious/ui-rule-engine@^1.0.81":
+  version "1.0.81"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-rule-engine/-/ui-rule-engine-1.0.81.tgz#aa81eba2d76fb58f165e99df81dd035a39aa6900"
+  integrity sha512-GESq7TI0YrmFN5jM0bbA+3hdNLh9tgQeK157wX9MHWYlhnjyPSuh0fFg89h4yKEc8UIOVOtAA1+QHovDiAHkKA==
   dependencies:
     "@kubevious/entity-meta" "^1.0.56"
-    "@kubevious/ui-components" "^1.0.218"
+    "@kubevious/ui-components" "^1.0.220"
     "@kubevious/ui-framework" "^1.0.59"
-    "@kubevious/ui-middleware" "^1.0.59"
+    "@kubevious/ui-middleware" "^1.0.61"
     bootstrap "^5.0.0"
     classnames "^2.2.6"
     node-sass "^4.14.1"
@@ -1766,18 +1766,17 @@
     react-color "^2.19.3"
     the-lodash "^2.0.9"
 
-"@kubevious/ui-search@^1.0.48":
-  version "1.0.48"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-search/-/ui-search-1.0.48.tgz#d9d591a8c36faaa3f0e68710a978ca4d6a273ad7"
-  integrity sha512-/kODAVVyEkNWVsN662mwkBDqHprCU8tb7zXc9ZZAa4C+BQ9rJ954lY+D/wip13FWoiYyBbLCflcVR/FDls1q2A==
+"@kubevious/ui-search@^1.0.50":
+  version "1.0.50"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-search/-/ui-search-1.0.50.tgz#80dc3908daf8d89ce3ba6197254e227abacd132d"
+  integrity sha512-gZyYn7Fjp1zHdPBmDM42JZW0tXvLWpaT988Hjk2OH8p5LFqAhu8n8iIezX5wgfe5fZTxnL1TDPwzWv8OV9F4Jg==
   dependencies:
     "@kubevious/entity-meta" "^1.0.56"
-    "@kubevious/ui-components" "^1.0.207"
+    "@kubevious/ui-components" "^1.0.220"
     "@kubevious/ui-framework" "^1.0.59"
-    "@kubevious/ui-middleware" "^1.0.46"
+    "@kubevious/ui-middleware" "^1.0.61"
     classnames "^2.2.6"
     react "^17.0.2"
-    react-autocomplete "^1.8.1"
     the-lodash "^2.0.9"
     the-promise "^2.0.13"
 
@@ -5211,11 +5210,6 @@ dom-helpers@^5.0.1, dom-helpers@^5.2.0, dom-helpers@^5.2.1:
   dependencies:
     "@babel/runtime" "^7.8.7"
     csstype "^3.0.2"
-
-dom-scroll-into-view@1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/dom-scroll-into-view/-/dom-scroll-into-view-1.0.1.tgz#32abb92f0d8feca6215162aef43e4b449ab8d99c"
-  integrity sha1-Mqu5Lw2P7KYhUWKu9D5LRJq42Zw=
 
 dom-serializer@0:
   version "0.2.2"
@@ -11218,14 +11212,6 @@ react-app-polyfill@^1.0.6:
     raf "^3.4.1"
     regenerator-runtime "^0.13.3"
     whatwg-fetch "^3.0.0"
-
-react-autocomplete@^1.8.1:
-  version "1.8.1"
-  resolved "https://registry.yarnpkg.com/react-autocomplete/-/react-autocomplete-1.8.1.tgz#ebbbc400006aa91ad538b2d14727b9e7e5d06310"
-  integrity sha1-67vEAABqqRrVOLLRRye55+XQYxA=
-  dependencies:
-    dom-scroll-into-view "1.0.1"
-    prop-types "^15.5.10"
 
 react-bootstrap@^2.0.0-beta.4:
   version "2.2.2"

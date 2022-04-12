@@ -16,7 +16,7 @@ export const SearchPage = () => {
     });
     
     return (
-        <InnerPage header={<PageHeader title="Search" />}>
+        <InnerPage header={<PageHeader title="Search" />} fullHeight>
             <Search filterList={SEARCH_FILTER_METADATA} />
         </InnerPage>
     );
