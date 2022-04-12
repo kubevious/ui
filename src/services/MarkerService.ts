@@ -1,6 +1,6 @@
 import { Promise } from 'the-promise'
 
-import { app, BaseHttpService, HttpClient } from '@kubevious/ui-framework'
+import { app, BaseHttpService, HttpClient, IService } from '@kubevious/ui-framework'
 
 import { IMarkerService, IWebSocketService, WebSocketKind } from '@kubevious/ui-middleware'
 import { MarkerConfig, MarkerListItem, MarkerResult, MarkerResultSubscriber, MarkersExportData, MarkersImportData, MarkerStatus } from '@kubevious/ui-middleware/dist/services/marker';
@@ -84,11 +84,18 @@ export class MarkerService extends BaseHttpService implements IMarkerService
             .then((result) => result.data);
     }
 
-    subscribeItemStatuses(cb: (items: MarkerStatus[]) => void): void
+    subscribeMarkers(cb: (items: MarkerListItem[]) => void): IService
     {
-        this._ws.subscribe({ kind: WebSocketKind.markers_statuses }, (value) => {
+        return this._ws.subscribe({ kind: WebSocketKind.markers_list }, (value) => {
             cb(value);
-        })
+        });
+    }
+
+    subscribeItemStatuses(cb: (items: MarkerStatus[]) => void): IService
+    {
+        return this._ws.subscribe({ kind: WebSocketKind.markers_statuses }, (value) => {
+            cb(value);
+        });
     }
 
     subscribeItemResult(cb: (result: MarkerResult) => void): MarkerResultSubscriber

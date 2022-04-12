@@ -8,11 +8,9 @@ export const RulesPage = () => {
 
     useSharedState((sharedState) => {
         sharedState.set('need_clusters_list', true);
-        sharedState.set('need_markers_list', true);
 
         return () => {
             sharedState.set('need_clusters_list', false);
-            sharedState.set('need_markers_list', false);
         };
     });
 

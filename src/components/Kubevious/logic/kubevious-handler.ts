@@ -39,7 +39,7 @@ export class KubeviousHandler
 
         this._sharedState = app.sharedState.user();
 
-        this._sharedState.set("need_markers_list", true);
+        this._sharedState.markUserFlag("need_markers_list", "kubevious-handler");
 
         this._diagramWebSocketService = app.serviceRegistry.resolveService<IWebSocketService>({ kind: 'socket' });
 
@@ -160,7 +160,7 @@ export class KubeviousHandler
         this._sharedState.close();
 
         this._sharedState.set('auto_pan_to_selected_dn', false);
-        this._sharedState.set('need_markers_list', false);
+        this._sharedState.clearUserFlag("need_markers_list", "kubevious-handler");
         this._sharedState.set('current_cluster_id', null);
         this._sharedState.set('current_snapshot_id', null);
 

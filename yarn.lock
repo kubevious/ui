@@ -1664,10 +1664,10 @@
     the-lodash "^2.0.9"
     uuid "^8.3.2"
 
-"@kubevious/ui-components@^1.0.207", "@kubevious/ui-components@^1.0.214", "@kubevious/ui-components@^1.0.216":
-  version "1.0.216"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-components/-/ui-components-1.0.216.tgz#141dd26a6fead9886612ff3cc2b2037d7ed4793f"
-  integrity sha512-XsCO1TDhbLoWsLIMe+E6I7RYCOylmrnMiNL4Nv+rC5S8ubUnEJ16kshyoBfFRh4uzJvUPzy1qNBPFRhKvM8Plg==
+"@kubevious/ui-components@^1.0.207", "@kubevious/ui-components@^1.0.214", "@kubevious/ui-components@^1.0.218":
+  version "1.0.218"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-components/-/ui-components-1.0.218.tgz#760896c93beeb3418b0ae7db06cf52c64dba2147"
+  integrity sha512-cO+XrRLugzuJoeuT3KfCmEkgWSHACNjmlO9wShfSuovCbtGedhbGpEybhM2Hs9zFoQqLEqMRfmASjQ+KBl+1Ow==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "6.1.1"
     "@fortawesome/free-brands-svg-icons" "6.1.1"
@@ -1725,10 +1725,10 @@
     the-promise "^2.0.13"
     uuid "^8.3.2"
 
-"@kubevious/ui-middleware@^1.0.46", "@kubevious/ui-middleware@^1.0.59":
-  version "1.0.59"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-middleware/-/ui-middleware-1.0.59.tgz#214d5ff9985c7099bd0480ab671135f2d35dce70"
-  integrity sha512-Wk/uhWu/uk8rRO23gaJTnh9i+GffX0YL8nXYEharOI1g0TmZHou6gjtWhhjDPEcOXMbizBfp2Sf9vQJKe/v0Ag==
+"@kubevious/ui-middleware@^1.0.46", "@kubevious/ui-middleware@^1.0.59", "@kubevious/ui-middleware@^1.0.61":
+  version "1.0.61"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-middleware/-/ui-middleware-1.0.61.tgz#9873d84eadb01f8e9dd6bed20be06c53834941e5"
+  integrity sha512-nFrLm0JHlwcl2rikOa9VKZw6m2s2GQVIHnKcXz0z6qPY460RvjNuYIF2n8A1C34NC4Ye57/3OncIVuVPK1r+1Q==
   dependencies:
     "@kubevious/entity-meta" "^1.0.56"
     "@kubevious/http-client" "^1.0.19"
@@ -1749,15 +1749,15 @@
     js-yaml "^4.0.0"
     the-lodash "^2.0.9"
 
-"@kubevious/ui-rule-engine@^1.0.79":
-  version "1.0.79"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-rule-engine/-/ui-rule-engine-1.0.79.tgz#adb7767fb9e8479abdef2dbdc9476c7ddd6a4060"
-  integrity sha512-gqbBNmh7ZheLS7rXr3NXJ+nbp9n2N0MIUQxYPh/rDUNNpyb4GK0MNJqycboQ5SQN7QpIJMzLw95A0Gi6FYPO4w==
+"@kubevious/ui-rule-engine@^1.0.80":
+  version "1.0.80"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-rule-engine/-/ui-rule-engine-1.0.80.tgz#b9b74b06ecb9548a298650c415fb7680887dfbe2"
+  integrity sha512-PjBgFNKHhW7+Nmz0Gl/LriwScVSf1iLgFVkbBd43Dsj2ydJJL1CO6GCLWIPxoPAMWS5rLYDtJDvdbYOdRorlLw==
   dependencies:
     "@kubevious/entity-meta" "^1.0.56"
-    "@kubevious/ui-components" "^1.0.207"
+    "@kubevious/ui-components" "^1.0.218"
     "@kubevious/ui-framework" "^1.0.59"
-    "@kubevious/ui-middleware" "^1.0.46"
+    "@kubevious/ui-middleware" "^1.0.59"
     bootstrap "^5.0.0"
     classnames "^2.2.6"
     node-sass "^4.14.1"
