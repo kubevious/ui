@@ -6,8 +6,8 @@
   "dependencies": {
     "@kubevious/helpers": "^1.0.63",
     "@kubevious/ui-browser": "^1.0.31",
-    "@kubevious/ui-components": "^1.0.214",
-    "@kubevious/ui-dev-tools": "^1.0.25",
+    "@kubevious/ui-components": "^1.0.216",
+    "@kubevious/ui-dev-tools": "^1.0.26",
     "@kubevious/ui-framework": "^1.0.59",
     "@kubevious/ui-middleware": "^1.0.59",
     "@kubevious/ui-properties": "^1.0.52",
@@ -15,7 +15,7 @@
     "@kubevious/ui-search": "^1.0.48",
     "@kubevious/ui-time-machine": "^1.0.28",
     "@kubevious/ui-validator-config": "^1.0.4",
-    "@kubevious/ui-worldvious": "^1.0.2",
+    "@kubevious/ui-worldvious": "^1.0.3",
     "@kubevious/websocket-client": "^1.0.19",
     "bootstrap": "^5.0.0",
     "classnames": "^2.2.6",
@@ -85,16 +85,16 @@
     "the-lodash": "^2.0.9",
     "@kubevious/ui-framework": "^1.0.59",
     "@kubevious/ui-middleware": "^1.0.59",
-    "@kubevious/ui-components": "^1.0.214",
+    "@kubevious/ui-components": "^1.0.216",
     "@kubevious/ui-properties": "^1.0.52",
     "@kubevious/ui-rule-engine": "^1.0.79",
     "@kubevious/ui-time-machine": "^1.0.28",
     "@kubevious/helpers": "^1.0.63",
     "@kubevious/websocket-client": "^1.0.19",
     "@kubevious/ui-browser": "^1.0.31",
-    "@kubevious/ui-dev-tools": "^1.0.25",
+    "@kubevious/ui-dev-tools": "^1.0.26",
     "@kubevious/ui-search": "^1.0.48",
     "@kubevious/ui-validator-config": "^1.0.4",
-    "@kubevious/ui-worldvious": "^1.0.2"
+    "@kubevious/ui-worldvious": "^1.0.3"
   }
 }

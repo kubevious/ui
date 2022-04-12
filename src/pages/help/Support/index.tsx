@@ -17,6 +17,7 @@ export const SupportPage: FC = () => {
                 <Label text="Something not working? Submit a bug request." />
                 <PageLink name={GITHUB_SUBMIT_ISSUE_URL} 
                           path={GITHUB_SUBMIT_ISSUE_URL}
+                          target="_blank"
                           />
             </div>
 

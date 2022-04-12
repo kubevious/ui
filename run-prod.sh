@@ -9,6 +9,5 @@ export NODE_ENV=development
 echo "NODE_ENV=${NODE_ENV}"
 
 export REACT_APP_APP_ROOT_URL="http://localhost:${API_GATEWAY_PORT}"
-export REACT_APP_ENABLE_DEV_TOOLS="true"
 
 npm start

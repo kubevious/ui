@@ -1664,10 +1664,10 @@
     the-lodash "^2.0.9"
     uuid "^8.3.2"
 
-"@kubevious/ui-components@^1.0.207", "@kubevious/ui-components@^1.0.208", "@kubevious/ui-components@^1.0.214":
-  version "1.0.214"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-components/-/ui-components-1.0.214.tgz#6fc768738b197671c751f2de3b7252f22b9329f5"
-  integrity sha512-LL0a65F7XpwdbGSEHfa2DR/KPib5r8MuYI+78Jlq4dadD1wjaPED0zaJKD34eYFx27AWtOG8k6czIJZ5SnyH6Q==
+"@kubevious/ui-components@^1.0.207", "@kubevious/ui-components@^1.0.214", "@kubevious/ui-components@^1.0.216":
+  version "1.0.216"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-components/-/ui-components-1.0.216.tgz#141dd26a6fead9886612ff3cc2b2037d7ed4793f"
+  integrity sha512-XsCO1TDhbLoWsLIMe+E6I7RYCOylmrnMiNL4Nv+rC5S8ubUnEJ16kshyoBfFRh4uzJvUPzy1qNBPFRhKvM8Plg==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "6.1.1"
     "@fortawesome/free-brands-svg-icons" "6.1.1"
@@ -1696,10 +1696,10 @@
     the-promise "^2.0.13"
     uuid "^8.3.2"
 
-"@kubevious/ui-dev-tools@^1.0.25":
-  version "1.0.25"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-dev-tools/-/ui-dev-tools-1.0.25.tgz#937dc20f44146000137b6c64e0d73f40b1965410"
-  integrity sha512-u6YmehBROtcW+1mDrCyQ0RLSU9fVaQB7bgg2yZJeA8mQSXp7gYqPlM0bpU6eXhbxxpKvzPFZz9aF9QcjSxGeYw==
+"@kubevious/ui-dev-tools@^1.0.26":
+  version "1.0.26"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-dev-tools/-/ui-dev-tools-1.0.26.tgz#4396b91cfbb85fa103d76da8f55f4b7ffc95a8d7"
+  integrity sha512-xzHObN57sklZYDGxv4dIAVcDnt8EYjOR4rr1bZhlxisMKLQUldg18e4qb0sMmRShxTVlNTnwfR7oIE/aFca2JQ==
   dependencies:
     "@kubevious/helpers" "^1.0.63"
     "@kubevious/http-client" "^1.0.19"
@@ -1708,6 +1708,7 @@
     "@kubevious/ui-middleware" "^1.0.59"
     classnames "^2.2.6"
     react-router-dom "^5.2.0"
+    react-usestateref "^1.0.8"
     the-lodash "^2.0.9"
     the-promise "^2.0.13"
 
@@ -1724,7 +1725,7 @@
     the-promise "^2.0.13"
     uuid "^8.3.2"
 
-"@kubevious/ui-middleware@^1.0.46", "@kubevious/ui-middleware@^1.0.58", "@kubevious/ui-middleware@^1.0.59":
+"@kubevious/ui-middleware@^1.0.46", "@kubevious/ui-middleware@^1.0.59":
   version "1.0.59"
   resolved "https://registry.yarnpkg.com/@kubevious/ui-middleware/-/ui-middleware-1.0.59.tgz#214d5ff9985c7099bd0480ab671135f2d35dce70"
   integrity sha512-Wk/uhWu/uk8rRO23gaJTnh9i+GffX0YL8nXYEharOI1g0TmZHou6gjtWhhjDPEcOXMbizBfp2Sf9vQJKe/v0Ag==
@@ -1813,14 +1814,14 @@
     react-router-dom "5.2.0"
     the-lodash "^2.0.9"
 
-"@kubevious/ui-worldvious@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-worldvious/-/ui-worldvious-1.0.2.tgz#4fec734599a249eaa8e1310b9785b1a56643dc0a"
-  integrity sha512-ddaZUw61o5DSc3SDqc3O5FlOZCHeXF7xeswdsJanjn75MCA7kQ5cigvUoPvX0lo+65iPCHRV5h7yXD6FNZMnAQ==
+"@kubevious/ui-worldvious@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-worldvious/-/ui-worldvious-1.0.3.tgz#be10f3335da1cf23c7bf2e60f50da975be676712"
+  integrity sha512-Lc3DQZ8H/QbOE8O/4015p4BIZuvgadEDI0xFqp3MPWP8kQnpTagnjPo4+7wAUW0JMU3ZUv8Yz20KE/CoxxdWFA==
   dependencies:
-    "@kubevious/ui-components" "^1.0.208"
+    "@kubevious/ui-components" "^1.0.214"
     "@kubevious/ui-framework" "^1.0.59"
-    "@kubevious/ui-middleware" "^1.0.58"
+    "@kubevious/ui-middleware" "^1.0.59"
     bootstrap "^5.0.0"
     classnames "^2.2.6"
     markdown-to-jsx "^7.1.7"
@@ -11482,6 +11483,11 @@ react-transition-group@^4.3.0, react-transition-group@^4.4.2:
     dom-helpers "^5.0.1"
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
+
+react-usestateref@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/react-usestateref/-/react-usestateref-1.0.8.tgz#b40519af0d6f3b3822c70eb5db80f7d47f1b1ff5"
+  integrity sha512-whaE6H0XGarFKwZ3EYbpHBsRRCLZqdochzg/C7e+b6VFMTA3LS3K4ZfpI4NT40iy83jG89rGXrw70P9iDfOdsA==
 
 react@17.0.2, react@^17.0.2:
   version "17.0.2"
