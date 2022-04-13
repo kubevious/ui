@@ -114,7 +114,7 @@ export const ENDPOINTS: EndpointInfo[] = [
         params: ['marker'],
     },
     {
-        name: '/rule-engine/marker-statuses',
+        name: '/rule-engine/markers-statuses',
         method: HttpMethod.GET,
     },
     {

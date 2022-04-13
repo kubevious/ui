@@ -1605,10 +1605,10 @@
   dependencies:
     the-lodash "^2.0.9"
 
-"@kubevious/helpers@^1.0.63":
-  version "1.0.63"
-  resolved "https://registry.yarnpkg.com/@kubevious/helpers/-/helpers-1.0.63.tgz#69070e0651e9770d331d15016ca8d13555b3ea9b"
-  integrity sha512-/aJl7iYCfMu1wpTI3flYvR/xF+Yvz9ulUiXZ2MN+1VgYV9OczMtQCkrmnekDAnQ4SOhOY08/kCovgn1QBct5TA==
+"@kubevious/helpers@^1.0.63", "@kubevious/helpers@^1.0.64":
+  version "1.0.64"
+  resolved "https://registry.yarnpkg.com/@kubevious/helpers/-/helpers-1.0.64.tgz#4d1d8f7aa61fee3ccfcb8d91460599b16439da6e"
+  integrity sha512-YOVh8b4A7wbeck6VJAU0uhkNA+fJvg0HmUOFdy9cqZYU9IgabiKN6DcXOkWnaKHiA/mr1XTTZXQoy/9hyr84Sg==
   dependencies:
     moment "^2.29.1"
     the-lodash "^2.0.9"
@@ -1725,10 +1725,10 @@
     the-promise "^2.0.13"
     uuid "^8.3.2"
 
-"@kubevious/ui-middleware@^1.0.46", "@kubevious/ui-middleware@^1.0.59", "@kubevious/ui-middleware@^1.0.61":
-  version "1.0.61"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-middleware/-/ui-middleware-1.0.61.tgz#9873d84eadb01f8e9dd6bed20be06c53834941e5"
-  integrity sha512-nFrLm0JHlwcl2rikOa9VKZw6m2s2GQVIHnKcXz0z6qPY460RvjNuYIF2n8A1C34NC4Ye57/3OncIVuVPK1r+1Q==
+"@kubevious/ui-middleware@^1.0.46", "@kubevious/ui-middleware@^1.0.59", "@kubevious/ui-middleware@^1.0.61", "@kubevious/ui-middleware@^1.0.62":
+  version "1.0.62"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-middleware/-/ui-middleware-1.0.62.tgz#2fccbbc01f53451e0665d74040264d205c97d5ea"
+  integrity sha512-e7kfROVKpHFlemouN86dLIwXP2lSbIFhx4l5OyoJE4q909cqpSYOp+MjA3eCrEf9ke14WmQ9DwaGHUoJ8/NQ1w==
   dependencies:
     "@kubevious/entity-meta" "^1.0.56"
     "@kubevious/http-client" "^1.0.19"
@@ -1749,10 +1749,10 @@
     js-yaml "^4.0.0"
     the-lodash "^2.0.9"
 
-"@kubevious/ui-rule-engine@^1.0.81":
-  version "1.0.81"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-rule-engine/-/ui-rule-engine-1.0.81.tgz#aa81eba2d76fb58f165e99df81dd035a39aa6900"
-  integrity sha512-GESq7TI0YrmFN5jM0bbA+3hdNLh9tgQeK157wX9MHWYlhnjyPSuh0fFg89h4yKEc8UIOVOtAA1+QHovDiAHkKA==
+"@kubevious/ui-rule-engine@^1.0.83":
+  version "1.0.83"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-rule-engine/-/ui-rule-engine-1.0.83.tgz#2604cbf3a55c7cd8f4c7ff99ab576cbe7a76d906"
+  integrity sha512-FoOMCgroA+VP0UyxelQPNS76KH/sXuYSzBZxxZWkZnWtAFd+Ob6dJFs+Hrrw9l4FcojcOFYu7T57TqeJFWDFfQ==
   dependencies:
     "@kubevious/entity-meta" "^1.0.56"
     "@kubevious/ui-components" "^1.0.220"
@@ -1780,14 +1780,14 @@
     the-lodash "^2.0.9"
     the-promise "^2.0.13"
 
-"@kubevious/ui-time-machine@^1.0.28":
-  version "1.0.28"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-time-machine/-/ui-time-machine-1.0.28.tgz#74826f89c25245391b6cd2ffd397639024a18317"
-  integrity sha512-yE4emljaJQTeX0RoYvAFF+FpDhMMH3YaCvRB+vjMJfs4DRftkTdtgiQc43//cXBkdj1J0cghinq+IDdKRYjHJw==
+"@kubevious/ui-time-machine@^1.0.29":
+  version "1.0.29"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-time-machine/-/ui-time-machine-1.0.29.tgz#c23b1d8880e944edf47b8cd721ae4ade44c631d1"
+  integrity sha512-kQrUH+h3CRAFkMBEUq66CdTf5ZWGulKYKrwncpbGdYZqENtVVzAEgxvTjhz6BRMhkep6jqF3y4HWiSb4c1hNKg==
   dependencies:
-    "@kubevious/ui-components" "^1.0.207"
+    "@kubevious/ui-components" "^1.0.220"
     "@kubevious/ui-framework" "^1.0.59"
-    "@kubevious/ui-middleware" "^1.0.46"
+    "@kubevious/ui-middleware" "^1.0.61"
     classnames "^2.2.6"
     d3 "^6.5.0"
     jquery "^3.5.1"

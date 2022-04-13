@@ -10,7 +10,6 @@ browser/ordering/order-warn-asc.svg
 browser/ordering/order-warn-desc.svg
 browser/power.svg
 browser/vertical-flow.svg
-busy.svg
 check/false.svg
 check/true.svg
 close.svg
@@ -96,6 +95,7 @@ props/teleport/source.svg
 props/teleport/source_orig.svg
 props/teleport/target.svg
 props/teleport/target_orig.svg
+rule-engine/busy.svg
 search/edit.svg
 search/eye.svg
 search/hide.svg

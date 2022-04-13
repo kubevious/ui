@@ -73,7 +73,7 @@ export class MarkerService extends BaseHttpService implements IMarkerService
     getItemStatuses(): Promise<MarkerStatus[]>
     {
         return this.client
-            .get<MarkerStatus[]>("/marker-statuses")
+            .get<MarkerStatus[]>("/markers-statuses")
             .then((result) => result.data);
     }
 
