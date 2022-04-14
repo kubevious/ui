@@ -1,1 +1,2 @@
-export const version = "v4.5.6";
+// This file is generated and updated from CI/CD
+export default "v0.9.16";

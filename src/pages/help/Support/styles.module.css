@@ -1,0 +1,27 @@
+.supportFormContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 20px
+}
+
+.emailContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    box-sizing: border-box;
+
+    padding: 10px;
+}
+
+.slackContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    box-sizing: border-box;
+
+    padding: 10px;
+
+    gap: 15px;
+}

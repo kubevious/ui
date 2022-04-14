@@ -3,6 +3,12 @@ MY_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$(basename "${BASH_SOURCE
 MY_DIR="$(dirname $MY_PATH)"
 cd $MY_DIR
 
-export BACKEND_URL=http://localhost:4001
+source configuration.sh
+
+export NODE_ENV=development
+echo "NODE_ENV=${NODE_ENV}"
+
+export REACT_APP_APP_ROOT_URL="http://localhost:${API_GATEWAY_PORT}"
+export REACT_APP_ENABLE_DEV_TOOLS="true"
 
 npm start

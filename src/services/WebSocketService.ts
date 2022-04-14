@@ -1,4 +1,3 @@
-import _ from 'the-lodash'
 import { IWebSocketService } from '@kubevious/ui-middleware';
 import { WebSocketClient, WebSocketTarget, WebSocketSubscription, WebSocketScope } from '@kubevious/websocket-client';
 
@@ -8,7 +7,7 @@ export class WebSocketService implements IWebSocketService
 
     constructor()
     {
-        this._socket = new WebSocketClient({
+        this._socket = new WebSocketClient('socket', {
             path: '/socket'
         });
         this._socket.run();
@@ -33,6 +32,6 @@ export class WebSocketService implements IWebSocketService
 
     updateContext(updatedContext: WebSocketTarget): void
     {
-        
+        this._socket.updateContext(updatedContext);
     }
 }

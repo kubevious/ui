@@ -15,22 +15,24 @@ div {
   box-sizing: border-box;
   font-family: 'Roboto', sans-serif;
   font-weight: 400;
-
-  &::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    background-color: #666;
-  }
-
-  &::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-    background-color: #F5F5F5;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: #f2a81c;
-  }
 }
+
+// div {
+//   &::-webkit-scrollbar-track {
+//     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+//     background-color: #666;
+//   }
+
+//   &::-webkit-scrollbar {
+//     width: 6px;
+//     height: 6px;
+//     background-color: #F5F5F5;
+//   }
+
+//   &::-webkit-scrollbar-thumb {
+//     background-color: #f2a81c;
+//   }
+// }
 
 #root {
   height: 100vh;
