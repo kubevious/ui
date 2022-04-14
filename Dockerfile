@@ -4,9 +4,6 @@ FROM kubevious/node-builder:14 as build
 RUN node --version
 RUN npm --version
 RUN yarn --version
-# ENV NODE_ENV production
-# ENV NODE_ENV development
-# ENV PATH /app/node_modules/.bin:$PATH
 WORKDIR /app
 COPY ./package*.json ./
 COPY ./yarn.lock ./
@@ -24,6 +21,5 @@ RUN ls -la /app/build/
 
 ###############################################################################
 # Step 2 : Runner image
-FROM kubevious/nginx:1.8
-COPY nginx/default.conf /etc/nginx/conf.d/
-COPY --from=build /app/build /usr/share/nginx/html
+FROM caddy:2.4.6-alpine
+COPY --from=build /app/build /caddy/www

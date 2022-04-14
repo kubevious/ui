@@ -1,0 +1,21 @@
+{
+   admin :5555
+}
+
+:4000 {
+
+    handle /api/v1/* {
+        reverse_proxy kubevious-backend:4002
+    }
+
+    handle /socket/* {
+        reverse_proxy kubevious-backend:4002
+    }
+
+    handle /* {
+        root * /caddy/www
+        try_files {path} /index.html
+        file_server
+    }
+
+}

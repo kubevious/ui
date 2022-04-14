@@ -9,5 +9,8 @@ docker run \
     -it \
     --rm \
     --name "${CONTAINER_NAME}" \
+    -h ${CONTAINER_NAME} \
     --network ${NETWORK_NAME} \
+    -p 4050:4000 \
+    -v ${MY_DIR}/docker/Caddyfile:/etc/caddy/Caddyfile \
     ${IMAGE_NAME}
