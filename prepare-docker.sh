@@ -7,9 +7,10 @@ source configuration.sh
 
 #  --no-cache --progress=plain 
 docker build \
+    -t ${IMAGE_NAME} \
     -m 4000m \
-    -t kubevious-ui-react:dev \
+    --progress=plain \
     .
 
 echo "*** RUN WITH:"
-echo "    $ ./run-dev-docker.sh"
+echo "    $ ./run-docker.sh"
