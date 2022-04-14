@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react"
 import { useService } from '@kubevious/ui-framework';
 import { IBackendStatusService, BackendMetricsResponse, BackendMetricItem } from '@kubevious/ui-middleware';
 
-import { version } from '../../version'
+import VERSION from '../../version'
 
 export const BackendMetrics = () => {
 
@@ -21,7 +21,7 @@ export const BackendMetrics = () => {
         {
             category: 'Frontend',
             name: 'Version',
-            value: version
+            value: VERSION
         }
     ], backendMetrics);
 

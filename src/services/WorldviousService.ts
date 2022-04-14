@@ -3,9 +3,6 @@ import { BaseHttpService, HttpClient } from '@kubevious/ui-framework';
 import { IWorldviousService, IWebSocketService, WebSocketKind } from '@kubevious/ui-middleware';
 import { app } from '@kubevious/ui-framework';
 
-import {  } from '@kubevious/ui-framework'
-import { version } from '../version';
-
 import { WorldviousFeedbackSnoozeData, WorldviousFeedbackSubmitData, WorldviousNotificationsInfo, WorldviousVersionInfoResult } from '@kubevious/ui-middleware/dist/services/worldvious';
 
 export class WorldviousService extends BaseHttpService implements IWorldviousService {
