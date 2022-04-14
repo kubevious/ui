@@ -10,6 +10,7 @@ import { HttpClientError } from '@kubevious/http-client'
 import { SideMenu } from '../SideMenu';
 
 import styles from './styles.module.css';
+import { SEO } from '../SEO';
 
 export const MainTemplate: FC = ({ children }) => {
 
@@ -54,6 +55,8 @@ export const MainTemplate: FC = ({ children }) => {
     };
 
     return (<div className={styles.mainContainer}>
+        <SEO />
+        
         <SideMenu isCollapsed={isCollapsed} />
 
         <div className={styles.mainComponent}

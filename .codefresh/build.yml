@@ -142,8 +142,8 @@ steps:
 
   push_dockerhub:
     title: "Pushing image to DockerHub"
-    type: push
     stage: release
+    type: push
     image_name: "kubevious/${{PRODUCT_NAME}}"
     registry: "dockerhub"
     candidate: "${{build}}"
@@ -167,7 +167,7 @@ steps:
       - ${{CICD_REPO_PATH}}/cicd-commit-product-repo.sh
 
   prepare_demo_build:
-    title: Prepare Demo prepare_demo_build
+    title: Prepare Demo Build
     stage: demo
     image: codefresh/cli
     shell: bash
@@ -195,8 +195,8 @@ steps:
 
   push_demo_dockerhub:
     title: "Pushing Demo image to DockerHub"
+    stage: demo
     type: push
-    stage: release
     image_name: "kubevious/${{PRODUCT_NAME}}-demo"
     registry: "dockerhub"
     candidate: "${{build}}"
