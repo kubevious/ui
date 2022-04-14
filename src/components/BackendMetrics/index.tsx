@@ -1,7 +1,7 @@
 import _ from 'the-lodash';
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { useService } from '@kubevious/ui-framework';
-import { IBackendStatusService, BackendMetricsResponse, BackendMetricItem } from '@kubevious/ui-middleware';
+import { IBackendStatusService, BackendMetricItem } from '@kubevious/ui-middleware';
 
 import VERSION from '../../version'
 

@@ -16,6 +16,7 @@ export const SocialLinks: FC = () => {
                    href={x.url} 
                    className={styles.socialIcon}
                    target="_blank"
+                   rel="noopener noreferrer"
                    >
                     <FontAwesomeIcon icon={x.icon}
                                     size="2x"

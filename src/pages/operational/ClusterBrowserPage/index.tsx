@@ -1,5 +1,5 @@
+import React, { useEffect } from 'react';
 import { InnerPage, PageHeader } from '@kubevious/ui-components';
-import React, { useEffect, useState } from 'react';
 
 import { TimeMachineActive } from '@kubevious/ui-time-machine';
 

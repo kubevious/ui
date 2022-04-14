@@ -1,4 +1,3 @@
-import _ from 'the-lodash';
 import { BaseHttpService } from '@kubevious/ui-framework';
 import { BackendMetricsResponse, BackendVersionResponse, IBackendStatusService } from '@kubevious/ui-middleware';
 

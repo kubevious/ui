@@ -1,4 +1,3 @@
-import _ from 'the-lodash';
 import React, { FC, useState } from 'react';
 import { SideMenu as BaseSideMenu, SideMenuItem, SideMenuSection } from '@kubevious/ui-components';
 import { subscribeToSharedState, useForceUpdate, useSharedState } from '@kubevious/ui-framework';

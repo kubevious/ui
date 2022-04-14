@@ -1,5 +1,3 @@
-import _ from 'the-lodash'
-
 import { WebSocketService } from './WebSocketService'
 import { RuleService } from './RuleService'
 import { MarkerService } from './MarkerService'

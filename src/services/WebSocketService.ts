@@ -1,4 +1,3 @@
-import _ from 'the-lodash'
 import { IWebSocketService } from '@kubevious/ui-middleware';
 import { WebSocketClient, WebSocketTarget, WebSocketSubscription, WebSocketScope } from '@kubevious/websocket-client';
 

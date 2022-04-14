@@ -1,4 +1,3 @@
-import _ from 'the-lodash';
 import { BaseHttpService, HttpClient } from '@kubevious/ui-framework';
 import { IWorldviousService, IWebSocketService, WebSocketKind } from '@kubevious/ui-middleware';
 import { app } from '@kubevious/ui-framework';
