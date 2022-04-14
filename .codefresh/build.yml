@@ -6,6 +6,7 @@ stages:
   - "build"
   - "test"
   - "release"
+  - "demo"
 
 steps:
 
@@ -36,6 +37,9 @@ steps:
       - export CICD_REPO_NAME=cicd
       - cf_export CICD_REPO_NAME=${CICD_REPO_NAME}
       - cf_export CICD_REPO_PATH=/codefresh/volume/${CICD_REPO_NAME}.git
+      - export CICD_DEMO_REPO_NAME=cicd-demo
+      - cf_export CICD_DEMO_REPO_NAME=${CICD_DEMO_REPO_NAME}
+      - cf_export CICD_DEMO_REPO_PATH=/codefresh/volume/${CICD_DEMO_REPO_NAME}.git
       - 'echo "Is Release: ${IS_RELEASE}"'
       - 'echo "Product: ${PRODUCT_NAME}"'
       - 'echo "Repo: ${{CF_REPO_NAME}}"'
@@ -71,6 +75,24 @@ steps:
       - 'git clone https://${{CF_REPO_OWNER}}:${{GITHUB_TOKEN}}@github.com/${{CF_REPO_OWNER}}/${{CICD_REPO_NAME}}.git ${{CICD_REPO_PATH}}'
       - ls -la
       - cd ${{CICD_REPO_PATH}}
+      - ls -la
+
+  clone_cicd_demo:
+    title: Clone CI/CD Demo Repo
+    stage: clone
+    image: 'alpine/git:latest'
+    working_directory: "/codefresh/volume"
+    when: 
+      condition: 
+        all: 
+          isRelease: '"${{IS_RELEASE}}" == "true"'    
+    commands:
+      - pwd
+      - ls -la
+      - rm -rf ${{CICD_DEMO_REPO_PATH}}
+      - 'git clone https://${{CF_REPO_OWNER}}:${{GITHUB_TOKEN}}@github.com/${{CF_REPO_OWNER}}/${{CICD_DEMO_REPO_NAME}}.git ${{CICD_DEMO_REPO_PATH}}'
+      - ls -la
+      - cd ${{CICD_DEMO_REPO_PATH}}
       - ls -la
 
   inject_version:
@@ -130,8 +152,8 @@ steps:
     when: 
       condition: 
         all: 
-          isRelease: '"${{IS_RELEASE}}" == "true"'          
-
+          isRelease: '"${{IS_RELEASE}}" == "true"'       
+     
   commit_main_repo:
     title: Commit Version Changes
     stage: release
@@ -143,3 +165,44 @@ steps:
           isRelease: '"${{IS_RELEASE}}" == "true"'
     commands:
       - ${{CICD_REPO_PATH}}/cicd-commit-product-repo.sh
+
+  prepare_demo_build:
+    title: Prepare Demo prepare_demo_build
+    stage: demo
+    image: codefresh/cli
+    shell: bash
+    working_directory: "${{MAIN_REPO_PATH}}"
+    when: 
+      condition: 
+        all: 
+          isRelease: '"${{IS_RELEASE}}" == "true"'     
+    commands:
+      - cp -f ${{CICD_DEMO_REPO_PATH}}/src/site-preview.jpg ./public/img/site-preview.jpg
+      - cp -f ${{CICD_DEMO_REPO_PATH}}/src/seo.tsx ./src/components/SEO/index.tsx
+      - git status
+
+  build_demo:
+    title: "Building Demo Docker Image"
+    stage: demo
+    type: build
+    image_name: "kubevious/${{PRODUCT_NAME}}-demo"
+    working_directory: "${{MAIN_REPO_PATH}}"
+    disable_push: true
+    when: 
+      condition: 
+        all: 
+          isRelease: '"${{IS_RELEASE}}" == "true"'     
+
+  push_demo_dockerhub:
+    title: "Pushing Demo image to DockerHub"
+    type: push
+    stage: release
+    image_name: "kubevious/${{PRODUCT_NAME}}-demo"
+    registry: "dockerhub"
+    candidate: "${{build}}"
+    tags:
+      - "${{DOCKER_TAG}}"
+    when: 
+      condition: 
+        all: 
+          isRelease: '"${{IS_RELEASE}}" == "true"'   
