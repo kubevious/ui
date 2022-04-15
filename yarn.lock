@@ -1749,12 +1749,13 @@
     js-yaml "^4.0.0"
     the-lodash "^2.0.9"
 
-"@kubevious/ui-rule-engine@^1.0.83":
-  version "1.0.83"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-rule-engine/-/ui-rule-engine-1.0.83.tgz#2604cbf3a55c7cd8f4c7ff99ab576cbe7a76d906"
-  integrity sha512-FoOMCgroA+VP0UyxelQPNS76KH/sXuYSzBZxxZWkZnWtAFd+Ob6dJFs+Hrrw9l4FcojcOFYu7T57TqeJFWDFfQ==
+"@kubevious/ui-rule-engine@^1.0.84":
+  version "1.0.84"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-rule-engine/-/ui-rule-engine-1.0.84.tgz#ea55e7bd563673d6f10ac9cf709b51d9f2da35d4"
+  integrity sha512-x1apqDDfBjbcYLhOVAEfpXmrhgs3XuALV7ggxyKk7dWvJHCVIQDRdrSly+i0qYewJiA6v8I1paBPvCcWTHvhEg==
   dependencies:
     "@kubevious/entity-meta" "^1.0.56"
+    "@kubevious/state-registry" "^1.0.13"
     "@kubevious/ui-components" "^1.0.220"
     "@kubevious/ui-framework" "^1.0.59"
     "@kubevious/ui-middleware" "^1.0.61"
