@@ -1,0 +1,1 @@
+window.KUBEVIOUS_VERSION = 'vX.X.X';

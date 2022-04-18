@@ -4,3 +4,6 @@ export MY_DIR="$(dirname $MY_PATH)"
 cd ${MY_DIR}
 
 ../workspace.git/kubevious-repo-build.sh
+
+echo "*** SERVE WITH:"
+echo "    $ ./local-serve.sh"
