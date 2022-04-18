@@ -13,4 +13,5 @@ docker run \
     --network ${NETWORK_NAME} \
     -p 4050:4000 \
     -v ${MY_DIR}/docker/Caddyfile:/etc/caddy/Caddyfile \
+    -e KUBEVIOUS_VERSION=1.2.3 \
     ${IMAGE_NAME}
