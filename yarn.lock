@@ -1664,10 +1664,10 @@
     the-lodash "^2.0.9"
     uuid "^8.3.2"
 
-"@kubevious/ui-components@^1.0.207", "@kubevious/ui-components@^1.0.214", "@kubevious/ui-components@^1.0.218", "@kubevious/ui-components@^1.0.220", "@kubevious/ui-components@^1.0.221", "@kubevious/ui-components@^1.0.224":
-  version "1.0.224"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-components/-/ui-components-1.0.224.tgz#d2c4841b3f54b40c9caeaa365f12957562bf23e7"
-  integrity sha512-Me7TkOFpe58qy1xHAT/SUoN4f485XLI7xUtfli0Sq+Io0VFi8SuLiHERZQDArI0vNarNofgaD3rutUr1JByg+w==
+"@kubevious/ui-components@^1.0.207", "@kubevious/ui-components@^1.0.214", "@kubevious/ui-components@^1.0.218", "@kubevious/ui-components@^1.0.220", "@kubevious/ui-components@^1.0.221", "@kubevious/ui-components@^1.0.227":
+  version "1.0.227"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-components/-/ui-components-1.0.227.tgz#71ec0fc130565e18968b961ea5161499e5f19381"
+  integrity sha512-YJ+xbY0jEsM6fLRTRo3VyjK6NHA2iRBgGWL0RkC4A/ci/3xU7MYZFH+Mpn8v9eTR9vxaX5g9kpQ9b3BDFI0IOw==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "6.1.1"
     "@fortawesome/free-brands-svg-icons" "6.1.1"
