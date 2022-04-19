@@ -6,7 +6,7 @@
   "dependencies": {
     "@kubevious/helpers": "^1.0.64",
     "@kubevious/ui-browser": "^1.0.31",
-    "@kubevious/ui-components": "^1.0.227",
+    "@kubevious/ui-components": "^1.0.230",
     "@kubevious/ui-dev-tools": "^1.0.26",
     "@kubevious/ui-framework": "^1.0.59",
     "@kubevious/ui-middleware": "^1.0.62",
@@ -85,7 +85,7 @@
     "the-lodash": "^2.0.9",
     "@kubevious/ui-framework": "^1.0.59",
     "@kubevious/ui-middleware": "^1.0.62",
-    "@kubevious/ui-components": "^1.0.227",
+    "@kubevious/ui-components": "^1.0.230",
     "@kubevious/ui-properties": "^1.0.54",
     "@kubevious/ui-rule-engine": "^1.0.84",
     "@kubevious/ui-time-machine": "^1.0.29",

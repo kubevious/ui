@@ -1664,10 +1664,10 @@
     the-lodash "^2.0.9"
     uuid "^8.3.2"
 
-"@kubevious/ui-components@^1.0.207", "@kubevious/ui-components@^1.0.214", "@kubevious/ui-components@^1.0.218", "@kubevious/ui-components@^1.0.220", "@kubevious/ui-components@^1.0.221", "@kubevious/ui-components@^1.0.227":
-  version "1.0.227"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-components/-/ui-components-1.0.227.tgz#71ec0fc130565e18968b961ea5161499e5f19381"
-  integrity sha512-YJ+xbY0jEsM6fLRTRo3VyjK6NHA2iRBgGWL0RkC4A/ci/3xU7MYZFH+Mpn8v9eTR9vxaX5g9kpQ9b3BDFI0IOw==
+"@kubevious/ui-components@^1.0.207", "@kubevious/ui-components@^1.0.214", "@kubevious/ui-components@^1.0.218", "@kubevious/ui-components@^1.0.220", "@kubevious/ui-components@^1.0.221", "@kubevious/ui-components@^1.0.230":
+  version "1.0.230"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-components/-/ui-components-1.0.230.tgz#1cab77ef11dae03d69a49f7d8c5245e40bcc79d4"
+  integrity sha512-M1Ul8GEKQNfSUyQHfkXVShappPoYhA0Mk1eBJsArQAS+gHNY1I01OVJNb8Im3xuPRtvNVFRJfBzkEOhVmkOi4Q==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "6.1.1"
     "@fortawesome/free-brands-svg-icons" "6.1.1"
@@ -1677,7 +1677,6 @@
     "@kubevious/entity-meta" "^1.0.56"
     "@kubevious/ui-framework" "^1.0.59"
     "@kubevious/ui-middleware" "^1.0.62"
-    "@types/codemirror" "^5.60.5"
     bootstrap "^5.0.0"
     classnames "^2.2.6"
     codemirror "^5.63.3"
@@ -1692,6 +1691,7 @@
     react-dom "^17.0.2"
     react-router-dom "^5.2.0"
     react-select "^4.3.1"
+    resize-observer "^1.0.4"
     the-lodash "^2.0.9"
     the-promise "^2.0.13"
     uuid "^8.3.2"
@@ -2137,22 +2137,10 @@
   dependencies:
     classnames "*"
 
-"@types/codemirror@^5.60.5":
-  version "5.60.5"
-  resolved "https://registry.yarnpkg.com/@types/codemirror/-/codemirror-5.60.5.tgz#5b989a3b4bbe657458cf372c92b6bfda6061a2b7"
-  integrity sha512-TiECZmm8St5YxjFUp64LK0c8WU5bxMDt9YaAek1UqUb9swrSCoJhh92fWu1p3mTEqlHjhB5sY7OFBhWroJXZVg==
-  dependencies:
-    "@types/tern" "*"
-
 "@types/eslint-visitor-keys@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@types/eslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz#1ee30d79544ca84d68d4b3cdb0af4f205663dd2d"
   integrity sha512-OCutwjDZ4aFS6PB1UZ988C4YgwlBHJd6wCeQqaLdmadZ/7e+w79+hbMUFC1QXDNCmdyoRfAFdm0RypzwR+Qpag==
-
-"@types/estree@*":
-  version "0.0.51"
-  resolved "https://registry.yarnpkg.com/@types/estree/-/estree-0.0.51.tgz#cfd70924a25a3fd32b218e5e420e6897e1ac4f40"
-  integrity sha512-CuPgU6f3eT/XgKKPqKd/gLZV1Xmvf1a2R5POBOGQa6uv82xpls89HU5zKeVoyR8XzHd1RGNOlQlvUe3CFkjWNQ==
 
 "@types/glob@^7.1.1":
   version "7.2.0"
@@ -2320,13 +2308,6 @@
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@types/stack-utils/-/stack-utils-1.0.1.tgz#0a851d3bd96498fa25c33ab7278ed3bd65f06c3e"
   integrity sha512-l42BggppR6zLmpfU6fq9HEa2oGPEI8yrSPL3GITjfRInppYFahObbIQOQK3UGxEnyQpltZLaPe75046NOZQikw==
-
-"@types/tern@*":
-  version "0.23.4"
-  resolved "https://registry.yarnpkg.com/@types/tern/-/tern-0.23.4.tgz#03926eb13dbeaf3ae0d390caf706b2643a0127fb"
-  integrity sha512-JAUw1iXGO1qaWwEOzxTKJZ/5JxVeON9kvGZ/osgZaJImBnyjyn0cjovPsf6FNLmyGY8Vw9DoXZCMlfMkMwHRWg==
-  dependencies:
-    "@types/estree" "*"
 
 "@types/warning@^3.0.0":
   version "3.0.0"
@@ -11819,6 +11800,11 @@ requires-port@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/requires-port/-/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
   integrity sha1-kl0mAdOaxIXgkc8NpcbmlNw9yv8=
+
+resize-observer@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/resize-observer/-/resize-observer-1.0.4.tgz#48beb64602ce408ebd1a433784d64ef76f38d321"
+  integrity sha512-AQ2MdkWTng9d6JtjHvljiQR949qdae91pjSNugGGeOFzKIuLHvoZIYhUTjePla5hCFDwQHrnkciAIzjzdsTZew==
 
 resolve-cwd@^2.0.0:
   version "2.0.0"
