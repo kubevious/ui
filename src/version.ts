@@ -1,2 +1,2 @@
 // This file is generated and updated from CI/CD
-export default "v0.9.23";
+export default "v0.9.24";
