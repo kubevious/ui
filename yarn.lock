@@ -1664,10 +1664,10 @@
     the-lodash "^2.0.9"
     uuid "^8.3.2"
 
-"@kubevious/ui-components@^1.0.207", "@kubevious/ui-components@^1.0.214", "@kubevious/ui-components@^1.0.218", "@kubevious/ui-components@^1.0.220", "@kubevious/ui-components@^1.0.221":
-  version "1.0.221"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-components/-/ui-components-1.0.221.tgz#607b9bcf0233bf80c481c2688f2f109640c300f3"
-  integrity sha512-06P/j88Nu8Jy2chCQzdwgkSdwezvw4iZaq1oB5l1nVKDDqyIsrh9dta++swu3H7x6KiuXNwM6vYcScw7MgXdVg==
+"@kubevious/ui-components@^1.0.207", "@kubevious/ui-components@^1.0.214", "@kubevious/ui-components@^1.0.218", "@kubevious/ui-components@^1.0.220", "@kubevious/ui-components@^1.0.221", "@kubevious/ui-components@^1.0.224":
+  version "1.0.224"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-components/-/ui-components-1.0.224.tgz#d2c4841b3f54b40c9caeaa365f12957562bf23e7"
+  integrity sha512-Me7TkOFpe58qy1xHAT/SUoN4f485XLI7xUtfli0Sq+Io0VFi8SuLiHERZQDArI0vNarNofgaD3rutUr1JByg+w==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "6.1.1"
     "@fortawesome/free-brands-svg-icons" "6.1.1"
@@ -1676,7 +1676,7 @@
     "@fortawesome/react-fontawesome" "0.1.18"
     "@kubevious/entity-meta" "^1.0.56"
     "@kubevious/ui-framework" "^1.0.59"
-    "@kubevious/ui-middleware" "^1.0.59"
+    "@kubevious/ui-middleware" "^1.0.62"
     "@types/codemirror" "^5.60.5"
     bootstrap "^5.0.0"
     classnames "^2.2.6"
