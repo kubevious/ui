@@ -3,6 +3,9 @@ import React, { useState } from "react"
 import { useService } from '@kubevious/ui-framework';
 import { IBackendStatusService, BackendMetricItem } from '@kubevious/ui-middleware';
 
+import cx from 'classnames';
+import styles from './styles.module.css';
+
 import VERSION from '../../version'
 
 export const BackendMetrics = () => {
@@ -36,7 +39,7 @@ export const BackendMetrics = () => {
     }
 
     return (
-        <table className="table table-striped table-dark">
+        <table className={cx("table table-striped table-dark", styles.table)}>
             <thead>
                 <tr>
                     <th>Metric</th>

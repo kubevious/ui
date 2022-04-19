@@ -11,7 +11,7 @@ export const AboutPage: FC = () => {
 
     return (
         <InnerPage 
-            narrow
+            midNarrow
             header={<PageHeader title="About" />}
             >
 
