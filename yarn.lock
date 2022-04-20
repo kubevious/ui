@@ -1664,10 +1664,10 @@
     the-lodash "^2.0.9"
     uuid "^8.3.2"
 
-"@kubevious/ui-components@^1.0.207", "@kubevious/ui-components@^1.0.214", "@kubevious/ui-components@^1.0.218", "@kubevious/ui-components@^1.0.220", "@kubevious/ui-components@^1.0.221", "@kubevious/ui-components@^1.0.230":
-  version "1.0.230"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-components/-/ui-components-1.0.230.tgz#1cab77ef11dae03d69a49f7d8c5245e40bcc79d4"
-  integrity sha512-M1Ul8GEKQNfSUyQHfkXVShappPoYhA0Mk1eBJsArQAS+gHNY1I01OVJNb8Im3xuPRtvNVFRJfBzkEOhVmkOi4Q==
+"@kubevious/ui-components@^1.0.207", "@kubevious/ui-components@^1.0.214", "@kubevious/ui-components@^1.0.218", "@kubevious/ui-components@^1.0.220", "@kubevious/ui-components@^1.0.230", "@kubevious/ui-components@^1.0.231":
+  version "1.0.231"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-components/-/ui-components-1.0.231.tgz#38ca61d39e0d294aff802872326bad38564d361e"
+  integrity sha512-Nu0SA9Sl7M1scrKq0v44s2cOeNSUGemiLBmzxy9vCpDBAe151eTVNovSUZPjxVYzhk+F66b3bJ/Ahl12kr2WZQ==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "6.1.1"
     "@fortawesome/free-brands-svg-icons" "6.1.1"
@@ -1734,15 +1734,15 @@
     "@kubevious/http-client" "^1.0.19"
     the-promise "^2.0.13"
 
-"@kubevious/ui-properties@^1.0.54":
-  version "1.0.54"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-properties/-/ui-properties-1.0.54.tgz#9df7f485d82db92ef43c6ec1fb849260b0dce894"
-  integrity sha512-5s3vUPeRkknxtMSyXBKE5PB7A3xDZbx3+jC8CD9XytHlnSARed2yJE1GzKbbI8kjkYsh1QLvqRMQ+aPnmX0GOg==
+"@kubevious/ui-properties@^1.0.56":
+  version "1.0.56"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-properties/-/ui-properties-1.0.56.tgz#1a8f941822c9df1321a136f96c7fba2c37ce4791"
+  integrity sha512-sG3fR1N3msd06SiDkARRZxuazH/h8licKxfmJWPpY8OhCt97ymWuABt1hkwcGSMbDtc24mOMSAKQL+fzHSi2kA==
   dependencies:
     "@kubevious/entity-meta" "^1.0.56"
     "@kubevious/state-registry" "^1.0.13"
     "@kubevious/ui-alerts" "^1.0.42"
-    "@kubevious/ui-components" "^1.0.221"
+    "@kubevious/ui-components" "^1.0.230"
     "@kubevious/ui-framework" "^1.0.59"
     bootstrap "^5.0.0-beta3"
     classnames "^2.2.6"
