@@ -1605,16 +1605,6 @@
   dependencies:
     the-lodash "^2.0.9"
 
-"@kubevious/helpers@^1.0.63", "@kubevious/helpers@^1.0.64":
-  version "1.0.64"
-  resolved "https://registry.yarnpkg.com/@kubevious/helpers/-/helpers-1.0.64.tgz#4d1d8f7aa61fee3ccfcb8d91460599b16439da6e"
-  integrity sha512-YOVh8b4A7wbeck6VJAU0uhkNA+fJvg0HmUOFdy9cqZYU9IgabiKN6DcXOkWnaKHiA/mr1XTTZXQoy/9hyr84Sg==
-  dependencies:
-    moment "^2.29.1"
-    the-lodash "^2.0.9"
-    the-logger "^2.0.14"
-    the-promise "^2.0.13"
-
 "@kubevious/http-client@^1.0.19":
   version "1.0.19"
   resolved "https://registry.yarnpkg.com/@kubevious/http-client/-/http-client-1.0.19.tgz#2f0cdde936225f30e1689e69ee4727d152a56ffd"
@@ -1696,16 +1686,15 @@
     the-promise "^2.0.13"
     uuid "^8.3.2"
 
-"@kubevious/ui-dev-tools@^1.0.26":
-  version "1.0.26"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-dev-tools/-/ui-dev-tools-1.0.26.tgz#4396b91cfbb85fa103d76da8f55f4b7ffc95a8d7"
-  integrity sha512-xzHObN57sklZYDGxv4dIAVcDnt8EYjOR4rr1bZhlxisMKLQUldg18e4qb0sMmRShxTVlNTnwfR7oIE/aFca2JQ==
+"@kubevious/ui-dev-tools@^1.0.27":
+  version "1.0.27"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-dev-tools/-/ui-dev-tools-1.0.27.tgz#d5556c36cd24aacb50daa328f2df84e22dee6798"
+  integrity sha512-9/QcKGVaeUyTZ3HjCywvJyFCVjxuVl5SNHkeeY3Vq1DkkeVvrDQTBcLH6zpKiHExuAwRR5Ney5sclYkdGzj4Aw==
   dependencies:
-    "@kubevious/helpers" "^1.0.63"
     "@kubevious/http-client" "^1.0.19"
-    "@kubevious/ui-components" "^1.0.214"
+    "@kubevious/ui-components" "^1.0.231"
     "@kubevious/ui-framework" "^1.0.59"
-    "@kubevious/ui-middleware" "^1.0.59"
+    "@kubevious/ui-middleware" "^1.0.62"
     classnames "^2.2.6"
     react-router-dom "^5.2.0"
     react-usestateref "^1.0.8"
