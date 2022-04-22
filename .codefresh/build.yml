@@ -199,7 +199,7 @@ steps:
     type: push
     image_name: "kubevious/${{PRODUCT_NAME}}-demo"
     registry: "dockerhub"
-    candidate: "${{build}}"
+    candidate: "${{build_demo}}"
     tags:
       - "${{DOCKER_TAG}}"
     when: 
