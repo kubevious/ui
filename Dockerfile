@@ -14,6 +14,7 @@ COPY ./src ./src
 COPY ./tsconfig.json ./
 RUN ./tools/sync-public.sh
 RUN ls -la ./public/
+RUN ls -la ./public/img/
 RUN ls -la ./src/
 RUN npm run build
 RUN ./tools/kubevious-npm-validate-nested-dependencies.sh
