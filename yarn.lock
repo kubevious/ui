@@ -1730,10 +1730,10 @@
     "@kubevious/http-client" "^1.0.19"
     the-promise "^2.0.13"
 
-"@kubevious/ui-properties@^1.0.61":
-  version "1.0.61"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-properties/-/ui-properties-1.0.61.tgz#b443ee2d213ac96ef77cee274865568ba767d4ed"
-  integrity sha512-BZG1BYpIy+PapVy1UDDMM/ZYZZyTqTfv3Kn5oEN5TOH6OqzILf+iDOeYfPFLyrl1vjzStJcVPyF9R9JHhM10Bg==
+"@kubevious/ui-properties@^1.0.63":
+  version "1.0.63"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-properties/-/ui-properties-1.0.63.tgz#3e12494af402920e55a6abeae67b5db5ac48ea8c"
+  integrity sha512-DAu3s4Z5HYg0BHW3hdgHWZxVwiQsN4RDmfleBLoY7QUTGQnhAPrXxTOMTpKztJnYTWtgC6fv4wEaFkbOOUivqQ==
   dependencies:
     "@kubevious/entity-meta" "^1.0.63"
     "@kubevious/state-registry" "^1.0.13"
