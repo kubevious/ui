@@ -1612,10 +1612,10 @@
   dependencies:
     the-lodash "^2.0.9"
 
-"@kubevious/entity-meta@^1.0.65":
-  version "1.0.65"
-  resolved "https://registry.yarnpkg.com/@kubevious/entity-meta/-/entity-meta-1.0.65.tgz#8dd2161ca65b6f0f5fcb052104b594919e8cc676"
-  integrity sha512-rny+3Td4k0wQVUugq+9teCQzHRZO+eiAxkEOT28Krt+mk2aed+hyVdmbLOoSQZxlTes0i53TpyzNnxaFDKKGYg==
+"@kubevious/entity-meta@^1.0.66":
+  version "1.0.66"
+  resolved "https://registry.yarnpkg.com/@kubevious/entity-meta/-/entity-meta-1.0.66.tgz#3d4162609d330baa12194aa43ca04de4df463a80"
+  integrity sha512-bW/mSvU2e5trM47ZfI3PPdXcFPQPjE9yOtpttk3+1VrhscBt+Qwkrmltv3ki7Km5SUUBluPYaqFlxNAxUlj+VA==
   dependencies:
     the-lodash "^2.0.9"
 
@@ -1737,12 +1737,12 @@
     "@kubevious/http-client" "^1.0.19"
     the-promise "^2.0.13"
 
-"@kubevious/ui-properties@^1.0.66":
-  version "1.0.66"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-properties/-/ui-properties-1.0.66.tgz#19440b4582ba199ab51a5a5cf33ece2efdd66827"
-  integrity sha512-pquBYRo6e7As9gOCo5CDYy7tvvwtSrbLZ3AniAURECiRAl/JQQKLzwu80p0MVRdVDFokqaI4sDaWNwh2M1mEgg==
+"@kubevious/ui-properties@^1.0.67":
+  version "1.0.67"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-properties/-/ui-properties-1.0.67.tgz#daee24a51183f0ea4b9055dfdda9ec3244212623"
+  integrity sha512-5upk+NWpElhaud5wGrAfyOfswCCgXx5B3Sl4Xr/piZsotQkiT8G40eGH2al3xEd60KytQ0DUt/SoTpCWJtmOPw==
   dependencies:
-    "@kubevious/entity-meta" "^1.0.65"
+    "@kubevious/entity-meta" "^1.0.66"
     "@kubevious/state-registry" "^1.0.13"
     "@kubevious/ui-alerts" "^1.0.42"
     "@kubevious/ui-components" "^1.0.236"
