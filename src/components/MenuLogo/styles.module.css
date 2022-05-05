@@ -1,0 +1,22 @@
+.logoContainerSmall {
+    width: 36px;
+    height: 30px;
+}
+
+.logoContainer {
+    position: relative;
+
+    width: 190px;
+    height: 30px;
+}
+
+.logoLabel {
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 11px;
+    font-weight: bold;
+    line-height: 13px;
+    color: #f2bf58;
+    position: absolute;
+    right: 0px;
+    top: -6px;
+}

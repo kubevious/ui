@@ -1,0 +1,129 @@
+version: "1.0"
+stages:
+  - "clone"
+  - "build"
+  - "build-demo"
+  - "versioning"
+steps:
+  
+  clone_init:
+    title: Init Clone
+    stage: clone
+    image: codefresh/cli
+    shell: bash
+    commands:
+      - export PRODUCT_NAME="ui"
+      - cf_export PRODUCT_NAME="${PRODUCT_NAME}"
+      - cf_export GITHUB_TOKEN=$(codefresh get context github --decrypt -o yaml | yq -y .spec.data.auth.password)
+      - cf_export CICD_REPO_PATH="/codefresh/volume/cicd.git"
+      - ls -la /codefresh/volume/
+      - rm -rf /codefresh/volume/${{CF_REPO_NAME}}
+      - ls -la /codefresh/volume/
+
+  main_clone:
+    type: "git-clone"
+    title: Clone Main Repo
+    description: "Cloning main repository..."
+    repo: "kubevious/${{CF_REPO_NAME}}"
+    revision: "${{CF_BRANCH}}"
+    stage: clone
+
+  cicd_clone:
+    title: Clone CI/CD Repo
+    stage: clone
+    image: 'alpine/git:latest'
+    working_directory: "${{main_clone}}/.."
+    commands:
+      - pwd
+      - ls -la
+      - rm -rf cicd.git
+      - 'git clone https://${{CF_REPO_OWNER}}:$GITHUB_TOKEN@github.com/${{CF_REPO_OWNER}}/cicd.git cicd.git'
+      - ls -la
+      - ls -la cicd.git/
+
+  cicd_demo_clone:
+    title: Clone CI/CD Demo Repo
+    stage: clone
+    image: 'alpine/git:latest'
+    working_directory: "${{main_clone}}/.."
+    commands:
+      - pwd
+      - ls -la
+      - rm -rf cicd-demo.git
+      - 'git clone https://${{CF_REPO_OWNER}}:$GITHUB_TOKEN@github.com/${{CF_REPO_OWNER}}/cicd-demo.git cicd-demo.git'
+      - ls -la
+      - ls -la cicd-demo.git/
+
+  inject_version:
+    title: Inject Version
+    stage: build
+    image: codefresh/cli
+    shell: bash
+    working_directory: "${{CICD_REPO_PATH}}/${{PRODUCT_NAME}}"
+    commands:
+      - pwd
+      - ls -la
+      - ../process-version-bump.sh
+      - source version.sh
+      - echo "export const version = \"${PRODUCT_VERSION}\";" > /codefresh/volume/${PRODUCT_NAME}/src/version.ts
+      - cat /codefresh/volume/${PRODUCT_NAME}/src/version.ts
+      - cf_export PRODUCT_VERSION="${PRODUCT_VERSION}"
+      - cf_export DOCKER_TAG="${PRODUCT_VERSION}"
+
+  build:
+    title: "Building Docker Image"
+    type: build
+    image_name: "kubevious/${{PRODUCT_NAME}}"
+    stage: build
+    disable_push: true
+
+  push:
+    title: "Pushing image to DockerHub"
+    type: "push"
+    stage: "build"
+    image_name: "kubevious/${{PRODUCT_NAME}}"
+    registry: "dockerhub"
+    candidate: "${{build}}"
+    tags:
+      - latest
+      - "${{DOCKER_TAG}}"
+
+  prepare_demo_build:
+    title: Prepare Demo prepare_demo_build
+    stage: build-demo
+    image: codefresh/cli
+    shell: bash
+    working_directory: "${{main_clone}}"
+    commands:
+      - cp -f ../cicd-demo.git/src/site-preview.jpg ./public/img/site-preview.jpg
+      - cp -f ../cicd-demo.git/src/seo.tsx ./src/components/SEO/index.tsx
+      - git status
+
+  build_demo:
+    title: "Building Demo Docker Image"
+    type: build
+    image_name: "kubevious/${{PRODUCT_NAME}}-demo"
+    stage: build-demo
+    disable_push: true
+
+  push_demo:
+    title: "Pushing Demo image to DockerHub"
+    type: "push"
+    stage: "build-demo"
+    image_name: "kubevious/${{PRODUCT_NAME}}-demo"
+    registry: "dockerhub"
+    candidate: "${{build_demo}}"
+    tags:
+      - latest
+      - "${{DOCKER_TAG}}"
+
+  commit_versioning:
+    title: Commit Versioning
+    stage: versioning
+    image: codefresh/cli
+    shell: bash
+    working_directory: "${{CICD_REPO_PATH}}"
+    commands:
+      - pwd
+      - ls -la
+      - /codefresh/volume/cicd.git/git-commit-push.sh "Version bump for ${PRODUCT_NAME} to ${PRODUCT_VERSION}"

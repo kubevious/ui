@@ -1,0 +1,98 @@
+{
+  "name": "kubevious-ui",
+  "version": "1.0.0",
+  "description": "Kubevious UI",
+  "main": "index.js",
+  "dependencies": {
+    "@kubevious/ui-browser": "^1.0.31",
+    "@kubevious/ui-components": "^1.0.236",
+    "@kubevious/ui-dev-tools": "^1.0.27",
+    "@kubevious/ui-framework": "^1.0.59",
+    "@kubevious/ui-middleware": "^1.0.62",
+    "@kubevious/ui-properties": "^1.0.68",
+    "@kubevious/ui-rule-engine": "^1.0.84",
+    "@kubevious/ui-search": "^1.0.50",
+    "@kubevious/ui-time-machine": "^1.0.29",
+    "@kubevious/ui-validator-config": "^1.0.5",
+    "@kubevious/ui-worldvious": "^1.0.3",
+    "@kubevious/websocket-client": "^1.0.19",
+    "bootstrap": "^5.0.0",
+    "classnames": "^2.2.6",
+    "moment": "^2.29.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-gtm-module": "^2.0.11",
+    "react-helmet": "^6.1.0",
+    "react-loading": "^2.0.3",
+    "react-router": "5.2.0",
+    "react-router-dom": "5.2.0",
+    "react-scripts": "3.4.1",
+    "the-lodash": "^2.0.9",
+    "typescript": "^4.1.3"
+  },
+  "proxy": "http://localhost:4001",
+  "scripts": {
+    "start": "PORT=4001 react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "lint": "echo do-nothing",
+    "build-svg-dict": "node build-marker-image-dict",
+    "cypress": "cypress open",
+    "cy:run": "cypress run --browser chrome",
+    "cy:run-ci": "cypress run --browser chrome --spec 'cypress/integration/mock/**/*.js'",
+    "ci": "start-server-and-test start http://localhost:4001 cy:run-ci"
+  },
+  "author": "Ruben Hakopian <ruben.hakopian@gmail.com>",
+  "license": "Apache-2.0",
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^11.2.2",
+    "@testing-library/user-event": "^12.6.0",
+    "@types/bootstrap": "^5.0.5",
+    "@types/classnames": "^2.2.11",
+    "@types/node": "^12.19.15",
+    "@types/react": "^17.0.6",
+    "@types/react-dom": "^17.0.5",
+    "@types/react-router-dom": "^5.1.7",
+    "cypress": "^9.3.1",
+    "cypress-file-upload": "^5.0.8",
+    "start-server-and-test": "^1.11.0"
+  },
+  "resolutions": {
+    "bootstrap": "5.1.1",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-router": "5.2.0",
+    "react-router-dom": "5.2.0",
+    "@popperjs/core": "^2.10.1",
+    "the-lodash": "^2.0.9",
+    "@kubevious/ui-framework": "^1.0.59",
+    "@kubevious/ui-middleware": "^1.0.62",
+    "@kubevious/ui-components": "^1.0.236",
+    "@kubevious/ui-properties": "^1.0.68",
+    "@kubevious/ui-rule-engine": "^1.0.84",
+    "@kubevious/ui-time-machine": "^1.0.29",
+    "@kubevious/websocket-client": "^1.0.19",
+    "@kubevious/ui-browser": "^1.0.31",
+    "@kubevious/ui-dev-tools": "^1.0.27",
+    "@kubevious/ui-search": "^1.0.50",
+    "@kubevious/ui-validator-config": "^1.0.5",
+    "@kubevious/ui-worldvious": "^1.0.3"
+  }
+}

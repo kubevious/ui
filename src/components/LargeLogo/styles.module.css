@@ -1,0 +1,40 @@
+.logoContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px; 
+}
+
+.logoImg {
+    width: 172px;
+    height: 172px;
+    background-image: url('/img/logoSquareBig.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+
+    box-sizing: border-box;
+    margin-left: 15px;
+}
+
+.logoLabel {
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 15.7px;
+    font-weight: bold;
+    line-height: 12px;
+    color: #f2bf58;
+    position: relative;
+    left: -7px;
+}
+
+.versionLabel {
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 12px;
+    color: #ffffff;
+    position: relative;
+    left: -7px;
+}
+

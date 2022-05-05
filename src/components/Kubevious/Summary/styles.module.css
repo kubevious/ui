@@ -1,0 +1,46 @@
+.summary {
+    height: 100%;
+    overflow: hidden;
+    padding: 40px;
+}
+
+.summary:hover {
+    overflow-y: overlay;
+}
+
+.summaryContainer {
+    margin-bottom: 20px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.summaryContainer > label {
+    color: #AAAAAA;
+    font-size: 14px;
+}
+
+.agentTitle {
+    font-size: 18px;
+    line-height: 21px;
+    color: #CCCCCC;
+    margin-bottom: 22px;
+}
+
+.loadingPlaceholder {
+    font-size: 18px;
+    margin: 30px 50px;
+    font-family: 'Montserrat', sans-serif;
+    color: white;
+}
+
+.summaryContainer :global(.dn-shortcut .dn-alert .indicator) {
+    width: auto;
+    border-radius: 10px;
+    padding: 0 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.summaryContainer :global(.dn-shortcut .dn-alert .indicator:empty:before) {
+    content: '0';
+}
