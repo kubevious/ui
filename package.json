@@ -41,7 +41,7 @@
     "cypress": "cypress open",
     "cy:run": "cypress run --browser chrome",
     "cy:run-ci": "cypress run --browser chrome --spec 'cypress/integration/mock/**/*.js'",
-    "ci": "start-server-and-test start http://localhost:4000 cy:run-ci"
+    "ci": "start-server-and-test start http://localhost:4001 cy:run-ci"
   },
   "author": "Ruben Hakopian <ruben.hakopian@gmail.com>",
   "license": "Apache-2.0",
