@@ -14,6 +14,7 @@ REPO_DEPENDENCIES=(
     "@kubevious/ui-dev-tools"
     "@kubevious/ui-validator-config"
     "@kubevious/ui-worldvious"
+    "@kubevious/entity-meta"
     "@kubevious/websocket-client"
 )
 
@@ -31,6 +32,7 @@ FORCE_RESOLVE_DEPENDENCIES=(
     "@kubevious/ui-dev-tools"
     "@kubevious/ui-validator-config"
     "@kubevious/ui-worldvious"
+    "@kubevious/entity-meta"
     "@kubevious/websocket-client"
 )
 
