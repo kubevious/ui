@@ -13,6 +13,11 @@ browser/vertical-flow.svg
 check/false.svg
 check/true.svg
 close.svg
+entities/3rdparty/traefik/traefik-ingress-route.svg
+entities/3rdparty/traefik/traefik-middleware.svg
+entities/3rdparty/traefik/traefik-service.svg
+entities/3rdparty/traefik/traefik-tls-options.svg
+entities/3rdparty/traefik/traefik.svg
 entities/api-cluster.svg
 entities/api-version.svg
 entities/gateway/domain.png
