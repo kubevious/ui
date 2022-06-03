@@ -12,6 +12,8 @@ import { ValidatorDetailsPage } from  '@kubevious/ui-validator-config';
 import { SupportPage } from '../pages/help/Support';
 import { UpdatesPage } from '@kubevious/ui-worldvious'
 import { AboutPage } from '../pages/help/About';
+import { GuardMainPage } from '@kubevious/ui-guard'
+import { GUARD_MAIN_PAGE } from '@kubevious/ui-guard/dist/metadata/page'
 
 export const CLUSTER_BROWSER_PAGE = "/browser";
 export const RULE_PAGE = "/rules";
@@ -22,13 +24,6 @@ export const VALIDATOR_DETAILS_PAGE = '/validators/details';
 export const pagesData: PagesData<SideMenuItemKey> = {
     pages: [
 
-        // Project
-        {
-            url: '/project/about',
-            sideMenu: SideMenuItemKey.browser,
-            component: AboutPage,
-            isDefaultMenuPage: true,
-        },
 
         // Setup
         {
@@ -61,6 +56,11 @@ export const pagesData: PagesData<SideMenuItemKey> = {
             url: CLUSTER_BROWSER_PAGE,
             sideMenu: SideMenuItemKey.browser,
             component: ClusterBrowserPage,
+        },
+        {
+            url: GUARD_MAIN_PAGE,
+            sideMenu: SideMenuItemKey.guard,
+            component: GuardMainPage,
         },
         {
             url: '/search',

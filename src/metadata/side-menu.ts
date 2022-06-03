@@ -16,6 +16,12 @@ export const SIDE_MENU_DATA : SideMenuSection[] = [
                 url: '/browser',
             },
             {
+                key: 'guard',
+                label: 'Guard',
+                icon: 'guard.svg',
+                url: '/guard',
+            },
+            {
                 key: 'search',
                 label: 'Search',
                 icon: 'search.svg',

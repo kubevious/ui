@@ -1598,7 +1598,7 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@kubevious/entity-meta@^1.0.45", "@kubevious/entity-meta@^1.0.56", "@kubevious/entity-meta@^1.0.59", "@kubevious/entity-meta@^1.0.66", "@kubevious/entity-meta@^1.0.67", "@kubevious/entity-meta@^1.0.69":
+"@kubevious/entity-meta@^1.0.45", "@kubevious/entity-meta@^1.0.56", "@kubevious/entity-meta@^1.0.59", "@kubevious/entity-meta@^1.0.66", "@kubevious/entity-meta@^1.0.69":
   version "1.0.69"
   resolved "https://registry.yarnpkg.com/@kubevious/entity-meta/-/entity-meta-1.0.69.tgz#c24fdf75453b2e1f4efd596575b5b673f7a9fb6a"
   integrity sha512-B8XmMmcwnwOwbgkgWwJGdDK3oeBfDIl+yeP5gqvvXRtMLMOrKUc14+fU/KFNdgysO5j7oXXQlgnOUGcCKq1EEQ==
@@ -1714,12 +1714,30 @@
     the-promise "^2.0.13"
     uuid "^8.3.2"
 
-"@kubevious/ui-middleware@^1.0.46", "@kubevious/ui-middleware@^1.0.59", "@kubevious/ui-middleware@^1.0.61", "@kubevious/ui-middleware@^1.0.62", "@kubevious/ui-middleware@^1.0.63":
-  version "1.0.63"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-middleware/-/ui-middleware-1.0.63.tgz#4a1891b8cf17832842ec980810e8b29281de50d1"
-  integrity sha512-wNp5G/55DC50+7D6vSIDP9epeh+xi9l46FHQlhj/S4ds8JyOtr1O5wwfzB6oe27d+mLync9M5tsAdq/fIQBP+g==
+"@kubevious/ui-guard@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-guard/-/ui-guard-1.0.1.tgz#0fcb09650cf2aa2431215700848d4deaf39267ee"
+  integrity sha512-Fw5FmR11xwI5GF4PYjTudJ8cw3UMYVjx+nMS/jVD46xx5X7UmWQHWj+hAA5v8HaNIVRZiClqQ0ZPTVWkwCBiqQ==
   dependencies:
-    "@kubevious/entity-meta" "^1.0.67"
+    "@kubevious/entity-meta" "^1.0.69"
+    "@kubevious/ui-components" "^1.0.236"
+    "@kubevious/ui-framework" "^1.0.59"
+    "@kubevious/ui-middleware" "^1.0.64"
+    bootstrap "^5.0.0"
+    classnames "^2.2.6"
+    node-sass "^7.0.1"
+    postcss "^8.4.12"
+    react "^17.0.2"
+    react-color "^2.19.3"
+    react-router-dom "5.2.0"
+    the-lodash "^2.0.9"
+
+"@kubevious/ui-middleware@^1.0.46", "@kubevious/ui-middleware@^1.0.59", "@kubevious/ui-middleware@^1.0.61", "@kubevious/ui-middleware@^1.0.62", "@kubevious/ui-middleware@^1.0.64":
+  version "1.0.64"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-middleware/-/ui-middleware-1.0.64.tgz#4229db8349bab746cd10a452a051d6594be9332b"
+  integrity sha512-YEWloInU91OI29gN6zB6BPxRNrb0kk0JDsM/4n25sf9Utp88vVIFXqcl3hccLMFv/kBgAgc4M2WXiLWHjBGMGQ==
+  dependencies:
+    "@kubevious/entity-meta" "^1.0.69"
     "@kubevious/http-client" "^1.0.19"
     the-promise "^2.0.13"
 

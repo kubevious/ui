@@ -20,6 +20,7 @@ touch ${PUBLIC_GIT_IGNORE}
 ./sync-public-from.sh '@kubevious/ui-browser'
 ./sync-public-from.sh '@kubevious/ui-search'
 ./sync-public-from.sh '@kubevious/ui-validator-config'
+./sync-public-from.sh '@kubevious/ui-guard'
 ./sync-public-from.sh '@kubevious/entity-meta'
 
 
