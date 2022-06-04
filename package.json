@@ -9,10 +9,10 @@
     "@kubevious/ui-components": "^1.0.236",
     "@kubevious/ui-dev-tools": "^1.0.27",
     "@kubevious/ui-framework": "^1.0.59",
-    "@kubevious/ui-guard": "^1.0.1",
+    "@kubevious/ui-guard": "^1.0.2",
     "@kubevious/ui-middleware": "^1.0.64",
     "@kubevious/ui-properties": "^1.0.69",
-    "@kubevious/ui-rule-engine": "^1.0.84",
+    "@kubevious/ui-rule-engine": "^1.0.85",
     "@kubevious/ui-search": "^1.0.50",
     "@kubevious/ui-time-machine": "^1.0.29",
     "@kubevious/ui-validator-config": "^1.0.5",
@@ -88,7 +88,7 @@
     "@kubevious/ui-middleware": "^1.0.64",
     "@kubevious/ui-components": "^1.0.236",
     "@kubevious/ui-properties": "^1.0.69",
-    "@kubevious/ui-rule-engine": "^1.0.84",
+    "@kubevious/ui-rule-engine": "^1.0.85",
     "@kubevious/ui-time-machine": "^1.0.29",
     "@kubevious/websocket-client": "^1.0.19",
     "@kubevious/ui-browser": "^1.0.31",
@@ -96,6 +96,7 @@
     "@kubevious/ui-search": "^1.0.50",
     "@kubevious/ui-validator-config": "^1.0.5",
     "@kubevious/ui-worldvious": "^1.0.3",
-    "@kubevious/entity-meta": "^1.0.69"
+    "@kubevious/entity-meta": "^1.0.69",
+    "@kubevious/ui-guard": "^1.0.2"
   }
 }

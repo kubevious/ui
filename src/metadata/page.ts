@@ -13,7 +13,7 @@ import { SupportPage } from '../pages/help/Support';
 import { UpdatesPage } from '@kubevious/ui-worldvious'
 import { AboutPage } from '../pages/help/About';
 import { GuardMainPage } from '@kubevious/ui-guard'
-import { GUARD_MAIN_PAGE } from '@kubevious/ui-guard/dist/metadata/page'
+import { GUARD_MAIN_PAGE } from '@kubevious/ui-guard'
 
 export const CLUSTER_BROWSER_PAGE = "/browser";
 export const RULE_PAGE = "/rules";
