@@ -5,6 +5,7 @@ import { WorldviousService } from './WorldviousService'
 import { ClusterService } from './ClusterService';
 import { HistoryService } from './HistoryService';
 import { SearchService } from './SearchService'
+import { GuardService } from './GuardService';
 import { ValidatorService } from './ValidatorService';
 import { BackendStatusService } from './BackendStatusService';
 import { DeveloperService } from './DeveloperService';
@@ -67,6 +68,11 @@ export class RootApiFactory {
         app.registerService({ kind: 'search' }, () => {
             const client = this.httpClient('/api/v1/search');
             return new SearchService(client);
+        });
+
+        app.registerService({ kind: 'guard' }, () => {
+            const client = this.httpClient('/api/v1/guard');
+            return new GuardService(client);
         });
 
         app.registerService({ kind: 'worldvious' }, () => {

@@ -293,5 +293,17 @@ export const ENDPOINTS: EndpointInfo[] = [
         name: '/cluster/reporting_status',
         method: HttpMethod.GET,
     },
+
+
+    {
+        name: '/guard/changes',
+        method: HttpMethod.GET,
+        params: ['last_id'],
+    },
+    {
+        name: '/guard/change/details',
+        method: HttpMethod.GET,
+        params: ['id'],
+    },
     
 ];
