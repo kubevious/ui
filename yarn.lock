@@ -1643,15 +1643,15 @@
     react-router-dom "5.3.3"
     the-lodash "^2.0.9"
 
-"@kubevious/ui-browser@^1.0.34":
-  version "1.0.34"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-browser/-/ui-browser-1.0.34.tgz#c27d699ea07371ed216ebdde4cb565f7d4ef94f3"
-  integrity sha512-yjlU12OQk9Rymx9VWr0reVo2KBn4d+L2subTjFbOoBRVrk/Yfdiq4syIiKgPN2nm40iiwaigHJQBYl++wA5dcA==
+"@kubevious/ui-browser@^1.0.35":
+  version "1.0.35"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-browser/-/ui-browser-1.0.35.tgz#d0c850a6736c810d7df74827e27eec899472bcaf"
+  integrity sha512-6Jbuk9kEgZ4zd4dvbcJmHDRYoDcP90219NQ3cIvJQajYVooh3Jd5AoklQHiOx+tAfgsiv9WHI9ONOhOcgY5OoQ==
   dependencies:
     "@kubevious/entity-meta" "^1.0.69"
-    "@kubevious/ui-components" "^1.0.242"
+    "@kubevious/ui-components" "^1.0.245"
     "@kubevious/ui-framework" "^1.0.59"
-    "@kubevious/ui-middleware" "^1.0.72"
+    "@kubevious/ui-middleware" "^1.0.74"
     bootstrap "^5.0.0"
     classnames "2.3.1"
     react "17.0.2"
@@ -1723,16 +1723,16 @@
     the-promise "^2.0.13"
     uuid "^8.3.2"
 
-"@kubevious/ui-guard@^1.0.9":
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-guard/-/ui-guard-1.0.9.tgz#76738167fbbe2532ee74b44844aa042d0425d46c"
-  integrity sha512-171t9WPAiNWyE2dQlbh/YT+YA+qxK+5AegHFIP5Ln4Q7L36lXPoONUMEI3Ov2JvNRURaej1ZwFhoPyz49Ng03w==
+"@kubevious/ui-guard@^1.0.11":
+  version "1.0.11"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-guard/-/ui-guard-1.0.11.tgz#45ea2ab7a97b69b6f064bc748c37aa47cbd68a9b"
+  integrity sha512-k/bRiRZzi+vceGKU1M2HwE4DCePf4gp3cz/WMIYnHrpbFmCQPsSc+hq/yn/dXL8w9UtKuUZJFyuYPAtVe1vxIg==
   dependencies:
     "@kubevious/entity-meta" "^1.0.69"
     "@kubevious/ui-alerts" "^1.0.49"
     "@kubevious/ui-components" "^1.0.245"
     "@kubevious/ui-framework" "^1.0.59"
-    "@kubevious/ui-middleware" "^1.0.72"
+    "@kubevious/ui-middleware" "^1.0.74"
     "@kubevious/ui-properties" "^1.0.75"
     bootstrap "^5.0.0"
     classnames "2.3.1"
@@ -1742,10 +1742,10 @@
     react-router-dom "5.3.3"
     the-lodash "^2.0.9"
 
-"@kubevious/ui-middleware@^1.0.72":
-  version "1.0.72"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-middleware/-/ui-middleware-1.0.72.tgz#16a21fcecfe706df86ec0ce4bb8c6067ae57ebff"
-  integrity sha512-xY4gVP7ejlpopv139RG/inNy45MXD3R9Z6TpPCA1Ps+SPmpt5kPVRFPFuFRJ+dFQEyt57+DlLfB3JTJY/1Uo6Q==
+"@kubevious/ui-middleware@^1.0.72", "@kubevious/ui-middleware@^1.0.74":
+  version "1.0.74"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-middleware/-/ui-middleware-1.0.74.tgz#ac604179337c8173c68731b348d2d426cf788d70"
+  integrity sha512-ZOTeUxVZXCkRKWZZm8DUpGWBGKcD8XlZiIZPiMkcYbTX4jEZKXCHCBlyZ3B3W2c4ynFzZro72sq7h6zTpNn8AA==
   dependencies:
     "@kubevious/entity-meta" "^1.0.69"
     "@kubevious/http-client" "^1.0.19"
@@ -1808,14 +1808,14 @@
     the-lodash "^2.0.9"
     the-promise "^2.0.13"
 
-"@kubevious/ui-time-machine@^1.0.33":
-  version "1.0.33"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-time-machine/-/ui-time-machine-1.0.33.tgz#188ee500d163826ba9f6ee7006679cf4a4368c85"
-  integrity sha512-L1bAZotljPVJBw8jOAYbHi0/N6IIc+TRvfuvQN5wsETUZifcEri0IR0xri9NoHKhcMRy1zkT1Jx1GNjpE1PkTw==
+"@kubevious/ui-time-machine@^1.0.34":
+  version "1.0.34"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-time-machine/-/ui-time-machine-1.0.34.tgz#577846731b6c348909cf3813b9bf1df85f6eb805"
+  integrity sha512-z8GSTyMjBEOGdvIRf216KtWSgHZCykGVeKABgCOJwLrCoQozvJ9qpNWyUEDPBFhqfw2cJak0M2qGJ6aNuNj5qg==
   dependencies:
-    "@kubevious/ui-components" "^1.0.242"
+    "@kubevious/ui-components" "^1.0.245"
     "@kubevious/ui-framework" "^1.0.59"
-    "@kubevious/ui-middleware" "^1.0.72"
+    "@kubevious/ui-middleware" "^1.0.74"
     classnames "2.3.1"
     d3 "^6.5.0"
     jquery "^3.5.1"
@@ -1842,14 +1842,14 @@
     react-router-dom "5.3.3"
     the-lodash "^2.0.9"
 
-"@kubevious/ui-worldvious@^1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-worldvious/-/ui-worldvious-1.0.5.tgz#f11c10ef0666787bcf3d921872403d0b7e64169f"
-  integrity sha512-difiTYwUxjRP1Wr+sND6xGIXpoRBaPTW9IYFSRwuKxBb7ZAXFgvHd0QhY48PrGrOKMXE2oDf6/8S+r6iAyymjg==
+"@kubevious/ui-worldvious@^1.0.6":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-worldvious/-/ui-worldvious-1.0.6.tgz#f6b638ad54b3a787c4bc31663d538a3cc4f97bf9"
+  integrity sha512-TBxVG4NbH//Ms9mb4qSGAHLp0uZ54LuBxA4breeG/u3ufrzs6wrevp+mavXhYPcNvJH+LrUhTYz7ZjJhQQyb4g==
   dependencies:
-    "@kubevious/ui-components" "^1.0.242"
+    "@kubevious/ui-components" "^1.0.245"
     "@kubevious/ui-framework" "^1.0.59"
-    "@kubevious/ui-middleware" "^1.0.72"
+    "@kubevious/ui-middleware" "^1.0.74"
     bootstrap "^5.0.0"
     classnames "2.3.1"
     markdown-to-jsx "^7.1.7"

@@ -8,10 +8,10 @@ import {
 
 export class GuardService extends BaseHttpService implements IGuardService {
 
-    getItems(lastId?: string)
+    getItems(nextToken?: number)
     {
-        const params: { last_id? : string } = {
-            last_id: lastId,
+        const params: { nextToken? : string } = {
+            nextToken: nextToken ? nextToken.toString() : undefined,
         };
         return this.client.get<ChangePackageListResult>('/changes', params)
             .then(result => {
@@ -19,11 +19,11 @@ export class GuardService extends BaseHttpService implements IGuardService {
             })
     }
 
-    getDetails(id: string)
+    getDetails(changeId: string)
     {
         return this.client.get<ChangePackageItemDetails>('/change/details', 
             {
-                id: id,
+                id: changeId,
             })
             .then(result => {
                 return result?.data ?? null;
