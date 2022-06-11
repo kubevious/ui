@@ -2,6 +2,7 @@
 export enum SideMenuItemKey {
     // Operational
     browser = 'browser',
+    guard = 'guard',
     search = 'search',
 
     // Rules Engine
