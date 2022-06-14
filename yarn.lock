@@ -1662,10 +1662,10 @@
     the-lodash "^2.0.9"
     uuid "^8.3.2"
 
-"@kubevious/ui-components@^1.0.242", "@kubevious/ui-components@^1.0.245":
-  version "1.0.245"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-components/-/ui-components-1.0.245.tgz#8f32bfea33cfb0b56c8c87d8f8f6d1c258943f51"
-  integrity sha512-G+WIKSivWx6vca2dYebiSiW9EEqtdH3ZfXCnHpByAQqWV1+bWK/owLmkK0dXbseVz45gDwoTuRS72QHJ2hH4Lw==
+"@kubevious/ui-components@^1.0.242", "@kubevious/ui-components@^1.0.245", "@kubevious/ui-components@^1.0.246", "@kubevious/ui-components@^1.0.247":
+  version "1.0.247"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-components/-/ui-components-1.0.247.tgz#5a143239a2c84d5b66d1d5990ed9cf99383101c7"
+  integrity sha512-M1Ces4YpqeCH0bPH6a96Qr2pe6k67/S4DARTgbjyoRtzSZ84IrET7G9PGkkbMI19KKCMxjHGAF4mYf2BP307zA==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "6.1.1"
     "@fortawesome/free-brands-svg-icons" "6.1.1"
@@ -1723,14 +1723,14 @@
     the-promise "^2.0.13"
     uuid "^8.3.2"
 
-"@kubevious/ui-guard@^1.0.11":
-  version "1.0.11"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-guard/-/ui-guard-1.0.11.tgz#45ea2ab7a97b69b6f064bc748c37aa47cbd68a9b"
-  integrity sha512-k/bRiRZzi+vceGKU1M2HwE4DCePf4gp3cz/WMIYnHrpbFmCQPsSc+hq/yn/dXL8w9UtKuUZJFyuYPAtVe1vxIg==
+"@kubevious/ui-guard@^1.0.12":
+  version "1.0.12"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-guard/-/ui-guard-1.0.12.tgz#298ac3af97b0e85f480b65f30815b3c35c119b96"
+  integrity sha512-3aVIKB4K4Z67TzgKBbAYdkU82HcSFNTbEgAeI0Hw38JUNMG9eaY77nYFL+IkS0wpyDvIlwsKteqdysQPAQ/6JQ==
   dependencies:
     "@kubevious/entity-meta" "^1.0.69"
     "@kubevious/ui-alerts" "^1.0.49"
-    "@kubevious/ui-components" "^1.0.245"
+    "@kubevious/ui-components" "^1.0.246"
     "@kubevious/ui-framework" "^1.0.59"
     "@kubevious/ui-middleware" "^1.0.74"
     "@kubevious/ui-properties" "^1.0.75"

@@ -12,7 +12,8 @@ import { ValidatorDetailsPage } from  '@kubevious/ui-validator-config';
 import { SupportPage } from '../pages/help/Support';
 import { UpdatesPage } from '@kubevious/ui-worldvious'
 import { AboutPage } from '../pages/help/About';
-import { GuardMainPage, ValidationChangeDetailsPage } from '@kubevious/ui-guard'
+import { GuardMainPage } from '../pages/operational/GuardMainPage'
+import { ValidationChangeDetailsPage } from '@kubevious/ui-guard'
 import { GUARD_MAIN_PAGE, GUARD_CHANGE_DETAILS_PAGE } from '@kubevious/ui-guard'
 
 export const CLUSTER_BROWSER_PAGE = "/browser";
