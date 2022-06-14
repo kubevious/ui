@@ -21,7 +21,9 @@ export const GuardMainPage = () => {
                              syntax="shell"/>
 
                 <PageLink path="https://kubevious.io/docs/guard" 
-                          name="Learn more about Kubevious Guard.">
+                          name="Learn more about Kubevious Guard."
+                          target="_blank"
+                          >
                 </PageLink>
 
             </AdditionalBlock>
