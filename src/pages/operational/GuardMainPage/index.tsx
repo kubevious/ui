@@ -13,10 +13,10 @@ export const GuardMainPage = () => {
         <BaseGuardMainPage header={
             <AdditionalBlock>
                 
-                Kubevious Guard can validates changes from CI/CD pipelines
-                before they have a chance to negatively affect Kubernetes 
-                cluster and applications.
-
+                Kubevious Guard can validate changes from CI/CD pipelines before
+                they have a chance to cause application downtimes, misconfigurations,
+                and violations of best practices.
+                
                 <CodeControl value={sampleCommand}
                              syntax="shell"/>
 
