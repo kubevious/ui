@@ -4,14 +4,14 @@
   "description": "Kubevious UI",
   "main": "index.js",
   "dependencies": {
-    "@kubevious/entity-meta": "^1.0.69",
+    "@kubevious/entity-meta": "^1.0.71",
     "@kubevious/ui-browser": "^1.0.35",
     "@kubevious/ui-components": "^1.0.247",
     "@kubevious/ui-dev-tools": "^1.0.30",
     "@kubevious/ui-framework": "^1.0.59",
     "@kubevious/ui-guard": "^1.0.12",
-    "@kubevious/ui-middleware": "^1.0.74",
-    "@kubevious/ui-properties": "^1.0.75",
+    "@kubevious/ui-middleware": "^1.0.75",
+    "@kubevious/ui-properties": "^1.0.76",
     "@kubevious/ui-rule-engine": "^1.0.87",
     "@kubevious/ui-search": "^1.0.53",
     "@kubevious/ui-time-machine": "^1.0.34",
@@ -92,9 +92,9 @@
     "@popperjs/core": "^2.10.1",
     "the-lodash": "^2.0.9",
     "@kubevious/ui-framework": "^1.0.59",
-    "@kubevious/ui-middleware": "^1.0.74",
+    "@kubevious/ui-middleware": "^1.0.75",
     "@kubevious/ui-components": "^1.0.247",
-    "@kubevious/ui-properties": "^1.0.75",
+    "@kubevious/ui-properties": "^1.0.76",
     "@kubevious/ui-rule-engine": "^1.0.87",
     "@kubevious/ui-time-machine": "^1.0.34",
     "@kubevious/websocket-client": "^1.0.19",
@@ -103,7 +103,7 @@
     "@kubevious/ui-search": "^1.0.53",
     "@kubevious/ui-validator-config": "^1.0.7",
     "@kubevious/ui-worldvious": "^1.0.6",
-    "@kubevious/entity-meta": "^1.0.69",
+    "@kubevious/entity-meta": "^1.0.71",
     "@kubevious/ui-guard": "^1.0.12"
   }
 }
