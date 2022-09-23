@@ -111,26 +111,26 @@ steps:
       - cd ${{OPENSHIFT_CERT_REPO_PATH}}
       - ls -la
 
-  # inject_version:
-  #   title: Inject Version
-  #   stage: build
-  #   image: codefresh/cli
-  #   shell: bash
-  #   working_directory: "${{MAIN_REPO_PATH}}"
-  #   when:
-  #     condition:
-  #       all:
-  #         isRelease: '"${{IS_RELEASE}}" == "true"'
-  #   commands:
-  #     - pwd
-  #     - ls -la
-  #     - source ${{CICD_REPO_PATH}}/process-version-bump.sh
-  #     - echo "NEW VERSION=${PRODUCT_VERSION}"
-  #     - source version.sh
-  #     - cf_export PRODUCT_VERSION=${PRODUCT_VERSION}
-  #     - cf_export DOCKER_TAG=${PRODUCT_VERSION}
-  #     - git status
-  #     - git diff
+  inject_version:
+    title: Inject Version
+    stage: build
+    image: codefresh/cli
+    shell: bash
+    working_directory: "${{MAIN_REPO_PATH}}"
+    when:
+      condition:
+        all:
+          isRelease: '"${{IS_RELEASE}}" == "true"'
+    commands:
+      - pwd
+      - ls -la
+      - source ${{CICD_REPO_PATH}}/process-version-bump.sh
+      - echo "NEW VERSION=${PRODUCT_VERSION}"
+      - source version.sh
+      - cf_export PRODUCT_VERSION=${PRODUCT_VERSION}
+      - cf_export DOCKER_TAG=${PRODUCT_VERSION}
+      - git status
+      - git diff
 
   # prepare:
   #   title: Prepare Dependencies
@@ -238,7 +238,7 @@ steps:
 
   openshift_push_dockerhub:
     title: "Pushing UBI Image to DockerHub"
-    stage: demo
+    stage: openshift
     type: push
     image_name: "kubevious/${{PRODUCT_NAME}}-ubi"
     registry: "dockerhub"
@@ -259,4 +259,5 @@ steps:
       - ls -la ${{CICD_DEMO_REPO_PATH}}/
       - ls -la ${{CICD_DEMO_REPO_PATH}}/projects/
       - source ${{CICD_DEMO_REPO_PATH}}/configuration.sh
-      - preflight check container docker.io/kubevious/ui:1.0.9
+      # - preflight check container docker.io/kubevious/ui:1.0.9
+      - preflight check container kubevious/${{PRODUCT_NAME}}-ubi:${{DOCKER_TAG}}
