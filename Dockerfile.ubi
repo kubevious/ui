@@ -87,7 +87,16 @@ EXPOSE 2019
 
 WORKDIR /srv
 
+USER root
+
+RUN mkdir /licenses
+RUN ADD LICENSE /licenses/LICENSE
+RUN chown -R 1001:0 /licenses
+
+USER 1001
+
 COPY --from=build /app/build /caddy/www
 COPY ./caddy/kubevious-entrypoint.sh /etc/caddy/kubevious-entrypoint.sh
+
 ENTRYPOINT ["/etc/caddy/kubevious-entrypoint.sh"]
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
