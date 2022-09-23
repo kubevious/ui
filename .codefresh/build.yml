@@ -4,10 +4,9 @@ stages:
   - "init"
   - "clone"
   - "build"
-  - "test"
-  - "release"
   - "demo"
-  - "openshift"
+  - "push"
+  - "release"
 
 steps:
   decide_release:
@@ -52,6 +51,9 @@ steps:
       - 'echo "Revision: ${{CF_REVISION}}"'
       - 'echo "Author: ${{CF_COMMIT_AUTHOR}}"'
       - 'echo "Message: ${{CF_COMMIT_MESSAGE}}"'
+      - 'echo "Image Name: ${IMAGE_NAME}"'
+      - 'echo "Demo Image Name: ${IMAGE_NAME_DEMO}"'
+      - 'echo "UBI Image Name: ${IMAGE_NAME_UBI}"'
 
   clone:
     title: Clone Repo
@@ -73,6 +75,10 @@ steps:
     stage: clone
     image: "alpine/git:latest"
     working_directory: "/codefresh/volume"
+    when:
+      condition:
+        all:
+          isRelease: '"${{IS_RELEASE}}" == "true"'    
     commands:
       - pwd
       - ls -la
@@ -105,6 +111,10 @@ steps:
     stage: clone
     image: "alpine/git:latest"
     working_directory: "/codefresh/volume"
+    when:
+      condition:
+        all:
+          isRelease: '"${{IS_RELEASE}}" == "true"'    
     commands:
       - pwd
       - ls -la
@@ -135,127 +145,115 @@ steps:
       - git status
       - git diff
 
-  # prepare:
-  #   title: Prepare Dependencies
-  #   stage: build
-  #   image: "kubevious/node-builder:14"
-  #   working_directory: "${{MAIN_REPO_PATH}}"
-  #   commands:
-  #     - yarn install --frozen-lockfile
+  prepare:
+    title: Prepare Dependencies
+    stage: build
+    image: "kubevious/node-builder:14"
+    working_directory: "${{MAIN_REPO_PATH}}"
+    commands:
+      - yarn install --frozen-lockfile
 
-  # compile:
-  #   title: Compile
-  #   stage: build
-  #   image: "kubevious/node-builder:14"
-  #   working_directory: "${{MAIN_REPO_PATH}}"
-  #   commands:
-  #     - npm run build
+  compile:
+    title: Compile
+    stage: build
+    image: "kubevious/node-builder:14"
+    working_directory: "${{MAIN_REPO_PATH}}"
+    commands:
+      - npm run build
 
-  # build:
-  #   title: "Building Docker Image"
-  #   stage: build
-  #   type: build
-  #   image_name: "${{IMAGE_NAME}}"
-  #   working_directory: "${{MAIN_REPO_PATH}}"
-  #   disable_push: true
+  docker_build:
+    title: Building OSS Image
+    stage: build
+    type: build
+    image_name: "${{IMAGE_NAME}}"
+    working_directory: "${{MAIN_REPO_PATH}}"
+    disable_push: true
 
-  # push_dockerhub:
-  #   title: "Pushing image to DockerHub"
-  #   stage: release
-  #   type: push
-  #   image_name: "${{IMAGE_NAME}}"
-  #   registry: "dockerhub"
-  #   candidate: "${{build}}"
-  #   tags:
-  #     - "${{DOCKER_TAG}}"
-  #   when:
-  #     condition:
-  #       all:
-  #         isRelease: '"${{IS_RELEASE}}" == "true"'
+  openshift_build:
+    title: Building UBI Image
+    stage: build
+    type: build
+    image_name: "${{IMAGE_NAME_UBI}}"
+    dockerfile: Dockerfile.ubi
+    working_directory: "${{MAIN_REPO_PATH}}"
+    disable_push: true
+    when:
+      condition:
+        all:
+          isRelease: '"${{IS_RELEASE}}" == "true"'
 
-  # commit_main_repo:
-  #   title: Commit Version Changes
-  #   stage: release
-  #   image: codefresh/cli
-  #   working_directory: "${{MAIN_REPO_PATH}}"
-  #   when:
-  #     condition:
-  #       all:
-  #         isRelease: '"${{IS_RELEASE}}" == "true"'
-  #   commands:
-  #     - ${{CICD_REPO_PATH}}/cicd-commit-product-repo.sh
+  prepare_demo_build:
+    title: Prepare Demo Build
+    stage: demo
+    image: codefresh/cli
+    shell: bash
+    working_directory: "${{MAIN_REPO_PATH}}"
+    when:
+      condition:
+        all:
+          isRelease: '"${{IS_RELEASE}}" == "true"'
+    commands:
+      - cp -f ${{CICD_DEMO_REPO_PATH}}/src/site-preview.jpg ./public/img/site-preview.jpg
+      - cp -f ${{CICD_DEMO_REPO_PATH}}/src/seo.tsx ./src/components/SEO/index.tsx
+      - git status
 
-  # prepare_demo_build:
-  #   title: Prepare Demo Build
-  #   stage: demo
-  #   image: codefresh/cli
-  #   shell: bash
-  #   working_directory: "${{MAIN_REPO_PATH}}"
-  #   when:
-  #     condition:
-  #       all:
-  #         isRelease: '"${{IS_RELEASE}}" == "true"'
-  #   commands:
-  #     - cp -f ${{CICD_DEMO_REPO_PATH}}/src/site-preview.jpg ./public/img/site-preview.jpg
-  #     - cp -f ${{CICD_DEMO_REPO_PATH}}/src/seo.tsx ./src/components/SEO/index.tsx
-  #     - git status
+  build_demo:
+    title: Building Demo Docker Image
+    stage: demo
+    type: build
+    image_name: "${{IMAGE_NAME_DEMO}}"
+    working_directory: "${{MAIN_REPO_PATH}}"
+    disable_push: true
+    when:
+      condition:
+        all:
+          isRelease: '"${{IS_RELEASE}}" == "true"'
 
-  # build_demo:
-  #   title: "Building Demo Docker Image"
-  #   stage: demo
-  #   type: build
-  #   image_name: "${{IMAGE_NAME_DEMO}}"
-  #   working_directory: "${{MAIN_REPO_PATH}}"
-  #   disable_push: true
-  #   when:
-  #     condition:
-  #       all:
-  #         isRelease: '"${{IS_RELEASE}}" == "true"'
+  push_demo_dockerhub:
+    title: Pushing Demo Image to DockerHub
+    stage: demo
+    type: push
+    image_name: "${{IMAGE_NAME_DEMO}}"
+    registry: "dockerhub"
+    candidate: "${{build_demo}}"
+    tags:
+      - "${{DOCKER_TAG}}"
+    when:
+      condition:
+        all:
+          isRelease: '"${{IS_RELEASE}}" == "true"'
 
-  # push_demo_dockerhub:
-  #   title: "Pushing Demo Image to DockerHub"
-  #   stage: demo
-  #   type: push
-  #   image_name: "${{IMAGE_NAME_DEMO}}"
-  #   registry: "dockerhub"
-  #   candidate: "${{build_demo}}"
-  #   tags:
-  #     - "${{DOCKER_TAG}}"
-  #   when:
-  #     condition:
-  #       all:
-  #         isRelease: '"${{IS_RELEASE}}" == "true"'
+  push_dockerhub:
+    title: Pushing OSS Image to DockerHub
+    stage: push
+    type: push
+    image_name: "${{IMAGE_NAME}}"
+    registry: "dockerhub"
+    candidate: "${{docker_build}}"
+    tags:
+      - "${{DOCKER_TAG}}"
+    when:
+      condition:
+        all:
+          isRelease: '"${{IS_RELEASE}}" == "true"'
 
-  # openshift_build:
-  #   title: "Building UBI Image"
-  #   stage: openshift
-  #   type: build
-  #   image_name: "${{IMAGE_NAME_UBI}}"
-  #   dockerfile: Dockerfile.ubi
-  #   working_directory: "${{MAIN_REPO_PATH}}"
-  #   disable_push: true
-  #   when:
-  #     condition:
-  #       all:
-  #         isRelease: '"${{IS_RELEASE}}" == "true"'
+  openshift_push_dockerhub:
+    title: Pushing UBI Image to DockerHub
+    stage: push
+    type: push
+    image_name: "${{IMAGE_NAME_UBI}}"
+    registry: "dockerhub"
+    candidate: "${{openshift_build}}"
+    tags:
+      - "${{DOCKER_TAG}}"
+    when:
+      condition:
+        all:
+          isRelease: '"${{IS_RELEASE}}" == "true"'
 
-  # openshift_push_dockerhub:
-  #   title: "Pushing UBI Image to DockerHub"
-  #   stage: openshift
-  #   type: push
-  #   image_name: "${{IMAGE_NAME_UBI}}"
-  #   registry: "dockerhub"
-  #   candidate: "${{openshift_build}}"
-  #   tags:
-  #     - "${{DOCKER_TAG}}"
-  #   when:
-  #     condition:
-  #       all:
-  #         isRelease: '"${{IS_RELEASE}}" == "true"'
-
-  openshift_preflight_check:
-    title: OpenShift Preflight Check
-    stage: openshift
+  openshift_image_submit:
+    title: OpenShift Image Check & Submit
+    stage: push
     image: "kubevious/openshift-preflight-checker:latest"
     working_directory: "/codefresh/volume"
     when:
@@ -266,3 +264,15 @@ steps:
       - source ${{OPENSHIFT_CERT_REPO_PATH}}/projects/${{PRODUCT_NAME}}/configuration.sh
       - export PREFLIGHT_IMAGE=${{IMAGE_NAME_UBI}}:${{DOCKER_TAG}}
       - ${{OPENSHIFT_CERT_REPO_PATH}}/scripts/image/validate-and-submit.sh
+
+  commit_main_repo:
+    title: Commit Version Changes
+    stage: release
+    image: codefresh/cli
+    working_directory: "${{MAIN_REPO_PATH}}"
+    when:
+      condition:
+        all:
+          isRelease: '"${{IS_RELEASE}}" == "true"'
+    commands:
+      - ${{CICD_REPO_PATH}}/cicd-commit-product-repo.sh
