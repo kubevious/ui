@@ -262,5 +262,5 @@ steps:
     commands:
       - ls -la ${{OPENSHIFT_CERT_REPO_PATH}}/
       - ls -la ${{OPENSHIFT_CERT_REPO_PATH}}/projects/
-      - source ${{OPENSHIFT_CERT_REPO_PATH}}/configuration.sh
+      - source ${{OPENSHIFT_CERT_REPO_PATH}}/projects/configuration.sh
       - preflight check container kubevious/${{PRODUCT_NAME}}-ubi:${{DOCKER_TAG}}
