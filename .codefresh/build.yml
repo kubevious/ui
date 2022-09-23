@@ -42,6 +42,9 @@ steps:
       - export OPENSHIFT_CERT_REPO_NAME=openshift-certification
       - cf_export OPENSHIFT_CERT_REPO_NAME=${OPENSHIFT_CERT_REPO_NAME}
       - cf_export OPENSHIFT_CERT_REPO_PATH=/codefresh/volume/${OPENSHIFT_CERT_REPO_NAME}.git      
+      - cf_export IMAGE_NAME=kubevious/${{PRODUCT_NAME}}
+      - cf_export IMAGE_NAME_DEMO=kubevious/${{PRODUCT_NAME}}-demo
+      - cf_export IMAGE_NAME_UBI=kubevious/${{PRODUCT_NAME}}-ubi
       - 'echo "Is Release: ${IS_RELEASE}"'
       - 'echo "Product: ${PRODUCT_NAME}"'
       - 'echo "Repo: ${{CF_REPO_NAME}}"'
@@ -152,7 +155,7 @@ steps:
   #   title: "Building Docker Image"
   #   stage: build
   #   type: build
-  #   image_name: "kubevious/${{PRODUCT_NAME}}"
+  #   image_name: "${{IMAGE_NAME}}"
   #   working_directory: "${{MAIN_REPO_PATH}}"
   #   disable_push: true
 
@@ -160,7 +163,7 @@ steps:
   #   title: "Pushing image to DockerHub"
   #   stage: release
   #   type: push
-  #   image_name: "kubevious/${{PRODUCT_NAME}}"
+  #   image_name: "${{IMAGE_NAME}}"
   #   registry: "dockerhub"
   #   candidate: "${{build}}"
   #   tags:
@@ -201,7 +204,7 @@ steps:
   #   title: "Building Demo Docker Image"
   #   stage: demo
   #   type: build
-  #   image_name: "kubevious/${{PRODUCT_NAME}}-demo"
+  #   image_name: "${{IMAGE_NAME_DEMO}}"
   #   working_directory: "${{MAIN_REPO_PATH}}"
   #   disable_push: true
   #   when:
@@ -213,7 +216,7 @@ steps:
   #   title: "Pushing Demo Image to DockerHub"
   #   stage: demo
   #   type: push
-  #   image_name: "kubevious/${{PRODUCT_NAME}}-demo"
+  #   image_name: "${{IMAGE_NAME_DEMO}}"
   #   registry: "dockerhub"
   #   candidate: "${{build_demo}}"
   #   tags:
@@ -223,32 +226,32 @@ steps:
   #       all:
   #         isRelease: '"${{IS_RELEASE}}" == "true"'
 
-  # openshift_build:
-  #   title: "Building UBI Image"
-  #   stage: openshift
-  #   type: build
-  #   image_name: "kubevious/${{PRODUCT_NAME}}-ubi"
-  #   dockerfile: Dockerfile.ubi
-  #   working_directory: "${{MAIN_REPO_PATH}}"
-  #   disable_push: true
-  #   when:
-  #     condition:
-  #       all:
-  #         isRelease: '"${{IS_RELEASE}}" == "true"'
+  openshift_build:
+    title: "Building UBI Image"
+    stage: openshift
+    type: build
+    image_name: "${{IMAGE_NAME_UBI}}"
+    dockerfile: Dockerfile.ubi
+    working_directory: "${{MAIN_REPO_PATH}}"
+    disable_push: true
+    when:
+      condition:
+        all:
+          isRelease: '"${{IS_RELEASE}}" == "true"'
 
-  # openshift_push_dockerhub:
-  #   title: "Pushing UBI Image to DockerHub"
-  #   stage: openshift
-  #   type: push
-  #   image_name: "kubevious/${{PRODUCT_NAME}}-ubi"
-  #   registry: "dockerhub"
-  #   candidate: "${{openshift_build}}"
-  #   tags:
-  #     - "${{DOCKER_TAG}}"
-  #   when:
-  #     condition:
-  #       all:
-  #         isRelease: '"${{IS_RELEASE}}" == "true"'
+  openshift_push_dockerhub:
+    title: "Pushing UBI Image to DockerHub"
+    stage: openshift
+    type: push
+    image_name: "${{IMAGE_NAME_UBI}}"
+    registry: "dockerhub"
+    candidate: "${{openshift_build}}"
+    tags:
+      - "${{DOCKER_TAG}}"
+    when:
+      condition:
+        all:
+          isRelease: '"${{IS_RELEASE}}" == "true"'
 
   openshift_preflight_check:
     title: OpenShift Preflight Check
@@ -263,4 +266,4 @@ steps:
       - ls -la ${{OPENSHIFT_CERT_REPO_PATH}}/
       - ls -la ${{OPENSHIFT_CERT_REPO_PATH}}/projects/
       - source ${{OPENSHIFT_CERT_REPO_PATH}}/projects/configuration.sh
-      - preflight check container kubevious/${{PRODUCT_NAME}}-ubi:${{DOCKER_TAG}}
+      - preflight check container ${{IMAGE_NAME_UBI}}:${{DOCKER_TAG}}
