@@ -22,7 +22,7 @@ RUN ls -la /app/build/img/
 
 ###############################################################################
 # Step 2 : Runner image
-FROM caddy:2.4.6-alpine
+FROM caddy:2.6.1-alpine
 COPY --from=build /app/build /caddy/www
 COPY ./caddy/kubevious-entrypoint.sh /etc/caddy/kubevious-entrypoint.sh
 ENTRYPOINT ["/etc/caddy/kubevious-entrypoint.sh"]
