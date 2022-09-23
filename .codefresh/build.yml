@@ -263,7 +263,9 @@ steps:
         all:
           isRelease: '"${{IS_RELEASE}}" == "true"'    
     commands:
-      - ls -la ${{OPENSHIFT_CERT_REPO_PATH}}/
-      - ls -la ${{OPENSHIFT_CERT_REPO_PATH}}/projects/
-      - source ${{OPENSHIFT_CERT_REPO_PATH}}/projects/configuration.sh
-      - preflight check container ${{IMAGE_NAME_UBI}}:${{DOCKER_TAG}}
+      # - ls -la ${{OPENSHIFT_CERT_REPO_PATH}}/
+      # - ls -la ${{OPENSHIFT_CERT_REPO_PATH}}/projects/
+      # - preflight check container ${{IMAGE_NAME_UBI}}:${{DOCKER_TAG}}
+      - source ${{OPENSHIFT_CERT_REPO_PATH}}/projects/${{PRODUCT_NAME}}/configuration.sh
+      - export PREFLIGHT_IMAGE=${{IMAGE_NAME_UBI}}:${{DOCKER_TAG}}
+      - ${{OPENSHIFT_CERT_REPO_PATH}}/scripts/image/validate-and-submit.sh

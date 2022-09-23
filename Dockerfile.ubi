@@ -22,7 +22,6 @@ RUN ls -la /app/build/img/
 
 ###############################################################################
 # Step 2 : Runner image
-# FROM alpine:3.16
 FROM redhat/ubi8:8.6-943
 
 RUN yum install -y ca-certificates
@@ -90,7 +89,7 @@ WORKDIR /srv
 USER root
 
 RUN mkdir /licenses
-RUN ADD LICENSE /licenses/LICENSE
+ADD LICENSE /licenses/LICENSE
 RUN chown -R 1001:0 /licenses
 
 USER 1001
