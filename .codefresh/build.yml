@@ -226,32 +226,32 @@ steps:
   #       all:
   #         isRelease: '"${{IS_RELEASE}}" == "true"'
 
-  openshift_build:
-    title: "Building UBI Image"
-    stage: openshift
-    type: build
-    image_name: "${{IMAGE_NAME_UBI}}"
-    dockerfile: Dockerfile.ubi
-    working_directory: "${{MAIN_REPO_PATH}}"
-    disable_push: true
-    when:
-      condition:
-        all:
-          isRelease: '"${{IS_RELEASE}}" == "true"'
+  # openshift_build:
+  #   title: "Building UBI Image"
+  #   stage: openshift
+  #   type: build
+  #   image_name: "${{IMAGE_NAME_UBI}}"
+  #   dockerfile: Dockerfile.ubi
+  #   working_directory: "${{MAIN_REPO_PATH}}"
+  #   disable_push: true
+  #   when:
+  #     condition:
+  #       all:
+  #         isRelease: '"${{IS_RELEASE}}" == "true"'
 
-  openshift_push_dockerhub:
-    title: "Pushing UBI Image to DockerHub"
-    stage: openshift
-    type: push
-    image_name: "${{IMAGE_NAME_UBI}}"
-    registry: "dockerhub"
-    candidate: "${{openshift_build}}"
-    tags:
-      - "${{DOCKER_TAG}}"
-    when:
-      condition:
-        all:
-          isRelease: '"${{IS_RELEASE}}" == "true"'
+  # openshift_push_dockerhub:
+  #   title: "Pushing UBI Image to DockerHub"
+  #   stage: openshift
+  #   type: push
+  #   image_name: "${{IMAGE_NAME_UBI}}"
+  #   registry: "dockerhub"
+  #   candidate: "${{openshift_build}}"
+  #   tags:
+  #     - "${{DOCKER_TAG}}"
+  #   when:
+  #     condition:
+  #       all:
+  #         isRelease: '"${{IS_RELEASE}}" == "true"'
 
   openshift_preflight_check:
     title: OpenShift Preflight Check
@@ -263,9 +263,6 @@ steps:
         all:
           isRelease: '"${{IS_RELEASE}}" == "true"'    
     commands:
-      # - ls -la ${{OPENSHIFT_CERT_REPO_PATH}}/
-      # - ls -la ${{OPENSHIFT_CERT_REPO_PATH}}/projects/
-      # - preflight check container ${{IMAGE_NAME_UBI}}:${{DOCKER_TAG}}
       - source ${{OPENSHIFT_CERT_REPO_PATH}}/projects/${{PRODUCT_NAME}}/configuration.sh
       - export PREFLIGHT_IMAGE=${{IMAGE_NAME_UBI}}:${{DOCKER_TAG}}
       - ${{OPENSHIFT_CERT_REPO_PATH}}/scripts/image/validate-and-submit.sh
