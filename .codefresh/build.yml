@@ -17,7 +17,7 @@ steps:
     when:
       condition:
         all:
-          mainBranch: '"${{CF_BRANCH}}" == "master"'
+          mainBranch: '"${{CF_BRANCH}}" == "main"'
           noCiCdMessage: 'includes("${{CF_COMMIT_MESSAGE}}", "Version Release") == false'
     commands:
       - cf_export IS_RELEASE=true
