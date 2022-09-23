@@ -223,41 +223,44 @@ steps:
   #       all:
   #         isRelease: '"${{IS_RELEASE}}" == "true"'
 
-  openshift_build:
-    title: "Building UBI Image"
-    stage: openshift
-    type: build
-    image_name: "kubevious/${{PRODUCT_NAME}}-ubi"
-    dockerfile: Dockerfile.ubi
-    working_directory: "${{MAIN_REPO_PATH}}"
-    disable_push: true
-    when:
-      condition:
-        all:
-          isRelease: '"${{IS_RELEASE}}" == "true"'
+  # openshift_build:
+  #   title: "Building UBI Image"
+  #   stage: openshift
+  #   type: build
+  #   image_name: "kubevious/${{PRODUCT_NAME}}-ubi"
+  #   dockerfile: Dockerfile.ubi
+  #   working_directory: "${{MAIN_REPO_PATH}}"
+  #   disable_push: true
+  #   when:
+  #     condition:
+  #       all:
+  #         isRelease: '"${{IS_RELEASE}}" == "true"'
 
-  openshift_push_dockerhub:
-    title: "Pushing UBI Image to DockerHub"
-    stage: openshift
-    type: push
-    image_name: "kubevious/${{PRODUCT_NAME}}-ubi"
-    registry: "dockerhub"
-    candidate: "${{openshift_build}}"
-    tags:
-      - "${{DOCKER_TAG}}"
-    when:
-      condition:
-        all:
-          isRelease: '"${{IS_RELEASE}}" == "true"'
+  # openshift_push_dockerhub:
+  #   title: "Pushing UBI Image to DockerHub"
+  #   stage: openshift
+  #   type: push
+  #   image_name: "kubevious/${{PRODUCT_NAME}}-ubi"
+  #   registry: "dockerhub"
+  #   candidate: "${{openshift_build}}"
+  #   tags:
+  #     - "${{DOCKER_TAG}}"
+  #   when:
+  #     condition:
+  #       all:
+  #         isRelease: '"${{IS_RELEASE}}" == "true"'
 
   openshift_preflight_check:
     title: OpenShift Preflight Check
     stage: openshift
     image: "kubevious/openshift-preflight-checker:latest"
     working_directory: "/codefresh/volume"
+    when:
+      condition:
+        all:
+          isRelease: '"${{IS_RELEASE}}" == "true"'    
     commands:
-      - ls -la ${{CICD_DEMO_REPO_PATH}}/
-      - ls -la ${{CICD_DEMO_REPO_PATH}}/projects/
-      - source ${{CICD_DEMO_REPO_PATH}}/configuration.sh
-      # - preflight check container docker.io/kubevious/ui:1.0.9
+      - ls -la ${{OPENSHIFT_CERT_REPO_PATH}}/
+      - ls -la ${{OPENSHIFT_CERT_REPO_PATH}}/projects/
+      - source ${{OPENSHIFT_CERT_REPO_PATH}}/configuration.sh
       - preflight check container kubevious/${{PRODUCT_NAME}}-ubi:${{DOCKER_TAG}}
