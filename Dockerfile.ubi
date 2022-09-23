@@ -23,7 +23,7 @@ RUN ls -la /app/build/img/
 ###############################################################################
 # Step 2 : Runner image
 # FROM alpine:3.16
-FROM redhat/ubi8
+FROM redhat/ubi8:8.6-943
 
 RUN yum install -y ca-certificates
 RUN yum install -y mailcap
@@ -46,7 +46,7 @@ RUN set -eux; \
 ENV CADDY_VERSION v2.6.1
 
 RUN set -eux; \
-	apkArch="$(apk --print-arch)"; \
+	apkArch="$(arch)"; \
 	case "$apkArch" in \
 		x86_64)  binArch='amd64'; checksum='fc0c0c115ad0f4e7ca5622dedb95c5c4bc5fc5a44731aa63c6cbc6307d3e6dfe3ae040d6580e2064c5c84bded165c768cac0125fdb9418c923272ccd7fdf19ed' ;; \
 		armhf)   binArch='armv6'; checksum='9aa52d748e45069ce15274b09737e5806b5aa355c4e32cdc187d478bdd5c1cf22398e0ac365933f64386d79b11860246b8340a740a25644a8bfa6ed032bc5b2f' ;; \
@@ -65,7 +65,7 @@ RUN set -eux; \
 
 # set up nsswitch.conf for Go's "netgo" implementation
 # - https://github.com/docker-library/golang/blob/1eb096131592bcbc90aa3b97471811c798a93573/1.14/alpine3.12/Dockerfile#L9
-RUN [ ! -e /etc/nsswitch.conf ] && echo 'hosts: files dns' > /etc/nsswitch.conf
+# RUN [ ! -e /etc/nsswitch.conf ] && echo 'hosts: files dns' > /etc/nsswitch.conf
 
 # See https://caddyserver.com/docs/conventions#file-locations for details
 ENV XDG_CONFIG_HOME /config
