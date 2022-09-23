@@ -39,7 +39,7 @@ steps:
       - export CICD_DEMO_REPO_NAME=cicd-demo
       - cf_export CICD_DEMO_REPO_NAME=${CICD_DEMO_REPO_NAME}
       - cf_export CICD_DEMO_REPO_PATH=/codefresh/volume/${CICD_DEMO_REPO_NAME}.git
-      - export OPENSHIFT_CERT_REPO_NAME=cicd
+      - export OPENSHIFT_CERT_REPO_NAME=openshift-certification
       - cf_export OPENSHIFT_CERT_REPO_NAME=${OPENSHIFT_CERT_REPO_NAME}
       - cf_export OPENSHIFT_CERT_REPO_PATH=/codefresh/volume/${OPENSHIFT_CERT_REPO_NAME}.git      
       - 'echo "Is Release: ${IS_RELEASE}"'
