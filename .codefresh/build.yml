@@ -40,10 +40,13 @@ steps:
       - cf_export CICD_DEMO_REPO_PATH=/codefresh/volume/${CICD_DEMO_REPO_NAME}.git
       - export OPENSHIFT_CERT_REPO_NAME=openshift-certification
       - cf_export OPENSHIFT_CERT_REPO_NAME=${OPENSHIFT_CERT_REPO_NAME}
-      - cf_export OPENSHIFT_CERT_REPO_PATH=/codefresh/volume/${OPENSHIFT_CERT_REPO_NAME}.git      
-      - cf_export IMAGE_NAME=kubevious/${PRODUCT_NAME}
-      - cf_export IMAGE_NAME_DEMO=kubevious/${PRODUCT_NAME}-demo
-      - cf_export IMAGE_NAME_UBI=kubevious/${PRODUCT_NAME}-ubi
+      - cf_export OPENSHIFT_CERT_REPO_PATH=/codefresh/volume/${OPENSHIFT_CERT_REPO_NAME}.git
+      - export IMAGE_NAME=kubevious/${PRODUCT_NAME}
+      - cf_export IMAGE_NAME=${IMAGE_NAME}
+      - export IMAGE_NAME_DEMO=kubevious/${PRODUCT_NAME}-demo
+      - cf_export IMAGE_NAME_DEMO=${IMAGE_NAME_DEMO}
+      - export IMAGE_NAME_UBI=kubevious/${PRODUCT_NAME}-ubi
+      - cf_export IMAGE_NAME_UBI=${IMAGE_NAME_UBI}
       - 'echo "Is Release: ${IS_RELEASE}"'
       - 'echo "Product: ${PRODUCT_NAME}"'
       - 'echo "Repo: ${{CF_REPO_NAME}}"'
@@ -78,7 +81,7 @@ steps:
     when:
       condition:
         all:
-          isRelease: '"${{IS_RELEASE}}" == "true"'    
+          isRelease: '"${{IS_RELEASE}}" == "true"'
     commands:
       - pwd
       - ls -la
@@ -114,7 +117,7 @@ steps:
     when:
       condition:
         all:
-          isRelease: '"${{IS_RELEASE}}" == "true"'    
+          isRelease: '"${{IS_RELEASE}}" == "true"'
     commands:
       - pwd
       - ls -la
@@ -259,7 +262,7 @@ steps:
     when:
       condition:
         all:
-          isRelease: '"${{IS_RELEASE}}" == "true"'    
+          isRelease: '"${{IS_RELEASE}}" == "true"'
     commands:
       - source ${{OPENSHIFT_CERT_REPO_PATH}}/projects/${{PRODUCT_NAME}}/configuration.sh
       - export PREFLIGHT_IMAGE=${{IMAGE_NAME_UBI}}:${{DOCKER_TAG}}
