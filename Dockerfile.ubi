@@ -97,6 +97,7 @@ COPY ./caddy/kubevious-entrypoint.sh /etc/caddy/kubevious-entrypoint.sh
 
 RUN touch /caddy/www/version.js
 RUN chown -R 1001:0 /caddy/www/version.js
+RUN chmod a+w /caddy/www/version.js
 
 USER 1001
 
