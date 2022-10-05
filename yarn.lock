@@ -1600,10 +1600,10 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@kubevious/entity-meta@^1.0.45", "@kubevious/entity-meta@^1.0.69", "@kubevious/entity-meta@^1.0.71":
-  version "1.0.71"
-  resolved "https://registry.yarnpkg.com/@kubevious/entity-meta/-/entity-meta-1.0.71.tgz#6f87acba188878d3a9ec641722cb85fd16aa3579"
-  integrity sha512-762pLt0TBErebtiiKWPIqtZ4i+lSv0VdayfKz/ofba8hZ3l+P4maYUGgFF0EyicgFMwJwY0AxgMIVLy980x3Hw==
+"@kubevious/entity-meta@^1.0.45", "@kubevious/entity-meta@^1.0.69", "@kubevious/entity-meta@^1.0.78":
+  version "1.0.78"
+  resolved "https://registry.yarnpkg.com/@kubevious/entity-meta/-/entity-meta-1.0.78.tgz#a3ed3de565007e59d03e80f3e5cc4c2897f16188"
+  integrity sha512-s6puvNPmn2zFEE2ws+fwdd2hhM3k/SvJrtAJ77sNcQ0WLihOkaisOOhXG3vYBr0QyGKA3bLCd21AUUiZBaO8rw==
   dependencies:
     the-lodash "^2.0.9"
 
